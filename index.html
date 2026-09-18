@@ -65,9 +65,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .lsec{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:10px 6px 4px}
 #mw{flex:1;position:relative;overflow:hidden}
 #map{width:100%;height:100%}
-#mc{position:absolute;top:12px;right:12px;z-index:900;display:flex;flex-direction:column}
-#mc-body{display:flex;flex-direction:column;gap:8px;transition:max-height .22s ease,opacity .15s;max-height:900px;opacity:1;overflow:hidden}
-#mc.mc-col #mc-body{max-height:0;opacity:0}
+#mc{position:absolute;top:12px;right:0;z-index:900;display:flex;flex-direction:column}
+#mc-body{display:flex;flex-direction:column;gap:8px;transition:max-height .22s ease,max-width .22s ease,opacity .15s;max-height:900px;max-width:500px;opacity:1;overflow:hidden}
+#mc.mc-col #mc-body{max-height:0;max-width:0;opacity:0}
 #mc-tab{position:absolute;left:-14px;top:16px;width:14px;height:42px;background:var(--sb);border:1px solid var(--border);border-right:none;border-radius:var(--r) 0 0 var(--r);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);user-select:none;transition:background .12s,color .12s}
 #mc-tab:hover{background:var(--card);color:var(--text)}
 #wx{position:absolute;bottom:28px;left:12px;z-index:800;background:var(--sb);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;min-width:140px;max-width:200px;font-size:12px;line-height:1.7;pointer-events:auto}
@@ -247,7 +247,6 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
       <div class="ct">Warstwy</div>
       <div class="lay-grp">Lasy i ochrona</div>
       <div class="tr"><span>🌲 Główne lasy</span><div class="tog on" id="tgl-f"></div></div>
-      <div class="tr"><span>🚫 Parki narodowe</span><div class="tog on" id="tgl-p"></div></div>
       <div class="lay-grp">Użytkowanie terenu</div>
       <div class="tr"><span>💧 Wody</span><div class="tog" id="tgl-wet"></div></div>
       <div class="tr"><span>🌿 Bagna i mokradła</span><div class="tog" id="tgl-swamp"></div></div>
@@ -31567,8 +31566,8 @@ function forestTooltip(f){
 }
 const forestLayer=L.layerGroup().addTo(map);
 FORESTS.forEach(f=>{
-  // Skip auto-named CLC squares (f1, f2, ...) — blocky, no species data
-  if(/^f\d+$/.test(f.n))return;
+  // Only draw CLC-coded polygons (detailed local data); skip large national-level rectangles
+  if(!f.c)return;
   const fc={
     '311':{color:'#3a7a20',fillColor:'#4a8a2a'},
     '312':{color:'#1a5a10',fillColor:'#255015'},
@@ -40080,7 +40079,14 @@ function getTerrainAtPoint(lat,lng){
   const pt=[lat,lng];
   const forests=FORESTS.filter(f=>pipTest(pt,f.p));
   const landuse=LANDUSE.filter(lu=>lu.t!=='river'&&pipTest(pt,lu.p));
-  return{forests,landuse};
+  // Nearest stored BDL stand within 800m
+  const R=111000;
+  let bdlSpp=null,bdlAge=0;
+  bdlStore.forEach(b=>{
+    const d=Math.hypot((b.lat-lat)*R,(b.lng-lng)*R*Math.cos(lat*Math.PI/180));
+    if(d<800){bdlSpp=b.cd;bdlAge=b.age;}
+  });
+  return{forests,landuse,bdlSpp,bdlAge};
 }
 
 function analyzePoint(lat,lng){
@@ -40097,11 +40103,19 @@ function analyzePoint(lat,lng){
   // Check actual tree polygons fetched for Wyrzysk area
   const wyrPt=[lat,lng];
   const matchedTrees=wyrForests.filter(f=>pipTest(wyrPt,f.poly));
-  const hasPine=matchedTrees.some(f=>f.type==='pine'||f.type==='larch');
-  const hasBirch=matchedTrees.some(f=>f.type==='birch');
-  const hasOak=matchedTrees.some(f=>f.type==='oak'||f.type==='beech');
-  const hasAlder=matchedTrees.some(f=>f.type==='alder');
-  const hasForest=matchedTrees.length>0||terrain.forests.length>0||Object.values(rscores).some(s=>s>0.4);
+  let hasPine=matchedTrees.some(f=>f.type==='pine'||f.type==='larch');
+  let hasBirch=matchedTrees.some(f=>f.type==='birch');
+  let hasOak=matchedTrees.some(f=>f.type==='oak'||f.type==='beech');
+  let hasAlder=matchedTrees.some(f=>f.type==='alder');
+  let hasForest=matchedTrees.length>0||terrain.forests.length>0||Object.values(rscores).some(s=>s>0.4);
+  if(terrain.bdlSpp){
+    const cd=terrain.bdlSpp.toUpperCase();
+    if(/\bSO\b|\bSW\b|\bJD\b|\bMD\b/.test(cd))hasPine=true;
+    if(/\bBRZ\b|\bB\b/.test(cd))hasBirch=true;
+    if(/\bDB\b|\bBK\b|\bGB\b|\bJW\b/.test(cd))hasOak=true;
+    if(/\bOL\b|\bOLS\b/.test(cd))hasAlder=true;
+    hasForest=true;
+  }
   const hasWetland=terrain.landuse.some(l=>l.t==='wetland');
   const hasMeadow=terrain.landuse.some(l=>l.t==='meadow');
   const hasFarmland=terrain.landuse.some(l=>l.t==='farmland');
@@ -40515,11 +40529,12 @@ document.getElementById('tgl-inat').onclick=()=>{
 };
 
 let bdlActive=false,bdlPopup=null;
+const bdlStore=[]; // [{lat,lng,cd,age}] — persists across sessions for mushroom scoring
 document.getElementById('tgl-bdl').onclick=()=>{
   const t=document.getElementById('tgl-bdl'),on=!t.classList.contains('on');
   t.classList.toggle('on',on);
   bdlActive=on;
-  if(!on&&bdlPopup){map.closePopup(bdlPopup);bdlPopup=null;}
+  if(!on){map.closePopup();bdlPopup=null;}
   if(on)showMsg('BDL: kliknij na las aby zobaczyć skład drzewostanu');
 };
 map.on('click',function(e){
@@ -40537,6 +40552,15 @@ map.on('click',function(e){
     const SPP={'SO':'Sosna zwyczajna','S':'Sosna','SW':'Świerk pospolity','JD':'Jodła pospolita','MD':'Modrzew europejski','DB':'Dąb szypułkowy','DBB':'Dąb bezszypułkowy','BK':'Buk pospolity','GB':'Grab pospolity','LP':'Lipa drobnolistna','JS':'Jesion wyniosły','KL':'Klon','WZ':'Wiąz','JW':'Jawor','BRZ':'Brzoza brodawkowata','B':'Brzoza','OL':'Olcha czarna','OLS':'Olsza','OS':'Osika','TP':'Topola','AK':'Robinia akacjowa','WB':'Wierzba'};
     const transSpp=cd=>(cd||'').split('.').map(s=>SPP[s.trim()]||s.trim()).filter(Boolean).join(' / ');
     const clean=v=>(!v||v==='Null'||v==='-')?null:String(v).trim();
+    // Store for mushroom scoring — deduplicate by ~200m grid
+    const cd=clean(p.species_cd);
+    if(cd){
+      const gk=v=>Math.round(v*50)/50; // ~200m grid key
+      const key=`${gk(e.latlng.lat)},${gk(e.latlng.lng)}`;
+      const idx=bdlStore.findIndex(b=>b.k===key);
+      const entry={k:key,lat:e.latlng.lat,lng:e.latlng.lng,cd,age:parseInt(clean(p.species_age))||0};
+      if(idx>=0)bdlStore[idx]=entry;else bdlStore.push(entry);
+    }
     const rows=[];
     const spp=transSpp(clean(p.species_cd));if(spp)rows.push(['Gatunek',spp]);
     const age=clean(p.species_age);if(age)rows.push(['Wiek',age+' lat']);
@@ -40554,11 +40578,6 @@ document.getElementById('tgl-f').onclick=()=>{
   const t=document.getElementById('tgl-f'),on=!t.classList.contains('on');
   t.classList.toggle('on',on);
   if(on){forestLayer.addTo(map);_updateTreePins();}else map.removeLayer(forestLayer);
-};
-document.getElementById('tgl-p').onclick=()=>{
-  const t=document.getElementById('tgl-p'),on=!t.classList.contains('on');
-  t.classList.toggle('on',on);
-  if(on)protectedLayer.addTo(map);else map.removeLayer(protectedLayer);
 };
 
 document.getElementById('tgl-wet').onclick=()=>{
