@@ -31669,7 +31669,7 @@ function loadDetailTerrain(){
         const fc=TREE_COLORS[type]||'#3a7c20';
         if(!wyrForests.some(f=>f.poly[0]&&f.poly[0][0]===poly[0][0]&&f.poly[0][1]===poly[0][1]))
           wyrForests.push({type,name,poly});
-        L.polygon(poly,{color:fc,weight:.5,fillColor:fc,fillOpacity:.22,interactive:false}).addTo(ovLayer);
+        L.polygon(poly,{color:fc,weight:0,fillColor:fc,fillOpacity:.22,interactive:false}).addTo(ovLayer);
       });
     }).catch(()=>{});
   // Wetlands + meadows/farmland (farmland loads at zoom 9+, wetlands at 11+)
