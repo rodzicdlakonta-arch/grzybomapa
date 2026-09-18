@@ -81,7 +81,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #sidebar.sb-col{width:0!important;min-width:0!important}
 #sb-resize{width:5px;flex-shrink:0;cursor:ew-resize;transition:background .15s;z-index:999}
 #sb-resize:hover,#sb-resize.rsz{background:rgba(201,168,76,.3)}
-#sb-tab{position:fixed;left:325px;top:50%;transform:translateY(-50%);z-index:1100;width:14px;height:42px;background:var(--sb);border:1px solid var(--border);border-left:none;border-radius:0 var(--r) var(--r) 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);user-select:none;transition:left .22s ease,background .12s,color .12s}
+#sb-tab{position:absolute;left:0;top:50%;transform:translateY(-50%);z-index:1100;width:14px;height:42px;background:var(--sb);border:1px solid var(--border);border-left:none;border-radius:0 var(--r) var(--r) 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);user-select:none;transition:background .12s,color .12s}
 #sb-tab:hover{background:var(--card);color:var(--text)}
 .lay-grp{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:7px 6px 2px;margin-top:2px;border-top:1px solid var(--border);opacity:.8}
 .lay-grp:first-child{margin-top:0;border-top:none;padding-top:2px}
@@ -112,7 +112,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #ph-bar{height:12px;border-radius:3px;background:linear-gradient(to right,#1a8fdc,#54c06e,#c8e040,#e8c020,#d06010);margin-bottom:3px}
 #ph-labels{display:flex;justify-content:space-between;font-size:9.5px;color:var(--muted)}
 #ph-legend .ph-note{color:var(--muted);font-size:9.5px;margin-top:4px;line-height:1.3}
-#drbtn{position:absolute;bottom:28px;right:12px;z-index:900;background:var(--gold);color:var(--bg);border:none;border-radius:var(--r);padding:10px 15px;font-family:var(--f-body);font-size:12.5px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(201,168,76,.3);transition:opacity .2s}
+#drbtn{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:900;background:var(--gold);color:var(--bg);border:none;border-radius:var(--r);padding:10px 15px;font-family:var(--f-body);font-size:12.5px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(201,168,76,.3);transition:opacity .2s}
 #drbtn:hover{opacity:.9}
 #drbtn.drawing{background:#5d9c55;box-shadow:0 4px 16px rgba(93,156,85,.3)}
 #hl{position:absolute;bottom:28px;left:12px;z-index:900;background:var(--sb);border:1px solid var(--border);border-radius:var(--r);padding:10px 13px;display:none}
@@ -40679,7 +40679,7 @@ function showToast(msg){
 })();
 
 // ── Mushroom find markers (localStorage) ──────────────────────────────────
-const MKEY='grzybomap_markers';
+const MKEY='grzybomapa_markers';
 let midNext=1;
 const mMarkers={};
 const mLayer=L.layerGroup().addTo(map);
@@ -40741,22 +40741,11 @@ renderList();
 
 // ─── Panel controls ────────────────────────────────────────────────────────
 
-// Sidebar tab sync (fixed position tracks sidebar width)
-function syncSbTab(){
-  const sb=document.getElementById('sidebar');
-  const t=document.getElementById('sb-tab');
-  const w=sb.classList.contains('sb-col')?0:sb.offsetWidth;
-  t.style.left=(w+5)+'px'; // +5 for the resize handle
-}
-syncSbTab();
-
 // Sidebar collapse
 document.getElementById('sb-tab').onclick=()=>{
   const sb=document.getElementById('sidebar'),t=document.getElementById('sb-tab');
   const col=sb.classList.toggle('sb-col');
   t.textContent=col?'►':'◄';
-  // Immediately update tab position — CSS transition on #sb-tab handles animation
-  t.style.left=(col?0:sb.offsetWidth+5)+'px';
 };
 
 // Sidebar resize
@@ -40769,20 +40758,17 @@ document.getElementById('sb-tab').onclick=()=>{
     active=true;startX=e.clientX;startW=sb.offsetWidth;
     handle.classList.add('rsz');document.body.style.userSelect='none';
     document.body.style.cursor='ew-resize';
-    tab.style.transition='none'; // no lag during drag
     e.preventDefault();
   });
   document.addEventListener('mousemove',e=>{
     if(!active)return;
     const w=Math.max(220,Math.min(520,startW+(e.clientX-startX)));
     sb.style.width=w+'px';sb.style.minWidth=w+'px';
-    tab.style.left=(w+5)+'px';
   });
   document.addEventListener('mouseup',()=>{
     if(!active)return;active=false;
     handle.classList.remove('rsz');document.body.style.userSelect='';
     document.body.style.cursor='';
-    tab.style.transition=''; // restore transition
   });
 })();
 
