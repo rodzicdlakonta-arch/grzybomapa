@@ -194,7 +194,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 <nav id="sidebar">
   <div id="logo">
     <h1>GrzyboMapa</h1>
-    <p>Interaktywna mapa grzybów Polski</p>
+    <p>Interaktywna mapa grzybów Polski <span style="font-size:9px;opacity:.3;font-weight:400">v1.3</span></p>
   </div>
   <div id="sw">
     <input id="si" type="text" placeholder="Szukaj grzyba lub miejscowości…" autocomplete="off">
@@ -31565,6 +31565,7 @@ function forestTooltip(f){
   return `<b>${base}</b><br><small style="color:#888">Nieznany skład gatunkowy</small>`;
 }
 const forestLayer=L.layerGroup().addTo(map);
+const bdlStandsLayer=L.layerGroup();
 FORESTS.forEach(f=>{
   // Only draw CLC-coded polygons (detailed local data); skip large national-level rectangles
   if(!f.c)return;
@@ -31573,7 +31574,9 @@ FORESTS.forEach(f=>{
     '312':{color:'#1a5a10',fillColor:'#255015'},
     '313':{color:'#2d7a1b',fillColor:'#2d6a15'},
   }[f.c]||{color:'#2d7a1b',fillColor:'#2d6a15'};
-  const poly=L.polygon(f.p,{...fc,weight:0.3,fillOpacity:.18});
+  // Stand outline only — controlled by BDL toggle
+  L.polygon(f.p,{color:fc.color,weight:0.8,fillOpacity:0,interactive:false}).addTo(bdlStandsLayer);
+  const poly=L.polygon(f.p,{...fc,weight:0,fillOpacity:.18});
   poly.bindTooltip('',{sticky:true,className:'ftip'});
   poly._fdata=f;
   poly.on('tooltipopen',e=>{
@@ -31583,7 +31586,7 @@ FORESTS.forEach(f=>{
   poly.addTo(forestLayer);
 });
 
-const protectedLayer=L.layerGroup().addTo(map);
+const protectedLayer=L.layerGroup();
 PROTECTED.forEach(p=>{
   L.polygon(p.p,{color:'#8b2222',weight:1.5,fillColor:'#8b2222',fillOpacity:.07,dashArray:'6,4'})
    .bindTooltip(p.n+' — teren chroniony',{sticky:true,className:'ftip'}).addTo(protectedLayer);
@@ -40534,8 +40537,8 @@ document.getElementById('tgl-bdl').onclick=()=>{
   const t=document.getElementById('tgl-bdl'),on=!t.classList.contains('on');
   t.classList.toggle('on',on);
   bdlActive=on;
-  if(!on){map.closePopup();bdlPopup=null;}
-  if(on)showMsg('BDL: kliknij na las aby zobaczyć skład drzewostanu');
+  if(!on){map.closePopup();bdlPopup=null;map.removeLayer(bdlStandsLayer);}
+  else{bdlStandsLayer.addTo(map);showMsg('BDL: kliknij na las aby zobaczyć skład drzewostanu');}
 };
 map.on('click',function(e){
   if(!bdlActive)return;
