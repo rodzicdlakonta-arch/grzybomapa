@@ -194,7 +194,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 <nav id="sidebar">
   <div id="logo">
     <h1>GrzyboMapa</h1>
-    <p>Interaktywna mapa grzybów Polski <span style="font-size:9px;opacity:.6;font-weight:400">v1.3</span></p>
+    <p>Interaktywna mapa grzybów Polski <span style="font-size:10px;opacity:.85;font-weight:500">v1.4</span></p>
   </div>
   <div id="sw">
     <input id="si" type="text" placeholder="Szukaj grzyba lub miejscowości…" autocomplete="off">
@@ -31636,12 +31636,12 @@ const soilPhLayer=L.tileLayer.wms('https://maps.isric.org/mapserv?map=/map/phh2o
 });
 
 // Overpass detail terrain at zoom>=8
-let ovLayer=L.layerGroup().addTo(map);
+let ovLayer=L.layerGroup();
 let ovWetLayer=L.layerGroup();     // dynamic OSM wetlands
 let ovMeadowLayer=L.layerGroup();  // dynamic OSM meadows/grasslands
 let ovCropLayer=L.layerGroup();    // dynamic OSM farmland/crops
 let ovPastureLayer=L.layerGroup(); // dynamic OSM pastures
-let ovTimer=null,showOv=true;
+let ovTimer=null,showOv=false;
 
 // Add dynamic sub-layers so toggles control them too
 waterBodyLayer.addLayer(ovWetLayer);
@@ -31669,7 +31669,7 @@ function loadDetailTerrain(){
         const fc=TREE_COLORS[type]||'#3a7c20';
         if(!wyrForests.some(f=>f.poly[0]&&f.poly[0][0]===poly[0][0]&&f.poly[0][1]===poly[0][1]))
           wyrForests.push({type,name,poly});
-        L.polygon(poly,{color:fc,weight:0,fillColor:fc,fillOpacity:.22,interactive:false}).addTo(ovLayer);
+        L.polygon(poly,{color:fc,weight:.5,fillColor:fc,fillOpacity:.22,interactive:false}).addTo(ovLayer);
       });
     }).catch(()=>{});
   // Wetlands + meadows/farmland (farmland loads at zoom 9+, wetlands at 11+)
@@ -40537,8 +40537,8 @@ document.getElementById('tgl-bdl').onclick=()=>{
   const t=document.getElementById('tgl-bdl'),on=!t.classList.contains('on');
   t.classList.toggle('on',on);
   bdlActive=on;
-  if(!on){map.closePopup();bdlPopup=null;map.removeLayer(bdlStandsLayer);}
-  else{bdlStandsLayer.addTo(map);showMsg('BDL: kliknij na las aby zobaczyć skład drzewostanu');}
+  if(!on){map.closePopup();bdlPopup=null;map.removeLayer(bdlStandsLayer);map.removeLayer(ovLayer);showOv=false;}
+  else{bdlStandsLayer.addTo(map);ovLayer.addTo(map);showOv=true;loadDetailTerrain();showMsg('BDL: kliknij na las aby zobaczyć skład drzewostanu');}
 };
 map.on('click',function(e){
   if(!bdlActive)return;
