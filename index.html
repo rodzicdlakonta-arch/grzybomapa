@@ -284,7 +284,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.15.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.16.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32215,43 +32215,88 @@ class Rng{
   }
 }
 
+// Pre-compute urban bounding box for fast avoidance check
+const _URBAN_BB=(()=>{if(!URBAN_DATA.length)return null;let la0=90,la1=-90,ln0=180,ln1=-180;URBAN_DATA.forEach(p=>p.forEach(([a,b])=>{la0=Math.min(la0,a);la1=Math.max(la1,a);ln0=Math.min(ln0,b);ln1=Math.max(ln1,b);}));return{la0,la1,ln0,ln1};})();
+function _inUrban(la,ln){if(!_URBAN_BB||la<_URBAN_BB.la0||la>_URBAN_BB.la1||ln<_URBAN_BB.ln0||ln>_URBAN_BB.ln1)return false;return URBAN_DATA.some(up=>pipTest([la,ln],up));}
+
 function genHeat(weights,seed=42,total=500,opts={}){
-  const {wetHab=false,openHab=false,coniferPref=false,broadleafPref=false}=typeof opts==='boolean'?{openHab:opts}:opts;
+  const{wetHab=false,openHab=false,farmlandSpec=false,waterEdge=false,
+        coniferPref=false,broadleafPref=false,mountainSpec=false,avoidUrban=true}=
+    typeof opts==='boolean'?{openHab:opts}:opts;
   const rng=new Rng(seed);
   const pts=[];
   const entries=Object.entries(weights).filter(([r])=>REGIONS[r]);
   const wsum=entries.reduce((s,[,w])=>s+w,0);
   if(!wsum)return pts;
+
+  // Rejection-sample n points inside polygon objects (each has .p array)
   function _sp(polys,lat0,lng0,w,n){
     for(let i=0;i<n;i++){
       const lu=polys[Math.floor(rng.next()*polys.length)];
-      const lats=lu.p.map(p=>p[0]),lngs=lu.p.map(p=>p[1]);
+      const pp=lu.p||lu; // support both {p:[]} and raw arrays
+      const lats=pp.map(p=>p[0]),lngs=pp.map(p=>p[1]);
       const la0=Math.min(...lats),la1=Math.max(...lats),ln0=Math.min(...lngs),ln1=Math.max(...lngs);
       let la=lat0,ln=lng0,t=0;
-      do{la=la0+rng.next()*(la1-la0);ln=ln0+rng.next()*(ln1-ln0);t++;}while(!pipTest([la,ln],lu.p)&&t<20);
+      do{la=la0+rng.next()*(la1-la0);ln=ln0+rng.next()*(ln1-ln0);t++;}while(!pipTest([la,ln],pp)&&t<20);
+      if(avoidUrban&&_inUrban(la,ln))continue;
       pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);
     }
   }
-  for(const [rid,w] of entries){
-    const reg=REGIONS[rid];
-    const n=Math.round((w/wsum)*total);
+
+  // Add points near water body edges (150–250m buffer around random edge points)
+  function _waterEdgePts(reg,w,n){
     const near=lu=>{const c=polyCentroid(lu.p);return Math.abs(c[0]-reg.c[0])<reg.r*1.5&&Math.abs(c[1]-reg.c[1])<reg.r*2;};
-    // Wetland/bog species — use LANDUSE wetland polygons
+    const wbs=LANDUSE.filter(lu=>(lu.t==='water'||lu.t==='river'||lu.t==='wetland')&&near(lu));
+    for(let i=0;i<n;i++){
+      if(!wbs.length){pts.push([rng.gauss(reg.c[0],reg.r*.4),rng.gauss(reg.c[1],reg.r*.5),(w/100)*(.4+rng.next()*.6)]);continue;}
+      const wb=wbs[Math.floor(rng.next()*wbs.length)];
+      const ep=wb.p[Math.floor(rng.next()*wb.p.length)];
+      const la=ep[0]+(rng.next()-.5)*.003; // ~150m
+      const ln=ep[1]+(rng.next()-.5)*.004;
+      if(avoidUrban&&_inUrban(la,ln))continue;
+      pts.push([la,ln,(w/100)*(.5+rng.next()*.5)]);
+    }
+  }
+
+  for(const[rid,w]of entries){
+    const reg=REGIONS[rid];
+    // Mountain species: downweight flat lowland regions (roughly lat > 51.5 = lowland Poland)
+    // Mountain regions have lat < 50.5; Beskidy/Bieszczady/Sudety etc.
+    const latFactor=mountainSpec?(reg.c[0]>51.5?0.12:reg.c[0]<50.5?1.6:1.0):1.0;
+    const n=Math.round((w/wsum)*total*latFactor);
+    if(n<=0)continue;
+    const near=lu=>{const c=polyCentroid(lu.p);return Math.abs(c[0]-reg.c[0])<reg.r*1.5&&Math.abs(c[1]-reg.c[1])<reg.r*2;};
+
+    // 1. Wetland/bog species → LANDUSE wetland polygons
     if(wetHab){
       const wls=LANDUSE.filter(lu=>lu.t==='wetland'&&lu.p.length>=3&&near(lu));
-      if(wls.length){_sp(wls,reg.c[0],reg.c[1],w,n);continue;}
-      for(let i=0;i<n;i++)pts.push([rng.gauss(reg.c[0],reg.r*.4),rng.gauss(reg.c[1],reg.r*.5),(w/100)*(.4+rng.next()*.6)]);
+      if(wls.length){_sp(wls,reg.c[0],reg.c[1],w,n);}
+      else for(let i=0;i<n;i++)pts.push([rng.gauss(reg.c[0],reg.r*.4),rng.gauss(reg.c[1],reg.r*.5),(w/100)*(.4+rng.next()*.6)]);
+      // Water-edge bonus even for bog species
+      if(waterEdge)_waterEdgePts(reg,w,Math.round(n*.3));
       continue;
     }
-    // Open/meadow species — sample meadow polygons + scattered
+
+    // 2. Farmland/garden species → LANDUSE farmland polygons + open scatter
+    if(farmlandSpec){
+      const fls=LANDUSE.filter(lu=>lu.t==='farmland'&&lu.p.length>=3&&near(lu));
+      const fn=fls.length?Math.round(n*.55):0;
+      if(fn)_sp(fls,reg.c[0],reg.c[1],w,fn);
+      for(let i=0;i<n-fn;i++){const la=rng.gauss(reg.c[0],reg.r*.55),ln=rng.gauss(reg.c[1],reg.r*.65);if(avoidUrban&&_inUrban(la,ln))continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
+      continue;
+    }
+
+    // 3. Open/meadow species → LANDUSE meadow polygons + scattered
     if(openHab){
       const mds=LANDUSE.filter(lu=>lu.t==='meadow'&&lu.p.length>=3&&near(lu));
       const mn=mds.length?Math.round(n*.6):0;
       if(mn)_sp(mds,reg.c[0],reg.c[1],w,mn);
-      for(let i=0;i<n-mn;i++)pts.push([rng.gauss(reg.c[0],reg.r*.55),rng.gauss(reg.c[1],reg.r*.65),(w/100)*(.4+rng.next()*.6)]);
+      for(let i=0;i<n-mn;i++){const la=rng.gauss(reg.c[0],reg.r*.55),ln=rng.gauss(reg.c[1],reg.r*.65);if(avoidUrban&&_inUrban(la,ln))continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
+      if(waterEdge)_waterEdgePts(reg,w,Math.round(n*.2));
       continue;
     }
-    // Forest species — filter FORESTS by tree type preference (c: 311=broadleaf, 312=conifer, 313=mixed)
+
+    // 4. Forest species → FORESTS filtered by tree type (CLC: 311=broadleaf, 312=conifer, 313=mixed)
     const localForests=FORESTS.filter(f=>{
       const c=polyCentroid(f.p);
       if(Math.abs(c[0]-reg.c[0])>=reg.r||Math.abs(c[1]-reg.c[1])>=reg.r*1.6)return false;
@@ -32259,11 +32304,14 @@ function genHeat(weights,seed=42,total=500,opts={}){
       if(broadleafPref&&f.c&&f.c!=='311')return false;
       return true;
     });
+    const forestN=Math.round(n*(waterEdge?.72:1.0));
     if(!localForests.length){
-      for(let i=0;i<n;i++)pts.push([rng.gauss(reg.c[0],reg.r*.38),rng.gauss(reg.c[1],reg.r*.48),(w/100)*(.4+rng.next()*.6)]);
-      continue;
+      for(let i=0;i<forestN;i++){const la=rng.gauss(reg.c[0],reg.r*.38),ln=rng.gauss(reg.c[1],reg.r*.48);if(avoidUrban&&_inUrban(la,ln))continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
+    }else{
+      _sp(localForests,reg.c[0],reg.c[1],w,forestN);
     }
-    _sp(localForests,reg.c[0],reg.c[1],w,n);
+    // Water-edge bonus for riparian forest species (olsy, łęgi, willow swamps)
+    if(waterEdge)_waterEdgePts(reg,w,n-forestN);
   }
   return pts;
 }
@@ -40684,16 +40732,43 @@ function selectMushroom(mid){
   const m=MUSHROOMS[mid];
   const seed=mid.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
   const terrainStr=(m.terrain||[]).join(' ')+' '+(m.habitat||'');
+  const soilStr=m.soil||'';
   const openHab=HAB_PATTERNS.meadow.test(terrainStr)&&!HAB_PATTERNS.forest.test(terrainStr);
   const wetHab=HAB_PATTERNS.wetland.test(terrainStr);
-  const coniferPref=/iglaste|bór|sosnow|świerkow/i.test(terrainStr);
-  const broadleafPref=/liściaste|dąbrow|bukow|grabowe|grąd/i.test(terrainStr);
-  // Show base heatmap (regional weights + all terrain data) immediately
-  _heatPts=genHeat(m.weights,seed,400,{openHab,wetHab,coniferPref,broadleafPref}).map(p=>[p[0],p[1],p[2]*.55]);
+  // Water-edge species: grow near rivers/lakes (olsy, łęgi, olcha, alder swamps, streams)
+  const waterEdge=/olsz|olch|łęg|rip|rzek|potok|strum|brzeg|jezioro|woda|nadwodny/i.test(terrainStr+' '+(m.habitat||''));
+  // Farmland/garden species
+  const farmlandSpec=/ogród|kompost|trawnik|pastw.*pole|pole.*pastw/i.test(terrainStr)&&!HAB_PATTERNS.forest.test(terrainStr);
+  // Tree type from terrain + soil reinforcement
+  const coniferTerrain=/iglaste|bór|sosnow|świerkow/i.test(terrainStr);
+  const broadleafTerrain=/liściaste|dąbrow|bukow|grabowe|grąd/i.test(terrainStr);
+  // Sandy/acidic soil → conifer inference; rich/clay soil → broadleaf inference
+  const sandySoil=/piaszczysta|piaskow|ubogie bory/i.test(soilStr);
+  const richSoil=/żyzna|gliniasta|próchnic/i.test(soilStr);
+  const coniferPref=coniferTerrain||(sandySoil&&!richSoil&&!openHab&&!wetHab);
+  const broadleafPref=broadleafTerrain||(richSoil&&!sandySoil&&!openHab&&!wetHab);
+  // Mountain species: terrain says 'górski' or 'świerkow' (spruce = mountain in Poland)
+  const mountainSpec=/górsk|górskie|piętro regla|subalpejski/i.test(terrainStr+' '+(m.habitat||''));
+  // Show base heatmap (all terrain data) immediately
+  _heatPts=genHeat(m.weights,seed,400,{openHab,wetHab,farmlandSpec,waterEdge,coniferPref,broadleafPref,mountainSpec,avoidUrban:true}).map(p=>[p[0],p[1],p[2]*.55]);
+  // BDL old-growth bonus: if user has loaded BDL data, boost density near mature stands (>60yr)
+  if(bdlStore.length&&!openHab&&!farmlandSpec){
+    const isSaprofit=/saprofit drewna|pasożyt/i.test(m.ph||'');
+    bdlStore.forEach(b=>{
+      if(b.age<50)return;
+      // Old forest: +1 to +3 extra points; saprofit species prefer very old/decaying (>80yr)
+      const needed=isSaprofit&&b.age>80?3:b.age>80?2:1;
+      for(let i=0;i<needed;i++){
+        const la=b.lat+(Math.random()-.5)*.004;
+        const ln=b.lng+(Math.random()-.5)*.005;
+        _heatPts.push([la,ln,Math.min(1,(b.age/120))*0.55]);
+      }
+    });
+  }
   heatLayer=_mkHeat(_heatPts,map.getZoom()).addTo(map);
   document.getElementById('hl').classList.add('vis');
   document.getElementById('hl-name').textContent=m.name;
-  const habLabel=wetHab?'🌿 Mokradła i torfowiska':openHab?'🌿 Łąki i pola':coniferPref?'🌲 Lasy iglaste':broadleafPref?'🍂 Lasy liściaste':'🌲 Lasy i ich skraje';
+  const habLabel=wetHab?'🌿 Mokradła i torfowiska':waterEdge?'💧 Olsy i brzegi wód':openHab?'🌿 Łąki i pola':farmlandSpec?'🌾 Pola i ogrody':coniferPref?'🌲 Lasy iglaste':broadleafPref?'🍂 Lasy liściaste':'🌲 Lasy i ich skraje';
   document.getElementById('hl-hab').textContent=habLabel;
   const certEl=document.getElementById('hl-cert');
   certEl.textContent='Pobieranie danych…';certEl.style.color='var(--muted)';
