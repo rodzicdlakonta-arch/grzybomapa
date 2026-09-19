@@ -290,7 +290,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.21.1</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.21.2</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -31638,14 +31638,25 @@ const MUSHROOMS={
   },
 
   sarniak:{
-    name:'Sarniak dachówkowaty',latin:'Hydnum repandum',cat:'edible',rare:false,wiki:'Hydnum_repandum',
-    season:[8,9,10],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane'],
-    soil:'Gleba próchnicza, kwaśna do obojętnej',ph:'4.5–7.0',elev:'0–1200 m',
-    habitat:'Pod różnymi drzewami, szczególnie bukiem i sosną. Rośnie samotnie lub w małych grupach. Pospolity w całej Polsce.',
-    desc:'Kapelusz kremowy do łososiowego, 4–12 cm, nieregularny. SPÓD POKRYTY KOLCAMI (nie rurkami ani blaszkami!), kremowobiałymi, 3–6 mm — unikalna cecha. Trzon blady, zwarty. Zapach przyjemny, smak nieco gorzkawy (szczeg. starsze).',
-    edib:'Doskonały jadalny — jeden z niewielu grzybów kolczastych zbieranych w Polsce. BEZPIECZNY do zbierania przez nowicjuszy: żaden trujący grzyb nie ma takich kolców pod kapeluszem. Blanszować dla usunięcia goryczki. Świetny w sosach.',
-    lookalikes:'Sarniak różowoszary (H. rufescens) — mniejszy, bardziej różowawy, jadalny. Hedgehog mushroom (H. umbilicatum) — z pępkowatym zagłębieniem w centrum, jadalny. Żaden trujący grzyb nie ma białych kolców pod kapeluszem — to unikalna cecha rodzaju Hydnum.',
-    weights:{bw:72,au:68,kn:65,sw:78,ro:75,lu:72,ja:68,be:78,bi:75,go:70,sd:75,se:70,ta:62,po:72,so:68,ka:62,ps:65,ma:60,tu:65,no:62,ll:58,wy:68,nak:62,sep:65}
+    name:'Sarniak dachówkowaty',latin:'Sarcodon imbricatus',cat:'edible',rare:false,protected:true,wiki:'Sarcodon_imbricatus',
+    season:[7,8,9,10],terrain:['Bory iglaste','Świerczyny','Lasy mieszane z świerkiem'],
+    soil:'Gleba kwaśna, piaszczysta lub próchnicza — mykoryza głównie ze świerkiem i sosną',ph:'4.0–5.5',elev:'0–1600 m',
+    habitat:'Pod świerkami i sosnami, rzadziej bukami. Rośnie samotnie lub w małych grupach. Chroniony częściowo w Polsce — fotografować, nie zbierać masowo.',
+    desc:'Kapelusz 5–15 cm, brązowy do szarobrązowego, pokryty DUŻYMI CIEMNYMI ŁUSKAMI nachodzącymi na siebie (jak dachówki). Spód pokryty kolcami szarobrązowymi 3–6 mm. Trzon szarobrązowy, zwarty. Miąższ biały, twardawy. Smak nieco gorzki i korzenny.',
+    edib:'Jadalny, ale gorzkawy — szczególnie starsze okazy. Przed gotowaniem blanszować i odlać wodę. Doskonały suszony. Chroniony w Polsce — nie zbierać bez potrzeby.',
+    lookalikes:'Kolczak obłączasty (Hydnum repandum) — kremowy, gładki kapelusz bez łusek, blady trzon, smak łagodny. Sarniak szroksim (S. scabrosus) — bardzo gorzki, niejadalny. Duże ciemne łuski na kapeluszu i szare kolce pod spodem to znaki rozpoznawcze sarniaka.',
+    weights:{bw:55,au:50,sw:72,ro:68,lu:62,be:60,bi:55,go:58,sd:58,se:52,ta:48,ps:50,ma:45,tu:65,no:68,pi:70,dr:62,ll:45,wy:52,nak:48,sep:50}
+  },
+
+  kolczakowka:{
+    name:'Kolczak obłączasty',latin:'Hydnum repandum',cat:'edible',rare:false,wiki:'Hydnum_repandum',
+    season:[8,9,10],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane','Buczyny'],
+    soil:'Gleba próchnicza, wilgotna — mykoryza z bukiem, dębem, sosną',ph:'4.5–7.0',elev:'0–1200 m',
+    habitat:'Pod różnymi drzewami liściastymi i iglastymi, szczególnie bukiem i sosną. Rośnie samotnie lub w małych grupach. Pospolity w całej Polsce.',
+    desc:'Kapelusz KREMOWY do łososioworóżowego, 4–12 cm, nieregularny, bez łusek. SPÓD POKRYTY KOLCAMI kremowobiałymi 3–6 mm — unikalna cecha. Trzon blady, zwarty. Zapach przyjemny, smak łagodny (ewentualnie nieco gorzkawy u starszych).',
+    edib:'Doskonały jadalny. BEZPIECZNY dla nowicjuszy: żaden trujący grzyb nie ma takich kremowych kolców pod kapeluszem. Nie mylić z Sarcodon (sarniak) — sarniak ma ciemnobrązowe łuski. Świetny w sosach i zupach.',
+    lookalikes:'Sarniak dachówkowaty (Sarcodon imbricatus) — duże ciemne łuski na kapeluszu, szare kolce, gorzki smak. Kolczak rudawy (H. rufescens) — mniejszy, bardziej różowoczerwony; jadalny. Żaden trujący grzyb nie ma białych kolców pod kapeluszem.',
+    weights:{bw:78,au:72,kn:70,sw:80,ro:78,lu:75,ja:72,be:80,bi:75,go:72,sd:75,se:70,po:75,so:72,ka:65,ps:62,ma:60,su:65,wi:68,wy:75,nak:70,sep:72}
   },
 
   maslak_pst:{
@@ -31970,7 +31981,8 @@ const MUSH_ICON_CFG={
   podgrz_zlot:  {s:'flat',c:'#A06020',t:'#CC4020'},
   huba:         {s:'brac',c:'#9B9490'},
   purchawka_grus:{s:'puff',c:'#F0ECC0'},
-  sarniak:      {s:'flat',c:'#E8C890',t:'#F8E8C0'},
+  sarniak:      {s:'flat',c:'#6B4A20',t:'#9B6A30'},
+  kolczakowka:  {s:'flat',c:'#F5E6C8',t:'#F0DEC0'},
   maslak_pst:   {s:'cap',c:'#9B6B2A',t:'#E0D4B8'},
   lejkowka_trut:{s:'flat',c:'#D8D4C0',t:'#D8D4C0'},
   gaska_siar:   {s:'flat',c:'#D4C030',t:'#E8E050'},
@@ -32139,7 +32151,8 @@ const MUSHROOM_LOCAL={
   podgrz_zlot:  {s:'p',n:'Jeden z pospolitszych borowikowatych Krainy. Pęknięta skórka z czerwonym ciałem pod spodem — znak rozpoznawczy.'},
   huba:         {s:'p',n:'Pospolita na brzozach i bukach całego regionu. Kopytowate hubki rosną latami na tych samych drzewach.'},
   purchawka_grus:{s:'p',n:'Na pniakach w borach Krainy — całymi skupiskami. Jedna z pospolitszych purchawek zbieranych w regionie.'},
-  sarniak:      {s:'f',n:'W lasach liściastych i mieszanych regionu. Wyjątkowy bezpieczny grzyb dla nowicjuszy — kolce spodu niepowtarzalne.'},
+  sarniak:      {s:'r',n:'Pod świerkami w lasach iglastych regionu. Chroniony — fotografować, nie zbierać. Brązowe łuski i szare kolce niepowtarzalne.'},
+  kolczakowka:  {s:'f',n:'W lasach mieszanych i liściastych Krajny. Kremowy grzyb z białymi kolcami — bezpieczny dla nowicjuszy, żaden trujący nie wygląda tak samo.'},
   maslak_pst:   {s:'p',n:'Jeden z najliczniejszych maślaków borów sosnowych Krainy. Zbierać, ale nie przejadać — może drażnić żołądek.'},
   lejkowka_trut:{s:'p',n:'BARDZO POSPOLITA na trawnikach Wyrzyska, Nakła, Sępólna. Obok twardzioszka — śmiertelnie trująca kopia na trawniku.'},
   gaska_siar:   {s:'f',n:'W dąbrowach i grądach regionu przy Noteci. Rozpoznać natychmiast po karbidowym/gazowym zapachu.'},
