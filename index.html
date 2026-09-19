@@ -262,7 +262,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.9.4</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.10.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -31353,6 +31353,173 @@ const MUSHROOMS={
     edib:'Smaczna i dobra jadalna. BEZWZGLĘDNIE sprawdź pierścień (podpieńka ma wyraźny brązowy) i kolor zarodników (kolor ochry na blaszce) oraz zapach (korzenny, lekko czosnkowy). Nie zbierać obok hełmówki bez pewnej identyfikacji.',
     weights:{bw:75,au:72,ka:70,sw:78,ro:75,lu:72,ja:68,be:75,bi:72,sd:68,po:72,so:70,sl:68,op:65,ps:68,ma:65,tu:65,no:62,ll:62,ku:68,br:60,wy:75,nak:70,sep:72}
   },
+
+  // ── Nowe gatunki ──────────────────────────────────────────────────────────
+
+  gaska_ziel:{
+    name:'Gąska zielonka',latin:'Tricholoma equestre',cat:'edible',rare:false,wiki:'Tricholoma_equestre',
+    season:[9,10,11],terrain:['Bory sosnowe','Lasy iglaste'],
+    soil:'Gleba piaszczysta, kwaśna',ph:'4.0–5.5',elev:'0–900 m',
+    habitat:'Pod sosnami na piaszczystej, suchej glebie. Tworzy czarcie kręgi. Typowy grzyb jesiennych borów sosnowych.',
+    desc:'Kapelusz żółtozielonawy do oliwkowożółtego, lepkawy, 4–12 cm, z centralnym ciemniejszym garbkiem. Blaszki żółte, gęste. Trzon żółty. Zapach mączysty. Nie sinieje, nie mleczkuje.',
+    edib:'Tradycyjnie jadalna w Polsce. UWAGA: spożywanie dużych ilości (kilka razy dziennie przez wiele dni) może powodować uszkodzenie mięśni sercowych (rabdomioliza). Jeść sporadycznie, w małych porcjach, dobrze ugotowane.',
+    lookalikes:'Gąska siarkowa (T. sulphureum) — TRUJĄCA; podobny żółtozielony kapelusz, ale cuchnący nieprzyjemnie (karbid/gaz) i miąższ siarkowożółty. Gąska szara (T. terreum) — szarobrązowy (nie żółtozielony) kapelusz, pod sosnami; jadalna.',
+    weights:{tu:88,no:85,dr:82,pi:85,au:78,ps:80,dl:82,ch:85,ku:70,ma:68,bw:82,br:68,wk:64,ll:58,sw:52,wy:85,nak:78,sep:82}
+  },
+
+  podgrzybek_zaj:{
+    name:'Podgrzybek zajączek',latin:'Xerocomus subtomentosus',cat:'edible',rare:false,wiki:'Xerocomus_subtomentosus',
+    season:[6,7,8,9,10],terrain:['Lasy iglaste','Lasy liściaste','Lasy mieszane'],
+    soil:'Gleba kwaśna, piaszczysta lub gliniasta',ph:'4.0–6.5',elev:'0–1300 m',
+    habitat:'Bardzo pospolity. Pod różnymi drzewami — sosna, dąb, buk, brzoza. Jeden z pospolitszych borowikowatych.',
+    desc:'Kapelusz oliwkowożółty do brązowawego, matowy, zamszowy (stąd nazwa), 4–12 cm. Rurki żółte z zębatymi porami, słabo niebiesieją po uszkodzeniu. Trzon żółtawy z siateczką lub rdzawymi plamkami. Miąższ żółtawy, nieco kwaśny.',
+    edib:'Jadalny, smak łagodny i kwaśnawy. Nieco gorszy od podgrzybka brunatnego, ale pospolity i chętnie zbierany. Dobry do mieszanek grzybowych i zup.',
+    lookalikes:'Podgrzybek brunatny (X. badius) — ciemniejszy kasztanowy kapelusz, intensywniej sinieje. Goryczak żółciowy — rurki różowawe, piekielnie gorzki. Podgrzybek złotawy (X. chrysenteron) — kapelusz pęka czerwonawo pod skórką; jadalny.',
+    weights:{bw:80,au:75,tu:78,no:75,dr:72,pi:75,ps:76,ku:68,dl:72,ch:76,ma:68,br:65,ll:58,su:65,wi:68,be:70,bi:68,po:72,sw:62,wy:80,nak:75,sep:78}
+  },
+
+  mleczaj_obrz:{
+    name:'Mleczaj obrzękły',latin:'Lactarius volemus',cat:'edible',rare:false,wiki:'Lactarius_volemus',
+    season:[7,8,9],terrain:['Lasy liściaste','Dąbrowy','Grądy','Buczyny'],
+    soil:'Gleba żyzna, próchnicza, gliniasta',ph:'5.5–7.0',elev:'0–900 m',
+    habitat:'Pod dębami, bukami i lipami w lasach liściastych. Rośnie samotnie lub małymi grupkami na żyznych glebach.',
+    desc:'Kapelusz brązowoczerwony do pomarańczowobrązowego, suchy, matowy, 6–15 cm. Blaszki kremowe, gęste, kruche. Mleczko BIAŁE, obfite, nie zmienia barwy; charakterystyczny zapach śledzia. Trzon tej samej barwy co kapelusz.',
+    edib:'Bardzo smaczny — jeden z lepszych mleczajów. Rybny zapach znika całkowicie podczas gotowania. Doskonały smażony, duszony, marynowany. Smak orzechowo-śmietankowy po przyrządzeniu.',
+    lookalikes:'Rydz (L. deliciosus) — mleczko marchwiowoczerwone, kapelusz pomarańczowy strefowany. Mleczaj wełnianka (L. torminosus) — TRUJĄCY; biały ostry sok, kapelusz z kłaczkami, rośnie pod brzozami. Rybny zapach mleczka jest prawie unikalny dla mleczaja obrzękłego.',
+    weights:{bw:62,sw:80,ro:78,lu:72,ja:68,be:75,bi:70,sd:68,po:72,so:68,ka:72,lm:68,op:70,st:72,sl:68,kn:62,ll:58,wy:48,nak:42,sep:50}
+  },
+
+  twardzioszek:{
+    name:'Twardzioszek przydrożny',latin:'Marasmius oreades',cat:'edible',rare:false,wiki:'Marasmius_oreades',
+    season:[5,6,7,8,9,10],terrain:['Łąki','Trawniki','Pastwiska','Skraje lasów'],
+    soil:'Gleba żyzna, próchnicza, trawiasta',ph:'5.5–7.5',elev:'0–1200 m',
+    habitat:'Na trawnikach, łąkach i pastwiskach. Rośnie w charakterystycznych "czarcich kręgach". Bardzo pospolity.',
+    desc:'Mały 2–6 cm, kapelusz kremowy do miodowego, z delikatnym garbkiem, lejkowaty lub płaski. Blaszki kremowobiałe, rzadkie. Trzon cienki, łykowaty i elastyczny (nie łamie się! — cecha kluczowa). Zapach migdałów lub anyżu.',
+    edib:'Doskonały! Intensywny smak, zwłaszcza po suszeniu. Używać TYLKO kapeluszy — trzony łykowate i niestrawne. Świetny do zup, sosów, jajecznicy. Jeden z najlepszych grzybów łąkowych Polski.',
+    lookalikes:'Lejkówka biaława (Clitocybe dealbata) — TRUJĄCA (muscarine); blaszki zbiegające na trzon, brak elastycznego łykowatego trzonu, zapach mączysty nie migdałowy, kapelusz biały. Lejkówka wiosenna (C. rivulosa) — trująca, podobna barwa. Klucz: elastyczny, łykowaty, niełamiący się trzon = twardzioszek.',
+    weights:{ka:75,lm:70,ku:68,br:65,gr:60,wk:58,sw:72,ro:70,lu:65,ja:62,ll:68,bi:58,be:62,sd:62,op:68,st:70,sl:65,so:60,bw:72,au:68,wy:75,nak:70,sep:72}
+  },
+
+  czubajka_cz:{
+    name:'Czubajka czerwieniejąca',latin:'Chlorophyllum rhacodes',cat:'edible',rare:false,wiki:'Chlorophyllum_rhacodes',
+    season:[8,9,10],terrain:['Ogrody','Kompostowniki','Lasy iglaste','Parki'],
+    soil:'Gleba żyzna, kompostowa, bogata w azot',ph:'6.0–7.5',elev:'0–700 m',
+    habitat:'Przy kompostownikach, w ogrodach i parkach, na skrajach borów. Często w pobliżu zabudowań.',
+    desc:'Kapelusz szarobrązowy z grubymi brązowymi łuskami, 8–20 cm. Blaszki białe. Pierścień ruchomy, dwuwarstwowy. Trzon bladobrązowy, gładszy niż kani. Miąższ natychmiast INTENSYWNIE CZERWIENIEJE po uszkodzeniu — cechy wyróżniająca.',
+    edib:'Jadalna. Trzony łykowate — jeść tylko kapelusze. U wrażliwych osób może powodować reakcje pokarmowe. Smażona w panierce lub z masłem.',
+    lookalikes:'Czubajka kania (M. procera) — trzon ze zygzakowym brunatnym wzorem, miąższ NIE czerwienieje. Chlorophyllum molybdites — niejadalny, blaszki zielonkawe (w Polsce rzadki). Czerwienienie miąższu = pewna cecha czubajki czerwieniejącej.',
+    weights:{ka:72,lm:65,ku:62,bw:58,au:60,sw:65,ro:62,lu:60,ja:58,ll:60,op:65,st:68,sl:60,bi:52,be:55,br:55,gr:52,wy:68,nak:62,sep:65}
+  },
+
+  sromotnik:{
+    name:'Sromotnik bezwstydny',latin:'Phallus impudicus',cat:'inedible',rare:false,wiki:'Phallus_impudicus',
+    season:[5,6,7,8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Parki','Ogrody'],
+    soil:'Gleba próchnicza, żyzna',ph:'5.5–7.5',elev:'0–900 m',
+    habitat:'W lasach liściastych, parkach i ogrodach. Wyrasta z podziemnego "jajka" ukrytego w glebie lub ściółce.',
+    desc:'Młody: białe galaretowate "jajko" 4–6 cm w ziemi (przekrojone: trójwarstwowe z zarysem grzyba wewnątrz). Dojrzały: 10–20 cm biały cylindryczny trzon z nakrytą zieloną/czarną mazistą (gleba) główką. Intensywny smród padliny wabiący muchy — rozsiewają zarodniki. Kształt falliczny — stąd ludowa nazwa.',
+    edib:'Jaja (stadia jajka) jadalne i nawet smaczne — delikatny galaretowaty smak. Dojrzałe okazy ze względu na smród nienadające się do spożycia. Jedna z wielkich ciekawostek mykologicznych.',
+    lookalikes:'Tęgoskór pospolity (Scleroderma citrinum) — twardy, czarny w środku, trujący; jajko sromotnika ma wewnątrz trójwarstwową strukturę i zarysy owocnika. Purchawki — jednorodne białe wnętrze, brak struktury wewnętrznej.',
+    weights:{bw:72,au:68,ka:75,lm:70,ku:65,sw:78,ro:75,lu:70,ja:68,ll:68,op:72,st:75,sl:70,br:62,gr:60,bi:62,be:68,sd:65,so:68,wy:70,nak:65,sep:68}
+  },
+
+  czarka:{
+    name:'Czarka szkarłatna',latin:'Sarcoscypha coccinea',cat:'edible',rare:false,wiki:'Sarcoscypha_coccinea',
+    season:[2,3,4,5],terrain:['Lasy liściaste','Wąwozy','Olszyny'],
+    soil:'Na zagrzebanych lub leżących gałązkach drewna liściastego (lipa, wiąz, leszczyna)',ph:'Saprofit drewna',elev:'0–900 m',
+    habitat:'Na martwych gałązkach liściastych w wilgotnych lasach, wąwozach i nad strumieniami. Jeden z pierwszych grzybów roku — wyrasta spośród śniegu lub zaraz po jego stopnieniu.',
+    desc:'Miseczkowata lub kubkowata, intensywnie szkarłatnoczerwona wewnątrz, zewnątrz biaława lub różowawa, aksamitna. Szerokość 2–8 cm. Galaretowata, krucha. Pozbawiona trzonu lub z krótkim trzonikiem.',
+    edib:'Jadalna surowo lub gotowana. Smak łagodny. Głównie jako ozdoba do sałatek — piękna barwa się utrzymuje. Symbol przebudzenia wiosny.',
+    lookalikes:'Czarka austriacka (Sarcoscypha austriaca) — bliźniacza jadalna, niemal identyczna. Niezapominajka (Aleuria aurantia) — pomarańczowa, nie szkarłatna; jadalna. Czerwona barwa czarki wczesną wiosną jest unikalna.',
+    weights:{bw:68,au:62,sw:72,ro:70,lu:65,ja:62,be:68,bi:62,sd:65,po:65,so:62,ka:65,lm:60,ll:55,op:62,st:65,wy:65,nak:60,sep:62}
+  },
+
+  gwiazdosz:{
+    name:'Gwiazdosz fryngosowy',latin:'Geastrum fimbriatum',cat:'inedible',rare:false,wiki:'Geastrum_fimbriatum',
+    season:[7,8,9,10,11],terrain:['Lasy iglaste','Lasy liściaste','Parki'],
+    soil:'Gleba próchnicza, sucha do umiarkowanie wilgotnej, ściółka leśna',ph:'4.5–7.0',elev:'0–1200 m',
+    habitat:'Na ściółce w lasach iglastych i liściastych. Pospolity, ale przeoczany ze względu na ziemistą barwę.',
+    desc:'Młody: okrągła ziemnobrązowa kulka 1–4 cm. Dojrzały: zewnętrzna warstwa rozgwiazda się w 5–9 ramion, odsłaniając szarą purchawkę (endoperydium) z otworem (ostiolum) na szczycie, przez który uwalniają się zarodniki. Niepowtarzalny kształt.',
+    danger:'Niejadalny — gorzka, papierowata konsystencja bez smaku. Nietrujący. Fotografować lub zbierać jako okaz botaniczny.',
+    lookalikes:'Inne gwiazdosze (G. triplex — z kołnierzem; G. sessile — siedzący) — podobne, wszystkie niejadalne. Żaden nie jest niebezpieczny. Młode stadium myli się z purchawkami — przekrój purchawki biały i jednorodny, gwiazdosza niejednolity.',
+    weights:{bw:62,au:58,sw:65,ro:62,lu:58,be:62,bi:58,sd:60,po:60,so:58,ka:58,tu:55,no:52,br:52,gr:50,pi:55,ps:56,wy:60,nak:55,sep:58}
+  },
+
+  maczuznik:{
+    name:'Maczużnik bojowy',latin:'Cordyceps militaris',cat:'rare',rare:true,protected:true,wiki:'Cordyceps_militaris',
+    season:[7,8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Zarośla'],
+    soil:'Pasożyt owadów (larwy i poczwarki motyli i chrząszczy) w glebie',ph:'Pasożyt owadów',elev:'0–1400 m',
+    habitat:'W ściółce i glebie leśnej lub śródleśnych łąkach. Wyrastają pionowo z zakopanych larw lub poczwarek owadów. Objęty ochroną w Polsce.',
+    desc:'Pomarańczowoczerwone, pałeczkowate do maczugowatej maczugi 2–8 cm wyrastające z ziemi. Część nasienna (głowa) ziarnista, ciemniejsza. Wyrastają z mumii owada widocznej pod ziemią. Spokrewniony z cenionymi w medycynie azjatyckiej Ophiocordyceps sinensis.',
+    edib:'Formalnie jadalny. Chroniony w Polsce — nie zbierać, fotografować. Ceniony w tradycyjnej medycynie chińskiej jako adaptogen.',
+    lookalikes:'Berłówka bulawkowata (Clavariadelphus pistillaris) — duże żółtawe maczugi wyrastające z ziemi; niejadalna. Inne maczużniki (Cordyceps spp.) — na różnych owadach, podobne. Pomarańczowy kolor i wyrastanie z owada są kluczowe.',
+    weights:{bw:48,au:45,sw:52,ro:50,lu:48,be:52,bi:48,sd:45,po:50,so:48,ka:42,tu:38,no:36,br:40,gr:38,ll:38,wy:38,nak:34,sep:40}
+  },
+
+  kolpaczek:{
+    name:'Kołpaczek motylkowy',latin:'Gymnopilus junonius',cat:'poisonous',rare:false,wiki:'Gymnopilus_junonius',hallucinogenic:true,
+    season:[9,10,11],terrain:['Lasy liściaste','Parki','Sady','Pniaki'],
+    soil:'Saprofit na pniakach i u podstawy pni drzew liściastych i iglastych',ph:'Saprofit drewna',elev:'0–900 m',
+    habitat:'Na pniakach buka, dębu, klonu, a także iglastych. Rośnie dużymi, efektownymi kępami. Jesień.',
+    desc:'Kapelusz złotordzawy do żółtopomarańczowego, 8–20 cm, bez łusek (ważna cecha!). Blaszki żółte, potem rdzawe. Pierścień na trzonie. Trzon włóknisty, żółtawy. Rośnie gęstymi kępami. Smak bardzo gorzki.',
+    danger:'TRUJĄCY i HALUCYNOGENNY (psylocybina i baeocystyna). Powoduje halucynacje, dezorientację, ból głowy. Substancja nielegalna w Polsce. Mylony z opieńką i podpieńką.',
+    lookalikes:'Opieńka miodowa — jadalna; miodowożółty kapelusz z łuskami, wysyp zarodników kremowy. Podpieńka zmienna — jadalny; mniejszy, miodowy, trzon łuskowany poniżej pierścienia, ochrowyzysyp. Kołpaczek jest znacznie większy, złotordzawy i gorzki.',
+    weights:{bw:70,au:65,sw:68,ro:65,lu:62,be:65,bi:62,sd:60,po:62,so:60,ka:62,ll:55,br:52,gr:50,op:58,st:60,sl:55,wy:65,nak:60,sep:62}
+  },
+
+  muszomor_wios:{
+    name:'Muchomor wiosenny',latin:'Amanita verna',cat:'deadly',rare:false,wiki:'Amanita_verna',
+    season:[4,5,6,7],terrain:['Lasy liściaste','Dąbrowy','Grądy'],
+    soil:'Gleba żyzna, próchnicza, wapienno-gliniasta',ph:'5.5–7.5',elev:'0–800 m',
+    habitat:'Pod dębami i bukami w lasach liściastych. Pojawia się wcześnie wiosną — jeden z najniebezpieczniejszych wiosennych grzybów.',
+    desc:'Cały BIAŁY: kapelusz 5–10 cm gładki, blaszki białe, trzon biały z pierścieniem i pochwą u nasady. Zapach słodkawy, lekko nieprzyjemny u dojrzałych. ŻADNA cecha nie ostrzega wizualnie przed jego śmiertelną truciznością.',
+    danger:'ŚMIERTELNIE TRUJĄCY — amatoksyny (amanitin, falloidyna) niszczą wątrobę i nerki. Jeden kapelusz może zabić człowieka. Objawy pojawiają się po 6–24 godz. (kolki, wymioty, biegunka), po czym następuje pozorna poprawa — i ostateczna niewydolność wątroby po 3–7 dniach. Brak skutecznej odtrutki poza przeszczepem wątroby.',
+    lookalikes:'Purchawki jadalne — nie mają pochwy, wewnątrz białe i jednorodne (brak kształtu grzyba w środku). Pieczarki — blaszki różowawe do czekoladowych, brak pochwy. Czernidłak kołpakowaty — blaszki ciemnieją. ZAWSZE sprawdź białą pochwę u nasady — to znak śmierci.',
+    weights:{ka:58,sw:62,ro:60,lu:58,ja:55,be:58,bi:55,sd:52,po:58,so:55,op:60,st:62,sl:58,lm:52,bw:50,kn:48,ll:45,wy:55,nak:50,sep:52}
+  },
+
+  strzepiak:{
+    name:'Strzępiak ceglasty',latin:'Inocybe erubescens',cat:'deadly',rare:false,wiki:'Inocybe_erubescens',
+    season:[5,6,7,8],terrain:['Parki','Aleje lipowe','Lasy liściaste'],
+    soil:'Gleba żyzna, wapniowa, gliniasta',ph:'6.0–7.5',elev:'0–700 m',
+    habitat:'Pod lipami i grabami w parkach miejskich, alejach i lasach liściastych. Wiosna–lato. Jeden z bardziej pospolity trujących grzybów w pobliżu zabudowań.',
+    desc:'Kapelusz biały do kremowego, 3–8 cm, stożkowy, z promieniście rozszczepiającymi się włóknami (stąd "strzępiak"). Blaszki początkowo białe, potem różowawe, gęste. U dojrzałych okazy ceglastoróżowe zabarwienie. Trzon biały, włóknisty.',
+    danger:'ŚMIERTELNIE TRUJĄCY — muscarina w bardzo wysokich stężeniach. Objawy po 15–30 min: nadmierne ślinienie, łzawienie, zwolnienie akcji serca, skurcze. Bez leczenia (atropina dożylnie) śmierć w kilka godzin. Jeden z najgroźniejszych grzybów parkowych w Polsce.',
+    lookalikes:'Pieczarki (Agaricus spp.) — blaszki brązowieją od różowych; nigdy białe/różowe. Czubajki — parasol, ruchomy pierścień, blaszki białe. Cały rodzaj Inocybe (strzepiaki) zawiera liczne trujące gatunki — nie zbierać żadnego.',
+    weights:{ka:68,lm:62,ll:65,br:60,gr:58,wk:55,sw:62,ro:60,lu:58,op:62,st:65,sl:60,bi:55,be:58,sd:52,so:58,bw:50,au:48,wy:58,nak:53,sep:55}
+  },
+
+  pieczarka_zolk:{
+    name:'Pieczarka żółknąca',latin:'Agaricus xanthodermus',cat:'poisonous',rare:false,wiki:'Agaricus_xanthodermus',
+    season:[7,8,9,10],terrain:['Łąki','Ogrody','Parki','Pobocza'],
+    soil:'Gleba żyzna, nawożona, kompostowa',ph:'6.0–7.5',elev:'0–600 m',
+    habitat:'Pospolita na trawnikach, w parkach, przy drogach i w ogrodach. Rośnie wśród jadalnych pieczarek.',
+    desc:'Kapelusz biały do kremowego, 5–12 cm, z pozoru identyczna z pieczarką polną. KLUCZOWE: po potarciu lub skaleczeniu NASADY TRZONU (nie kapelusza) natychmiast intensywnie żółknie. Nieprzyjemny zapach atramentu, karbidu lub jodoformu.',
+    danger:'TRUJĄCA — powoduje silne bóle żołądka, wymioty, biegunkę. Jedna z najczęstszych przyczyn zatruć w Polsce. Test: żółknięcie u nasady trzonu + zapach atramentu = 100% pewność. Nie mylić z żółknięciem kapeluszy pieczarek po nacisku.',
+    lookalikes:'Pieczarka polna (A. campestris) — RÓŻOWIEJE (nie żółknie) po uszkodzeniu, przyjemny zapach grzybowy. Pieczarka leśna (A. sylvaticus) — intensywnie różowieje. Zawsze sprawdź podstawę trzonu, nie kapelusz.',
+    weights:{ka:72,lm:68,ku:64,br:60,gr:58,wk:54,sw:68,ro:65,lu:62,ja:60,ll:62,op:68,st:70,sl:62,bi:54,be:58,sd:58,so:60,bw:52,au:50,wy:68,nak:63,sep:70}
+  },
+
+  czernidlak_atr:{
+    name:'Czernidłak atramentowy',latin:'Coprinopsis atramentaria',cat:'poisonous',rare:false,wiki:'Coprinopsis_atramentaria',
+    season:[4,5,6,7,8,9,10,11],terrain:['Łąki','Ogrody','Parki','Pobocza'],
+    soil:'Gleba żyzna, kompostowa, przy pniach drzew liściastych',ph:'6.0–7.5',elev:'0–700 m',
+    habitat:'Przy pniach drzew liściastych, na trawnikach, w parkach i poboczach. Rośnie kępami. Bardzo pospolity.',
+    desc:'Kapelusz szarobrązowy, dzwonkowaty do jajowatego, 4–10 cm, bez białych łusek. Z wiekiem autodestrukcja w czarną ciecz. Trzon biały, gładki. Odróżnić od czernidłaka kołpakowatego: brak cylindrycznej białej formy z brązowymi łuskami.',
+    danger:'TRUJĄCY jeśli spożyty RAZEM Z ALKOHOLEM (nawet kilka godzin lub dni po zjedzeniu grzyba!). Koprina blokuje metabolizm alkoholu — efekt disulfiramowy: zaczerwienienie twarzy, kołatanie serca, wymioty, strach śmierci. Bez alkoholu jest warunkowo jadalny. Jedna z najczęstszych przyczyn zatruć grzybami w Polsce (alkohol spożywany po posiłku).',
+    lookalikes:'Czernidłak kołpakowaty (C. comatus) — kapelusz BIAŁY CYLINDRYCZNY z brązowymi łuskami; warunkowo jadalny (bez alkoholu). Uszak bzowy — galaretowaty, uszowaty, brązoworudy, całkowicie inny kształt. Zawsze pamiętaj co jadłeś przed piciem alkoholu.',
+    weights:{ka:75,lm:70,ku:68,br:62,gr:58,wk:54,sw:68,ro:65,lu:62,ll:68,op:72,st:74,sl:68,bi:58,be:62,sd:58,so:62,bw:55,au:52,wy:68,nak:63,sep:70}
+  },
+
+  zasloniak_rub:{
+    name:'Zasłonak ognistorudy',latin:'Cortinarius rubellus',cat:'deadly',rare:false,wiki:'Cortinarius_rubellus',
+    season:[8,9,10],terrain:['Bory sosnowe','Lasy iglaste','Świerczyny'],
+    soil:'Gleba kwaśna, torfowa, piaszczysta',ph:'3.8–5.5',elev:'0–1300 m',
+    habitat:'Pod sosnami i świerkami na glebach kwaśnych. Bory sosnowe i świerkowe, torfowiska. Jeden z częstszych zasłoniaków.',
+    desc:'Kapelusz rudobrązowy do pomarańczowobrązowego, stożkowy lub dzwonkowaty, 3–8 cm. Blaszki ochroworude do rdzawych, gęste. Trzon rudobrązowy. Brak pierścienia (tylko ślady cortiny/pajęczynki u młodych). Wygląda jak pospolity niegroźny brązowy grzyb.',
+    danger:'ŚMIERTELNIE TRUJĄCY — orellanina niszczy nerki z opóźnieniem 2–4 tygodni. Przez cały ten czas brak objawów zatrucia lub tylko niespecyficzne zmęczenie. Do momentu diagnozy uszkodzenie jest często nieodwracalne. Brak antidotum. Cały rodzaj Cortinarius = nie zbierać nigdy.',
+    lookalikes:'Zasłonak rudy (C. orellanus) — pod dębami, ciemniejszy brąz. Liczne brązowe grzyby leśne — kolpaczki, pajęczaki, różne zasłoniaki. Żaden z rodzaju Cortinarius (zasłoniaki) nie jest bezpieczny do zbierania bez eksperta.',
+    weights:{tu:75,no:72,dr:68,pi:70,au:65,ps:70,dl:70,ch:72,bw:65,ma:62,ku:60,sd:62,se:60,ta:58,be:62,bi:58,po:62,wy:80,nak:75,sep:78}
+  },
 };
 
 
@@ -31412,6 +31579,21 @@ const MUSH_ICON_CFG={
   maslak_mod:   {s:'cap',c:'#C8A000',t:'#E0D4B8',ring:1},
   uszak:        {s:'brac',c:'#B87333'},
   podpienka:    {s:'clus',c:'#B87B30',t:'#D4A050'},
+  gaska_ziel:   {s:'flat',c:'#8B9B40',t:'#F0F0D0'},
+  podgrzybek_zaj:{s:'flat',c:'#8B8B40',t:'#C8C860'},
+  mleczaj_obrz: {s:'flat',c:'#C87040',t:'#F0C880'},
+  twardzioszek: {s:'flat',c:'#D4C090',t:'#F0ECD0'},
+  czubajka_cz:  {s:'para',c:'#C0A070',t:'#D0B080'},
+  sromotnik:    {s:'puff',c:'#F0F0F0'},
+  czarka:       {s:'flat',c:'#CC2222'},
+  gwiazdosz:    {s:'puff',c:'#9B8060'},
+  maczuznik:    {s:'more',c:'#FF6600'},
+  kolpaczek:    {s:'clus',c:'#D4780A',t:'#E89020'},
+  muszomor_wios:{s:'aman',c:'#FFFFFF'},
+  strzepiak:    {s:'flat',c:'#F0E8D0',t:'#D4C8A0'},
+  pieczarka_zolk:{s:'flat',c:'#FAFAFA',t:'#E0D8C0'},
+  czernidlak_atr:{s:'cap',c:'#8B8070',t:'#C0B090'},
+  zasloniak_rub:{s:'flat',c:'#C06830',t:'#E08040'},
 };
 
 function getMushSVG(mid){
@@ -31536,6 +31718,21 @@ const MUSHROOM_LOCAL={
   gaska_nieb:   {s:'f',n:'W lasach mieszanych i liściastych, przy kompostownikach. Październik–listopad — szukać już za 2–3 tygodnie.'},
   uszak:        {s:'p',n:'Pospolity na bzach czarnych w pobliżu wiosek, na olchach przy ciekach. Cały rok wzdłuż Noteci i rowów.'},
   podpienka:    {s:'p',n:'Na martwych pniach w lasach Krainy. Pospolita — ale nie zbierać bez pewnego rozróżnienia z hełmówką jadowitą.'},
+  gaska_ziel:   {s:'p',n:'Bardzo pospolita w borach sosnowych Krainy Nakielskiej. Jesień — szukać pod sosnami na piasku.'},
+  podgrzybek_zaj:{s:'p',n:'Jeden z pospolitszych borowikow regionu. Pod sosnami, dębami i brzozami — przez całe lato i jesień.'},
+  mleczaj_obrz: {s:'r',n:'W lasach liściastych przy dębach i bukach. Na Krajnie rzadszy — szukać w grądach przy Noteci.'},
+  twardzioszek: {s:'p',n:'Pospolity na łąkach, trawnikach i pastwiskach regionu. Tworzy czarcie kręgi od maja do października.'},
+  czubajka_cz:  {s:'f',n:'Przy kompostownikach, w ogrodach i parkach. Częsty w pobliżu zabudowań — Wyrzysk, Nakło, Sępólno.'},
+  sromotnik:    {s:'p',n:'Pospolity w lasach liściastych Krainy, parkach i ogrodach. Latem i jesienią — zapach padliny nie do przeoczenia.'},
+  czarka:       {s:'f',n:'Wzdłuż rowów i potoków w lasach liściastych. Wiosna — jeden z pierwszych sygnałów sezonu w regionie.'},
+  gwiazdosz:    {s:'f',n:'W borach i lasach liściastych Krainy. Pospolity, ale przeoczany — szukać na ściółce jesienią.'},
+  maczuznik:    {s:'v',n:'Bardzo rzadki w regionie — pojedyncze stanowiska w lasach liściastych. Chroniony. Fotografować, nie zbierać.'},
+  kolpaczek:    {s:'f',n:'Na pniakach w lasach i parkach regionu. Jesień — duże złotorude kępy. Halucynogenny — nie zbierać.'},
+  muszomor_wios:{s:'r',n:'Rzadki, ale śmiertelnie niebezpieczny. Pojawia się wiosną w ciepłych dąbrowach przy Noteci. Jeden grzyb zabija.'},
+  strzepiak:    {s:'f',n:'Pod lipami i grabami w parkach miejskich Wyrzyska, Nakła, Sępólna. Wiosna–lato. Śmiertelna trucizna muskarynowa.'},
+  pieczarka_zolk:{s:'p',n:'Pospolita na trawnikach i w ogrodach całego regionu. Najczęstsza przyczyna zatruć — wygląda jak jadalna pieczarka.'},
+  czernidlak_atr:{s:'p',n:'Pospolity przy pniach drzew liściastych, na trawnikach i poboczach. Groźny dopiero z alkoholem — popularne zatrucie.'},
+  zasloniak_rub:{s:'p',n:'Pospolity w borach sosnowych i iglastych Krainy. Śmiertelny z opóźnieniem. Wyglądający niewinnie brązowy grzyb pod sosnami.'},
 };
 
 const LOCAL_LABEL={p:'Pospolity w regionie',f:'Częsty w regionie',r:'Rzadki w regionie',v:'Bardzo rzadki',n:'Nie występuje w regionie'};
