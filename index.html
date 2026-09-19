@@ -14,7 +14,7 @@
 :root{
   --bg:#0b0b0b;--sb:#111111;--card:#1a1a1a;--card2:#222222;
   --gold:#d4a030;--goldd:rgba(212,160,48,.13);--goldb:rgba(212,160,48,.3);
-  --green:#52b849;--text:#f0ebe0;--muted:#7a7570;
+  --green:#52b849;--text:#f0ebe0;--muted:#a09488;
   --border:rgba(255,255,255,.07);--r:10px;
   --f-disp:'Playfair Display',Georgia,serif;
   --f-body:'DM Sans',system-ui,sans-serif;
@@ -23,7 +23,7 @@
 [data-theme="light"]{
   --bg:#f4f0e8;--sb:#e8e2d6;--card:#ffffff;--card2:#f0ebe0;
   --gold:#7a5010;--goldd:rgba(122,80,16,.11);--goldb:rgba(122,80,16,.42);
-  --green:#2a7020;--text:#1a1814;--muted:#5c5650;
+  --green:#2a7020;--text:#1a1814;--muted:#44403a;
   --border:rgba(0,0,0,.13);
   --acc-e:#2a7020;--acc-d:#c82828;--acc-r:#7a5010;--acc-h:#7840b8;--acc-i:#4a5848;
 }
@@ -65,11 +65,11 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .mc:has(.mico.hallucinogenic){border-left-color:var(--acc-h)}
 .mc:has(.mico.inedible){border-left-color:var(--acc-i)}
 .mico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
-.mico.edible{background:rgba(82,184,73,.18)}
-.mico.poisonous{background:rgba(232,64,64,.16)}
-.mico.deadly{background:rgba(232,64,64,.3)}
-.mico.rare{background:rgba(212,160,48,.18)}
-.mico.inedible{background:rgba(127,140,141,.18)}
+.mico.edible{background:rgba(82,184,73,.28)}
+.mico.poisonous{background:rgba(232,64,64,.26)}
+.mico.deadly{background:rgba(232,64,64,.42)}
+.mico.rare{background:rgba(212,160,48,.28)}
+.mico.inedible{background:rgba(127,140,141,.28)}
 .mn{font-size:14.5px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ml-lat{font-family:var(--f-disp);font-style:italic;font-size:11px;color:var(--muted);margin-top:2px}
 .mbadges{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap}
@@ -80,7 +80,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .b-r{background:rgba(201,168,76,.22);color:var(--gold)}
 .b-pr{background:rgba(41,128,185,.22);color:#5dade2}
 .b-i{background:rgba(127,140,141,.22);color:#95a5a6}
-.lsec{font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:var(--gold);padding:16px 8px 8px;font-weight:700;display:flex;align-items:center;gap:8px}
+.lsec{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);padding:16px 8px 8px;font-weight:700;display:flex;align-items:center;gap:8px}
 .lsec::after{content:'';flex:1;height:1px;background:var(--goldb)}
 #mw{flex:1;position:relative;overflow:hidden}
 #map{width:100%;height:100%}
@@ -225,7 +225,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .inat-pop .leaflet-popup-tip{background:var(--card)}
 .inat-pop .leaflet-popup-close-button{color:var(--text-muted)}
 .mush-pin{font-size:20px;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));cursor:pointer}
-.mico.hallucinogenic{background:rgba(125,60,185,.22)}
+.mico.hallucinogenic{background:rgba(125,60,185,.32)}
 .b-h{background:rgba(125,60,185,.22);color:#c39de8}
 .b-cp{background:rgba(201,120,30,.22);color:#e8a040}
 .hbox{background:rgba(125,60,185,.14);border:1px solid rgba(125,60,185,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#c39de8;line-height:1.55}
@@ -262,7 +262,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.9.3</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.9.4</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
