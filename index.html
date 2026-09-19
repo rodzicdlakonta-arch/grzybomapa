@@ -290,7 +290,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.20.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.21.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32237,7 +32237,7 @@ function _inFarmland(la,ln){if(!_FARM_BB||la<_FARM_BB.la0||la>_FARM_BB.la1||ln<_
 
 function genHeat(weights,seed=42,total=500,opts={}){
   const{wetHab=false,openHab=false,farmlandSpec=false,waterEdge=false,
-        coniferPref=false,broadleafPref=false,mountainSpec=false,avoidUrban=true}=
+        coniferPref=false,broadleafPref=false,mountainSpec=false,avoidUrban=true,urbanTolerant=false,preferredCodes=null}=
     typeof opts==='boolean'?{openHab:opts}:opts;
   const rng=new Rng(seed);
   const pts=[];
@@ -32254,7 +32254,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
       const la0=Math.min(...lats),la1=Math.max(...lats),ln0=Math.min(...lngs),ln1=Math.max(...lngs);
       let la=lat0,ln=lng0,t=0;
       do{la=la0+rng.next()*(la1-la0);ln=ln0+rng.next()*(ln1-ln0);t++;}while(!pipTest([la,ln],pp)&&t<20);
-      if(avoidUrban&&_inUrban(la,ln))continue;
+      if(avoidUrban&&_inUrban(la,ln)&&rng.next()>(urbanTolerant?.3:.05))continue;
       pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);
     }
   }
@@ -32269,7 +32269,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
       const ep=wb.p[Math.floor(rng.next()*wb.p.length)];
       const la=ep[0]+(rng.next()-.5)*.003; // ~150m
       const ln=ep[1]+(rng.next()-.5)*.004;
-      if(avoidUrban&&_inUrban(la,ln))continue;
+      if(avoidUrban&&_inUrban(la,ln)&&rng.next()>(urbanTolerant?.3:.05))continue;
       pts.push([la,ln,(w/100)*(.5+rng.next()*.5)]);
     }
   }
@@ -32292,7 +32292,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
     if(wetHab){
       const wls=LANDUSE.filter(lu=>lu.t==='wetland'&&lu.p.length>=3&&near(lu));
       if(wls.length){_sp(wls,reg.c[0],reg.c[1],w,n);}
-      else for(let i=0;i<n;i++){const la=rng.gauss(reg.c[0],reg.r*.4),ln=rng.gauss(reg.c[1],reg.r*.5);if(_inFarmland(la,ln))continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
+      else for(let i=0;i<n;i++){const la=rng.gauss(reg.c[0],reg.r*.4),ln=rng.gauss(reg.c[1],reg.r*.5);if(_inFarmland(la,ln)&&rng.next()>.02)continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
       // Water-edge bonus even for bog species
       if(waterEdge)_waterEdgePts(reg,w,Math.round(n*.3));
       continue;
@@ -32303,7 +32303,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
       const fls=LANDUSE.filter(lu=>lu.t==='farmland'&&lu.p.length>=3&&near(lu));
       const fn=fls.length?Math.round(n*.55):0;
       if(fn)_sp(fls,reg.c[0],reg.c[1],w,fn);
-      for(let i=0;i<n-fn;i++){const la=rng.gauss(reg.c[0],reg.r*.55),ln=rng.gauss(reg.c[1],reg.r*.65);if(avoidUrban&&_inUrban(la,ln))continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
+      for(let i=0;i<n-fn;i++){const la=rng.gauss(reg.c[0],reg.r*.55),ln=rng.gauss(reg.c[1],reg.r*.65);if(avoidUrban&&_inUrban(la,ln)&&rng.next()>(urbanTolerant?.3:.05))continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
       continue;
     }
 
@@ -32312,7 +32312,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
       const mds=LANDUSE.filter(lu=>lu.t==='meadow'&&lu.p.length>=3&&near(lu));
       const mn=mds.length?Math.round(n*.6):0;
       if(mn)_sp(mds,reg.c[0],reg.c[1],w,mn);
-      for(let i=0;i<n-mn;i++){const la=rng.gauss(reg.c[0],reg.r*.55),ln=rng.gauss(reg.c[1],reg.r*.65);if(avoidUrban&&_inUrban(la,ln))continue;if(_inFarmland(la,ln)&&rng.next()>.1)continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
+      for(let i=0;i<n-mn;i++){const la=rng.gauss(reg.c[0],reg.r*.55),ln=rng.gauss(reg.c[1],reg.r*.65);if(avoidUrban&&_inUrban(la,ln)&&rng.next()>(urbanTolerant?.3:.05))continue;if(_inFarmland(la,ln)&&rng.next()>.1)continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
       if(waterEdge)_waterEdgePts(reg,w,Math.round(n*.2));
       continue;
     }
@@ -32327,7 +32327,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
     });
     const forestN=Math.round(n*(waterEdge?.72:1.0));
     if(!localForests.length){
-      for(let i=0;i<forestN;i++){const la=rng.gauss(reg.c[0],reg.r*.38),ln=rng.gauss(reg.c[1],reg.r*.48);if(avoidUrban&&_inUrban(la,ln))continue;if(_inFarmland(la,ln))continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
+      for(let i=0;i<forestN;i++){const la=rng.gauss(reg.c[0],reg.r*.38),ln=rng.gauss(reg.c[1],reg.r*.48);if(avoidUrban&&_inUrban(la,ln)&&rng.next()>(urbanTolerant?.3:.05))continue;if(_inFarmland(la,ln)&&rng.next()>.03)continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
     }else{
       _sp(localForests,reg.c[0],reg.c[1],w,forestN);
     }
@@ -40781,24 +40781,39 @@ function selectMushroom(mid){
   const elevStr=m.elev||'';
   const elevMin=parseInt((elevStr.match(/(\d+)/)||[0,0])[1])||0;
   const mountainSpec=elevMin>300||/górsk|górskie|piętro regla|subalpejski/i.test(terrainStr+' '+(m.habitat||''));
+  // Specific tree genus preferred (for BDL cd matching and CLC refinement)
+  let preferredCodes=null;
+  if(/sosnow|bór sosnow/i.test(terrainStr))preferredCodes=['SO','PI'];
+  else if(/świerkow/i.test(terrainStr))preferredCodes=['ŚW','SW'];
+  else if(/jodłow/i.test(terrainStr))preferredCodes=['JD'];
+  else if(/bukow/i.test(terrainStr))preferredCodes=['BK'];
+  else if(/dąbrow|dębowy|dębowy/i.test(terrainStr))preferredCodes=['DB'];
+  else if(/grabowy|grądow/i.test(terrainStr))preferredCodes=['GB','DB'];
+  else if(/olsz|olchow/i.test(terrainStr))preferredCodes=['OL'];
+  else if(/brzozow/i.test(terrainStr))preferredCodes=['BRZ'];
+  // Urban-tolerant: grows in parks, gardens, city greenery
+  const urbanTolerant=/park|skwer|trawnik|ogród.*miejsk|zieleń.*miejsk|skraj.*mias/i.test(terrainStr+' '+(m.habitat||''));
   // Show base heatmap (all terrain data) immediately
-  _heatPts=genHeat(m.weights,seed,400,{openHab,wetHab,farmlandSpec,waterEdge,coniferPref,broadleafPref,mountainSpec,avoidUrban:true}).map(p=>[p[0],p[1],p[2]*.72]);
+  _heatPts=genHeat(m.weights,seed,400,{openHab,wetHab,farmlandSpec,waterEdge,coniferPref,broadleafPref,mountainSpec,avoidUrban:true,urbanTolerant,preferredCodes}).map(p=>[p[0],p[1],p[2]*.72]);
   // BDL old-growth bonus: if user has loaded BDL data, boost density near mature stands (>60yr)
   if(bdlStore.length&&!openHab&&!farmlandSpec){
     const isSaprofit=/saprofit drewna|pasożyt/i.test(m.ph||'');
     bdlStore.forEach(b=>{
-      if(b.age<50)return;
-      // Use b.cd (BDL tree species code) to skip mismatched trees
+      if(b.age<15)return; // skip very young stands
       const bIsConifer=b.cd&&/^(SO|PI|ŚW|SW|JD|MD)/i.test(b.cd);
       const bIsBroadleaf=b.cd&&/^(BK|DB|GB|JW|LP|OL|JS|CZ)/i.test(b.cd);
-      if(coniferPref&&bIsBroadleaf)return;   // conifer fungus, broadleaf tree → skip
-      if(broadleafPref&&bIsConifer)return;    // broadleaf fungus, pine tree → skip
+      if(coniferPref&&bIsBroadleaf)return;
+      if(broadleafPref&&bIsConifer)return;
+      // Specific tree species match bonus (e.g. sosnowy → SO/PI)
+      const codeMatch=preferredCodes&&b.cd?preferredCodes.some(c=>b.cd.toUpperCase().startsWith(c)):false;
       const typeBonus=((coniferPref&&bIsConifer)||(broadleafPref&&bIsBroadleaf))?1:0;
-      const needed=(isSaprofit&&b.age>80?3:b.age>80?2:1)+typeBonus;
+      const codeBonus=codeMatch?1:0;
+      const ageWeight=Math.min(1,b.age/80);
+      const needed=Math.round((isSaprofit&&b.age>80?3:b.age>50?2:1)+typeBonus+codeBonus);
       for(let i=0;i<needed;i++){
         const la=b.lat+(Math.random()-.5)*.004;
         const ln=b.lng+(Math.random()-.5)*.005;
-        _heatPts.push([la,ln,Math.min(1,(b.age/120))*0.55]);
+        _heatPts.push([la,ln,ageWeight*0.55]);
       }
     });
   }
