@@ -262,7 +262,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.10.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.11.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -31520,6 +31520,204 @@ const MUSHROOMS={
     lookalikes:'Zasłonak rudy (C. orellanus) — pod dębami, ciemniejszy brąz. Liczne brązowe grzyby leśne — kolpaczki, pajęczaki, różne zasłoniaki. Żaden z rodzaju Cortinarius (zasłoniaki) nie jest bezpieczny do zbierania bez eksperta.',
     weights:{tu:75,no:72,dr:68,pi:70,au:65,ps:70,dl:70,ch:72,bw:65,ma:62,ku:60,sd:62,se:60,ta:58,be:62,bi:58,po:62,wy:80,nak:75,sep:78}
   },
+
+  smardz_pol:{
+    name:'Smardz półwolny',latin:'Morchella semilibera',cat:'edible',rare:false,wiki:'Morchella_semilibera',
+    season:[4,5],terrain:['Lasy liściaste','Lasy mieszane','Łęgi'],
+    soil:'Gleba wilgotna, żyzna, często na ściółce lub przy strumieniach',ph:'6.0–7.5',elev:'0–800 m',
+    habitat:'W wilgotnych lasach liściastych, przy strumieniach i w łęgach. Pojawia się wczesną wiosną — jeden z pierwszych grzybów roku.',
+    desc:'Różni się od smardza jadalnego tym, że dolna połowa główki jest wolna (nie zlana z trzonem). Główka stożkowata, ciemnobrązowa, 2–5 cm, z regularną siatką żeberkowatych grzebieni. Trzon biały, dłuższy niż u smardza jadalnego. Całość 6–15 cm.',
+    edib:'Jadalny po obróbce cieplnej. Jak wszystkie smardze — NIGDY na surowo. Surowe zawierają kwas helvellowy niszczący erytrocyty. Gotować 10 min, wodę wylać. Wyśmienity po blanszowaniu i usmażeniu z masłem.',
+    lookalikes:'Smardz jadalny (M. esculenta) — główka całkowicie zlana z trzonem, bardziej kulista. Piestrzenica (G. esculenta) — TRUJĄCA; fałdowana jak mózg, nie siatkowata. Kielichowiec Morrisa — inny kształt.',
+    weights:{ka:70,sw:78,ro:75,lu:72,ja:68,ll:60,br:55,bw:62,au:58,be:68,bi:62,sd:65,so:65,op:65,st:68,sl:62,lm:60,wy:62,nak:58,sep:60}
+  },
+
+  watrobka:{
+    name:'Wątróbka dębowa',latin:'Fistulina hepatica',cat:'edible',rare:false,wiki:'Fistulina_hepatica',
+    season:[8,9,10],terrain:['Dąbrowy','Lasy liściaste','Parki'],
+    soil:'Na żywych lub martwych dębach i kasztanowcach — pasożyt i saprofit drewna',ph:'Pasożyt drzew',elev:'0–700 m',
+    habitat:'Na dolnych partiach starych dębów i kasztanowców. Charakterystyczny ciemnobrązowoczerwony narośl — nie do pomylenia.',
+    desc:'Duże (10–30 cm), językowate lub wachlarzowate ciało owocnikowe, mięsiste, krwistoczerwone do brązowawego na górze, różowawe na spodzie z rureczkami. Miąższ CZERWONY jak wątroba, przy cięciu wydziela czerwonawy sok (stąd nazwa). Smak kwaśny od kwasów organicznych.',
+    edib:'Jadalna — najlepsza młoda (mniej kwaśna). Marynowana lub grillowana zachowuje unikalną fakturę. Kwaśny smak neutralizuje namaczanie lub gotowanie z cebulą.',
+    lookalikes:'Żadnej realnej pomyłki — czerwona wątrobowata faktura, kurczące ciało na dębie i wycieki soku są całkowicie unikalne. Czerwony kolor może odstraszać — to naturalna pigmentacja.',
+    weights:{bw:55,ka:58,sw:65,ro:62,lu:60,ja:58,be:55,bi:50,sd:48,po:55,so:58,sl:55,op:62,st:65,ll:52,lm:55,kn:50,wy:45,nak:40,sep:48}
+  },
+
+  pieczarka_las:{
+    name:'Pieczarka leśna',latin:'Agaricus sylvaticus',cat:'edible',rare:false,wiki:'Agaricus_sylvaticus',
+    season:[7,8,9,10],terrain:['Lasy iglaste','Lasy mieszane'],
+    soil:'Na ściółce iglastej pod sosnami i świerkami',ph:'5.0–6.5',elev:'0–1000 m',
+    habitat:'Pod sosnami i świerkami, często na rozproszonym humusie. Jedna z najpospolitszych pieczarek leśnych Polski.',
+    desc:'Kapelusz biały, szybko pokrywa się rdzawobrązowymi łuseczkami, 5–12 cm. Blaszki różowe → czekoladowobrązowe. Pierścień cienki. Miąższ przy uszkodzeniu RÓŻOWIEJE (nie żółknie). Zapach grzybowy, przyjemny.',
+    edib:'Smaczna jadalna. Kluczowy test: musi różowieć (nie żółknąć). Dobra do każdej obróbki. Zbierać młode, gdy blaszki różowe — starsze mają mocny zapach.',
+    lookalikes:'Pieczarka żółknąca (A. xanthodermus) — TRUJĄCA; żółknie intensywnie u nasady trzonu, zapach atramentu. Muchomor biały — brak pierścienia (lub delikatny), pochwa u nasady, blaszki zawsze białe. Różowienie = jadalna pieczarka leśna.',
+    weights:{tu:85,no:82,dr:78,pi:80,au:75,ps:78,dl:80,ch:82,bw:75,ku:72,ma:68,br:65,wk:60,ll:58,sd:70,se:65,be:68,po:70,bi:65,wy:82,nak:76,sep:80}
+  },
+
+  pieczarka_krw:{
+    name:'Pieczarka krwawiąca',latin:'Agaricus haemorrhoidarius',cat:'edible',rare:false,wiki:'Agaricus_haemorrhoidarius',
+    season:[8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Buczyny','Grądy'],
+    soil:'Na próchnicznej glebie wśród ściółki liściastej',ph:'5.5–7.0',elev:'0–800 m',
+    habitat:'W lasach liściastych i mieszanych, pod bukami i grabami. Pospolita, ale rzadziej notowana niż pieczarka polna.',
+    desc:'Kapelusz biały, 5–12 cm, z delikatnymi łuskami. Blaszki różowe → czekoladowe. Trzon biały z pierścieniem. Miąższ uszkodzony NATYCHMIAST INTENSYWNIE CZERWIENIEJE jak krew — cecha diagnostyczna. Zapach przyjemny.',
+    edib:'Smaczna jadalna — jedna z lepszych pieczarek leśnych. Dramatyczne czerwienienie miąższu nie jest wadą — to oznaka jadalności tej konkretnej pieczarki.',
+    lookalikes:'Pieczarka żółknąca — TRUJĄCA; żółknie (nie czerwienieje) u nasady, zapach atramentu. Pieczarka leśna — różowieje, nie czerwienieje intensywnie. Czubajka czerwieniejąca — również czerwienieje, ale parasol z ruchomym pierścieniem. Intensywne krwawe czerwienienie to cecha unikalna.',
+    weights:{bw:68,au:62,sw:72,ro:70,lu:65,ja:62,be:72,bi:68,sd:65,po:68,so:65,ka:65,lm:60,op:65,st:68,sl:62,ll:58,kn:60,wy:60,nak:55,sep:62}
+  },
+
+  opienka_ciem:{
+    name:'Opieńka ciemna',latin:'Armillaria ostoyae',cat:'edible',rare:false,wiki:'Armillaria_ostoyae',
+    season:[9,10,11],terrain:['Lasy iglaste','Lasy mieszane','Lasy liściaste'],
+    soil:'Pasożyt i saprofit na korzeniach i pniakach drzew (szczeg. iglastych)',ph:'Pasożyt/saprofit drewna',elev:'0–1400 m',
+    habitat:'Pod sosnami i świerkami, na pniakach i przy korzeniach. Gatunek tworzący największy znany organizm na Ziemi (9 km² w Oregonie). Pospolita.',
+    desc:'Bardzo podobna do opieńki miodowej — kapelusz miodowożółty z ciemnymi łuskami (szczególnie licznymi w centrum), 4–12 cm. Blaszki białe, pierścień z brązową falbanką. Rośnie gęstymi kępami na i przy drzewach iglastych.',
+    edib:'Jadalna — jak opieńka miodowa, po gotowaniu. Nigdy na surowo (gastrycznych). Niektóre osoby reagują GI nawet po ugotowaniu.',
+    lookalikes:'Opieńka miodowa (A. mellea) — preferuje liściaste, łuski jasnobrązowe do żółtych, rzadsze. Prawie nieodróżnialne bez genotypowania — traktuj jak opieńkę miodową. Hełmówka jadowita (G. marginata) — ŚMIERTELNA; brak pierścienia lub słaba falbanka, blaszki ciemnieją od zarodu, rośnie na drewnie, mała.',
+    weights:{tu:82,no:78,dr:75,pi:78,au:70,ps:75,dl:78,ch:80,bw:72,ku:68,ma:65,br:62,wk:60,ll:58,sd:68,se:62,be:70,po:72,bi:68,wy:80,nak:75,sep:78}
+  },
+
+  mleczaj_piep:{
+    name:'Mleczaj pieprzowy',latin:'Lactarius piperatus',cat:'inedible',rare:false,wiki:'Lactarius_piperatus',
+    season:[7,8,9],terrain:['Lasy liściaste','Dąbrowy','Buczyny','Grądy'],
+    soil:'Gleba gliniasta, żyzna',ph:'5.5–7.0',elev:'0–900 m',
+    habitat:'Pod dębami, bukami i lipami w lasach liściastych. Jeden z pospolitszych mleczajów — rośnie dużymi grupami.',
+    desc:'Kapelusz biały do kremowego, lejkowaty, 8–20 cm, bez stref. Blaszki BARDZO GĘSTE, białe, wąskie. Mleczko białe, PIEKIELNIE OSTRE. Trzon biały, gruby. Miąższ biały i twardy. Brak zapachu.',
+    danger:'Niejadalny na surowo — ostre mleczko powoduje podrażnienie żołądka. Warunkowo jadalny po długim soleniu i kiszeniu (tradycja wschodnioeuropejska). W Polsce zazwyczaj omijany.',
+    lookalikes:'Mleczaj wełnianka (L. torminosus) — TRUJĄCY; kapelusz z kłaczkami, różowawy, pod brzozami. Rydz (L. deliciosus) — mleczko marchwiowoczerwone, kapelusz pomarańczowy. Mleczaj obrzękły (L. volemus) — brązowy, pachnie rybą. Bardzo gęste białe blaszki + biały piekący sok = mleczaj pieprzowy.',
+    weights:{bw:68,au:62,sw:72,ro:70,lu:68,ja:65,be:75,bi:70,sd:65,po:68,so:65,ka:65,lm:62,op:68,st:70,sl:65,kn:60,ll:58,wy:52,nak:48,sep:55}
+  },
+
+  podgrz_zlot:{
+    name:'Podgrzybek złotawy',latin:'Xerocomus chrysenteron',cat:'edible',rare:false,wiki:'Xerocomus_chrysenteron',
+    season:[6,7,8,9,10],terrain:['Lasy iglaste','Lasy liściaste','Lasy mieszane'],
+    soil:'Gleba kwaśna, piaszczysta lub gliniasta',ph:'4.0–6.5',elev:'0–1200 m',
+    habitat:'Jeden z najpospolitszych grzybów leśnych Polski. Pod różnymi drzewami — sosna, dąb, buk. Bardzo plastyczny ekologicznie.',
+    desc:'Kapelusz brązowoczerwony do oliwkowobrązowego, 4–10 cm, matowy. Skórka kapelusza PĘKA w starszych okazach, odsłaniając CZERWONE ciało owocnika pod spodem — cecha rozpoznawcza. Rurki żółte z czerwonawymi porami. Niebieskieje słabo.',
+    edib:'Jadalny — słabszy od podgrzybka brunatnego, miąższ mniej zwarty i szybko robaczywy. Dobry do mieszanek i zup. Zbierać młode.',
+    lookalikes:'Podgrzybek brunatny (X. badius) — ciemniejszy, jednolita skórka bez czerwonych pęknięć. Podgrzybek zajączek (X. subtomentosus) — zamszowy, nie pęka czerwono. Goryczak żółciowy — rurki różowawe, GORZKI. Czerwone pęknięcia skórki = złotawy.',
+    weights:{bw:82,au:78,tu:80,no:78,dr:75,pi:78,ps:75,ku:72,dl:76,ch:78,ma:70,br:65,wk:62,ll:60,su:65,wi:68,be:72,bi:68,po:70,sd:70,se:65,sw:65,wy:82,nak:76,sep:80}
+  },
+
+  huba:{
+    name:'Hubka pospolita',latin:'Fomes fomentarius',cat:'inedible',rare:false,wiki:'Fomes_fomentarius',
+    season:[1,2,3,4,5,6,7,8,9,10,11,12],terrain:['Lasy liściaste','Lasy mieszane','Olszyny'],
+    soil:'Na pniach żywych i martwych drzew liściastych (buk, brzoza, olcha, osika)',ph:'Saprofit/pasożyt drewna',elev:'0–1200 m',
+    habitat:'Na pniach buków i brzóz, rzadziej olch i osik. Wieloletni, kopytowaty — rośnie przez dziesiątki lat. Pospolity w całej Polsce.',
+    desc:'Kopiasto kopytowata hubka, 10–50 cm, szara do szarobrązowej, z koncentrycznymi strefami. Powierzchnia twarda, drewnopodobna. Spód biały z drobnymi porami. Wnętrze rdzawobrązowe, filcowate (ta tkanka = "tonder/hubka" do rozpalania ognia).',
+    danger:'Niejadalny — twarda, drewnista konsystencja. Historycznie kluczowa jako hubka do rozpalania ognia (tlące się wnętrze), materiał do wyrobu kapeluszy i sztuki, dziś w medycynie trad. Chroniony w części parków narodowych.',
+    lookalikes:'Żagwica listkowata (Grifola frondosa) — miękka, liściasta, na podstawie dębu. Czyrenie (Phellinus spp.) — inne formy. Inne hubki (Trametes versicolor = wrośniak różnobarwny) — cienkie, kolorowe, półokrągłe warstwy. Kopytowaty kształt z twardą szarą skórkę = hubka pospolita.',
+    weights:{bw:82,au:80,kn:75,sw:70,ro:68,lu:65,be:75,bi:70,sd:65,po:68,so:68,sl:65,op:62,ka:68,ku:65,ps:72,ma:68,tu:62,no:60,br:62,ll:60,wy:72,nak:68,sep:75}
+  },
+
+  purchawka_grus:{
+    name:'Purchawka gruszkowata',latin:'Lycoperdon pyriforme',cat:'edible',rare:false,wiki:'Lycoperdon_pyriforme',
+    season:[7,8,9,10,11],terrain:['Lasy iglaste','Lasy liściaste','Lasy mieszane'],
+    soil:'Na martwym drewnie — pniakach, korzeniach, zakopanych gałęziach',ph:'Saprofit drewna',elev:'0–1200 m',
+    habitat:'Na pniakach i martwym drewnie drzew liściastych i iglastych. Rośnie zawsze gęstymi skupiskami — dziesiątki owocników razem. Bardzo pospolita.',
+    desc:'Kulista do gruszkowatej, 2–5 cm, biała do kremowej, powierzchnia z drobnymi kłączkami. Dojrzała: oliwkowozielona w środku, przez otwór na szczycie wydostają się zarodniki. Jedyna pospolita polska purchawka rosnąca na drewnie.',
+    edib:'Jadalna gdy wnętrze jednolite białe (przekrój!). Nie zbierać z ciemnym wnętrzem ani gdy widoczny zarys grzyba w środku (młody muchomor). Dobra na patelni — smak łagodny, kremowy.',
+    lookalikes:'Purchawka chropowata (L. perlatum) — na ziemi (nie na drewnie), z białymi kolcami. Tęgoskór pospolity (Scleroderma citrinum) — TRUJĄCY; twardszy, wnętrze fioletowoczarne. Gwiazdosz (Geastrum) — gwiazda z kulką w środku. Tylko ta purchawka rośnie w skupiskach na drewnie.',
+    weights:{bw:78,au:72,tu:80,no:78,dr:74,pi:76,ps:75,ku:70,dl:74,ch:78,ma:68,br:62,wk:60,ll:58,su:65,wi:68,be:72,bi:68,po:70,sd:68,se:62,sw:65,ka:62,wy:80,nak:74,sep:78}
+  },
+
+  sarniak:{
+    name:'Sarniak dachówkowaty',latin:'Hydnum repandum',cat:'edible',rare:false,wiki:'Hydnum_repandum',
+    season:[8,9,10],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane'],
+    soil:'Gleba próchnicza, kwaśna do obojętnej',ph:'4.5–7.0',elev:'0–1200 m',
+    habitat:'Pod różnymi drzewami, szczególnie bukiem i sosną. Rośnie samotnie lub w małych grupach. Pospolity w całej Polsce.',
+    desc:'Kapelusz kremowy do łososiowego, 4–12 cm, nieregularny. SPÓD POKRYTY KOLCAMI (nie rurkami ani blaszkami!), kremowobiałymi, 3–6 mm — unikalna cecha. Trzon blady, zwarty. Zapach przyjemny, smak nieco gorzkawy (szczeg. starsze).',
+    edib:'Doskonały jadalny — jeden z niewielu grzybów kolczastych zbieranych w Polsce. BEZPIECZNY do zbierania przez nowicjuszy: żaden trujący grzyb nie ma takich kolców pod kapeluszem. Blanszować dla usunięcia goryczki. Świetny w sosach.',
+    lookalikes:'Sarniak różowoszary (H. rufescens) — mniejszy, bardziej różowawy, jadalny. Hedgehog mushroom (H. umbilicatum) — z pępkowatym zagłębieniem w centrum, jadalny. Żaden trujący grzyb nie ma białych kolców pod kapeluszem — to unikalna cecha rodzaju Hydnum.',
+    weights:{bw:72,au:68,kn:65,sw:78,ro:75,lu:72,ja:68,be:78,bi:75,go:70,sd:75,se:70,ta:62,po:72,so:68,ka:62,ps:65,ma:60,tu:65,no:62,ll:58,wy:68,nak:62,sep:65}
+  },
+
+  maslak_pst:{
+    name:'Maślak pstry',latin:'Suillus variegatus',cat:'edible',rare:false,wiki:'Suillus_variegatus',
+    season:[8,9,10,11],terrain:['Bory sosnowe','Lasy iglaste'],
+    soil:'Gleba piaszczysta, kwaśna pod sosnami',ph:'3.8–5.5',elev:'0–900 m',
+    habitat:'Pod sosnami na piaszczystej, kwaśnej glebie. Jeden z najczęstszych maślaków borów. Nie tworzy pierścienia.',
+    desc:'Kapelusz żółtobrązowy do rdzawobrązowego, 5–12 cm, matowy (bez śluzu jak maślak zwyczajny). Rurki żółtooliwkowe, niebieskieją słabo. Trzon żółtawy, bez pierścienia — to kluczowa różnica od maślaka zwyczajnego.',
+    edib:'Jadalny — smak mierny. Skórkę zdejmować (jak z innych maślaków). U niektórych osób powoduje dolegliwości żołądkowe nawet po ugotowaniu — spożywać w małych ilościach.',
+    lookalikes:'Maślak zwyczajny (S. luteus) — Z pierścieniem i śluzowatym kapeluszem; smaczniejszy. Maślak ziarnisty (S. granulatus) — mleczna wydzielina z porów u młodych, bez pierścienia. Goryczak (T. felleus) — rurki różowawe, GORZKI. Brak pierścienia + matowy kapelusz + bory sosnowe = maślak pstry.',
+    weights:{tu:90,no:88,dr:85,pi:86,au:80,ps:82,dl:82,ch:86,bw:72,ku:70,ma:68,br:65,wk:62,ll:60,sd:75,se:70,be:65,po:65,bi:60,wy:90,nak:84,sep:88}
+  },
+
+  lejkowka_trut:{
+    name:'Lejkówka biaława',latin:'Clitocybe dealbata',cat:'deadly',rare:false,wiki:'Clitocybe_dealbata',
+    season:[5,6,7,8,9,10],terrain:['Łąki','Trawniki','Ogrody','Pastwiska'],
+    soil:'Gleba trawiasta, żyzna',ph:'6.0–7.5',elev:'0–1000 m',
+    habitat:'Na trawnikach, łąkach i pastwiskach — często razem z twardzioszkiem przydrożnym (M. oreades). Tworzy własne czarcie kręgi. Pospolita i NIEBEZPIECZNA.',
+    desc:'Mały 2–5 cm, kapelusz biały do szarobiałego, płaski do wklęsłego, matowy. Blaszki białe, ZBIEGAJĄCE na trzon (lejkówkowe). Trzon biały, sprężysty. Zapach mączysty, słodkawy. Kluczowe: blaszki zbiegające na trzon.',
+    danger:'ŚMIERTELNIE TRUJĄCY — muscarina. Objawy po 15–30 min: ślinienie, łzawienie, zwolnienie serca, skurcze. Bez leczenia atropiną śmierć w kilka godzin. Łatwo pomylić z twardzioszkiem lub czernidłakiem kołpakowatym na trawniku.',
+    lookalikes:'Twardzioszek przydrożny (M. oreades) — JADALNY; blaszki wolne (nie zbiegające!), trzon łykowaty, zapach migdałów, nie mączysty. Lejkówka gołąbkowa (C. nebularis) — duża, szara, zapach mączysty, warunkowo jadalna. Zbiegające blaszki + mączysty zapach + trawnik = lejkówka biaława.',
+    weights:{ka:75,lm:70,ku:68,br:62,gr:58,wk:55,sw:70,ro:68,lu:65,ll:68,op:72,st:74,sl:66,bi:55,be:58,sd:58,so:60,bw:52,au:50,wy:70,nak:65,sep:72}
+  },
+
+  gaska_siar:{
+    name:'Gąska siarkowa',latin:'Tricholoma sulphureum',cat:'poisonous',rare:false,wiki:'Tricholoma_sulphureum',
+    season:[9,10,11],terrain:['Lasy liściaste','Dąbrowy','Lasy mieszane'],
+    soil:'Gleba żyzna, pod dębami i grabami',ph:'5.5–7.0',elev:'0–900 m',
+    habitat:'Pod dębami, grabami i bukami w lasach liściastych. Pospolita na Niżu Polskim. Najłatwiejsza do rozpoznania po zapachu.',
+    desc:'Kapelusz żółtobrązowy do szarożółtego, 3–8 cm, z delikatnym garbkiem. Blaszki żółte, szerokie. Trzon żółty, włóknisty. Zapach — KLUCZOWY i niepowtarzalny: intensywny, duszący, karbidowo-gazowy lub siarkowy. Mylnie przypomina gąskę zielonkę kolorystyką.',
+    danger:'TRUJĄCA — powoduje silne zatrucia pokarmowe. Odpychający zapach (karbid, gaz, siarka) jest ochroną — prawie niemożliwa do zjedzenia bez ostrzegawczego zapachu. Mimo to notowane zatrucia przez osoby nieznające gatunku.',
+    lookalikes:'Gąska zielonka (T. equestre) — ŻÓŁTOZIELONA nie siarkowa żółć; zapach mączysty lub brak, NIGDY karbidowy. Grzyby z żółtymi blaszkami mogą być jadalne — sprawdź zawsze zapach. Karbidowy/gazowy zapach = wyrzuć natychmiast.',
+    weights:{bw:60,au:58,ka:65,lm:60,sw:68,ro:65,lu:62,ja:60,be:65,bi:60,sd:55,po:62,so:60,sl:60,op:65,st:65,ll:58,kn:55,wy:60,nak:55,sep:60}
+  },
+
+  wieruszka:{
+    name:'Wieruszka jadowita',latin:'Galerina marginata',cat:'deadly',rare:false,wiki:'Galerina_marginata',
+    season:[8,9,10,11],terrain:['Lasy iglaste','Lasy liściaste','Lasy mieszane'],
+    soil:'Na martwym drewnie, pniakach i próchniejących korzeniach',ph:'Saprofit drewna',elev:'0–1500 m',
+    habitat:'Na pniakach i martwym drewnie drzew iglastych i liściastych. Rośnie kępkami podobnie do zimówki i opieńki. Jeden z najniebezpieczniejszych grzybów Europy.',
+    desc:'Mała 1–4 cm, kapelusz miodowożółty do jasnobrązowego, płaski lub lekko stożkowaty. Blaszki jasnobrązowe, brązowiejące. Trzon cienki, ciemny u dołu z delikatną błonkową falbanką (lub jej śladem). Rośnie na drewnie — jak zimówka.',
+    danger:'ŚMIERTELNIE TRUJĄCA — amatoksyny (identyczne z muchomorem sromotnikowym). Jeden owocnik może zabić człowieka. Objawy po 6–24 godz. — potem pozorna poprawa, a po 3–7 dniach niewydolność wątroby. NIGDY nie zbierać zimówki z drewna iglastego lub bez pewnej identyfikacji.',
+    lookalikes:'Zimówka aksamitnotrzonowa (Flammulina velutipes) — JADALNA; charakterystyczny aksamitny ciemnobrązowy trzon, rośnie głównie na martwych drzewach liściastych, brak wyraźnej falbanki. Opieńka miodowa — dużo większa, wyraźny pierścień. Każda mała kępka na drewnie z falbanką = podejrzewaj wieruszką.',
+    weights:{bw:72,au:70,tu:78,no:75,dr:72,pi:74,ps:72,ku:68,dl:74,ch:76,ma:65,br:62,sd:68,se:62,be:68,bi:65,po:68,wy:78,nak:72,sep:76}
+  },
+
+  zasloniak_fio:{
+    name:'Zasłonak fiołkowy',latin:'Cortinarius violaceus',cat:'rare',rare:true,protected:true,wiki:'Cortinarius_violaceus',
+    season:[8,9,10],terrain:['Bory sosnowe','Buczyny','Lasy iglaste'],
+    soil:'Gleba kwaśna, uboga, pod sosnami i bukami',ph:'4.0–6.0',elev:'0–1500 m',
+    habitat:'Pod sosnami, świerkami i bukami w lasach o kwaśnych glebach. Rzadki, chroniony. Jeden z najpiękniejszych grzybów Europy.',
+    desc:'Kapelusz INTENSYWNIE GŁĘBOKOFIOŁKOWY do prawie czarnego, 6–15 cm, matowy, suchy. Blaszki fioletowe, brązowiejące. Trzon fioletowy, bulwiasty u dołu. Pajęczynka (cortina) fioletowa. Miąższ fioletowy. Zapach cedrowy. Niepowtarzalny kolor.',
+    danger:'Formalnie jadalny, ale całkowicie niewskazany do zbioru: chroniony, rzadki, i należy do rodzaju Cortinarius który ma śmiertelnie trujące gatunki. Fotografować, nie zbierać.',
+    lookalikes:'Blewit leśny (Lepista nuda) — jadalny, bardziej niebieskawy/fioletowy, cieńszy trzon, bez pajęczynki, nie chroniony. Cały rodzaj Cortinarius — nie zbierać żadnego bez eksperta. Intensywny głęboki fiolet na wszystkich częściach owocnika jest unikalny.',
+    weights:{bw:55,au:52,sw:60,ro:55,lu:52,be:58,bi:55,sd:58,se:52,ta:50,go:52,po:55,ku:45,ps:50,ma:48,tu:50,no:48,dr:45,wy:50,nak:45,sep:52}
+  },
+
+  mleczaj_deb:{
+    name:'Mleczaj dębowy',latin:'Lactarius quietus',cat:'inedible',rare:false,wiki:'Lactarius_quietus',
+    season:[7,8,9,10],terrain:['Dąbrowy','Lasy liściaste','Grądy'],
+    soil:'Gleba żyzna, gliniasta, wyłącznie pod dębami — ektomikoryza',ph:'5.5–7.0',elev:'0–800 m',
+    habitat:'WYŁĄCZNIE pod dębami. Jeden z najpospolitszych mleczajów dąbrów. Niezawodny wskaźnik obecności dębu w lesie.',
+    desc:'Kapelusz rdzawobrązowy do brązowooliwkowego, matowy, 4–8 cm, z delikatnymi strefami. Mleczko BIAŁE, łagodne (nie piekące). Charakterystyczny intensywny zapach ościennego insektu (pluskwy, biedronki, olejek eteryczny) — cecha diagnostyczna.',
+    danger:'Niejadalny — brak wartości smakowej, zbyt gorzkawy po ugotowaniu. Nietrujący. Interesujący jako wskaźnik botaniczny.',
+    lookalikes:'Inne mleczaje pod dębami: mleczaj obrzękły (L. volemus) — BRĄZOWY kapelusz z rybim zapachem soku; jadalny. Mleczaj kasztanowaty (L. subdulcis) — pod bukami, łagodniejszy zapach. Zapach pluskwy + dąb = mleczaj dębowy.',
+    weights:{bw:62,ka:72,sw:75,ro:72,lu:68,ja:65,be:70,bi:65,sd:62,po:68,so:65,sl:62,op:68,st:70,ll:60,lm:62,kn:58,wy:55,nak:50,sep:58}
+  },
+
+  szyszkowiec:{
+    name:'Szyszkowiec świerkowy',latin:'Strobilurus esculentus',cat:'edible',rare:false,wiki:'Strobilurus_esculentus',
+    season:[2,3,4,5],terrain:['Lasy iglaste','Świerczyny'],
+    soil:'Wyłącznie na zakopanych lub leżących szyszkach świerkowych',ph:'Saprofit szyszek',elev:'0–1500 m',
+    habitat:'Na szyszkach świerkowych — wyrastają z nich pojedynczo lub w małych grupkach. Pierwszy grzyb roku, pojawia się spośród śniegu.',
+    desc:'Mały 1–3 cm, kapelusz płaski, brązowawy do szarego, gładki. Blaszki białe, bardzo gęste. Trzon cienki, elastyczny (nie łamliwy), z białą "korzeniową" grzybniową nitką sięgającą do szyszki. Szyszka zawsze pod trzonem.',
+    edib:'Jadalny — cienki, gorzkawy smak (wymagają zblanszowania). Zbierać na zupę lub jako garniturek. Zbieranie wcześnie wiosną = rzadka przyjemność grzybiarza.',
+    lookalikes:'Szyszkowiec sosnowy (S. tenacellus) — GORZKI; na szyszkach sosnowych; niejadalny. Grzybówki (Mycena spp.) — nie wyrastają ze szyszek, brak korzeniowej nitki. Biała nitka łącząca trzon z szyszką = pewna cecha szyszkowca.',
+    weights:{sd:70,se:65,ta:68,be:75,bi:72,go:70,po:68,bw:55,au:60,su:65,wi:68,ps:62,ku:52,ma:55,kn:58,tu:62,no:58,dr:55,wy:48,nak:44,sep:52}
+  },
+
+  trzesak:{
+    name:'Trzęsak pomarańczowożółty',latin:'Tremella mesenterica',cat:'edible',rare:false,wiki:'Tremella_mesenterica',
+    season:[10,11,12,1,2,3],terrain:['Lasy liściaste','Lasy mieszane'],
+    soil:'Na martwych gałęziach i pniakach drzew liściastych — pasożyt grzybów z rodzaju Peniophora',ph:'Saprofit/pasożyt grzybów',elev:'0–900 m',
+    habitat:'Na martwych gałęziach drzew liściastych (dąb, leszczyna, olcha) — jesień do wiosny, szczególnie po deszczach. Nie może być przeoczony ze względu na intensywny kolor.',
+    desc:'Żółtooranżowa do złocistożółtej galaretowata masa, 2–10 cm, nieregularnie fałdowana i mózgowata. Po wysuszeniu kurczy się do małego woskowatego krążka, przy zawilgoceniu odrasta. Zimowe i wiosenne okazy.',
+    edib:'Formalnie jadalny — brak smaku, galaretowata konsystencja. Nie zbierać ze względów kulinarnych. Fascynujący jako zjawisko przyrodnicze — używany w kuchni azjatyckiej (spokrewniony z Tremella fuciformis).',
+    lookalikes:'Trzęsak mózgowaty (T. encephala) — biały do kremowego, na drewnie iglastym. Uszak bzowy (A. auricula-judae) — brązowy, uszowaty, jadalny. Nasięźrzał (Calocera viscosa) — żółtopomarańczowe paluszki na drewnie iglastym. Żółta galaretowata masa na liściastych gałązkach = trzęsak pomarańczowy.',
+    weights:{bw:72,au:68,kn:65,sw:68,ro:65,lu:62,be:72,bi:68,sd:62,po:65,so:62,ka:60,ku:58,tu:55,no:52,br:55,gr:52,op:62,st:60,ll:58,wy:65,nak:60,sep:65}
+  },
 };
 
 
@@ -31594,6 +31792,24 @@ const MUSH_ICON_CFG={
   pieczarka_zolk:{s:'flat',c:'#FAFAFA',t:'#E0D8C0'},
   czernidlak_atr:{s:'cap',c:'#8B8070',t:'#C0B090'},
   zasloniak_rub:{s:'flat',c:'#C06830',t:'#E08040'},
+  smardz_pol:   {s:'more',c:'#7B5810'},
+  watrobka:     {s:'brac',c:'#8B1A1A'},
+  pieczarka_las:{s:'flat',c:'#E8E0C0',t:'#C8B890'},
+  pieczarka_krw:{s:'flat',c:'#FAFAFA',t:'#E0D8C0'},
+  opienka_ciem: {s:'clus',c:'#C09020',t:'#B07B18'},
+  mleczaj_piep: {s:'flat',c:'#F5F0E0',t:'#F5F0E0'},
+  podgrz_zlot:  {s:'flat',c:'#A06020',t:'#CC4020'},
+  huba:         {s:'brac',c:'#9B9490'},
+  purchawka_grus:{s:'puff',c:'#F0ECC0'},
+  sarniak:      {s:'flat',c:'#E8C890',t:'#F8E8C0'},
+  maslak_pst:   {s:'cap',c:'#9B6B2A',t:'#E0D4B8'},
+  lejkowka_trut:{s:'flat',c:'#D8D4C0',t:'#D8D4C0'},
+  gaska_siar:   {s:'flat',c:'#D4C030',t:'#E8E050'},
+  wieruszka:    {s:'clus',c:'#C89040',t:'#9B6020'},
+  zasloniak_fio:{s:'flat',c:'#4A2080',t:'#6A40A0'},
+  mleczaj_deb:  {s:'flat',c:'#9B6040',t:'#C09060'},
+  szyszkowiec:  {s:'flat',c:'#C8A880',t:'#E0C8A0'},
+  trzesak:      {s:'cora',c:'#FF9500'},
 };
 
 function getMushSVG(mid){
@@ -31733,6 +31949,24 @@ const MUSHROOM_LOCAL={
   pieczarka_zolk:{s:'p',n:'Pospolita na trawnikach i w ogrodach całego regionu. Najczęstsza przyczyna zatruć — wygląda jak jadalna pieczarka.'},
   czernidlak_atr:{s:'p',n:'Pospolity przy pniach drzew liściastych, na trawnikach i poboczach. Groźny dopiero z alkoholem — popularne zatrucie.'},
   zasloniak_rub:{s:'p',n:'Pospolity w borach sosnowych i iglastych Krainy. Śmiertelny z opóźnieniem. Wyglądający niewinnie brązowy grzyb pod sosnami.'},
+  smardz_pol:   {s:'f',n:'W łęgach i przy strugach. Wiosna — razem ze smardz jadalnym w wilgotnych miejscach Krainy.'},
+  watrobka:     {s:'r',n:'Na starych dębach przy Noteci i w parkach wiejskich. Rzadka, ale widoczna ze względu na kolor.'},
+  pieczarka_las:{s:'p',n:'Pospolita pod sosnami w borach Krainy. Jedyna pieczarka pewna do zbierania pod lasem iglastym.'},
+  pieczarka_krw:{s:'f',n:'W lasach liściastych regionu. Nie tak pospolita jak leśna, ale regularnie notowana. Dramatycznie czerwienieje.'},
+  opienka_ciem: {s:'p',n:'Pospolita pod sosnami i świerkami Krainy. Nie odróżniać od opieńki miodowej bez eksperta.'},
+  mleczaj_piep: {s:'p',n:'Jeden z pospolitszych grzybów dąbrów i grądów regionu. Biały lejek z piekącym sokiem. Omijać.'},
+  podgrz_zlot:  {s:'p',n:'Jeden z pospolitszych borowikowatych Krainy. Pęknięta skórka z czerwonym ciałem pod spodem — znak rozpoznawczy.'},
+  huba:         {s:'p',n:'Pospolita na brzozach i bukach całego regionu. Kopytowate hubki rosną latami na tych samych drzewach.'},
+  purchawka_grus:{s:'p',n:'Na pniakach w borach Krainy — całymi skupiskami. Jedna z pospolitszych purchawek zbieranych w regionie.'},
+  sarniak:      {s:'f',n:'W lasach liściastych i mieszanych regionu. Wyjątkowy bezpieczny grzyb dla nowicjuszy — kolce spodu niepowtarzalne.'},
+  maslak_pst:   {s:'p',n:'Jeden z najliczniejszych maślaków borów sosnowych Krainy. Zbierać, ale nie przejadać — może drażnić żołądek.'},
+  lejkowka_trut:{s:'p',n:'BARDZO POSPOLITA na trawnikach Wyrzyska, Nakła, Sępólna. Obok twardzioszka — śmiertelnie trująca kopia na trawniku.'},
+  gaska_siar:   {s:'f',n:'W dąbrowach i grądach regionu przy Noteci. Rozpoznać natychmiast po karbidowym/gazowym zapachu.'},
+  wieruszka:    {s:'p',n:'Pospolita na pniakach w całej Krainie. Śmiertelna zimówkopodobna — NIGDY nie zbierać kępek na drewnie iglastym.'},
+  zasloniak_fio:{s:'r',n:'Rzadki w borach sosnowych regionu. Chroniony. Intensywny fiolet niezapomniany — fotografować, nie zbierać.'},
+  mleczaj_deb:  {s:'p',n:'Pospolity pod dębami całej Krainy. Zapach pluskwy lub ościenka natychmiast go zdradza. Nie zbierać.'},
+  szyszkowiec:  {s:'r',n:'Na szyszkach świerkowych w świerczynach. Na Krajnie rzadszy — szukać w marcu w iglastych lasach z dużą ilością szyszek.'},
+  trzesak:      {s:'f',n:'Na martwych gałązkach dębów i leszczyn Krainy. Jesień–zima — żółta galaretowata masa nie do przeoczenia po deszczu.'},
 };
 
 const LOCAL_LABEL={p:'Pospolity w regionie',f:'Częsty w regionie',r:'Rzadki w regionie',v:'Bardzo rzadki',n:'Nie występuje w regionie'};
