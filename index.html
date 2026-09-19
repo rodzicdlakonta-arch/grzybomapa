@@ -290,7 +290,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.21.2</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.22.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -323,6 +323,10 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
         <button class="fb" data-hab="meadow">🌿 Łąka</button>
         <button class="fb" data-hab="wetland">💧 Mokradła</button>
         <button class="fb" data-hab="wood">🍃 Saprofit</button>
+        <button class="fb" data-hab="sandy">🏖 Piaszczysty</button>
+        <button class="fb" data-hab="alpine">🏔 Górski</button>
+        <button class="fb" data-hab="park">🌆 Park/Ogród</button>
+        <button class="fb" data-hab="dung">💩 Koprofilny</button>
       </div>
       <div class="fgl">Sortuj</div>
       <div class="fgrow">
@@ -330,6 +334,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
         <button class="fb" data-sort="name-az">A → Z</button>
         <button class="fb" data-sort="name-za">Z → A</button>
         <button class="fb" data-sort="season">W sezonie</button>
+        <button class="fb" data-sort="rarity">⭐ Rzadkie</button>
+        <button class="fb" data-sort="edibility">🍽 Jadalne</button>
       </div>
     </div>
   </div>
@@ -40845,7 +40851,7 @@ function clearHeat(){
 
 // Zoom debug label
 const _zdbg=document.createElement('div');
-_zdbg.style.cssText='position:fixed;bottom:6px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.55);color:#fff;font:11px/1 monospace;padding:2px 6px;border-radius:3px;pointer-events:none;z-index:9999';
+_zdbg.style.cssText='position:fixed;bottom:22px;right:6px;background:rgba(0,0,0,.28);color:rgba(255,255,255,.6);font:10px/1 monospace;padding:2px 5px;border-radius:2px;pointer-events:none;z-index:9999';
 document.getElementById('mw').appendChild(_zdbg);
 function _zdbgUpdate(){_zdbg.textContent='z'+map.getZoom();}
 _zdbgUpdate();
@@ -41298,6 +41304,10 @@ let activeCats=new Set(),activeSeasons=new Set(),activeHabs=new Set(),activeSort
 const SEASON_MONTHS={spring:[3,4,5],summer:[6,7,8],autumn:[9,10,11],winter:[12,1,2]};
 const HAB_PATTERNS={
   forest:/las|bór|iglaste|liściaste|śwkrk|sosnow|świerkow|bukow|dąbrow|mieszany/i,
+  sandy:/piaszczyst|bór sosnow|sucha gleba/i,
+  alpine:/górsk|górskie|piętro regla|subalpejsk|tatrzańsk|Tatry|Karpat|Beszczad|Sudety/i,
+  park:/park|trawnik|ogród|skwer|zieleń miejsk/i,
+  dung:/obornik|nawóz|kał|koprof|łąkach z wypasem|pastwisk/i,
   meadow:/łąk|pastw|murawa|polana|ogród|skraj/i,
   wetland:/torf|bagien|podmok|wilgotn|bagno/i,
   wood:/pniu|saprofit|drewno|kłod|pasożyt/i
@@ -41323,7 +41333,14 @@ function renderList(){
   let html='';
   if(activeSortBy==='name-az'){entries.sort(([,a],[,b])=>a.name.localeCompare(b.name,'pl'));html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');}
   else if(activeSortBy==='name-za'){entries.sort(([,a],[,b])=>b.name.localeCompare(a.name,'pl'));html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');}
-  else if(activeSortBy==='season'){
+  else if(activeSortBy==='rarity'){
+    entries.sort(([,a],[,b])=>(a.rare?0:1)-(b.rare?0:1)||a.name.localeCompare(b.name,'pl'));
+    html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
+  }else if(activeSortBy==='edibility'){
+    const eo={edible:0,inedible:1,poisonous:2,deadly:3};
+    entries.sort(([,a],[,b])=>(eo[a.cat]??2)-(eo[b.cat]??2)||a.name.localeCompare(b.name,'pl'));
+    html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
+  }else if(activeSortBy==='season'){
     const now=new Date().getMonth()+1;
     entries.sort(([,a],[,b])=>{const da=a.season.length?Math.min(...a.season.map(s=>Math.min(Math.abs(s-now),12-Math.abs(s-now)))):12;const db=b.season.length?Math.min(...b.season.map(s=>Math.min(Math.abs(s-now),12-Math.abs(s-now)))):12;return da-db;});
     html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
@@ -41627,15 +41644,20 @@ function showToast(msg){
   const ctl=L.control({position:'topleft'});
   ctl.onAdd=()=>{
     const div=L.DomUtil.create('div','leaflet-bar');
-    div.innerHTML='<a href="#" title="Moja lokalizacja" style="font-size:17px;display:block;width:30px;height:30px;line-height:30px;text-align:center;color:#333;text-decoration:none">📍</a>';
+    const a=document.createElement('a');
+    a.href='#';a.title='Moja lokalizacja';
+    a.style.cssText='font-size:17px;display:block;width:30px;height:30px;line-height:30px;text-align:center;color:#333;text-decoration:none';
+    a.textContent='📍';
+    div.appendChild(a);
     L.DomEvent.on(div,'click',L.DomEvent.stopPropagation);
     L.DomEvent.on(div,'click',L.DomEvent.preventDefault);
-    let gpsLayer=null;
+    let gpsLayer=null,busy=false;
     div.onclick=()=>{
-      if(!navigator.geolocation){alert('GPS niedostępny');return;}
-      div.textContent='⏳';div.style.opacity='.6';
+      if(busy||!navigator.geolocation){if(!navigator.geolocation)showToast('GPS niedostępny');return;}
+      busy=true;
+      a.textContent='○';a.style.animation='spin 1s linear infinite';a.style.opacity='.5';
       navigator.geolocation.getCurrentPosition(pos=>{
-        div.textContent='⊕';div.style.opacity='';
+        busy=false;a.textContent='📍';a.style.animation='';a.style.opacity='';
         const ll=[pos.coords.latitude,pos.coords.longitude];
         if(gpsLayer)map.removeLayer(gpsLayer);
         gpsLayer=L.layerGroup([
@@ -41644,7 +41666,10 @@ function showToast(msg){
         ]).addTo(map);
         map.flyTo(ll,14,{duration:1.5});
         showToast('Lokalizacja znaleziona');
-      },()=>{div.textContent='⊕';div.style.opacity='';alert('Nie można ustalić lokalizacji — sprawdź uprawnienia GPS');});
+      },()=>{
+        busy=false;a.textContent='📍';a.style.animation='';a.style.opacity='';
+        showToast('Nie można ustalić lokalizacji — sprawdź uprawnienia GPS');
+      },{timeout:12000,maximumAge:60000});
     };
     return div;
   };
