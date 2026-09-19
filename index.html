@@ -108,7 +108,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #ml-resize::after{content:'';display:block;width:36px;height:2px;border-radius:1px;background:var(--border);transition:background .15s}
 #ml-resize:hover::after,#ml-resize.rsz::after{background:var(--gold)}
 #ml-resize:hover,#ml-resize.rsz{background:rgba(201,168,76,.1)}
-#sb-tab{position:absolute;right:-20px;left:auto;top:50%;transform:translateY(-50%);z-index:1100;width:20px;height:52px;background:var(--sb);border:1px solid var(--border);border-left:none;border-radius:0 var(--r) var(--r) 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);user-select:none;transition:background .12s,color .12s}
+#sb-tab{position:fixed;left:320px;top:50%;transform:translateY(-50%);z-index:1100;width:20px;height:52px;background:var(--sb);border:1px solid var(--border);border-left:none;border-radius:0 var(--r) var(--r) 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);user-select:none;transition:left .22s ease,background .12s,color .12s}
 #sb-tab:hover{background:var(--card);color:var(--text)}
 .lay-grp{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);padding:10px 0 5px;margin-top:2px;font-weight:700;opacity:.85;display:flex;align-items:center;gap:7px}
 .lay-grp::after{content:'';flex:1;height:1px;background:var(--border)}
@@ -363,9 +363,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   </div>
   <div id="ml-resize" title="Przeciągnij aby zmienić wysokość listy"></div>
   <div id="ml"></div>
-  <div id="sb-tab" title="Pokaż/ukryj panel">◀</div>
 </nav>
 <div id="sb-resize"></div>
+<div id="sb-tab" title="Pokaż/ukryj panel">◀</div>
 <div id="photo-lb"><img id="photo-lb-img" alt=""><div id="photo-lb-attr" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.5);white-space:nowrap;pointer-events:none"></div></div>
 <div id="mw">
   <div id="map-loader">
@@ -41986,11 +41986,14 @@ renderList();
 
 // ─── Panel controls ────────────────────────────────────────────────────────
 
-// Sidebar collapse — tab slides with sidebar to left edge (natural position:absolute behaviour)
+// Sidebar collapse — tab slides via position:fixed left transition
+let _sbW=320;
 document.getElementById('sb-tab').onclick=()=>{
   const sb=document.getElementById('sidebar'),t=document.getElementById('sb-tab');
+  if(!sb.classList.contains('sb-col'))_sbW=sb.offsetWidth;
   const col=sb.classList.toggle('sb-col');
   t.textContent=col?'►':'◄';
+  t.style.left=col?'0px':_sbW+'px';
 };
 
 // Sidebar resize
@@ -42009,6 +42012,7 @@ document.getElementById('sb-tab').onclick=()=>{
     if(!active)return;
     const w=Math.max(220,Math.min(520,startW+(e.clientX-startX)));
     sb.style.width=w+'px';sb.style.minWidth=w+'px';
+    _sbW=w;tab.style.left=w+'px';
   });
   document.addEventListener('mouseup',()=>{
     if(!active)return;active=false;
