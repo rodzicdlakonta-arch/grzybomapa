@@ -290,7 +290,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.21.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.21.1</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -31120,15 +31120,6 @@ const MUSHROOMS={
     lookalikes:'Hełmówka jadowita (Galerina marginata) — ŚMIERTELNA. Ten sam habitat na drewnie, podobna barwa. Odróżnij: zimówka ma trzon wyraźnie ciemnobrązowy z czarnym aksamitnym (szczotkowym) owłosieniem; hełmówka ma trzon jednobarwny brązowy z wyraźnym pierścieniem i rdzawobrązowym wysypem zarodników na blaszkach.',
     weights:{ka:70,lm:68,bw:72,au:65,ku:60,sw:65,ro:68,lu:65,ja:62,be:60,bi:58,sd:55,po:60,so:62,sl:60,op:58,br:55,gr:52,ps:58,ma:55,wy:68,nak:62,sep:65}
   },
-  kolczakowka:{
-    name:'Kolczakówka jadalna',latin:'Hydnum repandum',cat:'edible',rare:false,wiki:'Hydnum_repandum',
-    season:[8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Buczyny'],
-    soil:'Gleba próchnicza, wilgotna',ph:'4.5–6.5',elev:'0–1200 m',
-    habitat:'W lasach liściastych i mieszanych, szczególnie buczynach.',
-    desc:'Kapelusz kremowobiały do różowobrązowego, 5–15 cm. Pod kapeluszem KOLCE (nie blaszki). Trzon tej samej barwy.',
-    edib:'Smaczny, łagodny. Łatwy do identyfikacji — jedyny popularny kolczasty.',
-    weights:{bw:78,au:72,kn:70,sw:80,ro:78,lu:75,ja:72,be:80,bi:75,go:72,sd:75,se:70,po:75,so:72,ka:65,ps:62,ma:60,su:65,wi:68,wy:75,nak:70,sep:72}
-  },
   czernidlak:{
     name:'Czernidłak kołpakowaty',latin:'Coprinellus comatus',cat:'edible',rare:false,wiki:'Coprinus_comatus',
     season:[5,6,7,8,9,10,11],terrain:['Łąki','Ogródki','Pobocza','Kompostowniki'],
@@ -31307,10 +31298,10 @@ const MUSHROOMS={
     weights:{ka:60,lm:55,ku:52,br:58,gr:55,wk:50,ll:48,sw:45,ro:42,lu:45,bi:38,be:40,sd:42,op:48,st:50,sl:45,tu:50,no:52,dr:48,pi:48,ch:55,ma:45,su:42,wy:55,nak:50,sep:58}
   },
   lejkowka:{
-    name:'Lejkówka oliwkowa',latin:'Omphalotus olearius',cat:'poisonous',rare:false,wiki:'Omphalotus_olearius',
+    name:'Lejkówka oliwkowa',latin:'Omphalotus olearius',cat:'poisonous',rare:true,wiki:'Omphalotus_olearius',
     season:[8,9,10],terrain:['Ciepłe lasy liściaste','Dąbrowy'],
     soil:'Na korzeniach i podstawach drzew liściastych',ph:'Saprofit',elev:'0–800 m',
-    habitat:'Południe i zachód Polski. Na dębach i oliwkach. Świeci w ciemności (bioluminescencja).',
+    habitat:'Skrajnie rzadka w Polsce — znane jedno stanowisko. Typowa dla basenu Morza Śródziemnego. Na korzeniach dębów i kasztanowców. Świeci w ciemności (bioluminescencja).',
     desc:'Pomarańczowa, lejkowata 5–15 cm, rośnie w skupiskach. Blaszki pomarańczowe, zbiegające. Świeci w ciemności. Mylona z kurką.',
     danger:'TRUJĄCY. Silne wymioty i biegunki. Kurka ma fałszywe blaszki, nie jest pomarańczowa na trzonie.',
     weights:{sd:55,se:50,sl:48,op:45,sw:45,ka:42,lm:40,ll:40,be:45,bi:40,ro:42,lu:40,so:40,wy:25,nak:20,sep:28}
@@ -31352,15 +31343,6 @@ const MUSHROOMS={
     edib:'Jadalny i BARDZO SMACZNY — ale TYLKO po ugotowaniu minimum 15–20 minut. Surowy i niedogotowany zawiera termolabilne toksyny. Po ugotowaniu smak wyśmienity, podobny do borowika. Siniowanie znika całkowicie po obróbce.',
     weights:{bw:78,au:75,tu:80,no:78,dr:75,pi:78,ps:76,ku:72,dl:74,ch:78,ma:70,br:66,wk:62,ll:56,su:68,wi:72,be:72,bi:68,po:70,sd:72,se:68,sw:65,wy:80,nak:74,sep:78}
   },
-  gaska_nieb:{
-    name:'Gąska fioletowawa / Blewit',latin:'Lepista nuda',cat:'edible',rare:false,wiki:'Lepista_nuda',
-    season:[9,10,11],terrain:['Lasy liściaste','Lasy mieszane','Ogrody','Kompostowniki'],
-    soil:'Gleba próchnicza, bogata w humus i kompost; saprofit rozkładający ściółkę',ph:'5.5–7.5',elev:'0–1000 m',
-    habitat:'Na ściółce w lasach mieszanych i liściastych, w ogrodach przy kompostownikach, wśród liści. Rośnie w kręgach lub grupami.',
-    desc:'Kapelusz niebieskawofioletowy do szaroniebieskiego lub brązowawy, 5–15 cm. Blaszki fioletowe, gęste. Trzon fioletowy, włóknisty. Zapach kwiatowo-owocowy, intensywny. Barwa fioletowa blaknie ze wiekiem i na sucho.',
-    edib:'Smaczna i aromatyczna. Musi być dobrze ugotowana (surowa lekko toksyczna). Doskonała do zup, sosów, z makaronem. Zbierać okazy z wyraźnie fioletowymi blaszkami.',
-    weights:{bw:70,au:68,ka:72,sw:75,ro:72,lu:70,ja:68,be:70,bi:65,sd:68,po:70,so:65,ll:62,op:65,st:68,sl:65,lm:60,ps:65,ma:62,ll:60,wy:68,nak:65,sep:72}
-  },
   maslak_mod:{
     name:'Maślak modrzewnikowy',latin:'Suillus grevillei',cat:'edible',rare:false,wiki:'Suillus_grevillei',
     season:[7,8,9,10],terrain:['Lasy z modrzewiem','Parki z modrzewiem','Aleje modrzewiowe'],
@@ -31392,12 +31374,12 @@ const MUSHROOMS={
   // ── Nowe gatunki ──────────────────────────────────────────────────────────
 
   gaska_ziel:{
-    name:'Gąska zielonka',latin:'Tricholoma equestre',cat:'edible',rare:false,wiki:'Tricholoma_equestre',
+    name:'Gąska zielonka',latin:'Tricholoma equestre',cat:'poisonous',rare:false,wiki:'Tricholoma_equestre',
     season:[9,10,11],terrain:['Bory sosnowe','Lasy iglaste'],
     soil:'Gleba piaszczysta, kwaśna',ph:'4.0–5.5',elev:'0–900 m',
     habitat:'Pod sosnami na piaszczystej, suchej glebie. Tworzy czarcie kręgi. Typowy grzyb jesiennych borów sosnowych.',
     desc:'Kapelusz żółtozielonawy do oliwkowożółtego, lepkawy, 4–12 cm, z centralnym ciemniejszym garbkiem. Blaszki żółte, gęste. Trzon żółty. Zapach mączysty. Nie sinieje, nie mleczkuje.',
-    edib:'Tradycyjnie jadalna w Polsce. UWAGA: spożywanie dużych ilości (kilka razy dziennie przez wiele dni) może powodować uszkodzenie mięśni sercowych (rabdomioliza). Jeść sporadycznie, w małych porcjach, dobrze ugotowane.',
+    edib:'NIEWSKAZANA do spożycia — po serii śmiertelnych zatruć we Francji (2001–2003) wycofana ze sprzedaży. Powoduje rabdomiolizę (rozpad mięśni sercowych i szkieletowych). Komitet Naukowy UE ds. Żywności wydał ostrzeżenie w 2012 r. Nie zbierać.',
     lookalikes:'Gąska siarkowa (T. sulphureum) — TRUJĄCA; podobny żółtozielony kapelusz, ale cuchnący nieprzyjemnie (karbid/gaz) i miąższ siarkowożółty. Gąska szara (T. terreum) — szarobrązowy (nie żółtozielony) kapelusz, pod sosnami; jadalna.',
     weights:{tu:88,no:85,dr:82,pi:85,au:78,ps:80,dl:82,ch:85,ku:70,ma:68,bw:82,br:68,wk:64,ll:58,sw:52,wy:85,nak:78,sep:82}
   },
@@ -31480,7 +31462,7 @@ const MUSHROOMS={
   },
 
   maczuznik:{
-    name:'Maczużnik bojowy',latin:'Cordyceps militaris',cat:'rare',rare:true,protected:true,wiki:'Cordyceps_militaris',
+    name:'Maczużnik bojowy',latin:'Cordyceps militaris',cat:'inedible',rare:true,protected:true,wiki:'Cordyceps_militaris',
     season:[7,8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Zarośla'],
     soil:'Pasożyt owadów (larwy i poczwarki motyli i chrząszczy) w glebie',ph:'Pasożyt owadów',elev:'0–1400 m',
     habitat:'W ściółce i glebie leśnej lub śródleśnych łąkach. Wyrastają pionowo z zakopanych larw lub poczwarek owadów. Objęty ochroną w Polsce.',
@@ -31491,12 +31473,12 @@ const MUSHROOMS={
   },
 
   kolpaczek:{
-    name:'Kołpaczek motylkowy',latin:'Gymnopilus junonius',cat:'poisonous',rare:false,wiki:'Gymnopilus_junonius',hallucinogenic:true,
+    name:'Łysak wspaniały',latin:'Gymnopilus junonius',cat:'poisonous',rare:false,wiki:'Gymnopilus_junonius',
     season:[9,10,11],terrain:['Lasy liściaste','Parki','Sady','Pniaki'],
     soil:'Saprofit na pniakach i u podstawy pni drzew liściastych i iglastych',ph:'Saprofit drewna',elev:'0–900 m',
     habitat:'Na pniakach buka, dębu, klonu, a także iglastych. Rośnie dużymi, efektownymi kępami. Jesień.',
     desc:'Kapelusz złotordzawy do żółtopomarańczowego, 8–20 cm, bez łusek (ważna cecha!). Blaszki żółte, potem rdzawe. Pierścień na trzonie. Trzon włóknisty, żółtawy. Rośnie gęstymi kępami. Smak bardzo gorzki.',
-    danger:'TRUJĄCY i HALUCYNOGENNY (psylocybina i baeocystyna). Powoduje halucynacje, dezorientację, ból głowy. Substancja nielegalna w Polsce. Mylony z opieńką i podpieńką.',
+    danger:'TRUJĄCY — zawiera gymnopilin (gorzka terpenoid). Powoduje zaburzenia żołądkowe, osłabienie, dezorientację. Halucynogenność europejskich okazów jest niepotwierdzona (ewentualnie śladowa). Nie zbierać.',
     lookalikes:'Opieńka miodowa — jadalna; miodowożółty kapelusz z łuskami, wysyp zarodników kremowy. Podpieńka zmienna — jadalny; mniejszy, miodowy, trzon łuskowany poniżej pierścienia, ochrowyzysyp. Kołpaczek jest znacznie większy, złotordzawy i gorzki.',
     weights:{bw:70,au:65,sw:68,ro:65,lu:62,be:65,bi:62,sd:60,po:62,so:60,ka:62,ll:55,br:52,gr:50,op:58,st:60,sl:55,wy:65,nak:60,sep:62}
   },
@@ -31562,7 +31544,7 @@ const MUSHROOMS={
     soil:'Gleba wilgotna, żyzna, często na ściółce lub przy strumieniach',ph:'6.0–7.5',elev:'0–800 m',
     habitat:'W wilgotnych lasach liściastych, przy strumieniach i w łęgach. Pojawia się wczesną wiosną — jeden z pierwszych grzybów roku.',
     desc:'Różni się od smardza jadalnego tym, że dolna połowa główki jest wolna (nie zlana z trzonem). Główka stożkowata, ciemnobrązowa, 2–5 cm, z regularną siatką żeberkowatych grzebieni. Trzon biały, dłuższy niż u smardza jadalnego. Całość 6–15 cm.',
-    edib:'Jadalny po obróbce cieplnej. Jak wszystkie smardze — NIGDY na surowo. Surowe zawierają kwas helvellowy niszczący erytrocyty. Gotować 10 min, wodę wylać. Wyśmienity po blanszowaniu i usmażeniu z masłem.',
+    edib:'Jadalny po obróbce cieplnej. Jak wszystkie smardze — NIGDY na surowo. Surowe zawierają gyromitrin (lotna hydrazyna szkodliwa dla wątroby). Gotować 10 min, wodę wylać. Wyśmienity po blanszowaniu i usmażeniu z masłem.',
     lookalikes:'Smardz jadalny (M. esculenta) — główka całkowicie zlana z trzonem, bardziej kulista. Piestrzenica (G. esculenta) — TRUJĄCA; fałdowana jak mózg, nie siatkowata. Kielichowiec Morrisa — inny kształt.',
     weights:{ka:70,sw:78,ro:75,lu:72,ja:68,ll:60,br:55,bw:62,au:58,be:68,bi:62,sd:65,so:65,op:65,st:68,sl:62,lm:60,wy:62,nak:58,sep:60}
   },
@@ -31699,19 +31681,8 @@ const MUSHROOMS={
     weights:{bw:60,au:58,ka:65,lm:60,sw:68,ro:65,lu:62,ja:60,be:65,bi:60,sd:55,po:62,so:60,sl:60,op:65,st:65,ll:58,kn:55,wy:60,nak:55,sep:60}
   },
 
-  wieruszka:{
-    name:'Wieruszka jadowita',latin:'Galerina marginata',cat:'deadly',rare:false,wiki:'Galerina_marginata',
-    season:[8,9,10,11],terrain:['Lasy iglaste','Lasy liściaste','Lasy mieszane'],
-    soil:'Na martwym drewnie, pniakach i próchniejących korzeniach',ph:'Saprofit drewna',elev:'0–1500 m',
-    habitat:'Na pniakach i martwym drewnie drzew iglastych i liściastych. Rośnie kępkami podobnie do zimówki i opieńki. Jeden z najniebezpieczniejszych grzybów Europy.',
-    desc:'Mała 1–4 cm, kapelusz miodowożółty do jasnobrązowego, płaski lub lekko stożkowaty. Blaszki jasnobrązowe, brązowiejące. Trzon cienki, ciemny u dołu z delikatną błonkową falbanką (lub jej śladem). Rośnie na drewnie — jak zimówka.',
-    danger:'ŚMIERTELNIE TRUJĄCA — amatoksyny (identyczne z muchomorem sromotnikowym). Jeden owocnik może zabić człowieka. Objawy po 6–24 godz. — potem pozorna poprawa, a po 3–7 dniach niewydolność wątroby. NIGDY nie zbierać zimówki z drewna iglastego lub bez pewnej identyfikacji.',
-    lookalikes:'Zimówka aksamitnotrzonowa (Flammulina velutipes) — JADALNA; charakterystyczny aksamitny ciemnobrązowy trzon, rośnie głównie na martwych drzewach liściastych, brak wyraźnej falbanki. Opieńka miodowa — dużo większa, wyraźny pierścień. Każda mała kępka na drewnie z falbanką = podejrzewaj wieruszką.',
-    weights:{bw:72,au:70,tu:78,no:75,dr:72,pi:74,ps:72,ku:68,dl:74,ch:76,ma:65,br:62,sd:68,se:62,be:68,bi:65,po:68,wy:78,nak:72,sep:76}
-  },
-
   zasloniak_fio:{
-    name:'Zasłonak fiołkowy',latin:'Cortinarius violaceus',cat:'rare',rare:true,protected:true,wiki:'Cortinarius_violaceus',
+    name:'Zasłonak fiołkowy',latin:'Cortinarius violaceus',cat:'inedible',rare:true,protected:true,wiki:'Cortinarius_violaceus',
     season:[8,9,10],terrain:['Bory sosnowe','Buczyny','Lasy iglaste'],
     soil:'Gleba kwaśna, uboga, pod sosnami i bukami',ph:'4.0–6.0',elev:'0–1500 m',
     habitat:'Pod sosnami, świerkami i bukami w lasach o kwaśnych glebach. Rzadki, chroniony. Jeden z najpiękniejszych grzybów Europy.',
@@ -31870,7 +31841,7 @@ const MUSHROOMS={
     soil:'Gleba żyzna, często wapniowa, przy strumieniach lub po pożarach',ph:'6.0–8.0',elev:'0–1200 m',
     habitat:'W iglastych lasach, sadach, przy rumowiskach i po pożarach leśnych. Nieco wcześniej niż smardz jadalny.',
     desc:'Główka STOŻKOWATA do cylindrycznej, ciemnobrązowa do czarnobrązowej, 4–10 cm, z pionowymi żeberkami tworzącymi siatkę. Ciemniejszy niż smardz jadalny. Trzon biały, gruby. Owocnik pusty w środku przy przekroju.',
-    edib:'Jadalny jak smardz jadalny — WYŁĄCZNIE po gotowaniu. Surowy zawiera kwas helvellowy. Jeden z wybitnych jadalnych wiosennych grzybów. Ciemnobrązowa stożkowata głowa wyróżnia go od smardza jadalnego.',
+    edib:'Jadalny jak smardz jadalny — WYŁĄCZNIE po gotowaniu. Surowy zawiera gyromitrin (nie kwas helvellowy). Jeden z wybitnych jadalnych wiosennych grzybów. Ciemnobrązowa stożkowata głowa wyróżnia go od smardza jadalnego.',
     lookalikes:'Smardz jadalny (M. esculenta) — JADALNY; głowa kulista/jajowata, jaśniejsza. Smardz półwolny (M. semilibera) — dolna połowa głowy wolna od trzonu. Piestrzenica (G. esculenta) — TRUJĄCA; głowa mózgowata, zafałdowana, nie siatkowata. Ciemna stożkowata siatka = smardz stożkowaty.',
     weights:{sd:75,se:70,ta:68,be:72,bi:70,go:68,po:68,bw:62,sw:70,ro:68,lu:65,ja:62,ka:58,ll:55,op:62,st:65,au:55,br:52,wy:62,nak:58,sep:60}
   },
@@ -31950,7 +31921,6 @@ const MUSH_ICON_CFG={
   lakówka:      {s:'flat',c:'#9B59B6',t:'#8B4DB6'},
   smardz:       {s:'more',c:'#8B6914'},
   zimowka:      {s:'clus',c:'#FFA500',t:'#4A2A08'},
-  kolczakowka:  {s:'flat',c:'#F5E6C8',t:'#F0DEC0'},
   czernidlak:   {s:'cap',c:'#F8F8F8',t:'#E8E8E8'},
   gaska_szara:  {s:'flat',c:'#9B9B9B',t:'#F0F0F0'},
   hericium:     {s:'lion',c:'#F8F8F8'},
@@ -31973,7 +31943,6 @@ const MUSH_ICON_CFG={
   zolciak_siar: {s:'brac',c:'#FF6B00'},
   krowiak:      {s:'flat',c:'#7A6030',t:'#C8A850'},
   borowik_ceg:  {s:'cap',c:'#6B3A1A',t:'#E0D4B8'},
-  gaska_nieb:   {s:'flat',c:'#7B6ED0',t:'#9B8EE0'},
   maslak_mod:   {s:'cap',c:'#C8A000',t:'#E0D4B8',ring:1},
   uszak:        {s:'brac',c:'#B87333'},
   podpienka:    {s:'clus',c:'#B87B30',t:'#D4A050'},
@@ -32005,7 +31974,6 @@ const MUSH_ICON_CFG={
   maslak_pst:   {s:'cap',c:'#9B6B2A',t:'#E0D4B8'},
   lejkowka_trut:{s:'flat',c:'#D8D4C0',t:'#D8D4C0'},
   gaska_siar:   {s:'flat',c:'#D4C030',t:'#E8E050'},
-  wieruszka:    {s:'clus',c:'#C89040',t:'#9B6020'},
   zasloniak_fio:{s:'flat',c:'#4A2080',t:'#6A40A0'},
   mleczaj_deb:  {s:'flat',c:'#9B6040',t:'#C09060'},
   szyszkowiec:  {s:'flat',c:'#C8A880',t:'#E0C8A0'},
@@ -32124,7 +32092,6 @@ const MUSHROOM_LOCAL={
   lakówka:      {s:'r',n:'Wilgotne lasy liściaste. W Krajnie raczej w olszynach przy Noteci. Rzadziej niż w buczynach których tu brak.'},
   smardz:       {s:'f',n:'Wiosną (kwiecień–maj) pod wiązami i w alejach. Okolice Wyrzyska, Sępólna, wzdłuż rzek. Teraz poza sezonem.'},
   zimowka:      {s:'p',n:'Na pniach wierzb, topoli i wiązów wzdłuż Noteci i rowów. Cały sezon od października do marca — przeżywa mróz.'},
-  kolczakowka:  {s:'f',n:'W lasach mieszanych i grądach Krajny. Kremowy grzyb z kolcami, nie mylić z niczym innym.'},
   czernidlak:   {s:'p',n:'Przy drogach, trawnikach, kompostownikach i skrajach lasów. Jeden z pospolitszych grzybów w pobliżu zabudowań.'},
   gaska_szara:  {s:'p',n:'Masowo w borach sosnowych — tworzy "czarcie kręgi". Październik–listopad. Jeden z typowych grzybów sosnowego boru.'},
   hericium:     {s:'v',n:'Wyłącznie w starodrzewiu — ewentualnie w rezerwatach leśnych na Krajnie. Objęta ochroną. Obserwuj, nie zbieraj.'},
@@ -32146,10 +32113,9 @@ const MUSHROOM_LOCAL={
   lejkowka:     {s:'r',n:'Ciepłe dąbrowy — typowa dla południa Polski. Na Krajnie sporadycznie przy drogach leśnych z dębami.'},
   zolciak_siar: {s:'f',n:'Na starych dębach i wiązach przy Noteci, w parkach wiejskich. Zbierać TYLKO jaskrawopomarańczowe, miękkie brzegi.'},
   krowiak:      {s:'p',n:'BARDZO POSPOLITY — jeden z najczęstszych grzybów Krainy w borach sosnowych i brzezinach. Śmiertelna trucizna kumulacyjna. Nigdy nie zbierać.'},
-  gaska_nieb:   {s:'f',n:'W lasach mieszanych i liściastych, przy kompostownikach. Październik–listopad — szukać już za 2–3 tygodnie.'},
   uszak:        {s:'p',n:'Pospolity na bzach czarnych w pobliżu wiosek, na olchach przy ciekach. Cały rok wzdłuż Noteci i rowów.'},
   podpienka:    {s:'p',n:'Na martwych pniach w lasach Krainy. Pospolita — ale nie zbierać bez pewnego rozróżnienia z hełmówką jadowitą.'},
-  gaska_ziel:   {s:'p',n:'Bardzo pospolita w borach sosnowych Krainy Nakielskiej. Jesień — szukać pod sosnami na piasku.'},
+  gaska_ziel:   {s:'p',n:'Pospolita w borach sosnowych Krainy Nakielskiej. UWAGA: trująca (rabdomioliza). Nie zbierać.'},
   podgrzybek_zaj:{s:'p',n:'Jeden z pospolitszych borowikow regionu. Pod sosnami, dębami i brzozami — przez całe lato i jesień.'},
   mleczaj_obrz: {s:'r',n:'W lasach liściastych przy dębach i bukach. Na Krajnie rzadszy — szukać w grądach przy Noteci.'},
   twardzioszek: {s:'p',n:'Pospolity na łąkach, trawnikach i pastwiskach regionu. Tworzy czarcie kręgi od maja do października.'},
@@ -32158,7 +32124,7 @@ const MUSHROOM_LOCAL={
   czarka:       {s:'f',n:'Wzdłuż rowów i potoków w lasach liściastych. Wiosna — jeden z pierwszych sygnałów sezonu w regionie.'},
   gwiazdosz:    {s:'f',n:'W borach i lasach liściastych Krainy. Pospolity, ale przeoczany — szukać na ściółce jesienią.'},
   maczuznik:    {s:'v',n:'Bardzo rzadki w regionie — pojedyncze stanowiska w lasach liściastych. Chroniony. Fotografować, nie zbierać.'},
-  kolpaczek:    {s:'f',n:'Na pniakach w lasach i parkach regionu. Jesień — duże złotorude kępy. Halucynogenny — nie zbierać.'},
+  kolpaczek:    {s:'f',n:'Na pniakach w lasach i parkach regionu. Jesień — duże złotorude kępy. Trujący (gymnopilin) — nie zbierać.'},
   muszomor_wios:{s:'r',n:'Rzadki, ale śmiertelnie niebezpieczny. Pojawia się wiosną w ciepłych dąbrowach przy Noteci. Jeden grzyb zabija.'},
   strzepiak:    {s:'f',n:'Pod lipami i grabami w parkach miejskich Wyrzyska, Nakła, Sępólna. Wiosna–lato. Śmiertelna trucizna muskarynowa.'},
   pieczarka_zolk:{s:'p',n:'Pospolita na trawnikach i w ogrodach całego regionu. Najczęstsza przyczyna zatruć — wygląda jak jadalna pieczarka.'},
@@ -32177,7 +32143,6 @@ const MUSHROOM_LOCAL={
   maslak_pst:   {s:'p',n:'Jeden z najliczniejszych maślaków borów sosnowych Krainy. Zbierać, ale nie przejadać — może drażnić żołądek.'},
   lejkowka_trut:{s:'p',n:'BARDZO POSPOLITA na trawnikach Wyrzyska, Nakła, Sępólna. Obok twardzioszka — śmiertelnie trująca kopia na trawniku.'},
   gaska_siar:   {s:'f',n:'W dąbrowach i grądach regionu przy Noteci. Rozpoznać natychmiast po karbidowym/gazowym zapachu.'},
-  wieruszka:    {s:'p',n:'Pospolita na pniakach w całej Krainie. Śmiertelna zimówkopodobna — NIGDY nie zbierać kępek na drewnie iglastym.'},
   zasloniak_fio:{s:'r',n:'Rzadki w borach sosnowych regionu. Chroniony. Intensywny fiolet niezapomniany — fotografować, nie zbierać.'},
   mleczaj_deb:  {s:'p',n:'Pospolity pod dębami całej Krainy. Zapach pluskwy lub ościenka natychmiast go zdradza. Nie zbierać.'},
   szyszkowiec:  {s:'r',n:'Na szyszkach świerkowych w świerczynach. Na Krajnie rzadszy — szukać w marcu w iglastych lasach z dużą ilością szyszek.'},
