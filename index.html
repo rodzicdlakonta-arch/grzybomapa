@@ -41284,7 +41284,7 @@ function _onDrawDown(e){
       const bar=L.DomUtil.create('div','leaflet-bar');
       const a=L.DomUtil.create('a','',bar);
       a.innerHTML='⬡';a.href='#';a.title='Narysuj obszar analizy';
-      a.style.fontSize='16px';a.style.lineHeight='26px';a.style.width='26px';a.style.display='block';a.style.textAlign='center';
+      a.style.fontSize='16px';a.style.lineHeight='30px';a.style.width='30px';a.style.display='block';a.style.textAlign='center';
       L.DomEvent.on(a,'click',e=>{L.DomEvent.stop(e);
         if(drawing){if(_drawPreview){map.removeLayer(_drawPreview);_drawPreview=null;}_drawStart=null;_exitDraw();return;}
         drawing=true;a.innerHTML='✕';a.classList.add('dr-drawing');
