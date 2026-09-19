@@ -271,6 +271,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .tt-wetland{background:rgba(30,106,146,.2);border-color:rgba(30,106,146,.4);color:#5dade2}
 .tt-farmland{background:rgba(196,144,42,.2);border-color:rgba(196,144,42,.4);color:#d4a035}
 .tt-pasture{background:rgba(80,154,58,.2);border-color:rgba(80,154,58,.4);color:#82c96e}
+#mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--sb);border-top:1px solid var(--border);z-index:1300;padding-bottom:env(safe-area-inset-bottom)}
 @media(max-width:767px){
   #sidebar{position:fixed;bottom:0;left:0;right:0;width:100%!important;min-width:0!important;height:80vh;border-right:none;border-top:1px solid var(--border);border-radius:16px 16px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)!important;z-index:1200}
   #sidebar.mob-open{transform:translateY(0)}
@@ -289,7 +290,6 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #podzol-legend{bottom:176px!important}
   #mob-nav{display:flex}
 }
-#mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--sb);border-top:1px solid var(--border);z-index:1300;padding-bottom:env(safe-area-inset-bottom)}
 .mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-size:9.5px;color:var(--muted);border:none;background:none;font-family:var(--f-body);transition:color .15s;user-select:none;padding:6px 0}
 .mob-tab.active,.mob-tab:hover{color:var(--gold)}
 .mob-ico{font-size:21px;line-height:1}
@@ -41055,6 +41055,12 @@ function showInfoPanel(mid){
   }
   document.getElementById('photo-lb').onclick=e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('open');};
   document.getElementById('ip').classList.add('open');
+  // On mobile: close sidebar so info panel is visible
+  if(window.innerWidth<=767){
+    document.getElementById('sidebar').classList.remove('mob-open');
+    const tabMap=document.getElementById('mob-map');
+    if(tabMap)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabMap);});
+  }
 }
 
 // ─── Area analysis ────────────────────────────────────────
@@ -41994,7 +42000,22 @@ document.getElementById('mc-tab').onclick=()=>{
   t.title=col?'Pokaż warstwy':'Ukryj warstwy';
 };
 
-// Mobile navigation
+</script>
+<div id="mob-nav">
+  <button class="mob-tab active" id="mob-map">
+    <span class="mob-ico">🗺️</span>
+    <span>Mapa</span>
+  </button>
+  <button class="mob-tab" id="mob-list">
+    <span class="mob-ico">🍄</span>
+    <span>Grzyby</span>
+  </button>
+  <button class="mob-tab" id="mob-filters">
+    <span class="mob-ico">🔍</span>
+    <span>Filtry</span>
+  </button>
+</div>
+<script>
 (function(){
   const sb=document.getElementById('sidebar');
   const tabMap=document.getElementById('mob-map');
@@ -42012,19 +42033,5 @@ document.getElementById('mc-tab').onclick=()=>{
   };
 })();
 </script>
-<div id="mob-nav">
-  <button class="mob-tab active" id="mob-map">
-    <span class="mob-ico">🗺️</span>
-    <span>Mapa</span>
-  </button>
-  <button class="mob-tab" id="mob-list">
-    <span class="mob-ico">🍄</span>
-    <span>Grzyby</span>
-  </button>
-  <button class="mob-tab" id="mob-filters">
-    <span class="mob-ico">🔍</span>
-    <span>Filtry</span>
-  </button>
-</div>
 </body>
 </html>
