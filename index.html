@@ -284,7 +284,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.18.4</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.19.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -40756,10 +40756,19 @@ function selectMushroom(mid){
   // Sandy/acidic soil → conifer inference; rich/clay soil → broadleaf inference
   const sandySoil=/piaszczysta|piaskow|ubogie bory/i.test(soilStr);
   const richSoil=/żyzna|gliniasta|próchnic/i.test(soilStr);
-  const coniferPref=coniferTerrain||(sandySoil&&!richSoil&&!openHab&&!wetHab);
-  const broadleafPref=broadleafTerrain||(richSoil&&!sandySoil&&!openHab&&!wetHab);
-  // Mountain species: terrain says 'górski' or 'świerkow' (spruce = mountain in Poland)
-  const mountainSpec=/górsk|górskie|piętro regla|subalpejski/i.test(terrainStr+' '+(m.habitat||''));
+  // pH: parse range e.g. "3.5–5.5" → acidic soil confirms conifers; alkaline (>6.5) confirms broadleaf
+  const phStr=m.ph||'';
+  const phMatch=phStr.match(/(\d+(?:\.\d+)?)[–\-](\d+(?:\.\d+)?)/);
+  const phLow=phMatch?parseFloat(phMatch[1]):5;
+  const phHigh=phMatch?parseFloat(phMatch[2]):7;
+  const acidicSoil=phHigh<5.8;   // pH max below 5.8 → acidic → pine/spruce dominated
+  const alkalineSoil=phLow>6.5;  // pH min above 6.5 → alkaline → beech/oak
+  const coniferPref=coniferTerrain||(sandySoil&&!richSoil&&!openHab&&!wetHab)||(acidicSoil&&!openHab&&!wetHab&&!broadleafTerrain);
+  const broadleafPref=broadleafTerrain||(richSoil&&!sandySoil&&!openHab&&!wetHab)||(alkalineSoil&&!openHab&&!wetHab&&!coniferTerrain);
+  // Elevation: parse m.elev e.g. "300–900 m n.p.m." → minElev>300 = mountain species
+  const elevStr=m.elev||'';
+  const elevMin=parseInt((elevStr.match(/(\d+)/)||[0,0])[1])||0;
+  const mountainSpec=elevMin>300||/górsk|górskie|piętro regla|subalpejski/i.test(terrainStr+' '+(m.habitat||''));
   // Show base heatmap (all terrain data) immediately
   _heatPts=genHeat(m.weights,seed,400,{openHab,wetHab,farmlandSpec,waterEdge,coniferPref,broadleafPref,mountainSpec,avoidUrban:true}).map(p=>[p[0],p[1],p[2]*.72]);
   // BDL old-growth bonus: if user has loaded BDL data, boost density near mature stands (>60yr)
@@ -40767,8 +40776,13 @@ function selectMushroom(mid){
     const isSaprofit=/saprofit drewna|pasożyt/i.test(m.ph||'');
     bdlStore.forEach(b=>{
       if(b.age<50)return;
-      // Old forest: +1 to +3 extra points; saprofit species prefer very old/decaying (>80yr)
-      const needed=isSaprofit&&b.age>80?3:b.age>80?2:1;
+      // Use b.cd (BDL tree species code) to skip mismatched trees
+      const bIsConifer=b.cd&&/^(SO|PI|ŚW|SW|JD|MD)/i.test(b.cd);
+      const bIsBroadleaf=b.cd&&/^(BK|DB|GB|JW|LP|OL|JS|CZ)/i.test(b.cd);
+      if(coniferPref&&bIsBroadleaf)return;   // conifer fungus, broadleaf tree → skip
+      if(broadleafPref&&bIsConifer)return;    // broadleaf fungus, pine tree → skip
+      const typeBonus=((coniferPref&&bIsConifer)||(broadleafPref&&bIsBroadleaf))?1:0;
+      const needed=(isSaprofit&&b.age>80?3:b.age>80?2:1)+typeBonus;
       for(let i=0;i<needed;i++){
         const la=b.lat+(Math.random()-.5)*.004;
         const ln=b.lng+(Math.random()-.5)*.005;
