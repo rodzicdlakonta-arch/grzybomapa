@@ -284,7 +284,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.17.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.17.1</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -40696,7 +40696,7 @@ const _inatSpecCache={},_gbifCache={};
 const HEAT_GRAD={0.15:'#c6ff40',0.45:'#ffc200',0.72:'#ff5500',1.0:'#cc0033'};
 
 // Zoom-adaptive radius: large blobs when zoomed out, tighter when zoomed in
-function zoomHeatRadius(z){return Math.max(15,Math.round(78*Math.pow(0.74,Math.max(0,z-6))));}
+function zoomHeatRadius(z){return Math.max(30,Math.round(80*Math.pow(0.74,Math.max(0,z-6))));}
 
 // Data quality certainty: how well-documented is this species in real databases
 function calcCertainty(inatN,gbifN,hasLocal){
