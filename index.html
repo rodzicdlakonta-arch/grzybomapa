@@ -236,9 +236,15 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #map-loader .ml-ring{width:52px;height:52px;border:3px solid var(--card2);border-top-color:var(--gold);border-radius:50%;animation:spin .9s linear infinite}
 #map-loader .ml-title{font-family:var(--f-disp);font-size:26px;font-weight:600;color:var(--gold);letter-spacing:.04em}
 #map-loader .ml-sub{font-size:12px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
-.mphoto{width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:16px;display:none}
-.fb2{display:flex;flex-direction:column;padding:0}
-.fb2 .fbody{display:flex;gap:5px;flex-wrap:wrap;padding:0 14px 10px}
+.mphoto{width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:16px;display:none;opacity:0;transition:opacity .3s}
+.mphoto.loaded{opacity:1}
+.mphoto-wrap{position:relative;margin-bottom:16px;border-radius:8px;overflow:hidden;background:var(--card);min-height:0}
+.mphoto-wrap.loading{min-height:160px}
+.mphoto-wrap.loading::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--card) 25%,var(--border) 50%,var(--card) 75%);background-size:200% 100%;animation:shimmer 1.2s infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.fgl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:8px 14px 3px;font-weight:600}
+.fgrow{display:flex;gap:5px;flex-wrap:wrap;padding:0 14px 6px}
+#filters-panel{display:flex;flex-direction:column;padding:0}
 .fhdr{display:flex;justify-content:space-between;align-items:center;padding:6px 14px 5px;cursor:pointer;user-select:none;transition:background .12s}
 .fhdr:hover{background:rgba(212,160,48,.05)}
 [data-theme="light"] .fhdr:hover{background:rgba(122,80,16,.06)}
@@ -284,7 +290,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.19.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.20.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -293,32 +299,38 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
     <span id="sico">⌕</span>
     <div id="sr"></div>
   </div>
-  <div id="fb">
-    <div class="fhdr" id="fhdr-cat"><span class="flabel">Kategoria</span><span class="fcarr" id="farr-cat">▾</span></div>
-    <div class="fbody" id="fbody-cat" style="max-height:80px">
-      <button class="fb on" data-cat="all">Wszystkie</button>
-      <button class="fb" data-cat="edible">Jadalne</button>
-      <button class="fb" data-cat="dangerous">Trujące</button>
-      <button class="fb" data-cat="rare">Rzadkie</button>
-      <button class="fb" data-cat="hallucinogenic">🍄 Halucynogenne</button>
-    </div>
-  </div>
-  <div class="fb2">
-    <div class="fhdr" id="fhdr-season"><span class="flabel">Sezon</span><span class="fcarr" id="farr-season">▾</span></div>
-    <div class="fbody" id="fbody-season" style="max-height:60px">
-      <button class="fb" data-season="spring">🌱 Wiosna</button>
-      <button class="fb" data-season="summer">☀️ Lato</button>
-      <button class="fb" data-season="autumn">🍂 Jesień</button>
-      <button class="fb" data-season="winter">❄️ Zima</button>
-    </div>
-  </div>
-  <div class="fb2">
-    <div class="fhdr" id="fhdr-hab"><span class="flabel">Siedlisko</span><span class="fcarr" id="farr-hab">▾</span></div>
-    <div class="fbody" id="fbody-hab" style="max-height:60px">
-      <button class="fb" data-hab="forest">🌲 Bór/Las</button>
-      <button class="fb" data-hab="meadow">🌿 Łąka</button>
-      <button class="fb" data-hab="wetland">💧 Mokradła</button>
-      <button class="fb" data-hab="wood">🍃 Saprofit</button>
+  <div id="filters-panel">
+    <div class="fhdr" id="fhdr-filters"><span class="flabel">Filtry i sortowanie</span><div style="display:flex;align-items:center;gap:8px"><span id="filter-badge" style="font-size:10px;color:var(--gold);font-weight:600"></span><span class="fcarr" id="farr-filters">▾</span></div></div>
+    <div class="fbody" id="fbody-filters" style="max-height:420px">
+      <div class="fgl">Kategoria</div>
+      <div class="fgrow">
+        <button class="fb on" data-cat="all">Wszystkie</button>
+        <button class="fb" data-cat="edible">Jadalne</button>
+        <button class="fb" data-cat="dangerous">Trujące</button>
+        <button class="fb" data-cat="rare">Rzadkie</button>
+        <button class="fb" data-cat="hallucinogenic">🍄 Halucynogenne</button>
+      </div>
+      <div class="fgl">Sezon</div>
+      <div class="fgrow">
+        <button class="fb" data-season="spring">🌱 Wiosna</button>
+        <button class="fb" data-season="summer">☀️ Lato</button>
+        <button class="fb" data-season="autumn">🍂 Jesień</button>
+        <button class="fb" data-season="winter">❄️ Zima</button>
+      </div>
+      <div class="fgl">Siedlisko</div>
+      <div class="fgrow">
+        <button class="fb" data-hab="forest">🌲 Bór/Las</button>
+        <button class="fb" data-hab="meadow">🌿 Łąka</button>
+        <button class="fb" data-hab="wetland">💧 Mokradła</button>
+        <button class="fb" data-hab="wood">🍃 Saprofit</button>
+      </div>
+      <div class="fgl">Sortuj</div>
+      <div class="fgrow">
+        <button class="fb on" data-sort="default">Domyślnie</button>
+        <button class="fb" data-sort="name-az">A → Z</button>
+        <button class="fb" data-sort="name-za">Z → A</button>
+        <button class="fb" data-sort="season">W sezonie</button>
+      </div>
     </div>
   </div>
   <div id="season-bar" style="padding:4px 12px;border-top:1px solid var(--border);font-size:11px">
@@ -40790,8 +40802,24 @@ function selectMushroom(mid){
       }
     });
   }
+  // MUSHROOM_LOCAL small boost/penalty for the Krajna local area
+  const _ld=MUSHROOM_LOCAL[mid];
+  if(_ld){
+    const _mult={c:1.12,f:1.06,r:0.80,n:0}[_ld.s]||1.0;
+    if(_mult!==1.0){
+      _heatPts=_heatPts.map(p=>{
+        const inLocal=p[0]>52.7&&p[0]<53.9&&p[1]>16.4&&p[1]<18.2;
+        if(!inLocal)return p;
+        if(_mult===0)return null;
+        return[p[0],p[1],Math.min(1,p[2]*_mult)];
+      }).filter(Boolean);
+    }
+  }
   heatLayer=_mkHeat(_heatPts,map.getZoom()).addTo(map);
   document.getElementById('hl').classList.add('vis');
+  // Auto-collapse weather panel so it doesn't overlap heatmap legend
+  const _wxEl=document.getElementById('wx');
+  if(_wxEl&&!_wxEl.classList.contains('wx-col')){_wxEl.classList.add('wx-col');_wxEl.dataset.autoCollapsed='1';document.getElementById('wx-col').textContent='▼';}
   document.getElementById('hl-name').textContent=m.name;
   const habLabel=wetHab?'🌿 Mokradła i torfowiska':waterEdge?'💧 Olsy i brzegi wód':openHab?'🌿 Łąki i pola':farmlandSpec?'🌾 Pola i ogrody':coniferPref?'🌲 Lasy iglaste':broadleafPref?'🍂 Lasy liściaste':'🌲 Lasy i ich skraje';
   document.getElementById('hl-hab').textContent=habLabel;
@@ -40817,6 +40845,9 @@ function clearHeat(){
   document.querySelectorAll('.mc').forEach(c=>c.classList.remove('sel'));
   document.getElementById('hl').classList.remove('vis');
   document.getElementById('ip').classList.remove('open');
+  // Restore weather if we auto-collapsed it
+  const wxEl=document.getElementById('wx');
+  if(wxEl&&wxEl.dataset.autoCollapsed){delete wxEl.dataset.autoCollapsed;wxEl.classList.remove('wx-col');document.getElementById('wx-col').textContent='▲';}
 }
 
 // Zoom debug label
@@ -40875,7 +40906,7 @@ function showInfoPanel(mid){
     else if(m.rare)extra=`<div class="rbox">✦ Gatunek rzadki — zbieraj z umiarem. Udokumentuj znalezisko.</div>`;
   }
   document.getElementById('pbody').innerHTML=`
-    <img id="mwiki-photo" class="mphoto" alt="${m.name}" onerror="this.style.display='none'">
+    <div class="mphoto-wrap loading" id="mphoto-wrap"><img id="mwiki-photo" class="mphoto" alt="${m.name}" onerror="this.parentElement.classList.remove('loading');this.style.display='none'" onload="this.classList.add('loaded');this.style.display='block';this.parentElement.classList.remove('loading')"></div>
     ${extra}
     <div class="isec"><h4>Sezon owocnikowania</h4>
       <div class="sbar">${sbar}</div>
@@ -41270,7 +41301,7 @@ function closeSearch(){srEl.style.display='none';siEl.blur();}
 document.addEventListener('click',e=>{if(!e.target.closest('#sw'))closeSearch();});
 
 // ─── Sidebar list ─────────────────────────────────────────
-let activeFilter='all',activeSeasonFilter=null,activeHabFilter=null;
+let activeCats=new Set(),activeSeasons=new Set(),activeHabs=new Set(),activeSortBy='default';
 const SEASON_MONTHS={spring:[3,4,5],summer:[6,7,8],autumn:[9,10,11],winter:[12,1,2]};
 const HAB_PATTERNS={
   forest:/las|bór|iglaste|liściaste|śwkrk|sosnow|świerkow|bukow|dąbrow|mieszany/i,
@@ -41278,73 +41309,79 @@ const HAB_PATTERNS={
   wetland:/torf|bagien|podmok|wilgotn|bagno/i,
   wood:/pniu|saprofit|drewno|kłod|pasożyt/i
 };
-
+function _updateFilterBadge(){
+  const n=activeCats.size+activeSeasons.size+activeHabs.size+(activeSortBy!=='default'?1:0);
+  document.getElementById('filter-badge').textContent=n?n+' aktywnych':'';
+}
+function _mkMushCard(mid,m){
+  const ico=getMushSVG(mid);
+  const cls=m.cat==='edible'?'edible':m.hallucinogenic?'hallucinogenic':m.cat==='poisonous'?'poisonous':m.cat==='deadly'?'deadly':m.rare?'rare':'inedible';
+  const bgs=[catBadge(m)];
+  if(m.rare)bgs.push(`<span class="b b-r">✦</span>`);
+  if(m.protected)bgs.push(`<span class="b b-pr">§</span>`);
+  bgs.push(localBadge(mid));
+  return `<div class="mc" data-mid="${mid}" onclick="selectMushroom('${mid}')"><div class="mico ${cls}" style="font-size:0;padding:4px">${ico}</div><div style="flex:1;min-width:0"><div class="mn">${m.name}</div><div class="ml-lat">${m.latin}</div><div class="mbadges">${bgs.join('')}</div></div></div>`;
+}
 function renderList(){
-  const groups={edible:[],rare:[],poisonous:[],deadly:[],inedible:[]};
-  Object.entries(MUSHROOMS).forEach(([mid,m])=>{
-    let ok=activeFilter==='all'||(activeFilter==='edible'&&m.cat==='edible')
-      ||(activeFilter==='dangerous'&&(m.cat==='poisonous'||m.cat==='deadly'))
-      ||(activeFilter==='rare'&&m.rare)
-      ||(activeFilter==='hallucinogenic'&&m.hallucinogenic);
-    if(!ok)return;
-    if(activeSeasonFilter){
-      const months=SEASON_MONTHS[activeSeasonFilter]||[];
-      if(!m.season.some(s=>months.includes(s)))return;
-    }
-    if(activeHabFilter){
-      const pat=HAB_PATTERNS[activeHabFilter];
-      if(!pat){}
-      else if(!m.terrain.some(t=>pat.test(t))&&!(m.soil&&pat.test(m.soil))&&!(m.habitat&&pat.test(m.habitat)))return;
-    }
-    const ico=getMushSVG(mid);
-    const cls=m.cat==='edible'?'edible':m.hallucinogenic?'hallucinogenic':m.cat==='poisonous'?'poisonous':m.cat==='deadly'?'deadly':m.rare?'rare':'inedible';
-    const bgs=[catBadge(m)];
-    if(m.rare)bgs.push(`<span class="b b-r">✦</span>`);
-    if(m.protected)bgs.push(`<span class="b b-pr">§</span>`);
-    bgs.push(localBadge(mid));
-    const g=m.rare?'rare':m.cat;
-    groups[g].push(`<div class="mc" data-mid="${mid}" onclick="selectMushroom('${mid}')">
-      <div class="mico ${cls}" style="font-size:0;padding:4px">${ico}</div>
-      <div style="flex:1;min-width:0">
-        <div class="mn">${m.name}</div>
-        <div class="ml-lat">${m.latin}</div>
-        <div class="mbadges">${bgs.join('')}</div>
-      </div></div>`);
-  });
-  const names={edible:'Jadalne',rare:'Rzadkie i specjalne',poisonous:'Trujące',deadly:'Śmiertelnie trujące',inedible:'Niejadalne'};
+  let entries=Object.entries(MUSHROOMS);
+  if(activeCats.size) entries=entries.filter(([,m])=>(activeCats.has('edible')&&m.cat==='edible')||(activeCats.has('dangerous')&&(m.cat==='poisonous'||m.cat==='deadly'))||(activeCats.has('rare')&&m.rare)||(activeCats.has('hallucinogenic')&&m.hallucinogenic));
+  if(activeSeasons.size) entries=entries.filter(([,m])=>[...activeSeasons].some(s=>{const mo=SEASON_MONTHS[s]||[];return m.season.some(x=>mo.includes(x));}));
+  if(activeHabs.size) entries=entries.filter(([,m])=>[...activeHabs].some(h=>{const pat=HAB_PATTERNS[h];if(!pat)return false;return m.terrain.some(t=>pat.test(t))||(m.soil&&pat.test(m.soil))||(m.habitat&&pat.test(m.habitat));}));
   let html='';
-  for(const [k,items] of Object.entries(groups)){
-    if(!items.length)continue;
-    html+=`<div class="lsec">${names[k]}</div>`+items.join('');
+  if(activeSortBy==='name-az'){entries.sort(([,a],[,b])=>a.name.localeCompare(b.name,'pl'));html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');}
+  else if(activeSortBy==='name-za'){entries.sort(([,a],[,b])=>b.name.localeCompare(a.name,'pl'));html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');}
+  else if(activeSortBy==='season'){
+    const now=new Date().getMonth()+1;
+    entries.sort(([,a],[,b])=>{const da=a.season.length?Math.min(...a.season.map(s=>Math.min(Math.abs(s-now),12-Math.abs(s-now)))):12;const db=b.season.length?Math.min(...b.season.map(s=>Math.min(Math.abs(s-now),12-Math.abs(s-now)))):12;return da-db;});
+    html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
+  }else{
+    const groups={edible:[],rare:[],poisonous:[],deadly:[],inedible:[]};
+    entries.forEach(([mid,m])=>{const g=m.rare?'rare':m.cat;if(groups[g])groups[g].push(_mkMushCard(mid,m));});
+    const names={edible:'Jadalne',rare:'Rzadkie i specjalne',poisonous:'Trujące',deadly:'Śmiertelnie trujące',inedible:'Niejadalne'};
+    for(const[k,items]of Object.entries(groups)){if(items.length)html+=`<div class="lsec">${names[k]}</div>`+items.join('');}
   }
   document.getElementById('ml').innerHTML=html||`<div style="padding:20px;color:var(--muted);font-size:13px;text-align:center">Brak wyników</div>`;
 }
-
-// Category filter
+// Category multi-select
 document.querySelectorAll('.fb[data-cat]').forEach(btn=>{
   btn.onclick=()=>{
-    document.querySelectorAll('.fb[data-cat]').forEach(b=>b.classList.remove('on'));
-    btn.classList.add('on');activeFilter=btn.dataset.cat;renderList();
+    const cat=btn.dataset.cat;
+    if(cat==='all'){activeCats.clear();document.querySelectorAll('.fb[data-cat]').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+    else{document.querySelector('.fb[data-cat="all"]').classList.remove('on');activeCats.has(cat)?(activeCats.delete(cat),btn.classList.remove('on')):(activeCats.add(cat),btn.classList.add('on'));if(!activeCats.size)document.querySelector('.fb[data-cat="all"]').classList.add('on');}
+    _updateFilterBadge();renderList();
   };
 });
-// Season filter (toggle)
+// Season multi-select
 document.querySelectorAll('.fb[data-season]').forEach(btn=>{
   btn.onclick=()=>{
     const s=btn.dataset.season;
-    if(activeSeasonFilter===s){btn.classList.remove('on');activeSeasonFilter=null;}
-    else{document.querySelectorAll('.fb[data-season]').forEach(b=>b.classList.remove('on'));btn.classList.add('on');activeSeasonFilter=s;}
-    renderList();
+    activeSeasons.has(s)?(activeSeasons.delete(s),btn.classList.remove('on')):(activeSeasons.add(s),btn.classList.add('on'));
+    _updateFilterBadge();renderList();
   };
 });
-// Habitat filter (toggle)
+// Habitat multi-select
 document.querySelectorAll('.fb[data-hab]').forEach(btn=>{
   btn.onclick=()=>{
     const h=btn.dataset.hab;
-    if(activeHabFilter===h){btn.classList.remove('on');activeHabFilter=null;}
-    else{document.querySelectorAll('.fb[data-hab]').forEach(b=>b.classList.remove('on'));btn.classList.add('on');activeHabFilter=h;}
-    renderList();
+    activeHabs.has(h)?(activeHabs.delete(h),btn.classList.remove('on')):(activeHabs.add(h),btn.classList.add('on'));
+    _updateFilterBadge();renderList();
   };
 });
+// Sort single-select
+document.querySelectorAll('.fb[data-sort]').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.fb[data-sort]').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');activeSortBy=btn.dataset.sort;
+    _updateFilterBadge();renderList();
+  };
+});
+// Single collapsible for all filters
+(()=>{
+  const h=document.getElementById('fhdr-filters'),b=document.getElementById('fbody-filters'),a=document.getElementById('farr-filters');
+  if(!h)return;
+  try{if(localStorage.getItem('fc-filters')==='1'){b.classList.add('col');a.style.transform='rotate(-90deg)';}}catch(e){}
+  h.addEventListener('click',()=>{const col=b.classList.toggle('col');a.style.transform=col?'rotate(-90deg)':'';try{localStorage.setItem('fc-filters',col?'1':'0');}catch(e){}});
+})();
 
 // Prevent map drag when clicking controls inside the map div
 ['mc','drbtn','hl','ap'].forEach(id=>{
@@ -41603,16 +41640,18 @@ function showToast(msg){
     let gpsLayer=null;
     div.onclick=()=>{
       if(!navigator.geolocation){alert('GPS niedostępny');return;}
+      div.textContent='⏳';div.style.opacity='.6';
       navigator.geolocation.getCurrentPosition(pos=>{
+        div.textContent='⊕';div.style.opacity='';
         const ll=[pos.coords.latitude,pos.coords.longitude];
         if(gpsLayer)map.removeLayer(gpsLayer);
         gpsLayer=L.layerGroup([
           L.circle(ll,{radius:pos.coords.accuracy/2,color:'#1976D2',fillColor:'#1976D2',fillOpacity:.10,weight:1}),
           L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:'#1976D2',fillOpacity:1})
         ]).addTo(map);
-        map.setView(ll,14);
+        map.flyTo(ll,14,{duration:1.5});
         showToast('Lokalizacja znaleziona');
-      },()=>alert('Nie można ustalić lokalizacji — sprawdź uprawnienia GPS'));
+      },()=>{div.textContent='⊕';div.style.opacity='';alert('Nie można ustalić lokalizacji — sprawdź uprawnienia GPS');});
     };
     return div;
   };
@@ -41728,26 +41767,7 @@ document.getElementById('sb-tab').onclick=()=>{
   });
 })();
 
-// Filter section collapse toggles
-(function(){
-  const sbt=document.getElementById('sb-top');
-  function syncTopH(){
-    if(sbt.style.height)setTimeout(()=>{sbt.style.height=sbt.scrollHeight+'px';},240);
-  }
-  [['fhdr-cat','fbody-cat','farr-cat','fc-cat'],
-   ['fhdr-season','fbody-season','farr-season','fc-season'],
-   ['fhdr-hab','fbody-hab','farr-hab','fc-hab']
-  ].forEach(([hid,bid,aid,key])=>{
-    const h=document.getElementById(hid),b=document.getElementById(bid),a=document.getElementById(aid);
-    try{if(localStorage.getItem(key)==='1'){b.classList.add('col');a.style.transform='rotate(-90deg)';}}catch(e){}
-    h.addEventListener('click',()=>{
-      const col=b.classList.toggle('col');
-      a.style.transform=col?'rotate(-90deg)':'';
-      try{localStorage.setItem(key,col?'1':'0');}catch(e){}
-      syncTopH();
-    });
-  });
-})();
+// (filter collapse now handled inline above)
 
 // Mushroom list vertical resize — controls #sb-top height so dragging UP shrinks controls, grows list
 (function(){
