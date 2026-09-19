@@ -81,6 +81,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #sidebar.sb-col{width:0!important;min-width:0!important}
 #sb-resize{width:5px;flex-shrink:0;cursor:ew-resize;transition:background .15s;z-index:999}
 #sb-resize:hover,#sb-resize.rsz{background:rgba(201,168,76,.3)}
+#sb-top{overflow:hidden;flex-shrink:0}
 #ml-resize{height:7px;flex-shrink:0;cursor:ns-resize;display:flex;align-items:center;justify-content:center;transition:background .15s}
 #ml-resize::after{content:'';display:block;width:36px;height:2px;border-radius:1px;background:var(--border);transition:background .15s}
 #ml-resize:hover::after,#ml-resize.rsz::after{background:var(--gold)}
@@ -182,6 +183,11 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .hbox{background:rgba(125,60,185,.14);border:1px solid rgba(125,60,185,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#c39de8;line-height:1.55}
 .cpbox{background:rgba(201,120,30,.14);border:1px solid rgba(201,120,30,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#e8a040;line-height:1.55}
 .labox{background:rgba(180,140,30,.09);border:1px solid rgba(180,140,30,.28);border-radius:var(--r);padding:11px 13px;margin-bottom:0;font-size:12.5px;color:#b8962a;line-height:1.55}
+#map-loader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .5s ease,visibility .5s ease}
+#map-loader.done{opacity:0;visibility:hidden;pointer-events:none}
+#map-loader .ml-ring{width:52px;height:52px;border:3px solid var(--card2);border-top-color:var(--gold);border-radius:50%;animation:spin .9s linear infinite}
+#map-loader .ml-title{font-family:var(--f-disp);font-size:26px;font-weight:600;color:var(--gold);letter-spacing:.04em}
+#map-loader .ml-sub{font-size:12px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
 .mphoto{width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:16px;display:none}
 .fb2{padding:4px 14px 8px;border-bottom:1px solid var(--border);display:flex;gap:5px;flex-wrap:wrap;align-items:center}
 .flabel{font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding-right:2px;white-space:nowrap}
@@ -196,10 +202,17 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 </head>
 <body>
 
+<div id="map-loader">
+  <div class="ml-ring"></div>
+  <div class="ml-title">🍄 GrzyboMapa</div>
+  <div class="ml-sub">Ładowanie mapy Polski…</div>
+</div>
+
 <nav id="sidebar">
+  <div id="sb-top">
   <div id="logo">
     <h1>GrzyboMapa</h1>
-    <p>Interaktywna mapa grzybów Polski <span style="font-size:10px;opacity:.85;font-weight:500">v1.5.1</span></p>
+    <p>Interaktywna mapa grzybów Polski <span style="font-size:10px;opacity:.85;font-weight:500">v1.5.2</span></p>
   </div>
   <div id="sw">
     <input id="si" type="text" placeholder="Szukaj grzyba lub miejscowości…" autocomplete="off">
@@ -231,6 +244,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
     <div id="season-hdr" style="color:var(--gold);font-weight:600;cursor:pointer;user-select:none;line-height:2">🍄 W sezonie: <span style="opacity:.6;font-size:10px">▸</span></div>
     <div id="sb-species" style="color:var(--text-muted);display:none;line-height:1.7;padding-bottom:4px"></div>
     <a href="https://grzyby.pl" target="_blank" style="display:block;color:var(--gold);opacity:.7;font-size:10px;padding-bottom:4px;text-decoration:none">↗ Raporty zbieraczy: grzyby.pl</a>
+  </div>
   </div>
   <div id="ml-resize" title="Przeciągnij aby zmienić wysokość listy"></div>
   <div id="ml"></div>
@@ -31552,6 +31566,14 @@ const baseLayers={
 };
 baseLayers.topo.addTo(map);
 
+// Dismiss loader when first tiles are ready (fallback: 4s)
+(function(){
+  const loader=document.getElementById('map-loader');
+  function dismiss(){loader.classList.add('done');}
+  baseLayers.topo.once('load',dismiss);
+  setTimeout(dismiss,4000);
+})();
+
 // Forest polygons
 function forestDisplayName(n){ return /^f\d+$/.test(n)?'Lasy Wyrzyskie':n; }
 const CORINE_LABEL={'311':'Las liściasty','312':'Bór sosnowy','313':'Las mieszany'};
@@ -40819,30 +40841,35 @@ document.getElementById('sb-tab').onclick=()=>{
   });
 })();
 
-// Mushroom list vertical resize
+// Mushroom list vertical resize — controls #sb-top height so dragging UP shrinks controls, grows list
 (function(){
   const handle=document.getElementById('ml-resize');
-  const ml=document.getElementById('ml');
-  const sb=document.getElementById('sidebar');
-  let active=false,startY=0,startH=0;
-  try{const s=localStorage.getItem('ml-h');if(s){ml.style.flex='none';ml.style.height=s+'px';}}catch(e){}
-  function start(y){active=true;startY=y;startH=ml.offsetHeight;handle.classList.add('rsz');document.body.style.userSelect='none';}
+  const top=document.getElementById('sb-top');
+  let active=false,startY=0,startH=0,naturalH=0;
+  function getH(){return top.offsetHeight;}
+  try{const s=localStorage.getItem('sb-top-h');if(s){top.style.height=s+'px';}}catch(e){}
+  function start(y){
+    if(!naturalH)naturalH=top.scrollHeight;
+    active=true;startY=y;startH=getH();
+    handle.classList.add('rsz');document.body.style.userSelect='none';
+  }
   function move(y){
     if(!active)return;
-    const h=Math.max(80,Math.min(sb.offsetHeight-160,startH+(y-startY)));
-    ml.style.flex='none';ml.style.height=h+'px';
+    // drag UP (y < startY) → delta negative → height shrinks → list grows
+    const h=Math.max(40,Math.min(naturalH,startH-(y-startY)));
+    top.style.height=h+'px';
   }
   function end(){
     if(!active)return;active=false;handle.classList.remove('rsz');document.body.style.userSelect='';
-    try{localStorage.setItem('ml-h',ml.offsetHeight);}catch(e){}
+    try{localStorage.setItem('sb-top-h',getH());}catch(e){}
   }
   handle.addEventListener('mousedown',e=>{start(e.clientY);e.preventDefault();});
-  document.addEventListener('mousemove',e=>{move(e.clientY);});
+  document.addEventListener('mousemove',e=>{if(active)move(e.clientY);});
   document.addEventListener('mouseup',end);
   handle.addEventListener('touchstart',e=>{start(e.touches[0].clientY);e.preventDefault();},{passive:false});
   document.addEventListener('touchmove',e=>{if(active)move(e.touches[0].clientY);},{passive:false});
   document.addEventListener('touchend',end);
-  handle.addEventListener('dblclick',()=>{ml.style.flex='1';ml.style.height='';try{localStorage.removeItem('ml-h');}catch(e){}});
+  handle.addEventListener('dblclick',()=>{top.style.height='';try{localStorage.removeItem('sb-top-h');}catch(e){}});
 })();
 
 // Weather collapse
