@@ -184,8 +184,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .rbox{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.28);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:var(--gold);line-height:1.55}
 .pbox{background:rgba(41,128,185,.1);border:1px solid rgba(41,128,185,.28);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#5dade2;line-height:1.55}
 .sbar{display:flex;gap:2px;margin-top:6px}
-.sm{flex:1;height:5px;border-radius:2px;background:var(--card)}
+.sm{flex:1;height:5px;border-radius:2px;background:var(--card);position:relative}
 .sm.on{background:var(--gold)}
+.sm.cur::after{content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid var(--muted)}
 #ap{position:fixed;bottom:-100%;left:320px;right:0;max-height:42vh;background:var(--sb);border-top:1px solid var(--border);z-index:1050;transition:bottom .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
 #ap.open{bottom:0}
 #aph{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
@@ -302,7 +303,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.26.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.27.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -349,6 +350,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
         <button class="fb" data-sort="rarity-common">Pospolite ↑</button>
         <button class="fb" data-sort="rarity-rare">Rzadkie ↑</button>
         <button class="fb" data-sort="edibility">Smaczne ↑</button>
+        <button class="fb" data-sort="id-easy">Łatwe ID ↑</button>
       </div>
     </div>
   </div>
@@ -363,7 +365,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="sb-tab" title="Pokaż/ukryj panel">◀</div>
 </nav>
 <div id="sb-resize"></div>
-<div id="photo-lb"><img id="photo-lb-img" alt=""></div>
+<div id="photo-lb"><img id="photo-lb-img" alt=""><div id="photo-lb-attr" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.5);white-space:nowrap;pointer-events:none"></div></div>
 <div id="mw">
   <div id="map-loader">
     <div class="ml-ring"></div>
@@ -422,7 +424,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   </div>
   <button id="drbtn">⬡ Analizuj obszar</button>
   <div id="hl">
-    <h5 id="hl-name">Heatmapa</h5>
+    <h5 id="hl-name" style="display:flex;align-items:center;gap:6px;justify-content:space-between">Heatmapa<button onclick="clearHeat()" title="Wyczyść zaznaczenie" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;line-height:1;padding:0 2px;flex-shrink:0" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">×</button></h5>
     <div id="hl-hab" style="font-size:11px;color:#888;margin:-4px 0 6px;"></div>
     <div class="hg"></div>
     <div class="hlbl"><span>Rzadko</span><span>Często</span></div>
@@ -40805,7 +40807,7 @@ map.on('moveend zoomend',_updateTreePins);
 })();
 
 // ─── Heatmap ─────────────────────────────────────────────
-let heatLayer=null,selectedMid=null,_heatPts=[];
+let heatLayer=null,selectedMid=null,selectedMids=new Set(),_heatPts=[],_midHeatCache={};
 const _inatSpecCache={},_gbifCache={};
 const HEAT_GRAD={0.15:'#c6ff40',0.45:'#ffc200',0.72:'#ff5500',1.0:'#cc0033'};
 
@@ -40839,42 +40841,30 @@ async function fetchGBIF(latin){
 
 function _mkHeat(pts,z){const r=zoomHeatRadius(z);return L.heatLayer(pts,{radius:r,blur:Math.round(r*.5),max:.8,minOpacity:.4,maxZoom:18,gradient:HEAT_GRAD});}
 
-function selectMushroom(mid){
-  if(!MUSHROOMS[mid])return;
-  if(selectedMid===mid){clearHeat();return;}
-  selectedMid=mid;
-  document.querySelectorAll('.mc').forEach(c=>c.classList.toggle('sel',c.dataset.mid===mid));
-  if(heatLayer)map.removeLayer(heatLayer);
+function _buildBaseHeat(mid){
   const m=MUSHROOMS[mid];
   const seed=mid.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
   const terrainStr=(m.terrain||[]).join(' ')+' '+(m.habitat||'');
   const soilStr=m.soil||'';
   const openHab=HAB_PATTERNS.meadow.test(terrainStr)&&!HAB_PATTERNS.forest.test(terrainStr);
   const wetHab=HAB_PATTERNS.wetland.test(terrainStr);
-  // Water-edge species: grow near rivers/lakes (olsy, łęgi, olcha, alder swamps, streams)
   const waterEdge=/olsz|olch|łęg|rip|rzek|potok|strum|brzeg|jezioro|woda|nadwodny/i.test(terrainStr+' '+(m.habitat||''));
-  // Farmland/garden species
   const farmlandSpec=/ogród|kompost|trawnik|pastw.*pole|pole.*pastw/i.test(terrainStr)&&!HAB_PATTERNS.forest.test(terrainStr);
-  // Tree type from terrain + soil reinforcement
   const coniferTerrain=/iglaste|bór|sosnow|świerkow/i.test(terrainStr);
   const broadleafTerrain=/liściaste|dąbrow|bukow|grabowe|grąd/i.test(terrainStr);
-  // Sandy/acidic soil → conifer inference; rich/clay soil → broadleaf inference
   const sandySoil=/piaszczysta|piaskow|ubogie bory/i.test(soilStr);
   const richSoil=/żyzna|gliniasta|próchnic/i.test(soilStr);
-  // pH: parse range e.g. "3.5–5.5" → acidic soil confirms conifers; alkaline (>6.5) confirms broadleaf
   const phStr=m.ph||'';
   const phMatch=phStr.match(/(\d+(?:\.\d+)?)[–\-](\d+(?:\.\d+)?)/);
   const phLow=phMatch?parseFloat(phMatch[1]):5;
   const phHigh=phMatch?parseFloat(phMatch[2]):7;
-  const acidicSoil=phHigh<5.8;   // pH max below 5.8 → acidic → pine/spruce dominated
-  const alkalineSoil=phLow>6.5;  // pH min above 6.5 → alkaline → beech/oak
+  const acidicSoil=phHigh<5.8;
+  const alkalineSoil=phLow>6.5;
   const coniferPref=coniferTerrain||(sandySoil&&!richSoil&&!openHab&&!wetHab)||(acidicSoil&&!openHab&&!wetHab&&!broadleafTerrain);
   const broadleafPref=broadleafTerrain||(richSoil&&!sandySoil&&!openHab&&!wetHab)||(alkalineSoil&&!openHab&&!wetHab&&!coniferTerrain);
-  // Elevation: parse m.elev e.g. "300–900 m n.p.m." → minElev>300 = mountain species
   const elevStr=m.elev||'';
   const elevMin=parseInt((elevStr.match(/(\d+)/)||[0,0])[1])||0;
   const mountainSpec=elevMin>300||/górsk|górskie|piętro regla|subalpejski/i.test(terrainStr+' '+(m.habitat||''));
-  // Specific tree genus preferred (for BDL cd matching and CLC refinement)
   let preferredCodes=null;
   if(/sosnow|bór sosnow/i.test(terrainStr))preferredCodes=['SO','PI'];
   else if(/świerkow/i.test(terrainStr))preferredCodes=['ŚW','SW'];
@@ -40884,20 +40874,16 @@ function selectMushroom(mid){
   else if(/grabowy|grądow/i.test(terrainStr))preferredCodes=['GB','DB'];
   else if(/olsz|olchow/i.test(terrainStr))preferredCodes=['OL'];
   else if(/brzozow/i.test(terrainStr))preferredCodes=['BRZ'];
-  // Urban-tolerant: grows in parks, gardens, city greenery
   const urbanTolerant=/park|skwer|trawnik|ogród.*miejsk|zieleń.*miejsk|skraj.*mias/i.test(terrainStr+' '+(m.habitat||''));
-  // Show base heatmap (all terrain data) immediately
-  _heatPts=genHeat(m.weights,seed,400,{openHab,wetHab,farmlandSpec,waterEdge,coniferPref,broadleafPref,mountainSpec,avoidUrban:true,urbanTolerant,preferredCodes}).map(p=>[p[0],p[1],p[2]*.72]);
-  // BDL old-growth bonus: if user has loaded BDL data, boost density near mature stands (>60yr)
+  let pts=genHeat(m.weights,seed,400,{openHab,wetHab,farmlandSpec,waterEdge,coniferPref,broadleafPref,mountainSpec,avoidUrban:true,urbanTolerant,preferredCodes}).map(p=>[p[0],p[1],p[2]*.72]);
   if(bdlStore.length&&!openHab&&!farmlandSpec){
     const isSaprofit=/saprofit drewna|pasożyt/i.test(m.ph||'');
     bdlStore.forEach(b=>{
-      if(b.age<15)return; // skip very young stands
+      if(b.age<15)return;
       const bIsConifer=b.cd&&/^(SO|PI|ŚW|SW|JD|MD)/i.test(b.cd);
       const bIsBroadleaf=b.cd&&/^(BK|DB|GB|JW|LP|OL|JS|CZ)/i.test(b.cd);
       if(coniferPref&&bIsBroadleaf)return;
       if(broadleafPref&&bIsConifer)return;
-      // Specific tree species match bonus (e.g. sosnowy → SO/PI)
       const codeMatch=preferredCodes&&b.cd?preferredCodes.some(c=>b.cd.toUpperCase().startsWith(c)):false;
       const typeBonus=((coniferPref&&bIsConifer)||(broadleafPref&&bIsBroadleaf))?1:0;
       const codeBonus=codeMatch?1:0;
@@ -40906,16 +40892,15 @@ function selectMushroom(mid){
       for(let i=0;i<needed;i++){
         const la=b.lat+(Math.random()-.5)*.004;
         const ln=b.lng+(Math.random()-.5)*.005;
-        _heatPts.push([la,ln,ageWeight*0.55]);
+        pts.push([la,ln,ageWeight*0.55]);
       }
     });
   }
-  // MUSHROOM_LOCAL small boost/penalty for the Krajna local area
   const _ld=MUSHROOM_LOCAL[mid];
   if(_ld){
     const _mult={c:1.12,f:1.06,r:0.80,n:0}[_ld.s]||1.0;
     if(_mult!==1.0){
-      _heatPts=_heatPts.map(p=>{
+      pts=pts.map(p=>{
         const inLocal=p[0]>52.7&&p[0]<53.9&&p[1]>16.4&&p[1]<18.2;
         if(!inLocal)return p;
         if(_mult===0)return null;
@@ -40923,9 +40908,41 @@ function selectMushroom(mid){
       }).filter(Boolean);
     }
   }
+  return {pts,openHab,wetHab,waterEdge,farmlandSpec,coniferPref,broadleafPref};
+}
+
+function selectMushroom(mid,e){
+  if(!MUSHROOMS[mid])return;
+  const isShift=e?.shiftKey;
+
+  if(isShift&&selectedMids.size>0){
+    // Shift+click: multi-select toggle
+    if(selectedMids.has(mid)){selectedMids.delete(mid);delete _midHeatCache[mid];}
+    else{selectedMids.add(mid);if(!_midHeatCache[mid])_midHeatCache[mid]=_buildBaseHeat(mid).pts;}
+    if(!selectedMids.size){clearHeat();return;}
+    selectedMid=mid;
+    document.querySelectorAll('.mc').forEach(c=>c.classList.toggle('sel',selectedMids.has(c.dataset.mid)));
+    const allPts=[...selectedMids].flatMap(m=>_midHeatCache[m]||[]);
+    if(heatLayer)map.removeLayer(heatLayer);
+    heatLayer=_mkHeat(allPts,map.getZoom()).addTo(map);_heatPts=allPts;
+    document.getElementById('hl').classList.add('vis');
+    document.getElementById('hl-name').textContent=selectedMids.size>1?`${selectedMids.size} gatunki`:'';
+    if(selectedMids.size>1){document.getElementById('hl-hab').textContent='Połączona mapa ciepła';document.getElementById('hl-cert').textContent='';}
+    showInfoPanel(mid);
+    if(window.innerWidth<=767){document.getElementById('sidebar').classList.remove('mob-open');const tabMap=document.getElementById('mob-map');if(tabMap)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabMap);});}
+    return;
+  }
+
+  // Single select
+  if(selectedMids.size===1&&selectedMid===mid){clearHeat();return;}
+  _midHeatCache={};selectedMids=new Set([mid]);selectedMid=mid;
+  document.querySelectorAll('.mc').forEach(c=>c.classList.toggle('sel',c.dataset.mid===mid));
+  if(heatLayer)map.removeLayer(heatLayer);
+  const m=MUSHROOMS[mid];
+  const {pts,openHab,wetHab,waterEdge,farmlandSpec,coniferPref,broadleafPref}=_buildBaseHeat(mid);
+  _heatPts=pts;_midHeatCache[mid]=pts.slice();
   heatLayer=_mkHeat(_heatPts,map.getZoom()).addTo(map);
   document.getElementById('hl').classList.add('vis');
-  // Auto-collapse weather panel so it doesn't overlap heatmap legend
   const _wxEl=document.getElementById('wx');
   if(_wxEl&&!_wxEl.classList.contains('wx-col')){_wxEl.classList.add('wx-col');_wxEl.dataset.autoCollapsed='1';document.getElementById('wx-col').textContent='▼';}
   document.getElementById('hl-name').textContent=m.name;
@@ -40934,11 +40951,10 @@ function selectMushroom(mid){
   const certEl=document.getElementById('hl-cert');
   certEl.textContent='Pobieranie danych…';certEl.style.color='var(--muted)';
   showInfoPanel(mid);
-  // Enrich async with iNaturalist + GBIF real observations
   const curMid=mid,basePts=_heatPts.slice();
   Promise.all([fetchInatSpecies(m.latin),fetchGBIF(m.latin)]).then(([inatPts,gbifPts])=>{
-    if(selectedMid!==curMid)return;
-    _heatPts=[...basePts,...inatPts,...gbifPts];
+    if(selectedMid!==curMid||selectedMids.size>1)return;
+    _heatPts=[...basePts,...inatPts,...gbifPts];_midHeatCache[curMid]=_heatPts.slice();
     if(heatLayer)map.removeLayer(heatLayer);
     heatLayer=_mkHeat(_heatPts,map.getZoom()).addTo(map);
     const cert=calcCertainty(inatPts.length,gbifPts.length,!!(MUSHROOM_LOCAL[curMid]&&MUSHROOM_LOCAL[curMid].s!=='n'));
@@ -40949,7 +40965,7 @@ function selectMushroom(mid){
 
 function clearHeat(){
   if(heatLayer)map.removeLayer(heatLayer);
-  heatLayer=null;selectedMid=null;_heatPts=[];
+  heatLayer=null;selectedMid=null;selectedMids=new Set();_heatPts=[];_midHeatCache={};
   document.querySelectorAll('.mc').forEach(c=>c.classList.remove('sel'));
   document.getElementById('hl').classList.remove('vis');
   document.getElementById('ip').classList.remove('open');
@@ -41004,7 +41020,8 @@ function showInfoPanel(mid){
   if(m.rare)badges.push(`<span class="b b-r">✦ Rzadki</span>`);
   if(m.protected)badges.push(`<span class="b b-pr">§ Chroniony</span>`);
   document.getElementById('pbadges').innerHTML=badges.join('');
-  const sbar=MONTHS.map((_,i)=>`<div class="sm${m.season.includes(i+1)?' on':''}"></div>`).join('');
+  const _nowMo=new Date().getMonth();
+  const sbar=MONTHS.map((_,i)=>`<div class="sm${m.season.includes(i+1)?' on':''}${i===_nowMo?' cur':''}"></div>`).join('');
   let extra='';
   if(m.hallucinogenic&&m.danger)extra=`<div class="hbox">🍄 ${m.danger}</div>`;
   else if(m.danger)extra=`<div class="dbox">⚠️ ${m.danger}</div>`;
@@ -41050,7 +41067,7 @@ function showInfoPanel(mid){
     const img=document.getElementById('mwiki-photo');
     if(img){
       loadWikiPhoto(m.wiki,img);
-      img.onclick=()=>{const lb=document.getElementById('photo-lb');document.getElementById('photo-lb-img').src=img.src;lb.classList.add('open');};
+      img.onclick=()=>{const lb=document.getElementById('photo-lb');document.getElementById('photo-lb-img').src=img.src;document.getElementById('photo-lb-attr').textContent=`Źródło: Wikimedia Commons / ${m.wiki||'Wikipedia'}`;lb.classList.add('open');};
     }
   }
   document.getElementById('photo-lb').onclick=e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('open');};
@@ -41327,8 +41344,8 @@ function fetchWeather(lat,lng){
     const frost=minT<=2?'❄️ Przymrozek!':minT<=5?'\u{1f976} Ryzyko przymrozku':'';
     const moon=moonPhase();
     document.getElementById('wx-loc').textContent=`📍 ${lat.toFixed(2)}°N ${lng.toFixed(2)}°E`;
-    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat.toFixed(4)}&lon=${lng.toFixed(4)}&format=json&zoom=10`,{headers:{'Accept-Language':'pl'}})
-      .then(r=>r.json()).then(g=>{const n=g.address?.city||g.address?.town||g.address?.village||g.address?.county;if(n)document.getElementById('wx-loc').textContent=`📍 ${n}`;}).catch(()=>{});
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat.toFixed(4)}&lon=${lng.toFixed(4)}&format=json&zoom=14`,{headers:{'Accept-Language':'pl'}})
+      .then(r=>r.json()).then(g=>{const n=g.address?.suburb||g.address?.village||g.address?.town||g.address?.city||g.address?.county;if(n)document.getElementById('wx-loc').textContent=`📍 ${n}`;}).catch(()=>{});
     document.getElementById('wx-temp').innerHTML=`${wxIcon(d.current.weathercode)} ${temp}°C<br><span style="font-size:10px;opacity:.75">\u{1f321}${soilT.toFixed(1)}°C  \u{1f4a7}${rh}%</span>`;
     document.getElementById('wx-rain').innerHTML=`<span class="${rc}">\u{1f327} ${rain7} mm / 7 dni</span>`;
     document.getElementById('wx-cond').textContent=`Ostatnie 3 dni: ${rain3} mm · ${tip}`;
@@ -41458,14 +41475,16 @@ function _updateFilterBadge(){
   const n=activeCats.size+activeSeasons.size+activeHabs.size+(activeSortBy!=='default'?1:0);
   document.getElementById('filter-badge').textContent=n?n+' aktywnych':'';
 }
+const _CURMONTH=new Date().getMonth()+1;
 function _mkMushCard(mid,m){
   const ico=getMushSVG(mid);
   const cls=m.cat==='edible'?'edible':m.hallucinogenic?'hallucinogenic':m.cat==='poisonous'?'poisonous':m.cat==='deadly'?'deadly':m.rare?'rare':'inedible';
   const bgs=[catBadge(m)];
   if(m.rare)bgs.push(`<span class="b b-r">✦</span>`);
   if(m.protected)bgs.push(`<span class="b b-pr">§</span>`);
+  if(m.season.includes(_CURMONTH))bgs.push(`<span class="b" style="background:rgba(82,184,73,.2);color:var(--acc-e)">● W sezonie</span>`);
   bgs.push(localBadge(mid));
-  return `<div class="mc" data-mid="${mid}" onclick="selectMushroom('${mid}')"><div class="mico ${cls}" style="font-size:0;padding:4px">${ico}</div><div style="flex:1;min-width:0"><div class="mn">${m.name}</div><div class="ml-lat">${m.latin}</div><div class="mbadges">${bgs.join('')}</div></div>${favs.has(mid)?'<span class="mc-fav-ind">★</span>':''}</div>`;
+  return `<div class="mc" data-mid="${mid}" onclick="selectMushroom('${mid}',event)"><div class="mico ${cls}" style="font-size:0;padding:4px">${ico}</div><div style="flex:1;min-width:0"><div class="mn">${m.name}</div><div class="ml-lat">${m.latin}</div><div class="mbadges">${bgs.join('')}</div></div>${favs.has(mid)?'<span class="mc-fav-ind">★</span>':''}</div>`;
 }
 function renderList(){
   let entries=Object.entries(MUSHROOMS);
@@ -41484,6 +41503,9 @@ function renderList(){
     html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
   }else if(activeSortBy==='edibility'){
     entries.sort(([,a],[,b])=>(b.q||0)-(a.q||0)||a.name.localeCompare(b.name,'pl'));
+    html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
+  }else if(activeSortBy==='id-easy'){
+    entries.sort(([ia,a],[ib,b])=>(SPECIES_DIFF[ia]||3)-(SPECIES_DIFF[ib]||3)||a.name.localeCompare(b.name,'pl'));
     html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
   }else{
     const groups={edible:[],rare:[],poisonous:[],deadly:[],inedible:[]};
@@ -41879,13 +41901,32 @@ map.on('contextmenu',e=>{
 
 renderList();
 
+// Mobile long-press on list card → shift-select (multi-select)
+(function(){
+  const ml=document.getElementById('ml');
+  let _lpt=null,_lpmid=null;
+  ml.addEventListener('touchstart',e=>{
+    const card=e.target.closest('.mc');
+    if(!card)return;
+    _lpmid=card.dataset.mid;
+    _lpt=setTimeout(()=>{_lpt=null;if(_lpmid)selectMushroom(_lpmid,{shiftKey:true});},500);
+  },{passive:true});
+  ml.addEventListener('touchend',()=>{if(_lpt){clearTimeout(_lpt);_lpt=null;}},{passive:true});
+  ml.addEventListener('touchmove',()=>{if(_lpt){clearTimeout(_lpt);_lpt=null;}},{passive:true});
+})();
+
 // ─── Panel controls ────────────────────────────────────────────────────────
 
-// Sidebar collapse
+// Sidebar collapse — tab stays fixed at sidebar's right edge when collapsed
 document.getElementById('sb-tab').onclick=()=>{
   const sb=document.getElementById('sidebar'),t=document.getElementById('sb-tab');
-  const col=sb.classList.toggle('sb-col');
-  t.textContent=col?'►':'◄';
+  if(!sb.classList.contains('sb-col')){
+    const w=sb.getBoundingClientRect().width;
+    sb.classList.add('sb-col');t.textContent='►';
+    t.style.cssText=`position:fixed;left:${w}px;top:50%;transform:translateY(-50%);right:auto`;
+  }else{
+    t.style.cssText='';sb.classList.remove('sb-col');t.textContent='◄';
+  }
 };
 
 // Sidebar resize
