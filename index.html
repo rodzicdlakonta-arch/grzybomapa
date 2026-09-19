@@ -262,7 +262,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.11.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.12.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -31718,6 +31718,171 @@ const MUSHROOMS={
     lookalikes:'Trzęsak mózgowaty (T. encephala) — biały do kremowego, na drewnie iglastym. Uszak bzowy (A. auricula-judae) — brązowy, uszowaty, jadalny. Nasięźrzał (Calocera viscosa) — żółtopomarańczowe paluszki na drewnie iglastym. Żółta galaretowata masa na liściastych gałązkach = trzęsak pomarańczowy.',
     weights:{bw:72,au:68,kn:65,sw:68,ro:65,lu:62,be:72,bi:68,sd:62,po:65,so:62,ka:60,ku:58,tu:55,no:52,br:55,gr:52,op:62,st:60,ll:58,wy:65,nak:60,sep:65}
   },
+
+  blewit:{
+    name:'Blewit leśny',latin:'Lepista nuda',cat:'edible',rare:false,wiki:'Lepista_nuda',
+    season:[9,10,11,12],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane','Ogrody'],
+    soil:'Gleba próchnicza, często na kompoście lub ściółce',ph:'5.5–7.5',elev:'0–900 m',
+    habitat:'W lasach liściastych i iglastych, w ogrodach przy kompostownikach. Jeden z ostatnich grzybów roku — rośnie późną jesienią, bywa pod pierwszym śniegiem.',
+    desc:'Kapelusz 5–15 cm, FIOŁKOWONIEBIESKI do niebieskawobrązowego (starsze bledną do brązowego). Blaszki jasnofiołkowe, gęste. Trzon fiołkowoniebieskawy. Zapach intensywny, owocowy lub parfimeryjny. Kolor fiołkowy jako cecha kluczowa.',
+    edib:'Smaczny jadalny — dobry do sosów i smażenia. Zebrany po pierwszych przymrozkach może być nieco kwaśny. Nigdy na surowo — surowy powoduje dolegliwości żołądkowe. Gotować minimum 5 min.',
+    lookalikes:'Lejkówka gołąbkowa (C. nebularis) — szara, bez fiołkowego zabarwienia, zapach mączysty. Zasłonak fiołkowy (C. violaceus) — CHRONIONY, rzadki, z pajęczynką. Zasłonak piękny (C. violaceus) — w lesie, z pajęczynką. Fiołkowe blaszki + owocowy zapach bez pajęczynki = blewit.',
+    weights:{bw:72,au:68,kn:65,sw:75,ro:72,lu:68,ja:65,be:72,bi:68,sd:65,po:68,so:65,ka:68,ku:62,tu:58,no:55,ll:62,op:68,st:70,sl:65,wy:70,nak:65,sep:68}
+  },
+
+  tegoskór:{
+    name:'Tęgoskór pospolity',latin:'Scleroderma citrinum',cat:'poisonous',rare:false,wiki:'Scleroderma_citrinum',
+    season:[7,8,9,10,11],terrain:['Bory sosnowe','Lasy iglaste','Lasy mieszane'],
+    soil:'Gleba piaszczysta, kwaśna, często na brzegach ścieżek leśnych',ph:'3.8–5.5',elev:'0–1000 m',
+    habitat:'Na skrajach ścieżek leśnych, pod sosnami i dębami. Jeden z najpospolitszych grzybów borów. Łatwo pomylić z młodą purchawką.',
+    desc:'Kulista do bulwiastej, 3–10 cm, twarda, żółtawobrązowa lub ochrowożółta, z wyraźną gruboziarnistą (krzykliwą) skórką. Wnętrze u dojrzałego czarne lub fioletowoczarne — KLUCZOWA CECHA. Młody: wnętrze białoszare ale niejednorodne. Żaden "korzeń" przyrośnięty.',
+    danger:'TRUJĄCY — powoduje silne zatrucia pokarmowe: wymioty, bóle żołądka. Może mieć halucynogenne działanie w dużych dawkach. Najczęstsza przyczyna pomyłki z purchawkami u niedoświadczonych zbieraczy.',
+    lookalikes:'Purchawki (Lycoperdon spp.) — JADALNE; miękkie, białe jednolite wnętrze bez fioletu. Purchawica olbrzymia — ogromna, zawsze z białym gładkim wnętrzem. ZAWSZE przekrój: biała jednolita masa = purchawka jadalna; szara, czarna, fioletowa lub niejednorodna = tęgoskór lub stary grzyb.',
+    weights:{tu:88,no:85,dr:80,pi:82,au:78,ps:78,dl:80,ch:84,bw:75,ku:70,ma:65,br:65,wk:62,ll:60,sd:70,se:65,be:68,po:68,bi:65,wy:88,nak:82,sep:86}
+  },
+
+  maslak_krop:{
+    name:'Maślak kropelisty',latin:'Suillus bovinus',cat:'edible',rare:false,wiki:'Suillus_bovinus',
+    season:[8,9,10,11],terrain:['Bory sosnowe','Lasy iglaste'],
+    soil:'Gleba piaszczysta, kwaśna, wyłącznie pod sosnami dwuigłowymi',ph:'3.8–5.5',elev:'0–900 m',
+    habitat:'Pod sosnami zwyczajnymi, na piasku. Bardzo pospolity — jeden z dominujących grzybów borów sosnowych.',
+    desc:'Kapelusz płowy do brązowooliwkowego, 4–10 cm, lepki (jak inne maślaki). Rurki żółtooliwkowe, bardzo drobne i regularne, labiryntowe (nie okrągłe pory). Trzon bez pierścienia, płowy. Miąższ żółtawy, lekko niebieskawy po uszkodzeniu.',
+    edib:'Jadalny — skórkę zdejmować przed gotowaniem (jak u innych maślaków). Smak mierny, gąbczasty miąższ. Dobry do mieszanek i zup. U niektórych osób powoduje lekkie dolegliwości żołądkowe.',
+    lookalikes:'Maślak zwyczajny (S. luteus) — Z pierścieniem, rurki okrągłe. Maślak pstry (S. variegatus) — matowy kapelusz, brak kleistości, rurki grubsze. Maślak ziarnisty (S. granulatus) — białe krople na porach młodych. Labiryntowe rurki bez pierścienia = kropelisty.',
+    weights:{tu:90,no:88,dr:85,pi:86,au:78,ps:82,dl:82,ch:86,bw:72,ku:68,ma:65,br:62,wk:60,ll:58,sd:72,se:65,wy:92,nak:86,sep:90}
+  },
+
+  golabek_chab:{
+    name:'Gołąbek chabrowy',latin:'Russula cyanoxantha',cat:'edible',rare:false,wiki:'Russula_cyanoxantha',
+    season:[7,8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Buczyny','Dąbrowy'],
+    soil:'Gleba żyzna, próchnicza, gliniasta',ph:'5.0–7.0',elev:'0–1000 m',
+    habitat:'Pod bukami, dębami i grabami w lasach liściastych. Jeden z najpospolitszych grzybów leśnych Polski — pospolitszy niż borowik.',
+    desc:'Kapelusz fioletowosiny do szarozielonego, 6–15 cm, matowy, często wielobarwny (fiolet + zielony + szary). Blaszki BIAŁE, miękkie i GIĘTKIE (nie kruche jak u innych gołąbków) — cecha kluczowa. Trzon biały, zwarty. Nie wydziela mleczka. Zapach owocowy.',
+    edib:'Doskonały smak — jeden z najsmaczniejszych grzybów leśnych. Bezpieczny do spożywania na surowo (jeden z nielicznych). Miękkie giętkie blaszki to unikalny test jadalności w tym rodzaju.',
+    lookalikes:'Gołąbek wymiotny (R. emetica) — TRUJĄCY; czerwony kapelusz, ostre białe blaszki kruche, smak piekący. Inne gołąbki (Russula) — blaszki kruche i łamliwe. Giętkie blaszki u gołąbka = tylko R. cyanoxantha. Lekkie pęknięcie blaszki między palcami = test.',
+    weights:{bw:72,au:68,sw:80,ro:78,lu:75,ja:72,be:82,bi:78,go:75,sd:78,se:72,ta:65,po:78,so:72,ka:70,kn:68,lm:65,ps:65,ma:60,su:68,wi:70,ll:62,br:58,wy:60,nak:55,sep:62}
+  },
+
+  golabek_zolt:{
+    name:'Gołąbek bladożółty',latin:'Russula claroflava',cat:'edible',rare:false,wiki:'Russula_claroflava',
+    season:[7,8,9],terrain:['Lasy liściaste','Olszyny','Mokradła leśne'],
+    soil:'Gleba mokra, torfowa lub podmokła, wyłącznie pod brzozami i olchami',ph:'4.5–6.5',elev:'0–900 m',
+    habitat:'Wyłącznie pod brzozami na podmokłych, wilgotnych glebach, przy bagnach i torfowiskach. Niezawodny wskaźnik wilgotnego środowiska.',
+    desc:'Kapelusz JASKRAWOŻÓŁTY, cytrynowy do złocistego, 5–12 cm, gładki, matowy. Blaszki kremowobiałe, kruche. Trzon biały, zabarwia się szaro do czarnego przy uszkodzeniu i suszeniu — cecha diagnostyczna. Zapach łagodny.',
+    edib:'Dobry jadalny — smak łagodny, orzechowy. Jeden z bezpieczniejszych gołąbków do zbierania: jaskrawożółty + wyłącznie pod brzozą = bezpieczny test. Dobry w zupach i sosach.',
+    lookalikes:'Inne żółte gołąbki (R. lutea) — pod różnymi drzewami, kapelusz słomkowożółty, blaszki żółte; jadalny. Gołąbek wymiotny żółty — smak pieczący. Test: jaskrawożółty + podmokła brzezina + szarowiejący trzon = R. claroflava.',
+    weights:{bw:75,au:80,kb:82,kn:72,su:78,wi:80,ps:72,ma:75,tu:68,no:65,dr:62,pi:65,ku:65,br:68,wk:65,ll:60,wy:72,nak:68,sep:75}
+  },
+
+  luszczak:{
+    name:'Łuszczak zmienny',latin:'Cerioporus squamosus',cat:'inedible',rare:false,wiki:'Cerioporus_squamosus',
+    season:[4,5,6,7,8,9,10],terrain:['Lasy liściaste','Parki','Aleje'],
+    soil:'Na martwych i żywych pniach drzew liściastych — wierzba, topola, buk, klon',ph:'Saprofit drewna',elev:'0–700 m',
+    habitat:'Na pniach i kłodach wierzb, topól i buków — w parkach, alejach i lasach liściastych. Jeden z pospolitszych polskich hubiastych — ogromne okazy na wierzbowym pniaku nie do przeoczenia.',
+    desc:'Owocnik 10–60 cm, wachlarzowaty do nerkowatego, kremowożółty lub brązowawy z charakterystycznymi CIEMNOBRĄZOWYMI ŁUSKAMI w środku. Spód biały z dużymi kanciastymi porami. Miąższ biały, przy przekroju widać nitkowatą strukturę. Szorstki na górze.',
+    danger:'Niejadalny przez twardą, korkowatą konsystencję — choć formalnie nietrujący. Bardzo młode egzemplarze bywają jadalne, starsze mają skórzastą fakturę. Ważna poznawczo kotwica do nauki polypores.',
+    lookalikes:'Żagwica listkowata (Grifola frondosa) — miękka, liściasta, bez łusek. Brak jadalnospożywczych pomyłek. Łuski na górze + kanciate pory na spodzie + wierzba/topola = łuszczak.',
+    weights:{bw:68,au:62,ka:75,lm:68,ku:65,sw:70,ro:68,lu:65,ja:62,ll:65,op:68,st:70,sl:65,br:58,gr:55,wk:58,bi:55,be:58,sd:55,so:62,wy:62,nak:58,sep:60}
+  },
+
+  luskwiak:{
+    name:'Łuskwiak nastroszony',latin:'Pholiota squarrosa',cat:'poisonous',rare:false,wiki:'Pholiota_squarrosa',
+    season:[9,10,11],terrain:['Lasy liściaste','Lasy iglaste','Parki','Ogrody'],
+    soil:'Przy podstawach pni i korzeniach drzew liściastych i iglastych',ph:'Saprofit/pasożyt drewna',elev:'0–900 m',
+    habitat:'U podstaw pni starych drzew — dębów, klonów, brzóz, a też świerków. Rośnie gęstymi kępami jak opieńka. Pospolity.',
+    desc:'Kapelusz żółtawy pokryty gęstymi sterczącymi RDZAWOBRĄZOWYMI ŁUSKAMI, 4–12 cm. Blaszki żółtawe, ciemniejące. Trzon Z PIERŚCIENIEM, poniżej pierścienia gęsto łuskowaty. Zapach czosnkowy lub rzepakowy — odpychający.',
+    danger:'TRUJĄCY — powoduje silne dolegliwości żołądkowe. Jeden z najczęstszych powodów pomyłki z opieńką miodową. Odpychający czosno-rzepakowy zapach powinien ostrzec.',
+    lookalikes:'Opieńka miodowa (Armillaria mellea) — JADALNA; łuski na kapeluszu małe/rzadkie, jasnobrązowe, nie sterczące; zapach grzybowy przyjemny. Podpieńka zmienna (K. mutabilis) — mniejsza, bez łusek na wierzchniej stronie kapelusza. Sterczące łuski + zapach czosnku = łuskwiak, nie opieńka.',
+    weights:{bw:68,au:62,ka:65,sw:68,ro:65,lu:62,ja:60,be:68,bi:62,sd:58,po:62,so:62,sl:58,op:62,st:65,ku:60,ma:58,ll:58,br:55,wy:65,nak:60,sep:62}
+  },
+
+  zasloniak_krus:{
+    name:'Zasłonak kruszcowy',latin:'Cortinarius armillatus',cat:'poisonous',rare:false,wiki:'Cortinarius_armillatus',
+    season:[8,9,10],terrain:['Lasy liściaste','Olszyny','Mokradła leśne'],
+    soil:'Gleba podmokła, torfowa lub kwaśna, wyłącznie pod brzozami',ph:'4.0–5.5',elev:'0–1200 m',
+    habitat:'Wyłącznie pod brzozami na podmokłych glebach. Jeden z pospolitszych i najpiękniejszych zasłoniaków — czerwone opaski na trzonie niepowtarzalne.',
+    desc:'Kapelusz rdzawobrązowy, 5–12 cm. Trzon jasnobrązowy z 2–4 INTENSYWNIE POMARAŃCZOWOCZERWONYMI WEŁNISTYMI PASKAMI (opaski z rozerwanych pajęczynowych zasłonek) — cecha absolutnie unikalna w całym rodzaju. Blaszki rdzawe, brudnordzawe.',
+    danger:'TRUJĄCY — zawiera orellaninę (jak zasłonak ognistorudy) niszczącą nerki z 2–4-tygodniowym opóźnieniem. Brak odtrutki. Mimo wyróżniającego wyglądu notowane zatrucia. Cały rodzaj Cortinarius = nie zbierać.',
+    lookalikes:'Inne zasłoniaki — rdzawobrązowe, bez pasków. Koźlarze, podgrzybki — nie mają pas na trzonie. Czerwone opaskowe wzory na trzonie + brzoza = zasłonak kruszcowy. Unikalny wygląd, ale niebezpieczny.',
+    weights:{bw:72,au:75,kb:78,kn:70,su:76,wi:78,ps:68,ma:70,tu:65,no:62,dr:60,pi:65,ku:62,br:68,wk:65,ll:58,wy:70,nak:65,sep:72}
+  },
+
+  kosmaczek:{
+    name:'Kosmaczek pospolity',latin:'Hebeloma crustuliniforme',cat:'poisonous',rare:false,wiki:'Hebeloma_crustuliniforme',
+    season:[9,10,11],terrain:['Lasy liściaste','Parki','Ogrody','Trawniki'],
+    soil:'Gleba żyzna, próchnicza, w pobliżu różnych drzew',ph:'5.5–7.5',elev:'0–1200 m',
+    habitat:'W lasach, parkach i ogrodach, przy różnych drzewach. Jeden z najczęstszych grzybów podmiejskich i parkowych. Wygląda "zwyczajnie" co jest szczególnie niebezpieczne.',
+    desc:'Kapelusz kremowy do jasnobrązowego, 4–10 cm, lepki, matowy z podwiniętym brzegiem. Blaszki brudnoróżowe do ochry, z białymi "łezkami" (kroplami cieczy) na krawędziach u młodych. Zapach RZODKWI lub chrzanu. Trzon białawy, z drobnymi fibrylanami.',
+    danger:'TRUJĄCY — powoduje silne zatrucia pokarmowe: wymioty, biegunka, bóle brzucha. Kosmaczki są dość częstą przyczyną zatruć ze względu na pospolitość i "niewinny" wygląd jak pieczarka.',
+    lookalikes:'Pieczarki (Agaricus spp.) — JADALNE; blaszki różowiejące do czekoladowych, nigdy ochrowożółte, zapach grzybowy nie rzodkwi. Opieńka — rośnie na drewnie, inne blaszki. Test: zapach rzodkwi/chrzanu + ochrowożółte blaszki = kosmaczek.',
+    weights:{bw:70,au:65,ka:72,sw:68,ro:65,lu:62,be:68,bi:62,sd:60,po:62,so:60,sl:62,op:68,st:70,ll:62,lm:65,br:58,gr:55,ku:62,tu:55,no:52,wy:68,nak:63,sep:68}
+  },
+
+  grzybowka:{
+    name:'Grzybówka pospolita',latin:'Mycena galericulata',cat:'inedible',rare:false,wiki:'Mycena_galericulata',
+    season:[4,5,6,7,8,9,10,11],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane'],
+    soil:'Na martwym drewnie drzew liściastych i iglastych',ph:'Saprofit drewna',elev:'0–1200 m',
+    habitat:'Na pniakach, korzeniach i martwym drewnie — dosłownie wszędzie w lesie. Jeden z najpospolitszych grzybów w Polsce przez cały rok.',
+    desc:'Mały 2–5 cm, kapelusz szary do szarobrązowego, dzwonkowato-stożkowy, prążkowany w kierunku od centrum. Blaszki białawe do różowawych, zbiegające, z poprzeczkami (anastomozy widoczne w lupie). Trzon cienki, elastyczny, gładki. Zapach mączysty.',
+    danger:'Niejadalny — twarda konsystencja, bez smaku kulinarnego. Nietrujący. Ważny rozkładacz drewna — ekologicznie cenny. Jeden z pierwszych gatunków do opanowania jako punkt odniesienia do innych grzybówek.',
+    lookalikes:'Wieruszka jadowita (G. marginata) — ŚMIERTELNA; na drewnie, z pierścieniem, kapelusz miodowy, rośnie kępkami. Inne grzybówki (Mycena spp.) — kilkadziesiąt gatunków podobnych; wszystkie małe, elastyczne, na drewnie. Brak pierścienia + gładki elastyczny trzon + anastomozujące blaszki = grzybówka.',
+    weights:{bw:85,au:82,kn:80,sw:80,ro:78,lu:75,be:82,bi:80,go:78,sd:78,se:72,ta:65,po:78,so:75,ka:72,ps:78,ma:72,su:75,wi:78,ku:70,ll:65,br:65,tu:72,no:70,wy:82,nak:78,sep:80}
+  },
+
+  smardz_sto:{
+    name:'Smardz stożkowaty',latin:'Morchella elata',cat:'edible',rare:false,wiki:'Morchella_elata',
+    season:[4,5],terrain:['Lasy iglaste','Lasy mieszane','Sady'],
+    soil:'Gleba żyzna, często wapniowa, przy strumieniach lub po pożarach',ph:'6.0–8.0',elev:'0–1200 m',
+    habitat:'W iglastych lasach, sadach, przy rumowiskach i po pożarach leśnych. Nieco wcześniej niż smardz jadalny.',
+    desc:'Główka STOŻKOWATA do cylindrycznej, ciemnobrązowa do czarnobrązowej, 4–10 cm, z pionowymi żeberkami tworzącymi siatkę. Ciemniejszy niż smardz jadalny. Trzon biały, gruby. Owocnik pusty w środku przy przekroju.',
+    edib:'Jadalny jak smardz jadalny — WYŁĄCZNIE po gotowaniu. Surowy zawiera kwas helvellowy. Jeden z wybitnych jadalnych wiosennych grzybów. Ciemnobrązowa stożkowata głowa wyróżnia go od smardza jadalnego.',
+    lookalikes:'Smardz jadalny (M. esculenta) — JADALNY; głowa kulista/jajowata, jaśniejsza. Smardz półwolny (M. semilibera) — dolna połowa głowy wolna od trzonu. Piestrzenica (G. esculenta) — TRUJĄCA; głowa mózgowata, zafałdowana, nie siatkowata. Ciemna stożkowata siatka = smardz stożkowaty.',
+    weights:{sd:75,se:70,ta:68,be:72,bi:70,go:68,po:68,bw:62,sw:70,ro:68,lu:65,ja:62,ka:58,ll:55,op:62,st:65,au:55,br:52,wy:62,nak:58,sep:60}
+  },
+
+  golabek_vesc:{
+    name:'Gołąbek jagodowy',latin:'Russula vesca',cat:'edible',rare:false,wiki:'Russula_vesca',
+    season:[7,8,9,10],terrain:['Lasy liściaste','Dąbrowy','Buczyny'],
+    soil:'Gleba żyzna, próchnicza, pod dębami i bukami',ph:'5.0–7.0',elev:'0–1000 m',
+    habitat:'Pod dębami i bukami w lasach liściastych. Jeden z najpospolitszych i najsmaczniejszych gołąbków. Razem z gołąbkiem chabrowym dominuje w dąbrowach.',
+    desc:'Kapelusz różowawy do rdzawoczerwonego lub fioletowoczerwonawego, 5–12 cm, delikatnie przetarty (skórka "niedociągnięta", widać białawy miąższ przy krawędzi — cecha diagnostyczna). Blaszki białe, kruche. Zapach owocowy lub bez. Smak łagodny, orzechowy.',
+    edib:'Doskonały smak — jeden z najlepszych gołąbków i jeden z najlepszych grzybów do jedzenia na surowo (bezpieczny). Czysty orzechowy smak, ideał do sałatek i tart.',
+    lookalikes:'Gołąbek wymiotny (R. emetica) — TRUJĄCY; intensywnie szkarłatny kapelusz (nie różowawy), smak PIEKĄCY; skórka bez białawego miąższu przy krawędzi. Test: spróbuj kawałek blaszki — gołąbek jagodowy = łagodny smak, wymiotny = pieczący. Przetarta/niedociągnięta skórka jest unikalną cechą.',
+    weights:{bw:68,ka:72,sw:78,ro:75,lu:72,ja:68,be:78,bi:75,go:72,sd:72,se:68,ta:62,po:72,so:68,ll:60,kn:62,lm:62,op:65,st:68,sl:62,wy:58,nak:53,sep:60}
+  },
+
+  lejkowka_gol:{
+    name:'Lejkówka gołąbkowa',latin:'Clitocybe nebularis',cat:'inedible',rare:false,wiki:'Clitocybe_nebularis',
+    season:[9,10,11],terrain:['Lasy liściaste','Lasy iglaste','Parki'],
+    soil:'Gleba próchnicza, bogata w azot i materię organiczną',ph:'5.5–7.5',elev:'0–900 m',
+    habitat:'W lasach i parkach, często na gnijących liściach lub iglastej ściółce. Tworzy duże czarcie kręgi. Jeden z największych polskich grzybów — okazy do 30 cm.',
+    desc:'Kapelusz szary do szarobrązowego, 10–30 cm, mięsisty, płaski do lekko lejkowatego, z podwiniętym brzegiem. Blaszki białawe, gęste, ZBIEGAJĄCE na trzon. Trzon gruby, bladoszary. Zapach intensywny, mączysty, parfumeryjny — nieco odpychający dla wielu osób.',
+    danger:'Niejadalny — powoduje dolegliwości żołądkowe u większości osób. Warunkowo jadalna w niektórych tradycjach (Niemcy, Czechy) po długiej obróbce, ale zbyt ryzykowna dla przeciętnego zbieracza. Unikać.',
+    lookalikes:'Blewit leśny (L. nuda) — JADALNY; fiołkowoniebieski kolor, owocowy zapach. Lejkówka biaława (C. dealbata) — ŚMIERTELNA; mała (2–5 cm), biała, na trawniku. Lejkówka gołąbkowa jest największa, szara, w lesie, mączysty zapach.',
+    weights:{bw:72,au:68,ka:70,sw:72,ro:70,lu:68,be:72,bi:68,sd:65,po:68,so:65,ka:65,ku:60,tu:60,no:58,ll:62,op:68,st:70,sl:62,wy:68,nak:63,sep:70}
+  },
+
+  gasowka:{
+    name:'Gąsówka łąkowa',latin:'Lepista saeva',cat:'edible',rare:false,wiki:'Lepista_saeva',
+    season:[10,11,12],terrain:['Łąki','Pastwiska','Trawniki'],
+    soil:'Gleba trawiasta, żyzna, próchnicza',ph:'6.0–7.5',elev:'0–900 m',
+    habitat:'Na łąkach, pastwiskach i trawnikach — jesień i wczesna zima. Tworzy czarcie kręgi. Siostra blewita rosnąca w terenie otwartym.',
+    desc:'Kapelusz 5–15 cm, kremowoszary do brązowawego (bez fiołkowego tonu). Blaszki białe do kremowych. Trzon INTENSYWNIE FIOŁKOWONIEBIESKI — kluczowa cecha. Na łące. Zapach przyjemny, owocowy.',
+    edib:'Dobry jadalny, smak łagodny. Fiołkowy trzon na łące w październiku-grudniu jest diagnostyczny. Gotować przed spożyciem. Dobry do zup.',
+    lookalikes:'Blewit leśny (L. nuda) — JADALNY; cały fiołkowy (kapelusz i trzon), w lesie. Czubajka kania — kapelusz z łuskami, parasol, na łące/skraju. Lejkówka biaława (C. dealbata) — ŚMIERTELNA; mała biała bez fiołkowego trzonu. Fiołkowy trzon + kremowy kapelusz + łąka = gąsówka.',
+    weights:{ka:72,lm:65,ku:60,br:58,gr:55,wk:52,sw:70,ro:68,lu:65,ja:62,ll:65,bi:52,be:55,sd:58,op:65,st:68,sl:62,so:58,bw:65,au:60,wy:70,nak:65,sep:68}
+  },
+
+  wilgotnica:{
+    name:'Wilgotnica szkarłatna',latin:'Hygrocybe coccinea',cat:'inedible',rare:false,wiki:'Hygrocybe_coccinea',
+    season:[9,10,11],terrain:['Łąki','Pastwiska','Nieużytki'],
+    soil:'Gleba nienawożona, uboga, dawne pastwiska i łąki nieskoszone',ph:'5.5–7.0',elev:'0–1000 m',
+    habitat:'Na starych, nieużyźnionych łąkach i pastwiskach — wskaźnik starych, niezalesionych łąk nienaruszonych przez rolnictwo intensywne. Jesień.',
+    desc:'Mała 2–5 cm, kapelusz INTENSYWNIE SZKARŁATNY do czerwonopomidorowego, błyszczący i lepki (stąd "wilgotnica"). Blaszki pomarańczowoczerwone. Trzon czerwony do pomarańczowego, pusty. Piękna, niemożliwa do przeoczenia.',
+    danger:'Formalnie niejadalny — brak wartości kulinarnych, zbyt mała. Ważny wskaźnik ekologiczny: obecność wilgotnic na łące oznacza, że jest to stary, nienaruszony biotop o dużej wartości przyrodniczej. W wielu krajach objęta ochroną.',
+    lookalikes:'Czarka szkarłatna (S. coccinea) — kubkowata, na gałęziach wczesną wiosną. Inne wilgotnice (Hygrocybe spp.) — wiele kolorowych gatunków na łąkach; żadna nie jest niebezpieczna. Intensywny czerwony kolor + lepkość + stara łąka jesienią = wilgotnica.',
+    weights:{ka:60,lm:55,ku:52,br:50,gr:48,wk:48,sw:58,ro:55,lu:52,ja:50,ll:55,bi:45,be:50,sd:50,op:55,st:58,sl:52,so:50,bw:48,au:45,wy:58,nak:53,sep:55}
+  },
 };
 
 
@@ -31810,6 +31975,21 @@ const MUSH_ICON_CFG={
   mleczaj_deb:  {s:'flat',c:'#9B6040',t:'#C09060'},
   szyszkowiec:  {s:'flat',c:'#C8A880',t:'#E0C8A0'},
   trzesak:      {s:'cora',c:'#FF9500'},
+  blewit:       {s:'flat',c:'#7060C0',t:'#A090E0'},
+  tegoskór:     {s:'puff',c:'#C8A040'},
+  maslak_krop:  {s:'cap',c:'#8B7040',t:'#D8C890'},
+  golabek_chab: {s:'flat',c:'#6070C0',t:'#F0EEF8'},
+  golabek_zolt: {s:'flat',c:'#E8D820',t:'#F8F0C0'},
+  luszczak:     {s:'brac',c:'#C8A840'},
+  luskwiak:     {s:'clus',c:'#D4A030',t:'#8B5010'},
+  zasloniak_krus:{s:'cap',c:'#A07040',t:'#E08850'},
+  kosmaczek:    {s:'flat',c:'#E8D8A0',t:'#D8C880'},
+  grzybowka:    {s:'cap',c:'#9B9090',t:'#C8C0B0'},
+  smardz_sto:   {s:'more',c:'#4A3008'},
+  golabek_vesc: {s:'flat',c:'#C04050',t:'#F0EEF0'},
+  lejkowka_gol: {s:'flat',c:'#B0B0A0',t:'#C8C8B8'},
+  gasowka:      {s:'flat',c:'#D0C8B0',t:'#8060C0'},
+  wilgotnica:   {s:'flat',c:'#E82020',t:'#FF6020'},
 };
 
 function getMushSVG(mid){
@@ -31967,6 +32147,21 @@ const MUSHROOM_LOCAL={
   mleczaj_deb:  {s:'p',n:'Pospolity pod dębami całej Krainy. Zapach pluskwy lub ościenka natychmiast go zdradza. Nie zbierać.'},
   szyszkowiec:  {s:'r',n:'Na szyszkach świerkowych w świerczynach. Na Krajnie rzadszy — szukać w marcu w iglastych lasach z dużą ilością szyszek.'},
   trzesak:      {s:'f',n:'Na martwych gałązkach dębów i leszczyn Krainy. Jesień–zima — żółta galaretowata masa nie do przeoczenia po deszczu.'},
+  blewit:       {s:'p',n:'Pospolity w lasach Krainy późną jesienią. Jeden z ostatnich grzybów roku — fiołkowy kolor niepowtarzalny.'},
+  tegoskór:     {s:'p',n:'Jeden z pospolitszych grzybów borów sosnowych regionu. Zawsze przekrój — czarne wnętrze = tęgoskór, białe = jadalna purchawka.'},
+  maslak_krop:  {s:'p',n:'Bardzo pospolity w borach sosnowych Krainy — jeden z dominujących gatunków pod sosną. Zbierać w młodym.'},
+  golabek_chab: {s:'f',n:'W lasach liściastych regionu — pod bukami i dębami przy Noteci. Jeden z najczęstszych jadalnych grzybów leśnych.'},
+  golabek_zolt: {s:'f',n:'Pod brzozami na podmokłych glebach Krainy — przy rowach i mokradłach. Żółty kolor niepowtarzalny.'},
+  luszczak:     {s:'p',n:'Pospolity na starych wierzbach i topolach przy Noteci, drogach i rowach. Duże owocniki od wiosny do jesieni.'},
+  luskwiak:     {s:'f',n:'U podstaw starych dębów i brzóz w lasach regionu. Często mylony z opieńką — sterczące łuski i czosnek go zdradzają.'},
+  zasloniak_krus:{s:'f',n:'Pod brzozami przy podmokłych obniżeniach Krainy. Czerwone opaskowe wzory na trzonie absolutnie unikalne.'},
+  kosmaczek:    {s:'p',n:'Pospolity w lasach i parkach Wyrzyska, Nakła, Sępólna. Wygląda jak pieczarka — zdradza go zapach rzodkwi.'},
+  grzybowka:    {s:'p',n:'Dosłownie wszędzie na martwym drewnie w lasach Krainy przez cały rok. Mały, szary, kępkowy na pniakach.'},
+  smardz_sto:   {s:'f',n:'W iglastych lasach Krainy wiosną. Ciemniejszy i bardziej stożkowaty od smardza jadalnego — wart znajomości.'},
+  golabek_vesc: {s:'f',n:'W dąbrowach i buczynach regionu. Jeden z najsmaczniejszych i pospolitszych jadalnych gołąbków Krainy.'},
+  lejkowka_gol: {s:'p',n:'Pospolita w lasach Krainy jesienią. Duże szare kręgi widoczne z daleka. Unikać — drażni żołądek.'},
+  gasowka:      {s:'f',n:'Na łąkach i pastwiskach regionu późną jesienią. Fiołkowy trzon na łące od października to gąsówka.'},
+  wilgotnica:   {s:'r',n:'Na starych nienawożonych łąkach Krainy. Rzadka — jej obecność oznacza cenny stary biotop. Fotografować, nie zbierać.'},
 };
 
 const LOCAL_LABEL={p:'Pospolity w regionie',f:'Częsty w regionie',r:'Rzadki w regionie',v:'Bardzo rzadki',n:'Nie występuje w regionie'};
