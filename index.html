@@ -41792,12 +41792,29 @@ document.getElementById('tgl-ph').onclick=()=>{
   if(on){soilPhLayer.addTo(map);document.getElementById('ph-legend').style.display='block';}
   else{map.removeLayer(soilPhLayer);document.getElementById('ph-legend').style.display='none';}
 };
+// Boost overlay visibility on satellite base layer
+function _setSatOverlays(sat){
+  const grps=[forestLayer,waterBodyLayer,swampLayer,meadowLayer,cropLayer,urbanLayer,
+               ovLayer,ovWetLayer,ovMeadowLayer,ovCropLayer,protectedLayer];
+  grps.forEach(grp=>{
+    grp.eachLayer(l=>{
+      if(typeof l.setStyle!=='function')return;
+      if(!l._origStyle)l._origStyle={fillOpacity:l.options.fillOpacity??0,weight:l.options.weight??1,opacity:l.options.opacity??1};
+      l.setStyle(sat?{
+        fillOpacity:Math.min(.78,l._origStyle.fillOpacity*2.2),
+        weight:Math.max(2,l._origStyle.weight*1.6),
+        opacity:Math.min(1,(l._origStyle.opacity||1)*1.3)
+      }:l._origStyle);
+    });
+  });
+}
 document.querySelectorAll('.lb[data-base]').forEach(btn=>{
   btn.onclick=()=>{
     document.querySelectorAll('.lb[data-base]').forEach(b=>b.classList.remove('on'));
     btn.classList.add('on');
     Object.values(baseLayers).forEach(l=>map.removeLayer(l));
     baseLayers[btn.dataset.base].addTo(map);
+    _setSatOverlays(btn.dataset.base==='sat');
   };
 });
 
