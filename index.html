@@ -154,6 +154,11 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #ip::-webkit-scrollbar-thumb{background:var(--border)}
 .ph{padding:18px 18px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .pcls{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;padding:1px;transition:color .15s;flex-shrink:0}
+.fav-btn{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);padding:2px 5px;line-height:1;transition:color .15s;flex-shrink:0}
+.fav-btn.on{color:#FFD700}
+.stat-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.stat-lbl{font-size:10px;color:var(--muted);min-width:82px;text-transform:uppercase;letter-spacing:.07em}
+.stat-pips{display:flex;align-items:center;gap:4px}
 .pcls:hover{color:var(--text)}
 .pname{font-size:19px;font-weight:600;color:var(--text);line-height:1.2}
 .platin{font-family:var(--f-disp);font-style:italic;font-size:13.5px;color:var(--muted);margin-top:5px}
@@ -290,7 +295,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.22.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.24.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -309,9 +314,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
         <button class="fb" data-cat="dangerous">Trujące</button>
         <button class="fb" data-cat="rare">Rzadkie</button>
         <button class="fb" data-cat="hallucinogenic">🍄 Halucynogenne</button>
-      </div>
-      <div class="fgl">Sezon</div>
-      <div class="fgrow">
+        <button class="fb" data-cat="fav">★ Ulubione</button>
         <button class="fb" data-season="spring">🌱 Wiosna</button>
         <button class="fb" data-season="summer">☀️ Lato</button>
         <button class="fb" data-season="autumn">🍂 Jesień</button>
@@ -330,12 +333,11 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
       </div>
       <div class="fgl">Sortuj</div>
       <div class="fgrow">
-        <button class="fb on" data-sort="default">Domyślnie</button>
         <button class="fb" data-sort="name-az">A → Z</button>
         <button class="fb" data-sort="name-za">Z → A</button>
-        <button class="fb" data-sort="season">W sezonie</button>
-        <button class="fb" data-sort="rarity">⭐ Rzadkie</button>
-        <button class="fb" data-sort="edibility">🍽 Jadalne</button>
+        <button class="fb" data-sort="rarity-common">Pospolite ↑</button>
+        <button class="fb" data-sort="rarity-rare">Rzadkie ↑</button>
+        <button class="fb" data-sort="edibility">Smaczne ↑</button>
       </div>
     </div>
   </div>
@@ -423,6 +425,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
       <div class="platin" id="platin"></div>
       <div class="pbadges" id="pbadges"></div>
     </div>
+    <button class="fav-btn" id="pfav" title="Dodaj do ulubionych">☆</button>
     <button class="pcls" id="pcls">×</button>
   </div>
   <div style="padding:18px 18px 24px" id="pbody"></div>
@@ -30907,7 +30910,7 @@ const PROTECTED=[
 ];
 
 const MUSHROOMS={
-  borowik:{
+  borowik:{q:4,
     name:'Borowik szlachetny',latin:'Boletus edulis',cat:'edible',rare:false,wiki:'Boletus_edulis',
     season:[6,7,8,9,10,11],terrain:['Lasy iglaste','Lasy mieszane','Lasy liściaste'],
     soil:'Gleba kwaśna, piaszczysto-gliniasta, dobrze zdrenowana',ph:'4.5–6.5',elev:'0–1500 m n.p.m.',
@@ -30917,7 +30920,7 @@ const MUSHROOMS={
     lookalikes:'Goryczak żółciowy (Tylopilus felleus) — identyczny wygląd, ale rurki różowawe a nie białe, i ekstremalnie gorzki smak. Borowik szatański (trujący) — czerwone pory, sinieje po przekrojeniu.',
     weights:{bw:90,au:85,kn:80,su:75,wi:80,no:70,dr:75,pi:75,ps:85,ma:80,br:65,tu:80,ch:75,ka:60,ku:78,lm:55,wk:60,dl:70,op:55,st:60,sd:75,se:70,sw:65,ll:45,ta:60,bi:80,be:78,go:72,ro:75,ja:80,lu:70,so:78,po:82,kb:70,sl:58,gr:60,wy:78,nak:72,sep:70}
   },
-  borowik_sos:{
+  borowik_sos:{q:4,
     name:'Borowik sosnowy',latin:'Boletus pinophilus',cat:'edible',rare:false,wiki:'Boletus_pinophilus',
     season:[7,8,9,10],terrain:['Bory sosnowe','Lasy mieszane z sosną'],
     soil:'Gleba piaszczysta, kwaśna, ubogie bory',ph:'3.8–5.5',elev:'0–1200 m',
@@ -30927,7 +30930,7 @@ const MUSHROOMS={
     lookalikes:'Goryczak żółciowy — sprawdź kolor rurek (różowawe = goryczak, nie zbierać). Borowik ceglastopory — ciemniejszy kapelusz, pory ceglastoczerwone, intensywnie sinieje; jadalny po gotowaniu.',
     weights:{tu:90,no:88,dr:85,au:82,pi:82,ps:80,ku:78,bw:75,dl:78,ch:82,ma:72,wk:65,ll:55,gr:60,br:65,lm:50,ka:45,wy:88,nak:80,sep:82}
   },
-  borowik_siat:{
+  borowik_siat:{q:4,
     name:'Borowik siatkowaty',latin:'Boletus reticulatus',cat:'edible',rare:false,wiki:'Boletus_reticulatus',
     season:[6,7,8,9],terrain:['Lasy liściaste','Dąbrowy','Grądy'],
     soil:'Gleba żyzna, gliniasto-próchnicza',ph:'5.5–7.2',elev:'0–800 m',
@@ -30936,7 +30939,7 @@ const MUSHROOMS={
     edib:'Bardzo smaczny, najwcześniejszy z borowików. Zbiera się od czerwca.',
     weights:{sw:85,ro:80,lu:78,ja:75,ka:72,lm:65,so:70,bw:70,be:72,bi:68,op:65,st:68,ll:60,sd:65,sl:62,po:65,wy:42,nak:38,sep:45}
   },
-  podgrzybek:{
+  podgrzybek:{q:3,
     name:'Podgrzybek brunatny',latin:'Xerocomus badius',cat:'edible',rare:false,wiki:'Xerocomus_badius',
     season:[7,8,9,10,11],terrain:['Bory sosnowe','Lasy iglaste','Lasy mieszane'],
     soil:'Gleba kwaśna, piaszczysta lub torfowa',ph:'3.5–5.5',elev:'0–1300 m',
@@ -30946,7 +30949,7 @@ const MUSHROOMS={
     lookalikes:'Goryczak żółciowy — rurki różowawe, smak piekielnie gorzki nawet na surowo; jeden kawałek psuje cały garnek. Podgrzybek złotawy (X. chrysenteron) — jaśniejszy, kapelusz pęka odsłaniając żółtą miazgę pod skórką; jadalny.',
     weights:{tu:88,no:85,dr:82,au:80,pi:80,ps:82,bw:80,ku:75,dl:78,ch:80,ma:72,br:68,wk:62,ll:58,su:70,wi:72,gr:65,sd:70,se:68,be:72,po:75,bi:70,sw:60,ka:55,lm:50,wy:85,nak:78,sep:80}
   },
-  kurka:{
+  kurka:{q:4,
     name:'Kurka / Pieprznik jadalny',latin:'Cantharellus cibarius',cat:'edible',rare:false,wiki:'Cantharellus_cibarius',
     season:[6,7,8,9,10],terrain:['Lasy iglaste','Lasy liściaste','Lasy mieszane'],
     soil:'Gleba kwaśna do umiarkowanie kwaśnej, dobrze wilgotna',ph:'4.0–6.5',elev:'0–1800 m',
@@ -30956,7 +30959,7 @@ const MUSHROOMS={
     lookalikes:'Lejkówka oliwkowa (Omphalotus olearius) — TRUJĄCA. Ma prawdziwe blaszki (nie rozwidlone żyłki jak kurka), rośnie w kępach na drewnie lub korzeniach, pomarańczowy trzon, może słabo świecić w ciemności. Kurka rośnie zawsze z ziemi, nigdy na drewnie.',
     weights:{bw:85,au:80,kn:78,ps:85,ma:80,tu:82,no:75,dr:78,ku:80,ka:72,sw:78,ro:82,lu:75,ja:78,be:85,bi:82,go:80,ta:70,sd:80,se:78,po:80,so:75,dl:70,br:65,ch:72,pi:72,ll:60,wk:65,lm:58,sl:68,op:62,st:65,gr:60,su:72,wi:75,kb:68,wy:75,nak:68,sep:70}
   },
-  kurka_zim:{
+  kurka_zim:{q:2,
     name:'Kurka zimowa / Lejkówka',latin:'Cantharellus tubaeformis',cat:'edible',rare:false,wiki:'Cantharellus_tubaeformis',
     season:[9,10,11],terrain:['Lasy iglaste','Bory bagienne'],
     soil:'Gleba torfowa, próchnicza, wilgotna',ph:'3.5–5.5',elev:'0–1400 m',
@@ -30965,7 +30968,7 @@ const MUSHROOMS={
     edib:'Smaczna, dobra do zup i sosów. Późna jesień.',
     weights:{bw:80,au:82,tu:85,no:75,dr:78,pi:75,ps:80,ku:72,dl:75,ch:78,ma:68,wi:70,su:72,be:80,bi:78,go:75,sd:82,se:80,po:75,wy:52,nak:48,sep:55}
   },
-  maslak:{
+  maslak:{q:2,
     name:'Maślak zwyczajny',latin:'Suillus luteus',cat:'edible',rare:false,wiki:'Suillus_luteus',
     season:[8,9,10],terrain:['Bory sosnowe'],
     soil:'Gleba piaszczysta, kwaśna, bory z wrzosem',ph:'3.5–5.0',elev:'0–1100 m',
@@ -30975,7 +30978,7 @@ const MUSHROOMS={
     lookalikes:'Maślak ziarnisty (Suillus granulatus) — jadalny, ale bez pierścienia na trzonie; trzon łzawi żółtymi kropelkami u młodych okazów. Goryczak żółciowy — nie rośnie pod sosnami w borach, ale sprawdź smak przy wątpliwości.',
     weights:{tu:92,no:90,dr:88,pi:88,au:82,ps:80,ku:78,dl:82,ch:85,ma:72,bw:65,br:70,wk:68,ll:62,gr:72,lm:52,ka:48,sw:55,wy:90,nak:82,sep:85}
   },
-  maslak_ziarn:{
+  maslak_ziarn:{q:2,
     name:'Maślak ziarnisty',latin:'Suillus granulatus',cat:'edible',rare:false,wiki:'Suillus_granulatus',
     season:[7,8,9,10],terrain:['Bory sosnowe','Lasy górskie z sosną'],
     soil:'Gleba piaszczysta, kwaśna',ph:'4.0–5.5',elev:'0–1400 m',
@@ -30984,7 +30987,7 @@ const MUSHROOMS={
     edib:'Dobry po usunięciu skórki. Zbierać przed deszczem. Odróżnij od maślaka zwyczajnego brakiem pierścienia — trzon łzawi żółtymi kropelkami u młodych.',
     weights:{tu:88,no:85,dr:80,pi:82,au:78,ps:78,dl:80,ch:82,ku:72,ma:68,br:65,wk:60,ll:58,gr:68,lm:48,ka:45,sd:72,se:68,ta:65,be:70,po:72,bi:68,wy:88,nak:80,sep:85}
   },
-  kozlarz_cz:{
+  kozlarz_cz:{q:2,
     name:'Koźlarz czerwony',latin:'Leccinum aurantiacum',cat:'edible',rare:false,wiki:'Leccinum_aurantiacum',
     season:[7,8,9,10],terrain:['Lasy z osiką','Topólki','Lasy mieszane'],
     soil:'Gleba gliniasta lub gliniasto-piaszczysta, żyzna',ph:'5.0–6.5',elev:'0–900 m',
@@ -30994,7 +30997,7 @@ const MUSHROOMS={
     lookalikes:'Koźlarz babka (L. scabrum) — szarobrązowy kapelusz (nie ceglasty), rośnie pod brzozami. Koźlarz grabowy (L. carpini) — szaro-ochrowy kapelusz, pod grabami. Pewna identyfikacja koźlarza czerwonego wymaga obecności osiki lub topoli w pobliżu.',
     weights:{ka:78,lm:72,ku:68,wk:65,ma:70,ps:65,lu:70,ll:62,ro:65,bw:60,au:65,br:60,gr:58,sl:55,op:58,st:60,sw:65,ja:65,so:62,po:62,be:60,bi:58,wy:60,nak:55,sep:58}
   },
-  kozlarz_b:{
+  kozlarz_b:{q:2,
     name:'Koźlarz babka',latin:'Leccinum scabrum',cat:'edible',rare:false,wiki:'Leccinum_scabrum',
     season:[7,8,9,10],terrain:['Brzeziny','Lasy mieszane z brzozą'],
     soil:'Gleba torfowa lub piaszczysta, wilgotna',ph:'4.0–6.0',elev:'0–1100 m',
@@ -31004,7 +31007,7 @@ const MUSHROOMS={
     lookalikes:'Koźlarz czerwony (L. aurantiacum) — ceglastoczerwony kapelusz, wyłącznie pod osiką. Koźlarz grabowy (L. carpini) — żółtawoszary, pod grabami, intensywniej różowieje lub sinieje po przekrojeniu. Koźlarz babka identyfikuje się pewnie tylko pod brzozą.',
     weights:{bw:75,au:80,kn:72,kb:82,su:78,wi:80,ps:75,ma:78,ku:70,tu:68,no:65,wk:68,lm:58,ll:55,br:60,dl:62,pi:62,ch:65,gr:55,wy:75,nak:68,sep:72}
   },
-  kozlarz_gr:{
+  kozlarz_gr:{q:2,
     name:'Koźlarz grabowy',latin:'Leccinum carpini',cat:'edible',rare:false,wiki:'Leccinum_carpini',
     season:[7,8,9,10],terrain:['Grądy','Lasy grabowe','Lasy liściaste'],
     soil:'Gleba gliniasta, żyzna, próchnicza',ph:'5.5–7.0',elev:'0–700 m',
@@ -31013,7 +31016,7 @@ const MUSHROOMS={
     edib:'Jadalny po gotowaniu. Intensywnie ciemnieje.',
     weights:{bw:70,kn:72,ka:75,lm:68,sw:78,ro:72,lu:75,ja:68,so:68,be:65,bi:60,op:62,st:65,sl:68,sd:60,se:58,wy:42,nak:38,sep:45}
   },
-  rydz:{
+  rydz:{q:4,
     name:'Rydz / Szafraniak',latin:'Lactarius deliciosus',cat:'edible',rare:false,wiki:'Lactarius_deliciosus',
     season:[8,9,10],terrain:['Bory sosnowe','Lasy mieszane z sosną'],
     soil:'Gleba piaszczysta, kwaśna, bory sosnowe',ph:'4.0–5.5',elev:'0–1200 m',
@@ -31023,7 +31026,7 @@ const MUSHROOMS={
     lookalikes:'Mleczaj wełnianka (Lactarius torminosus) — TRUJĄCY. Biały kłujący sok zamiast marchwiowoczerwonego, kapelusz z wełnistą, strefowaną powierzchnią, rośnie wyłącznie pod brzozami. Mleczaj zmienny (L. semisanguifluus) — mleczko zmienia barwę na winnoczerwone po 15 minutach; pod sosnami na glebach wapiennych; jadalny, mniej wartościowy.',
     weights:{tu:90,no:88,dr:82,pi:85,au:75,ps:80,dl:82,ch:85,ku:72,ma:68,bw:65,br:68,wk:60,ll:55,gr:70,lm:48,ka:42,sd:75,ta:60,be:78,po:75,bi:70,sl:65,se:70,sw:60,wy:85,nak:78,sep:82}
   },
-  smerekowiec:{
+  smerekowiec:{q:3,
     name:'Smerekowiec / Rydz świerkowy',latin:'Lactarius deterrimus',cat:'edible',rare:false,wiki:'Lactarius_deterrimus',
     season:[8,9,10],terrain:['Bory świerkowe','Lasy górskie ze świerkiem'],
     soil:'Gleba kwaśna, próchnicza, ściółka świerkowa',ph:'3.8–5.2',elev:'200–1400 m',
@@ -31032,7 +31035,7 @@ const MUSHROOMS={
     edib:'Jadalny, nieco gorszy od rydza. Dobry do marynowania.',
     weights:{sd:88,se:82,ta:80,be:85,bi:80,go:78,po:82,bw:60,au:65,ps:70,su:68,wi:72,ku:65,ma:62,wy:25,nak:22,sep:28}
   },
-  czubajka:{
+  czubajka:{q:4,
     name:'Czubajka kania',latin:'Macrolepiota procera',cat:'edible',rare:false,wiki:'Macrolepiota_procera',
     season:[8,9,10],terrain:['Łąki','Skraje lasów','Dąbrowy','Murawy'],
     soil:'Gleba żyzna, próchnicza',ph:'5.5–7.5',elev:'0–900 m',
@@ -31042,7 +31045,7 @@ const MUSHROOMS={
     lookalikes:'Czubajnik czerwieniejący (Chlorophyllum rhacodes) — miąższ szybko czerwienieje po uszkodzeniu, trzon blady bez zygzakowatego wzoru; jadalny, mniej smaczny. Czubajka sutkowata (M. mastoidea) — mniejsza, z charakterystycznym środkowym garbkiem; jadalna. Zawsze sprawdź ruchomy pierścień i brak pochwy u podstawy.',
     weights:{ka:78,lm:72,ku:68,sw:75,ro:75,lu:72,ja:70,bw:65,au:68,ma:65,ps:62,no:58,tu:55,ll:65,br:60,gr:58,sl:60,op:65,st:68,bi:60,be:62,po:65,sd:60,se:58,so:65,wy:72,nak:68,sep:70}
   },
-  opienka:{
+  opienka:{q:3,
     name:'Opieńka miodowa',latin:'Armillaria mellea',cat:'edible',rare:false,wiki:'Armillaria_mellea',
     season:[9,10,11],terrain:['Lasy liściaste','Lasy mieszane'],
     soil:'Gleba wilgotna, próchnicza. Pasożyt na pniach drzew.',ph:'5.0–7.0',elev:'0–1000 m',
@@ -31052,7 +31055,7 @@ const MUSHROOMS={
     lookalikes:'Hełmówka jadowita (Galerina marginata) — ŚMIERTELNA. Rośnie w tych samych miejscach na drewnie. Odróżnić: hełmówka ma rdzawobrązowy, pudrowy wysyp na blaszkach i rośnie zwykle pojedynczo lub w małych skupiskach; opieńka tworzy duże kolonie i ma białawy lub kremowy wysyp.',
     weights:{bw:85,au:80,kn:78,ka:72,lm:68,ku:75,sw:78,ro:80,lu:75,ja:78,be:82,bi:80,po:78,sd:72,se:68,so:75,sl:70,op:68,st:65,ps:70,ma:65,tu:60,no:58,ll:62,su:65,wi:68,wy:72,nak:68,sep:70}
   },
-  purchawka:{
+  purchawka:{q:2,
     name:'Purchawka pospolita',latin:'Lycoperdon perlatum',cat:'edible',rare:false,wiki:'Lycoperdon_perlatum',
     season:[7,8,9,10],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane'],
     soil:'Gleba próchnicza, umiarkowanie wilgotna',ph:'4.5–6.5',elev:'0–1200 m',
@@ -31061,7 +31064,7 @@ const MUSHROOMS={
     edib:'Jadalny tylko gdy wewnątrz biały. Smażyć w plastrach.',
     weights:{bw:72,au:70,kn:68,tu:65,no:62,ps:68,ku:65,ma:62,sw:70,ro:70,lu:68,ja:65,be:72,bi:70,po:68,sd:68,se:62,ta:55,ka:60,lm:58,ll:55,sl:62,op:60,st:60,so:65,br:58,gr:55,wy:70,nak:65,sep:68}
   },
-  purchawka_olb:{
+  purchawka_olb:{q:3,
     name:'Purchawka olbrzymia',latin:'Calvatia gigantea',cat:'edible',rare:false,wiki:'Calvatia_gigantea',
     season:[8,9,10],terrain:['Łąki','Pastwiska','Skraje lasów'],
     soil:'Gleba żyzna, nawożona',ph:'6.0–7.5',elev:'0–700 m',
@@ -31070,7 +31073,7 @@ const MUSHROOMS={
     edib:'Doskonały smak. Pokroić w plastry i smażyć.',
     weights:{ka:78,lm:72,ku:65,wk:68,sw:72,lu:70,ja:65,ro:68,ll:60,br:58,gr:55,sl:58,op:65,st:65,so:62,bi:55,be:58,au:60,ma:62,wy:62,nak:58,sep:65}
   },
-  pieczarka:{
+  pieczarka:{q:3,
     name:'Pieczarka polna',latin:'Agaricus campestris',cat:'edible',rare:false,wiki:'Agaricus_campestris',
     season:[7,8,9,10],terrain:['Łąki','Pastwiska','Ogrody'],
     soil:'Gleba żyzna, próchnicza, kompostowana',ph:'6.0–7.5',elev:'0–600 m',
@@ -31079,7 +31082,7 @@ const MUSHROOMS={
     edib:'Smaczna. Upewnij się że blaszki nie są żółte (A. xanthodermus).',
     weights:{ka:65,lm:60,lu:65,ro:60,sw:65,ja:58,ll:58,op:62,st:60,br:55,gr:52,sl:60,so:60,bi:50,be:52,po:55,ku:55,ma:55,bw:48,au:50,tu:45,no:42,wy:60,nak:55,sep:62}
   },
-  boczniak:{
+  boczniak:{q:3,
     name:'Boczniak ostrygowaty',latin:'Pleurotus ostreatus',cat:'edible',rare:false,wiki:'Pleurotus_ostreatus',
     season:[10,11,12,1,2,3,4],terrain:['Lasy liściaste','Parki','Sady'],
     soil:'Na pniach drzew liściastych. Grzyb saprofit drewna.',ph:'Saprofit drewna',elev:'0–800 m',
@@ -31088,7 +31091,7 @@ const MUSHROOMS={
     edib:'Doskonały smak. Smażyć, dusić, do makaronów.',
     weights:{bw:80,au:75,kn:72,ka:70,lm:68,sw:75,ro:78,lu:72,ja:70,be:78,bi:75,sd:70,se:65,po:72,so:70,sl:65,op:62,st:65,ps:68,ma:65,tu:58,no:55,ll:60,ku:65,su:68,wi:70,wy:55,nak:50,sep:58}
   },
-  golabek:{
+  golabek:{q:3,
     name:'Gołąbek zielonawy',latin:'Russula virescens',cat:'edible',rare:false,wiki:'Russula_virescens',
     season:[7,8,9],terrain:['Lasy liściaste','Dąbrowy','Grądy','Buczyny'],
     soil:'Gleba żyzna, gliniasto-próchnicza',ph:'5.5–7.0',elev:'0–900 m',
@@ -31097,7 +31100,7 @@ const MUSHROOMS={
     edib:'Smaczny, delikatny orzechowy smak. Można jeść na surowo.',
     weights:{bw:72,ka:75,sw:80,ro:78,lu:72,ja:70,be:68,bi:65,sd:65,po:62,so:68,sl:68,op:70,st:72,ll:60,lm:62,kn:68,wy:55,nak:50,sep:52}
   },
-  lakówka:{
+  lakówka:{q:2,
     name:'Lakówka ametystowa',latin:'Laccaria amethystina',cat:'edible',rare:false,wiki:'Laccaria_amethystina',
     season:[7,8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Buczyny'],
     soil:'Gleba wilgotna, kwaśna, próchnicza',ph:'4.0–6.0',elev:'0–1400 m',
@@ -31106,7 +31109,7 @@ const MUSHROOMS={
     edib:'Jadalna, łagodny smak. Łatwa do identyfikacji dzięki kolorowi.',
     weights:{bw:80,au:75,kn:72,sw:78,ro:75,lu:72,be:80,bi:78,go:75,sd:75,se:72,ta:65,po:72,so:70,ka:65,ps:68,ma:62,su:68,wi:72,wy:62,nak:58,sep:65}
   },
-  smardz:{
+  smardz:{q:4,
     name:'Smardz jadalny',latin:'Morchella esculenta',cat:'edible',rare:false,wiki:'Morchella_esculenta',
     season:[4,5],terrain:['Lasy liściaste','Sady','Ogródki'],
     soil:'Gleba żyzna, wilgotna, wapienno-gliniasta',ph:'5.5–7.5',elev:'0–800 m',
@@ -31116,7 +31119,7 @@ const MUSHROOMS={
     lookalikes:'Piestrzenica kasztanowata (Gyromitra esculenta) — TRUJĄCA. Kapelusz mózgopodobnie pofałdowany, nie siatkowaty. Piestrzenica jest zazwyczaj bardziej siodłowata i ciemnobrązowa; smardz — wydłużony, symetryczny z regularną siatką komórek.',
     weights:{ka:72,lm:68,sw:78,ro:75,lu:72,ja:68,ll:60,br:55,gr:52,sl:62,op:65,st:65,bw:60,au:55,so:65,bi:55,be:58,sd:62,wy:62,nak:58,sep:60}
   },
-  zimowka:{
+  zimowka:{q:2,
     name:'Zimówka aksamitnotrzonowa',latin:'Flammulina velutipes',cat:'edible',rare:false,wiki:'Flammulina_velutipes',
     season:[11,12,1,2,3],terrain:['Lasy liściaste','Parki','Aleje'],
     soil:'Na pniach topoli, wierzby, olchy. Saprofit drewna.',ph:'Saprofit drewna',elev:'0–700 m',
@@ -31126,7 +31129,7 @@ const MUSHROOMS={
     lookalikes:'Hełmówka jadowita (Galerina marginata) — ŚMIERTELNA. Ten sam habitat na drewnie, podobna barwa. Odróżnij: zimówka ma trzon wyraźnie ciemnobrązowy z czarnym aksamitnym (szczotkowym) owłosieniem; hełmówka ma trzon jednobarwny brązowy z wyraźnym pierścieniem i rdzawobrązowym wysypem zarodników na blaszkach.',
     weights:{ka:70,lm:68,bw:72,au:65,ku:60,sw:65,ro:68,lu:65,ja:62,be:60,bi:58,sd:55,po:60,so:62,sl:60,op:58,br:55,gr:52,ps:58,ma:55,wy:68,nak:62,sep:65}
   },
-  czernidlak:{
+  czernidlak:{q:3,
     name:'Czernidłak kołpakowaty',latin:'Coprinellus comatus',cat:'edible',rare:false,wiki:'Coprinus_comatus',
     season:[5,6,7,8,9,10,11],terrain:['Łąki','Ogródki','Pobocza','Kompostowniki'],
     soil:'Gleba żyzna, nawożona, kompostowa',ph:'6.0–7.5',elev:'0–600 m',
@@ -31135,7 +31138,7 @@ const MUSHROOMS={
     edib:'Dobry smak, używać szybko. Nie pić alkoholu po zjedzeniu.',
     weights:{ka:72,lm:68,lu:65,ro:60,sw:65,br:58,gr:55,sl:60,op:62,ll:62,so:58,bi:48,be:50,au:52,bw:50,tu:45,no:42,wy:58,nak:55,sep:60}
   },
-  gaska_szara:{
+  gaska_szara:{q:3,
     name:'Gąska szara',latin:'Tricholoma terreum',cat:'edible',rare:false,wiki:'Tricholoma_terreum',
     season:[9,10,11],terrain:['Bory sosnowe','Lasy iglaste'],
     soil:'Gleba piaszczysta, kwaśna',ph:'4.0–5.5',elev:'0–1000 m',
@@ -31145,7 +31148,7 @@ const MUSHROOMS={
     lookalikes:'Gąska siarkowa (T. sulphureum) — TRUJĄCA; odróżnij intensywnym nieprzyjemnym zapachem przypominającym karbid lub gaz (gąska szara pachnie łagodnie mąkowo), i siarkowożółtym miąższem (u gąski szarej biały). Gąska plamista (T. pardinum) — silnie trująca; większa, kapelusz pokryty ciemnoszarymi, koncentrycznymi łuskami, pod bukami na glebach wapiennych.',
     weights:{tu:85,no:82,dr:78,pi:80,au:75,ps:78,dl:80,ch:82,ku:72,ma:68,bw:70,br:65,wk:62,ll:58,gr:68,sw:60,lm:50,ka:45,sd:70,se:65,wy:82,nak:75,sep:78}
   },
-  hericium:{
+  hericium:{q:4,
     name:'Soplówka jeżowata',latin:'Hericium erinaceus',cat:'edible',rare:true,protected:true,wiki:'Hericium_erinaceus',
     season:[8,9,10],terrain:['Stare lasy liściaste','Buczyny','Dębiny'],
     soil:'Na pniach żywych i martwych dębów, buków. Saprofit i słaby pasożyt.',ph:'Saprofit drewna',elev:'0–800 m',
@@ -31154,7 +31157,7 @@ const MUSHROOMS={
     edib:'Wybitny smak, przypomina krewetki. Ceniony w kuchni azjatyckiej. Zbieranie wymaga zezwolenia!',
     weights:{bw:60,kn:45,sw:55,ro:52,lu:48,bi:40,be:42,sd:38,se:35,po:38,wy:28,nak:25,sep:30}
   },
-  grifola:{
+  grifola:{q:3,
     name:'Żagwica listkowata',latin:'Grifola frondosa',cat:'edible',rare:true,wiki:'Grifola_frondosa',
     season:[9,10],terrain:['Stare dąbrowy','Lasy dębowe'],
     soil:'U podstawy starych dębów. Saprofit.',ph:'Saprofit drewna',elev:'0–700 m',
@@ -31163,7 +31166,7 @@ const MUSHROOMS={
     edib:'Wyśmienity smak i aromat. Smażyć lub do zup.',
     weights:{bw:55,kn:48,ka:50,sw:58,ro:55,lu:52,ja:50,be:45,bi:42,sd:38,se:35,po:40,so:48,sl:42,wy:22,nak:18,sep:25}
   },
-  szmaciak:{
+  szmaciak:{q:3,
     name:'Szmaciak gałęzisty',latin:'Sparassis crispa',cat:'edible',rare:true,wiki:'Sparassis_crispa',
     season:[8,9,10],terrain:['Bory sosnowe','Lasy iglaste z sosną'],
     soil:'U nasady sosen. Pasożyt korzeni.',ph:'Pasożyt',elev:'0–1200 m',
@@ -31172,7 +31175,7 @@ const MUSHROOMS={
     edib:'Doskonały! Kremowy smak, chrupiąca faktura. Smażyć lub grillować.',
     weights:{tu:72,no:70,dr:65,pi:68,au:62,ps:65,dl:68,ch:70,bw:60,ma:58,ku:55,sd:62,se:58,ta:55,be:60,bi:55,po:62,wy:72,nak:68,sep:70}
   },
-  rozites:{
+  rozites:{q:3,
     name:'Gąska rudawa / Kolpak',latin:'Cortinarius caperatus',cat:'edible',rare:false,wiki:'Cortinarius_caperatus',
     season:[8,9,10],terrain:['Bory świerkowe','Lasy górskie','Bory sosnowe'],
     soil:'Gleba kwaśna, torfowa, próchnicza',ph:'3.8–5.5',elev:'100–1500 m',
@@ -31181,7 +31184,7 @@ const MUSHROOMS={
     edib:'Smaczny jadalny, ceniony w Europie Wschodniej. Zbierany w Bieszczadach.',
     weights:{sd:80,se:78,ta:75,be:82,bi:80,go:78,po:78,bw:65,au:70,su:72,wi:75,ps:68,ku:62,ma:60,kn:68,wy:45,nak:40,sep:48}
   },
-  trufla:{
+  trufla:{q:4,
     name:'Trufla letnia',latin:'Tuber aestivum',cat:'edible',rare:true,wiki:'Tuber_aestivum',
     season:[6,7,8,9],terrain:['Lasy liściaste na wapieniu','Buczyny wapienne','Dąbrowy kserotermiczne'],
     soil:'Gleba wapienna, lekko zasadowa, dobrze zdrenowana',ph:'7.0–8.5',elev:'0–700 m',
@@ -31190,7 +31193,7 @@ const MUSHROOMS={
     edib:'Luksusowy przysmak. Zetrzeć na makaron lub jajecznicę. Częściowo chroniona.',
     weights:{ro:58,lu:62,ja:55,sw:50,sl:45,op:42,be:38,bi:35,so:50,ll:35,wy:12,nak:10,sep:15}
   },
-  polyporus_umb:{
+  polyporus_umb:{q:2,
     name:'Żagwica listkowata (mała)',latin:'Polyporus umbellatus',cat:'edible',rare:true,protected:true,wiki:'Polyporus_umbellatus',
     season:[7,8,9],terrain:['Stare dąbrowy','Grądy'],
     soil:'Na korzeniach starych dębów. Saprofit.',ph:'Saprofit',elev:'0–700 m',
@@ -31199,7 +31202,7 @@ const MUSHROOMS={
     edib:'Jadalny, delikatny smak. Ze względu na ochronę — obserwować, nie zbierać.',
     weights:{sw:42,ro:40,lu:45,ja:38,bw:35,kn:32,ka:38,be:35,bi:30,sd:28,se:25,wy:18,nak:15,sep:20}
   },
-  ramaria:{
+  ramaria:{q:2,
     name:'Koralówka różowobiała',latin:'Ramaria botrytis',cat:'edible',rare:true,wiki:'Ramaria_botrytis',
     season:[8,9,10],terrain:['Buczyny','Lasy liściaste','Grądy'],
     soil:'Gleba próchnośna, żyzna, umiarkowanie wilgotna',ph:'5.0–6.5',elev:'0–1200 m',
@@ -31313,7 +31316,7 @@ const MUSHROOMS={
     weights:{sd:55,se:50,sl:48,op:45,sw:45,ka:42,lm:40,ll:40,be:45,bi:40,ro:42,lu:40,so:40,wy:25,nak:20,sep:28}
   },
 
-  zolciak_siar:{
+  zolciak_siar:{q:1,
     name:'Żółciak siarkowy',latin:'Laetiporus sulphureus',cat:'edible',rare:false,wiki:'Laetiporus_sulphureus',
     season:[6,7,8,9,10],terrain:['Stare dęby','Lasy liściaste','Wiązy','Parki'],
     soil:'Pasożyt i saprofit żywych i martwych drzew liściastych (dąb, wiąz, wiśnia, robinia)',ph:'Saprofit drewna',elev:'0–800 m',
@@ -31322,7 +31325,7 @@ const MUSHROOMS={
     edib:'Smaczny tylko MŁODY — miękkiej konsystencji. Starsze okazy twarde i trujące. Smażyć lub grillować, smakuje jak kurczak. Zbierać jasnopomarańczowe brzegi.',
     weights:{bw:72,au:68,ka:65,sw:70,ro:68,lu:65,ja:62,be:70,bi:65,sd:60,po:65,so:65,sl:62,op:68,st:65,ku:58,ma:60,lm:58,kn:60,ll:55,br:52,wy:68,nak:62,sep:65}
   },
-  kurka_czarna:{
+  kurka_czarna:{q:4,
     name:'Trąbka śmierci / Kurka czarna',latin:'Craterellus cornucopioides',cat:'edible',rare:false,wiki:'Craterellus_cornucopioides',
     season:[8,9,10,11],terrain:['Lasy liściaste','Buczyny','Grądy'],
     soil:'Gleba próchnośna, wilgotna, dobrze mykoryzująca w lasach liściastych',ph:'5.0–6.5',elev:'0–1200 m',
@@ -31340,7 +31343,7 @@ const MUSHROOMS={
     danger:'ŚMIERTELNIE TRUJĄCY — niewidoczna trucizna kumulacyjna. Dawniej tradycyjnie jedzony w Polsce i Rosji. Udowodniono od lat 70. że powoduje postępującą autoimmunologiczną hemolizę (niszczenie własnych erytrocytów). Śmierć po wieloletnim spożywaniu. Nigdy nie zbierać pod żadnym pozorem.',
     weights:{tu:90,no:88,dr:85,bw:82,au:80,pi:82,ps:84,ku:80,dl:80,ch:82,ma:74,br:70,wk:64,ll:60,su:74,wi:76,be:74,bi:70,sd:72,sw:65,ro:68,wy:87,nak:80,sep:84}
   },
-  borowik_ceg:{
+  borowik_ceg:{q:3,
     name:'Borowik ceglastopory',latin:'Neoboletus erythropus',cat:'edible',rare:false,wiki:'Neoboletus_erythropus',
     season:[7,8,9,10],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane'],
     soil:'Gleba kwaśna do umiarkowanie kwaśnej, mykoryza z dębem, sosną i świerkiem',ph:'4.5–6.5',elev:'0–1200 m',
@@ -31349,7 +31352,7 @@ const MUSHROOMS={
     edib:'Jadalny i BARDZO SMACZNY — ale TYLKO po ugotowaniu minimum 15–20 minut. Surowy i niedogotowany zawiera termolabilne toksyny. Po ugotowaniu smak wyśmienity, podobny do borowika. Siniowanie znika całkowicie po obróbce.',
     weights:{bw:78,au:75,tu:80,no:78,dr:75,pi:78,ps:76,ku:72,dl:74,ch:78,ma:70,br:66,wk:62,ll:56,su:68,wi:72,be:72,bi:68,po:70,sd:72,se:68,sw:65,wy:80,nak:74,sep:78}
   },
-  maslak_mod:{
+  maslak_mod:{q:3,
     name:'Maślak modrzewnikowy',latin:'Suillus grevillei',cat:'edible',rare:false,wiki:'Suillus_grevillei',
     season:[7,8,9,10],terrain:['Lasy z modrzewiem','Parki z modrzewiem','Aleje modrzewiowe'],
     soil:'Gleba kwaśna, mykoryza WYŁĄCZNIE z modrzewiem europejskim',ph:'4.0–6.0',elev:'0–1400 m',
@@ -31358,7 +31361,7 @@ const MUSHROOMS={
     edib:'Smaczny po usunięciu śluzowatej skórki. Marynować lub smażyć — do zup i sosów.',
     weights:{ka:60,lm:55,ku:62,bw:58,au:55,sw:65,ro:60,lu:60,ja:55,ll:62,op:58,st:60,sl:58,so:58,bi:50,be:52,sd:55,se:50,wy:68,nak:62,sep:65}
   },
-  uszak:{
+  uszak:{q:2,
     name:'Uszak bzowy',latin:'Auricularia auricula-judae',cat:'edible',rare:false,wiki:'Auricularia_auricula-judae',
     season:[1,2,3,4,5,6,7,8,9,10,11,12],terrain:['Lasy liściaste','Parki','Aleje','Sady'],
     soil:'Na pniach i gałęziach bzów czarnych, wiązów, olch, wierzb — saprofit drewna',ph:'Saprofit drewna',elev:'0–700 m',
@@ -31367,7 +31370,7 @@ const MUSHROOMS={
     edib:'Jadalny. Smażyć, gotować, suszyć. Cenny w kuchni chińskiej jako "czarne grzyby" (mù ěr). Chrupki po przyrządzeniu. Dobry do zup azjatyckich i stir-fry.',
     weights:{bw:68,au:62,ka:65,sw:68,ro:65,lu:62,ja:60,be:60,bi:58,sd:55,po:60,so:60,sl:58,op:60,st:62,ku:55,ma:55,ll:58,br:55,gr:52,wy:62,nak:58,sep:60}
   },
-  podpienka:{
+  podpienka:{q:2,
     name:'Podpieńka zmienna',latin:'Kuehneromyces mutabilis',cat:'edible',rare:false,wiki:'Kuehneromyces_mutabilis',
     season:[4,5,6,7,8,9,10,11],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane'],
     soil:'Na pniach, kłodach i korzeniach drzew liściastych i iglastych — saprofit drewna',ph:'Saprofit drewna',elev:'0–1000 m',
@@ -31390,7 +31393,7 @@ const MUSHROOMS={
     weights:{tu:88,no:85,dr:82,pi:85,au:78,ps:80,dl:82,ch:85,ku:70,ma:68,bw:82,br:68,wk:64,ll:58,sw:52,wy:85,nak:78,sep:82}
   },
 
-  podgrzybek_zaj:{
+  podgrzybek_zaj:{q:3,
     name:'Podgrzybek zajączek',latin:'Xerocomus subtomentosus',cat:'edible',rare:false,wiki:'Xerocomus_subtomentosus',
     season:[6,7,8,9,10],terrain:['Lasy iglaste','Lasy liściaste','Lasy mieszane'],
     soil:'Gleba kwaśna, piaszczysta lub gliniasta',ph:'4.0–6.5',elev:'0–1300 m',
@@ -31401,7 +31404,7 @@ const MUSHROOMS={
     weights:{bw:80,au:75,tu:78,no:75,dr:72,pi:75,ps:76,ku:68,dl:72,ch:76,ma:68,br:65,ll:58,su:65,wi:68,be:70,bi:68,po:72,sw:62,wy:80,nak:75,sep:78}
   },
 
-  mleczaj_obrz:{
+  mleczaj_obrz:{q:3,
     name:'Mleczaj obrzękły',latin:'Lactarius volemus',cat:'edible',rare:false,wiki:'Lactarius_volemus',
     season:[7,8,9],terrain:['Lasy liściaste','Dąbrowy','Grądy','Buczyny'],
     soil:'Gleba żyzna, próchnicza, gliniasta',ph:'5.5–7.0',elev:'0–900 m',
@@ -31412,7 +31415,7 @@ const MUSHROOMS={
     weights:{bw:62,sw:80,ro:78,lu:72,ja:68,be:75,bi:70,sd:68,po:72,so:68,ka:72,lm:68,op:70,st:72,sl:68,kn:62,ll:58,wy:48,nak:42,sep:50}
   },
 
-  twardzioszek:{
+  twardzioszek:{q:3,
     name:'Twardzioszek przydrożny',latin:'Marasmius oreades',cat:'edible',rare:false,wiki:'Marasmius_oreades',
     season:[5,6,7,8,9,10],terrain:['Łąki','Trawniki','Pastwiska','Skraje lasów'],
     soil:'Gleba żyzna, próchnicza, trawiasta',ph:'5.5–7.5',elev:'0–1200 m',
@@ -31423,7 +31426,7 @@ const MUSHROOMS={
     weights:{ka:75,lm:70,ku:68,br:65,gr:60,wk:58,sw:72,ro:70,lu:65,ja:62,ll:68,bi:58,be:62,sd:62,op:68,st:70,sl:65,so:60,bw:72,au:68,wy:75,nak:70,sep:72}
   },
 
-  czubajka_cz:{
+  czubajka_cz:{q:4,
     name:'Czubajka czerwieniejąca',latin:'Chlorophyllum rhacodes',cat:'edible',rare:false,wiki:'Chlorophyllum_rhacodes',
     season:[8,9,10],terrain:['Ogrody','Kompostowniki','Lasy iglaste','Parki'],
     soil:'Gleba żyzna, kompostowa, bogata w azot',ph:'6.0–7.5',elev:'0–700 m',
@@ -31445,7 +31448,7 @@ const MUSHROOMS={
     weights:{bw:72,au:68,ka:75,lm:70,ku:65,sw:78,ro:75,lu:70,ja:68,ll:68,op:72,st:75,sl:70,br:62,gr:60,bi:62,be:68,sd:65,so:68,wy:70,nak:65,sep:68}
   },
 
-  czarka:{
+  czarka:{q:1,
     name:'Czarka szkarłatna',latin:'Sarcoscypha coccinea',cat:'edible',rare:false,wiki:'Sarcoscypha_coccinea',
     season:[2,3,4,5],terrain:['Lasy liściaste','Wąwozy','Olszyny'],
     soil:'Na zagrzebanych lub leżących gałązkach drewna liściastego (lipa, wiąz, leszczyna)',ph:'Saprofit drewna',elev:'0–900 m',
@@ -31544,7 +31547,7 @@ const MUSHROOMS={
     weights:{tu:75,no:72,dr:68,pi:70,au:65,ps:70,dl:70,ch:72,bw:65,ma:62,ku:60,sd:62,se:60,ta:58,be:62,bi:58,po:62,wy:80,nak:75,sep:78}
   },
 
-  smardz_pol:{
+  smardz_pol:{q:4,
     name:'Smardz półwolny',latin:'Morchella semilibera',cat:'edible',rare:false,wiki:'Morchella_semilibera',
     season:[4,5],terrain:['Lasy liściaste','Lasy mieszane','Łęgi'],
     soil:'Gleba wilgotna, żyzna, często na ściółce lub przy strumieniach',ph:'6.0–7.5',elev:'0–800 m',
@@ -31555,7 +31558,7 @@ const MUSHROOMS={
     weights:{ka:70,sw:78,ro:75,lu:72,ja:68,ll:60,br:55,bw:62,au:58,be:68,bi:62,sd:65,so:65,op:65,st:68,sl:62,lm:60,wy:62,nak:58,sep:60}
   },
 
-  watrobka:{
+  watrobka:{q:3,
     name:'Wątróbka dębowa',latin:'Fistulina hepatica',cat:'edible',rare:false,wiki:'Fistulina_hepatica',
     season:[8,9,10],terrain:['Dąbrowy','Lasy liściaste','Parki'],
     soil:'Na żywych lub martwych dębach i kasztanowcach — pasożyt i saprofit drewna',ph:'Pasożyt drzew',elev:'0–700 m',
@@ -31566,7 +31569,7 @@ const MUSHROOMS={
     weights:{bw:55,ka:58,sw:65,ro:62,lu:60,ja:58,be:55,bi:50,sd:48,po:55,so:58,sl:55,op:62,st:65,ll:52,lm:55,kn:50,wy:45,nak:40,sep:48}
   },
 
-  pieczarka_las:{
+  pieczarka_las:{q:4,
     name:'Pieczarka leśna',latin:'Agaricus sylvaticus',cat:'edible',rare:false,wiki:'Agaricus_sylvaticus',
     season:[7,8,9,10],terrain:['Lasy iglaste','Lasy mieszane'],
     soil:'Na ściółce iglastej pod sosnami i świerkami',ph:'5.0–6.5',elev:'0–1000 m',
@@ -31577,7 +31580,7 @@ const MUSHROOMS={
     weights:{tu:85,no:82,dr:78,pi:80,au:75,ps:78,dl:80,ch:82,bw:75,ku:72,ma:68,br:65,wk:60,ll:58,sd:70,se:65,be:68,po:70,bi:65,wy:82,nak:76,sep:80}
   },
 
-  pieczarka_krw:{
+  pieczarka_krw:{q:3,
     name:'Pieczarka krwawiąca',latin:'Agaricus haemorrhoidarius',cat:'edible',rare:false,wiki:'Agaricus_haemorrhoidarius',
     season:[8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Buczyny','Grądy'],
     soil:'Na próchnicznej glebie wśród ściółki liściastej',ph:'5.5–7.0',elev:'0–800 m',
@@ -31588,7 +31591,7 @@ const MUSHROOMS={
     weights:{bw:68,au:62,sw:72,ro:70,lu:65,ja:62,be:72,bi:68,sd:65,po:68,so:65,ka:65,lm:60,op:65,st:68,sl:62,ll:58,kn:60,wy:60,nak:55,sep:62}
   },
 
-  opienka_ciem:{
+  opienka_ciem:{q:2,
     name:'Opieńka ciemna',latin:'Armillaria ostoyae',cat:'edible',rare:false,wiki:'Armillaria_ostoyae',
     season:[9,10,11],terrain:['Lasy iglaste','Lasy mieszane','Lasy liściaste'],
     soil:'Pasożyt i saprofit na korzeniach i pniakach drzew (szczeg. iglastych)',ph:'Pasożyt/saprofit drewna',elev:'0–1400 m',
@@ -31610,7 +31613,7 @@ const MUSHROOMS={
     weights:{bw:68,au:62,sw:72,ro:70,lu:68,ja:65,be:75,bi:70,sd:65,po:68,so:65,ka:65,lm:62,op:68,st:70,sl:65,kn:60,ll:58,wy:52,nak:48,sep:55}
   },
 
-  podgrz_zlot:{
+  podgrz_zlot:{q:3,
     name:'Podgrzybek złotawy',latin:'Xerocomus chrysenteron',cat:'edible',rare:false,wiki:'Xerocomus_chrysenteron',
     season:[6,7,8,9,10],terrain:['Lasy iglaste','Lasy liściaste','Lasy mieszane'],
     soil:'Gleba kwaśna, piaszczysta lub gliniasta',ph:'4.0–6.5',elev:'0–1200 m',
@@ -31632,7 +31635,7 @@ const MUSHROOMS={
     weights:{bw:82,au:80,kn:75,sw:70,ro:68,lu:65,be:75,bi:70,sd:65,po:68,so:68,sl:65,op:62,ka:68,ku:65,ps:72,ma:68,tu:62,no:60,br:62,ll:60,wy:72,nak:68,sep:75}
   },
 
-  purchawka_grus:{
+  purchawka_grus:{q:2,
     name:'Purchawka gruszkowata',latin:'Lycoperdon pyriforme',cat:'edible',rare:false,wiki:'Lycoperdon_pyriforme',
     season:[7,8,9,10,11],terrain:['Lasy iglaste','Lasy liściaste','Lasy mieszane'],
     soil:'Na martwym drewnie — pniakach, korzeniach, zakopanych gałęziach',ph:'Saprofit drewna',elev:'0–1200 m',
@@ -31643,7 +31646,7 @@ const MUSHROOMS={
     weights:{bw:78,au:72,tu:80,no:78,dr:74,pi:76,ps:75,ku:70,dl:74,ch:78,ma:68,br:62,wk:60,ll:58,su:65,wi:68,be:72,bi:68,po:70,sd:68,se:62,sw:65,ka:62,wy:80,nak:74,sep:78}
   },
 
-  sarniak:{
+  sarniak:{q:2,
     name:'Sarniak dachówkowaty',latin:'Sarcodon imbricatus',cat:'edible',rare:false,protected:true,wiki:'Sarcodon_imbricatus',
     season:[7,8,9,10],terrain:['Bory iglaste','Świerczyny','Lasy mieszane z świerkiem'],
     soil:'Gleba kwaśna, piaszczysta lub próchnicza — mykoryza głównie ze świerkiem i sosną',ph:'4.0–5.5',elev:'0–1600 m',
@@ -31654,7 +31657,7 @@ const MUSHROOMS={
     weights:{bw:55,au:50,sw:72,ro:68,lu:62,be:60,bi:55,go:58,sd:58,se:52,ta:48,ps:50,ma:45,tu:65,no:68,pi:70,dr:62,ll:45,wy:52,nak:48,sep:50}
   },
 
-  kolczakowka:{
+  kolczakowka:{q:3,
     name:'Kolczak obłączasty',latin:'Hydnum repandum',cat:'edible',rare:false,wiki:'Hydnum_repandum',
     season:[8,9,10],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane','Buczyny'],
     soil:'Gleba próchnicza, wilgotna — mykoryza z bukiem, dębem, sosną',ph:'4.5–7.0',elev:'0–1200 m',
@@ -31665,7 +31668,7 @@ const MUSHROOMS={
     weights:{bw:78,au:72,kn:70,sw:80,ro:78,lu:75,ja:72,be:80,bi:75,go:72,sd:75,se:70,po:75,so:72,ka:65,ps:62,ma:60,su:65,wi:68,wy:75,nak:70,sep:72}
   },
 
-  maslak_pst:{
+  maslak_pst:{q:2,
     name:'Maślak pstry',latin:'Suillus variegatus',cat:'edible',rare:false,wiki:'Suillus_variegatus',
     season:[8,9,10,11],terrain:['Bory sosnowe','Lasy iglaste'],
     soil:'Gleba piaszczysta, kwaśna pod sosnami',ph:'3.8–5.5',elev:'0–900 m',
@@ -31720,7 +31723,7 @@ const MUSHROOMS={
     weights:{bw:62,ka:72,sw:75,ro:72,lu:68,ja:65,be:70,bi:65,sd:62,po:68,so:65,sl:62,op:68,st:70,ll:60,lm:62,kn:58,wy:55,nak:50,sep:58}
   },
 
-  szyszkowiec:{
+  szyszkowiec:{q:1,
     name:'Szyszkowiec świerkowy',latin:'Strobilurus esculentus',cat:'edible',rare:false,wiki:'Strobilurus_esculentus',
     season:[2,3,4,5],terrain:['Lasy iglaste','Świerczyny'],
     soil:'Wyłącznie na zakopanych lub leżących szyszkach świerkowych',ph:'Saprofit szyszek',elev:'0–1500 m',
@@ -31731,7 +31734,7 @@ const MUSHROOMS={
     weights:{sd:70,se:65,ta:68,be:75,bi:72,go:70,po:68,bw:55,au:60,su:65,wi:68,ps:62,ku:52,ma:55,kn:58,tu:62,no:58,dr:55,wy:48,nak:44,sep:52}
   },
 
-  trzesak:{
+  trzesak:{q:1,
     name:'Trzęsak pomarańczowożółty',latin:'Tremella mesenterica',cat:'edible',rare:false,wiki:'Tremella_mesenterica',
     season:[10,11,12,1,2,3],terrain:['Lasy liściaste','Lasy mieszane'],
     soil:'Na martwych gałęziach i pniakach drzew liściastych — pasożyt grzybów z rodzaju Peniophora',ph:'Saprofit/pasożyt grzybów',elev:'0–900 m',
@@ -31742,7 +31745,7 @@ const MUSHROOMS={
     weights:{bw:72,au:68,kn:65,sw:68,ro:65,lu:62,be:72,bi:68,sd:62,po:65,so:62,ka:60,ku:58,tu:55,no:52,br:55,gr:52,op:62,st:60,ll:58,wy:65,nak:60,sep:65}
   },
 
-  blewit:{
+  blewit:{q:3,
     name:'Blewit leśny',latin:'Lepista nuda',cat:'edible',rare:false,wiki:'Lepista_nuda',
     season:[9,10,11,12],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane','Ogrody'],
     soil:'Gleba próchnicza, często na kompoście lub ściółce',ph:'5.5–7.5',elev:'0–900 m',
@@ -31764,7 +31767,7 @@ const MUSHROOMS={
     weights:{tu:88,no:85,dr:80,pi:82,au:78,ps:78,dl:80,ch:84,bw:75,ku:70,ma:65,br:65,wk:62,ll:60,sd:70,se:65,be:68,po:68,bi:65,wy:88,nak:82,sep:86}
   },
 
-  maslak_krop:{
+  maslak_krop:{q:2,
     name:'Maślak kropelisty',latin:'Suillus bovinus',cat:'edible',rare:false,wiki:'Suillus_bovinus',
     season:[8,9,10,11],terrain:['Bory sosnowe','Lasy iglaste'],
     soil:'Gleba piaszczysta, kwaśna, wyłącznie pod sosnami dwuigłowymi',ph:'3.8–5.5',elev:'0–900 m',
@@ -31775,7 +31778,7 @@ const MUSHROOMS={
     weights:{tu:90,no:88,dr:85,pi:86,au:78,ps:82,dl:82,ch:86,bw:72,ku:68,ma:65,br:62,wk:60,ll:58,sd:72,se:65,wy:92,nak:86,sep:90}
   },
 
-  golabek_chab:{
+  golabek_chab:{q:4,
     name:'Gołąbek chabrowy',latin:'Russula cyanoxantha',cat:'edible',rare:false,wiki:'Russula_cyanoxantha',
     season:[7,8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Buczyny','Dąbrowy'],
     soil:'Gleba żyzna, próchnicza, gliniasta',ph:'5.0–7.0',elev:'0–1000 m',
@@ -31786,7 +31789,7 @@ const MUSHROOMS={
     weights:{bw:72,au:68,sw:80,ro:78,lu:75,ja:72,be:82,bi:78,go:75,sd:78,se:72,ta:65,po:78,so:72,ka:70,kn:68,lm:65,ps:65,ma:60,su:68,wi:70,ll:62,br:58,wy:60,nak:55,sep:62}
   },
 
-  golabek_zolt:{
+  golabek_zolt:{q:3,
     name:'Gołąbek bladożółty',latin:'Russula claroflava',cat:'edible',rare:false,wiki:'Russula_claroflava',
     season:[7,8,9],terrain:['Lasy liściaste','Olszyny','Mokradła leśne'],
     soil:'Gleba mokra, torfowa lub podmokła, wyłącznie pod brzozami i olchami',ph:'4.5–6.5',elev:'0–900 m',
@@ -31852,7 +31855,7 @@ const MUSHROOMS={
     weights:{bw:85,au:82,kn:80,sw:80,ro:78,lu:75,be:82,bi:80,go:78,sd:78,se:72,ta:65,po:78,so:75,ka:72,ps:78,ma:72,su:75,wi:78,ku:70,ll:65,br:65,tu:72,no:70,wy:82,nak:78,sep:80}
   },
 
-  smardz_sto:{
+  smardz_sto:{q:4,
     name:'Smardz stożkowaty',latin:'Morchella elata',cat:'edible',rare:false,wiki:'Morchella_elata',
     season:[4,5],terrain:['Lasy iglaste','Lasy mieszane','Sady'],
     soil:'Gleba żyzna, często wapniowa, przy strumieniach lub po pożarach',ph:'6.0–8.0',elev:'0–1200 m',
@@ -31863,7 +31866,7 @@ const MUSHROOMS={
     weights:{sd:75,se:70,ta:68,be:72,bi:70,go:68,po:68,bw:62,sw:70,ro:68,lu:65,ja:62,ka:58,ll:55,op:62,st:65,au:55,br:52,wy:62,nak:58,sep:60}
   },
 
-  golabek_vesc:{
+  golabek_vesc:{q:4,
     name:'Gołąbek jagodowy',latin:'Russula vesca',cat:'edible',rare:false,wiki:'Russula_vesca',
     season:[7,8,9,10],terrain:['Lasy liściaste','Dąbrowy','Buczyny'],
     soil:'Gleba żyzna, próchnicza, pod dębami i bukami',ph:'5.0–7.0',elev:'0–1000 m',
@@ -31885,7 +31888,7 @@ const MUSHROOMS={
     weights:{bw:72,au:68,ka:70,sw:72,ro:70,lu:68,be:72,bi:68,sd:65,po:68,so:65,ka:65,ku:60,tu:60,no:58,ll:62,op:68,st:70,sl:62,wy:68,nak:63,sep:70}
   },
 
-  gasowka:{
+  gasowka:{q:3,
     name:'Gąsówka łąkowa',latin:'Lepista saeva',cat:'edible',rare:false,wiki:'Lepista_saeva',
     season:[10,11,12],terrain:['Łąki','Pastwiska','Trawniki'],
     soil:'Gleba trawiasta, żyzna, próchnicza',ph:'6.0–7.5',elev:'0–900 m',
@@ -31905,6 +31908,17 @@ const MUSHROOMS={
     danger:'Formalnie niejadalny — brak wartości kulinarnych, zbyt mała. Ważny wskaźnik ekologiczny: obecność wilgotnic na łące oznacza, że jest to stary, nienaruszony biotop o dużej wartości przyrodniczej. W wielu krajach objęta ochroną.',
     lookalikes:'Czarka szkarłatna (S. coccinea) — kubkowata, na gałęziach wczesną wiosną. Inne wilgotnice (Hygrocybe spp.) — wiele kolorowych gatunków na łąkach; żadna nie jest niebezpieczna. Intensywny czerwony kolor + lepkość + stara łąka jesienią = wilgotnica.',
     weights:{ka:60,lm:55,ku:52,br:50,gr:48,wk:48,sw:58,ro:55,lu:52,ja:50,ll:55,bi:45,be:50,sd:50,op:55,st:58,sl:52,so:50,bw:48,au:45,wy:58,nak:53,sep:55}
+  },
+
+  wieruszka_zat:{
+    name:'Wieruszka zatokowata',latin:'Entoloma sinuatum',cat:'poisonous',rare:false,wiki:'Entoloma_sinuatum',
+    season:[8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Grądy','Dąbrowy'],
+    soil:'Gleba żyzna, próchnista, gliniasta — pod dębami, bukami, głogami i jesionami',ph:'5.5–7.5',elev:'0–800 m',
+    habitat:'W lasach liściastych i mieszanych pod dębami, bukami i jesionami. Jedna z najczęstszych przyczyn zatruć grzybami w Polsce — co roku wywołuje ciężkie zbiorowe zatrucia.',
+    desc:'Kapelusz 8–15 cm, bladobrązowy do szarooliwkowego, jedwabisto lśniący, z grubym miąższem. KLUCZOWE: blaszki początkowo ŻÓŁTAWE, potem łososioworóżowe, zatokowato wycięte (nie zbiegają na trzon). Trzon biały do żółtawoochrowego. Zapach i smak mączny — mylnie przyjemny.',
+    danger:'SILNIE TRUJĄCA — powoduje długotrwałe zaburzenia jelitowe z wymiotami i biegunką, trwające dni lub tygodnie. W ciężkich przypadkach może doprowadzić do zgonu. Substancja czynna nieznana. Jedna z najczęstszych przyczyn ciężkich zatruć w Polsce.',
+    lookalikes:'Dzwonkówka wiosenna (E. clypeatum) — wiosenna, pod głogami i różami; blaszki białe→różowe (nie żółte); przez niektórych spożywana ale ryzykowna. Gąska szara (T. terreum) — mniejsza, sosnowy bór. Gąsówka łąkowa (L. saeva) — fiołkowy trzon, na łące, nie w lesie. Żółtawe blaszki + las liściasty + mączny zapach = wieruszka zatokowata — nie zbierać.',
+    weights:{bw:65,au:60,sw:75,ro:72,lu:70,ja:68,be:78,bi:72,go:70,sd:72,se:68,ta:60,po:70,so:65,ka:68,kn:62,lm:60,op:68,st:70,sl:62,ll:58,wy:68,nak:63,sep:70}
   },
 };
 
@@ -32011,6 +32025,7 @@ const MUSH_ICON_CFG={
   lejkowka_gol: {s:'flat',c:'#B0B0A0',t:'#C8C8B8'},
   gasowka:      {s:'flat',c:'#D0C8B0',t:'#8060C0'},
   wilgotnica:   {s:'flat',c:'#E82020',t:'#FF6020'},
+  wieruszka_zat:{s:'flat',c:'#C8A870',t:'#F0C8A0'},
 };
 
 function getMushSVG(mid){
@@ -32181,9 +32196,34 @@ const MUSHROOM_LOCAL={
   lejkowka_gol: {s:'p',n:'Pospolita w lasach Krainy jesienią. Duże szare kręgi widoczne z daleka. Unikać — drażni żołądek.'},
   gasowka:      {s:'f',n:'Na łąkach i pastwiskach regionu późną jesienią. Fiołkowy trzon na łące od października to gąsówka.'},
   wilgotnica:   {s:'r',n:'Na starych nienawożonych łąkach Krainy. Rzadka — jej obecność oznacza cenny stary biotop. Fotografować, nie zbierać.'},
+  wieruszka_zat:{s:'f',n:'W lasach liściastych i mieszanych regionu — grądy i dąbrowy przy Noteci. Jedna z groźniejszych trujących grzybów Krainy, często mylona z jadalnymi gatunkami. Żółtawe blaszki to sygnał alarmowy.'},
 };
 
 const LOCAL_LABEL={p:'Pospolity w regionie',f:'Częsty w regionie',r:'Rzadki w regionie',v:'Bardzo rzadki',n:'Nie występuje w regionie'};
+
+// ID difficulty 1=unmistakable, 2=easy with key features, 3=needs care, 4=expert only
+const SPECIES_DIFF={
+  borowik:2,borowik_sos:2,borowik_siat:2,borowik_ceg:3,podgrzybek:2,podgrzybek_zaj:2,podgrz_zlot:2,
+  kurka:1,kurka_zim:1,kurka_czarna:2,maslak:2,maslak_ziarn:2,maslak_mod:2,maslak_pst:2,maslak_krop:2,
+  kozlarz_cz:2,kozlarz_b:2,kozlarz_gr:3,rydz:1,smerekowiec:2,
+  czubajka:2,czubajka_cz:3,opienka:3,opienka_ciem:3,
+  purchawka:2,purchawka_olb:1,purchawka_grus:2,
+  pieczarka:3,pieczarka_las:2,pieczarka_krw:2,
+  boczniak:1,golabek:3,golabek_chab:3,golabek_zolt:2,golabek_vesc:3,
+  smardz:1,smardz_pol:2,smardz_sto:2,zimowka:1,czernidlak:1,
+  gaska_szara:3,hericium:1,grifola:1,szmaciak:2,rozites:2,trufla:4,
+  polyporus_umb:2,ramaria:3,zolciak_siar:1,uszak:1,podpienka:3,
+  mleczaj_obrz:3,twardzioszek:2,czarka:1,watrobka:1,sarniak:2,kolczakowka:1,
+  szyszkowiec:2,trzesak:1,blewit:2,gasowka:2,
+  muszomor_sr:3,muszomor_jad:2,muszomor_plam:1,muszomor_cz:1,muszomor_wios:4,
+  goryczak:3,zasloniak:3,zasloniak_rub:3,zasloniak_fio:1,zasloniak_krus:2,
+  helmowka:4,piestrzenica:2,golabek_wym:2,lysiczka:2,
+  lejkowka:3,krowiak:3,gaska_ziel:3,sromotnik:1,gwiazdosz:1,
+  maczuznik:2,kolpaczek:3,strzepiak:4,pieczarka_zolk:3,czernidlak_atr:2,
+  mleczaj_piep:2,mleczaj_deb:2,huba:1,lejkowka_trut:3,gaska_siar:1,
+  tegoskór:3,luszczak:1,luskwiak:3,kosmaczek:3,grzybowka:2,
+  lejkowka_gol:2,wilgotnica:2,wieruszka_zat:4,
+};
 const LOCAL_COLOR={p:'#4a7a3a',f:'#8a7a20',r:'#aa5a20',v:'#aa2020',n:'#666'};
 
 
@@ -40904,9 +40944,15 @@ function showInfoPanel(mid){
     if(m.protected)extra=`<div class="pbox">§ Ten grzyb jest pod ochroną gatunkową w Polsce. Zbieranie zakazane lub ograniczone.</div>`;
     else if(m.rare)extra=`<div class="rbox">✦ Gatunek rzadki — zbieraj z umiarem. Udokumentuj znalezisko.</div>`;
   }
+  const favBtn=document.getElementById('pfav');
+  favBtn.textContent=favs.has(mid)?'★':'☆';
+  favBtn.classList.toggle('on',favs.has(mid));
+  favBtn.onclick=()=>{if(favs.has(mid))favs.delete(mid);else favs.add(mid);_saveFavs();favBtn.textContent=favs.has(mid)?'★':'☆';favBtn.classList.toggle('on',favs.has(mid));renderList();};
+  const dVal=SPECIES_DIFF[mid];
+  const statsHtml=(m.q||dVal)?`<div class="isec">${m.q&&m.cat==='edible'?_statRow('Smak',m.q,4,_forkPip):''}${dVal?_statRow('Trudność ID',dVal,4,_lensPip):''}</div>`:'';
   document.getElementById('pbody').innerHTML=`
     <div class="mphoto-wrap loading" id="mphoto-wrap"><img id="mwiki-photo" class="mphoto" alt="${m.name}" onerror="this.parentElement.classList.remove('loading');this.style.display='none'" onload="this.classList.add('loaded');this.style.display='block';this.parentElement.classList.remove('loading')"></div>
-    ${extra}
+    ${extra}${statsHtml}
     <div class="isec"><h4>Sezon owocnikowania</h4>
       <div class="sbar">${sbar}</div>
       <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:3px">
@@ -41301,6 +41347,11 @@ document.addEventListener('click',e=>{if(!e.target.closest('#sw'))closeSearch();
 
 // ─── Sidebar list ─────────────────────────────────────────
 let activeCats=new Set(),activeSeasons=new Set(),activeHabs=new Set(),activeSortBy='default';
+let favs;try{favs=new Set(JSON.parse(localStorage.getItem('gm_favs')||'[]'));}catch(e){favs=new Set();}
+function _saveFavs(){try{localStorage.setItem('gm_favs',JSON.stringify([...favs]));}catch(e){}}
+function _forkPip(on){const c=on?'var(--gold)':'var(--border)';return `<svg viewBox="0 0 9 20" width="8" height="17" style="fill:${c}"><rect x="1" y="0" width="1.6" height="9" rx=".6"/><rect x="3.7" y="0" width="1.6" height="9" rx=".6"/><rect x="6.4" y="0" width="1.6" height="9" rx=".6"/><path d="M1 9v2.5q3.5 2.5 7 0V9z"/><rect x="3.5" y="11.5" width="2" height="8.5" rx="1"/></svg>`;}
+function _lensPip(on){const c=on?'#5B9BD5':'var(--border)';return `<svg viewBox="0 0 16 16" width="13" height="13" style="fill:none;stroke:${c};stroke-linecap:round"><circle cx="6.5" cy="6.5" r="4.5" stroke-width="2.2"/><line x1="9.8" y1="9.8" x2="13.5" y2="13.5" stroke-width="2.2"/></svg>`;}
+function _statRow(label,n,max,pipFn){return `<div class="stat-row"><span class="stat-lbl">${label}</span><div class="stat-pips">${Array.from({length:max},(_,i)=>pipFn(i<n)).join('')}</div></div>`;}
 const SEASON_MONTHS={spring:[3,4,5],summer:[6,7,8],autumn:[9,10,11],winter:[12,1,2]};
 const HAB_PATTERNS={
   forest:/las|bór|iglaste|liściaste|śwkrk|sosnow|świerkow|bukow|dąbrow|mieszany/i,
@@ -41327,22 +41378,20 @@ function _mkMushCard(mid,m){
 }
 function renderList(){
   let entries=Object.entries(MUSHROOMS);
-  if(activeCats.size) entries=entries.filter(([,m])=>(activeCats.has('edible')&&m.cat==='edible')||(activeCats.has('dangerous')&&(m.cat==='poisonous'||m.cat==='deadly'))||(activeCats.has('rare')&&m.rare)||(activeCats.has('hallucinogenic')&&m.hallucinogenic));
+  if(activeCats.size) entries=entries.filter(([mid,m])=>(activeCats.has('edible')&&m.cat==='edible')||(activeCats.has('dangerous')&&(m.cat==='poisonous'||m.cat==='deadly'))||(activeCats.has('rare')&&m.rare)||(activeCats.has('hallucinogenic')&&m.hallucinogenic)||(activeCats.has('fav')&&favs.has(mid)));
   if(activeSeasons.size) entries=entries.filter(([,m])=>[...activeSeasons].some(s=>{const mo=SEASON_MONTHS[s]||[];return m.season.some(x=>mo.includes(x));}));
   if(activeHabs.size) entries=entries.filter(([,m])=>[...activeHabs].some(h=>{const pat=HAB_PATTERNS[h];if(!pat)return false;return m.terrain.some(t=>pat.test(t))||(m.soil&&pat.test(m.soil))||(m.habitat&&pat.test(m.habitat));}));
   let html='';
   if(activeSortBy==='name-az'){entries.sort(([,a],[,b])=>a.name.localeCompare(b.name,'pl'));html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');}
   else if(activeSortBy==='name-za'){entries.sort(([,a],[,b])=>b.name.localeCompare(a.name,'pl'));html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');}
-  else if(activeSortBy==='rarity'){
+  else if(activeSortBy==='rarity-common'){
+    entries.sort(([,a],[,b])=>(a.rare?1:0)-(b.rare?1:0)||a.name.localeCompare(b.name,'pl'));
+    html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
+  }else if(activeSortBy==='rarity-rare'){
     entries.sort(([,a],[,b])=>(a.rare?0:1)-(b.rare?0:1)||a.name.localeCompare(b.name,'pl'));
     html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
   }else if(activeSortBy==='edibility'){
-    const eo={edible:0,inedible:1,poisonous:2,deadly:3};
-    entries.sort(([,a],[,b])=>(eo[a.cat]??2)-(eo[b.cat]??2)||a.name.localeCompare(b.name,'pl'));
-    html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
-  }else if(activeSortBy==='season'){
-    const now=new Date().getMonth()+1;
-    entries.sort(([,a],[,b])=>{const da=a.season.length?Math.min(...a.season.map(s=>Math.min(Math.abs(s-now),12-Math.abs(s-now)))):12;const db=b.season.length?Math.min(...b.season.map(s=>Math.min(Math.abs(s-now),12-Math.abs(s-now)))):12;return da-db;});
+    entries.sort(([,a],[,b])=>(b.q||0)-(a.q||0)||a.name.localeCompare(b.name,'pl'));
     html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
   }else{
     const groups={edible:[],rare:[],poisonous:[],deadly:[],inedible:[]};
@@ -41377,11 +41426,12 @@ document.querySelectorAll('.fb[data-hab]').forEach(btn=>{
     _updateFilterBadge();renderList();
   };
 });
-// Sort single-select
+// Sort single-select — click active to deselect (back to default grouped view)
 document.querySelectorAll('.fb[data-sort]').forEach(btn=>{
   btn.onclick=()=>{
+    const already=btn.classList.contains('on');
     document.querySelectorAll('.fb[data-sort]').forEach(b=>b.classList.remove('on'));
-    btn.classList.add('on');activeSortBy=btn.dataset.sort;
+    if(already){activeSortBy='default';}else{btn.classList.add('on');activeSortBy=btn.dataset.sort;}
     _updateFilterBadge();renderList();
   };
 });
