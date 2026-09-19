@@ -107,7 +107,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #ml-resize::after{content:'';display:block;width:36px;height:2px;border-radius:1px;background:var(--border);transition:background .15s}
 #ml-resize:hover::after,#ml-resize.rsz::after{background:var(--gold)}
 #ml-resize:hover,#ml-resize.rsz{background:rgba(201,168,76,.1)}
-#sb-tab{position:absolute;right:-14px;left:auto;top:50%;transform:translateY(-50%);z-index:1100;width:14px;height:42px;background:var(--sb);border:1px solid var(--border);border-left:none;border-radius:0 var(--r) var(--r) 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);user-select:none;transition:background .12s,color .12s}
+#sb-tab{position:absolute;right:-20px;left:auto;top:50%;transform:translateY(-50%);z-index:1100;width:20px;height:52px;background:var(--sb);border:1px solid var(--border);border-left:none;border-radius:0 var(--r) var(--r) 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);user-select:none;transition:background .12s,color .12s}
 #sb-tab:hover{background:var(--card);color:var(--text)}
 .lay-grp{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);padding:10px 0 5px;margin-top:2px;font-weight:700;opacity:.85;display:flex;align-items:center;gap:7px}
 .lay-grp::after{content:'';flex:1;height:1px;background:var(--border)}
@@ -41917,16 +41917,11 @@ renderList();
 
 // ─── Panel controls ────────────────────────────────────────────────────────
 
-// Sidebar collapse — tab stays fixed at sidebar's right edge when collapsed
+// Sidebar collapse — tab slides with sidebar to left edge (natural position:absolute behaviour)
 document.getElementById('sb-tab').onclick=()=>{
   const sb=document.getElementById('sidebar'),t=document.getElementById('sb-tab');
-  if(!sb.classList.contains('sb-col')){
-    const w=sb.getBoundingClientRect().width;
-    sb.classList.add('sb-col');t.textContent='►';
-    t.style.cssText=`position:fixed;left:${w}px;top:50%;transform:translateY(-50%);right:auto`;
-  }else{
-    t.style.cssText='';sb.classList.remove('sb-col');t.textContent='◄';
-  }
+  const col=sb.classList.toggle('sb-col');
+  t.textContent=col?'►':'◄';
 };
 
 // Sidebar resize
