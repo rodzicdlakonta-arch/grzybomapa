@@ -89,7 +89,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #map{width:100%;height:100%}
 #mc{position:absolute;top:12px;right:0;z-index:900;display:flex;flex-direction:column;max-height:calc(100vh - 24px);transition:transform .25s cubic-bezier(.4,0,.2,1)}
 #mc.mc-col{transform:translateX(100%)}
-#mc-body{display:flex;flex-direction:column;gap:8px;overflow-y:auto}
+#mc-body{display:flex;flex-direction:column;gap:8px;overflow-y:auto;transition:opacity .15s ease}
+#mc.mc-col #mc-body{opacity:0;pointer-events:none}
 #mc-tab{position:absolute;left:-14px;top:16px;width:14px;height:42px;background:var(--sb);border:1px solid var(--border);border-right:none;border-radius:var(--r) 0 0 var(--r);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);user-select:none;transition:background .12s,color .12s}
 #mc-tab:hover{background:var(--card);color:var(--text)}
 #wx{position:absolute;bottom:28px;left:12px;z-index:800;background:var(--sb);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;min-width:140px;max-width:200px;font-size:12px;line-height:1.7;pointer-events:auto}
@@ -227,7 +228,11 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 [data-theme="light"] .leaflet-popup-content-wrapper{background:var(--card)!important;color:var(--text)!important}
 [data-theme="light"] .leaflet-control-attribution{background:rgba(240,234,216,.8)!important}
 .leaflet-container{background:var(--bg)!important}
-.leaflet-bar a{background:var(--card)!important;color:var(--text)!important;border-color:var(--border)!important}
+.leaflet-bar{border-radius:var(--r)!important;overflow:hidden}
+.leaflet-bar a{background:var(--card)!important;color:var(--text)!important;border-color:var(--border)!important;border-radius:0!important}
+.leaflet-bar a:only-child{border-radius:var(--r)!important}
+.leaflet-bar a:first-child{border-radius:var(--r) var(--r) 0 0!important}
+.leaflet-bar a:last-child{border-radius:0 0 var(--r) var(--r)!important}
 .leaflet-bar a:hover{background:var(--card2)!important}
 .leaflet-popup-content-wrapper{background:var(--card)!important;border:1px solid var(--border)!important;color:var(--text)!important;border-radius:var(--r)!important;box-shadow:0 4px 20px rgba(0,0,0,.5)!important}
 .leaflet-popup-tip{background:var(--card)!important}
