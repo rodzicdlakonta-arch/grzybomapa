@@ -162,8 +162,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .stat-lbl{font-size:10px;color:var(--muted);min-width:82px;text-transform:uppercase;letter-spacing:.07em}
 .stat-pips{display:flex;align-items:center;gap:6px}
 .mc-fav-ind{color:#FFD700;font-size:13px;flex-shrink:0;align-self:flex-start;padding:2px 0 0 4px;line-height:1}
-#photo-lb{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;cursor:zoom-out}
-#photo-lb img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,.6)}
+#photo-lb{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;overflow:hidden}
+#photo-lb img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,.6);cursor:zoom-in;transition:transform .2s ease;transform-origin:center center;user-select:none}
 #photo-lb.open{display:flex}
 .mphoto{cursor:zoom-in!important}
 .pcls:hover{color:var(--text)}
@@ -41067,10 +41067,10 @@ function showInfoPanel(mid){
     const img=document.getElementById('mwiki-photo');
     if(img){
       loadWikiPhoto(m.wiki,img);
-      img.onclick=()=>{const lb=document.getElementById('photo-lb');document.getElementById('photo-lb-img').src=img.src;document.getElementById('photo-lb-attr').textContent=`Źródło: Wikimedia Commons / ${m.wiki||'Wikipedia'}`;lb.classList.add('open');};
+      img.onclick=()=>{_openLightbox(img.src,`Źródło: Wikimedia Commons / ${m.wiki||'Wikipedia'}`);};
     }
   }
-  document.getElementById('photo-lb').onclick=e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('open');};
+  // lightbox close handled by _openLightbox setup (one-time, see below)
   document.getElementById('ip').classList.add('open');
   // On mobile: close sidebar so info panel is visible
   if(window.innerWidth<=767){
@@ -41913,6 +41913,32 @@ renderList();
   },{passive:true});
   ml.addEventListener('touchend',()=>{if(_lpt){clearTimeout(_lpt);_lpt=null;}},{passive:true});
   ml.addEventListener('touchmove',()=>{if(_lpt){clearTimeout(_lpt);_lpt=null;}},{passive:true});
+})();
+
+// ─── Lightbox with zoom ────────────────────────────────────────────────────
+(function(){
+  const lb=document.getElementById('photo-lb');
+  const img=document.getElementById('photo-lb-img');
+  const attr=document.getElementById('photo-lb-attr');
+  let scale=1;
+  function setScale(s){
+    scale=Math.max(1,Math.min(5,s));
+    img.style.transform=scale>1?`scale(${scale.toFixed(2)})`:'';
+    img.style.cursor=scale>=5?'default':scale>1?'zoom-in':'zoom-in';
+  }
+  window._openLightbox=function(src,attribution){
+    img.src=src;
+    if(attr)attr.textContent=attribution||'';
+    setScale(1);
+    lb.classList.add('open');
+  };
+  img.addEventListener('click',e=>{e.stopPropagation();setScale(scale>=4?1:scale<=1?2:scale*2);});
+  lb.addEventListener('click',e=>{if(e.target===lb){lb.classList.remove('open');setScale(1);}});
+  lb.addEventListener('wheel',e=>{
+    if(!lb.classList.contains('open'))return;
+    e.preventDefault();
+    setScale(scale*(e.deltaY<0?1.15:1/1.15));
+  },{passive:false});
 })();
 
 // ─── Panel controls ────────────────────────────────────────────────────────
