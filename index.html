@@ -177,6 +177,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .b-cp{background:rgba(201,120,30,.22);color:#e8a040}
 .hbox{background:rgba(125,60,185,.14);border:1px solid rgba(125,60,185,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#c39de8;line-height:1.55}
 .cpbox{background:rgba(201,120,30,.14);border:1px solid rgba(201,120,30,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#e8a040;line-height:1.55}
+.labox{background:rgba(180,140,30,.09);border:1px solid rgba(180,140,30,.28);border-radius:var(--r);padding:11px 13px;margin-bottom:0;font-size:12.5px;color:#b8962a;line-height:1.55}
 .mphoto{width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:16px;display:none}
 .fb2{padding:4px 14px 8px;border-bottom:1px solid var(--border);display:flex;gap:5px;flex-wrap:wrap;align-items:center}
 .flabel{font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding-right:2px;white-space:nowrap}
@@ -194,7 +195,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 <nav id="sidebar">
   <div id="logo">
     <h1>GrzyboMapa</h1>
-    <p>Interaktywna mapa grzybów Polski <span style="font-size:10px;opacity:.85;font-weight:500">v1.4</span></p>
+    <p>Interaktywna mapa grzybów Polski <span style="font-size:10px;opacity:.85;font-weight:500">v1.5</span></p>
   </div>
   <div id="sw">
     <input id="si" type="text" placeholder="Szukaj grzyba lub miejscowości…" autocomplete="off">
@@ -30790,6 +30791,7 @@ const MUSHROOMS={
     habitat:'Pod świerkami, sosnami, dębami i bukami. Lubi lekki cień i wilgotny mech.',
     desc:'Kapelusz brązowy 5–25 cm, wypukły. Trzon beczułkowaty z białą siateczką. Rurki białe→żółtozielone, nie sinieje po przekrojeniu. Miąższ biały, zapach orzechowy.',
     edib:'Doskonały smak. Jeden z najcenniejszych grzybów Polski. Suszy się, marynuje.',
+    lookalikes:'Goryczak żółciowy (Tylopilus felleus) — identyczny wygląd, ale rurki różowawe a nie białe, i ekstremalnie gorzki smak. Borowik szatański (trujący) — czerwone pory, sinieje po przekrojeniu.',
     weights:{bw:90,au:85,kn:80,su:75,wi:80,no:70,dr:75,pi:75,ps:85,ma:80,br:65,tu:80,ch:75,ka:60,ku:78,lm:55,wk:60,dl:70,op:55,st:60,sd:75,se:70,sw:65,ll:45,ta:60,bi:80,be:78,go:72,ro:75,ja:80,lu:70,so:78,po:82,kb:70,sl:58,gr:60,wy:78,nak:72,sep:70}
   },
   borowik_sos:{
@@ -30799,6 +30801,7 @@ const MUSHROOMS={
     habitat:'Wyłącznie pod sosnami, często w borach chrobotkowych i mszystych.',
     desc:'Kapelusz ciemnobrązowy, prawie czekoladowy, 6–20 cm. Siateczka na trzonie biała. Miąższ biały, lekko słodkawy.',
     edib:'Smaczny, podobny do borowika szlachetnego. Doskonały świeżo i suszony.',
+    lookalikes:'Goryczak żółciowy — sprawdź kolor rurek (różowawe = goryczak, nie zbierać). Borowik ceglastopory — ciemniejszy kapelusz, pory ceglastoczerwone, intensywnie sinieje; jadalny po gotowaniu.',
     weights:{tu:90,no:88,dr:85,au:82,pi:82,ps:80,ku:78,bw:75,dl:78,ch:82,ma:72,wk:65,ll:55,gr:60,br:65,lm:50,ka:45,wy:88,nak:80,sep:82}
   },
   borowik_siat:{
@@ -30817,6 +30820,7 @@ const MUSHROOMS={
     habitat:'Bardzo pospolity. Pod sosnami i świerkami, na ściółce iglastej.',
     desc:'Kapelusz kasztanowy, śliski na mokro, 4–15 cm. Rurki żółtozielone, niebiesieją po dotknięciu. Trzon brązowy.',
     edib:'Dobry jadalny. Można mylić z goryczakiem — sprawdź rurki (nie różowe).',
+    lookalikes:'Goryczak żółciowy — rurki różowawe, smak piekielnie gorzki nawet na surowo; jeden kawałek psuje cały garnek. Podgrzybek złotawy (X. chrysenteron) — jaśniejszy, kapelusz pęka odsłaniając żółtą miazgę pod skórką; jadalny.',
     weights:{tu:88,no:85,dr:82,au:80,pi:80,ps:82,bw:80,ku:75,dl:78,ch:80,ma:72,br:68,wk:62,ll:58,su:70,wi:72,gr:65,sd:70,se:68,be:72,po:75,bi:70,sw:60,ka:55,lm:50,wy:85,nak:78,sep:80}
   },
   kurka:{
@@ -30825,7 +30829,8 @@ const MUSHROOMS={
     soil:'Gleba kwaśna do umiarkowanie kwaśnej, dobrze wilgotna',ph:'4.0–6.5',elev:'0–1800 m',
     habitat:'Pospolita. Pod bukami, dębami, sosnami i świerkami. Rośnie grupami.',
     desc:'Jajkowożółta do pomarańczowej. Fałszywe blaszki, nie oddzielają się jak u lejkówki. Zapach owocowy. Miąższ biały.',
-    edib:'Doskonały smak pieprzno-owocowy. Smażyć na maśle lub w śmietanie.',
+    edib:'Doskonały smak pieprzno-owocowy. Smażyć na maśle lub dusić ze śmietaną. Nie nadaje się dobrze do suszenia ani zamrażania — traci aromat; najlepsza świeża.',
+    lookalikes:'Lejkówka oliwkowa (Omphalotus olearius) — TRUJĄCA. Ma prawdziwe blaszki (nie rozwidlone żyłki jak kurka), rośnie w kępach na drewnie lub korzeniach, pomarańczowy trzon, może słabo świecić w ciemności. Kurka rośnie zawsze z ziemi, nigdy na drewnie.',
     weights:{bw:85,au:80,kn:78,ps:85,ma:80,tu:82,no:75,dr:78,ku:80,ka:72,sw:78,ro:82,lu:75,ja:78,be:85,bi:82,go:80,ta:70,sd:80,se:78,po:80,so:75,dl:70,br:65,ch:72,pi:72,ll:60,wk:65,lm:58,sl:68,op:62,st:65,gr:60,su:72,wi:75,kb:68,wy:75,nak:68,sep:70}
   },
   kurka_zim:{
@@ -30843,7 +30848,8 @@ const MUSHROOMS={
     soil:'Gleba piaszczysta, kwaśna, bory z wrzosem',ph:'3.5–5.0',elev:'0–1100 m',
     habitat:'Wyłącznie pod sosnami. Bardzo pospolity w borach sosnowych.',
     desc:'Kapelusz czekoladowobrązowy, lepki i śliski. Rurki żółte. Pierścień na trzonie. Usuń skórkę przed gotowaniem.',
-    edib:'Dobry po usunięciu śluzowatej skórki. Marynować lub smażyć.',
+    edib:'Dobry po usunięciu śluzowatej skórki kapelusza przed gotowaniem. Marynować lub smażyć. Pierścień na trzonie — cecha odróżniająca od maślaka ziarnistego.',
+    lookalikes:'Maślak ziarnisty (Suillus granulatus) — jadalny, ale bez pierścienia na trzonie; trzon łzawi żółtymi kropelkami u młodych okazów. Goryczak żółciowy — nie rośnie pod sosnami w borach, ale sprawdź smak przy wątpliwości.',
     weights:{tu:92,no:90,dr:88,pi:88,au:82,ps:80,ku:78,dl:82,ch:85,ma:72,bw:65,br:70,wk:68,ll:62,gr:72,lm:52,ka:48,sw:55,wy:90,nak:82,sep:85}
   },
   maslak_ziarn:{
@@ -30852,7 +30858,7 @@ const MUSHROOMS={
     soil:'Gleba piaszczysta, kwaśna',ph:'4.0–5.5',elev:'0–1400 m',
     habitat:'Pod sosnami, na obrzeżach borów i przy drogach leśnych.',
     desc:'Podobny do maślaka, bez pierścienia. Trzon z żółtymi kroplami (ziarnistości). Kapelusz rudy.',
-    edib:'Dobry po usunięciu skórki. Zbierać przed deszczem.',
+    edib:'Dobry po usunięciu skórki. Zbierać przed deszczem. Odróżnij od maślaka zwyczajnego brakiem pierścienia — trzon łzawi żółtymi kropelkami u młodych.',
     weights:{tu:88,no:85,dr:80,pi:82,au:78,ps:78,dl:80,ch:82,ku:72,ma:68,br:65,wk:60,ll:58,gr:68,lm:48,ka:45,sd:72,se:68,ta:65,be:70,po:72,bi:68,wy:88,nak:80,sep:85}
   },
   kozlarz_cz:{
@@ -30861,7 +30867,8 @@ const MUSHROOMS={
     soil:'Gleba gliniasta lub gliniasto-piaszczysta, żyzna',ph:'5.0–6.5',elev:'0–900 m',
     habitat:'Wyłącznie pod osikami i topolami. Przy drogach i skrajach lasu.',
     desc:'Kapelusz ceglastoczerwony do pomarańczowego, 5–20 cm. Trzon z ciemnobrązowymi łuseczkami. Miąższ szybko czernieje.',
-    edib:'Dobry jadalny, musi być dobrze ugotowany — surowy niestrawnościuje.',
+    edib:'Dobry jadalny. Musi być dobrze ugotowany — surowy jest niestrawny. Miąższ intensywnie czernieje po przekrojeniu — to normalne, nie oznacza psucia.',
+    lookalikes:'Koźlarz babka (L. scabrum) — szarobrązowy kapelusz (nie ceglasty), rośnie pod brzozami. Koźlarz grabowy (L. carpini) — szaro-ochrowy kapelusz, pod grabami. Pewna identyfikacja koźlarza czerwonego wymaga obecności osiki lub topoli w pobliżu.',
     weights:{ka:78,lm:72,ku:68,wk:65,ma:70,ps:65,lu:70,ll:62,ro:65,bw:60,au:65,br:60,gr:58,sl:55,op:58,st:60,sw:65,ja:65,so:62,po:62,be:60,bi:58,wy:60,nak:55,sep:58}
   },
   kozlarz_b:{
@@ -30870,7 +30877,8 @@ const MUSHROOMS={
     soil:'Gleba torfowa lub piaszczysta, wilgotna',ph:'4.0–6.0',elev:'0–1100 m',
     habitat:'Wyłącznie pod brzozami. Pospolity na torfowiskach i w podmokłych brzezinach.',
     desc:'Kapelusz szarobrązowy, 4–15 cm. Trzon z czarnymi łuseczkami. Miąższ nie sinieje lub lekko.',
-    edib:'Jadalny, smak łagodny. Ciemnieje przy gotowaniu — normalny objaw.',
+    edib:'Jadalny, smak łagodny. Ciemnieje przy gotowaniu — normalny objaw, nie oznacza psucia.',
+    lookalikes:'Koźlarz czerwony (L. aurantiacum) — ceglastoczerwony kapelusz, wyłącznie pod osiką. Koźlarz grabowy (L. carpini) — żółtawoszary, pod grabami, intensywniej różowieje lub sinieje po przekrojeniu. Koźlarz babka identyfikuje się pewnie tylko pod brzozą.',
     weights:{bw:75,au:80,kn:72,kb:82,su:78,wi:80,ps:75,ma:78,ku:70,tu:68,no:65,wk:68,lm:58,ll:55,br:60,dl:62,pi:62,ch:65,gr:55,wy:75,nak:68,sep:72}
   },
   kozlarz_gr:{
@@ -30888,7 +30896,8 @@ const MUSHROOMS={
     soil:'Gleba piaszczysta, kwaśna, bory sosnowe',ph:'4.0–5.5',elev:'0–1200 m',
     habitat:'Pod sosnami zwyczajnymi. Rośnie rzędami. Najlepszy do marynowania.',
     desc:'Kapelusz pomarańczowoczerwony z zielonkawymi plamami, 4–15 cm. Blaszki pomarańczowe. Mleczko pomarańczowe, nie gorzkieje. Zielenieje po uszkodzeniu.',
-    edib:'Wyśmienity, lekko gorzkawy. Marynowany uważany za przysmak.',
+    edib:'Wyśmienity. Lekko cierpki posmak całkowicie znika podczas gotowania i marynowania. Marynowany rydz to tradycyjny przysmak. Mleczko marchwiowoczerwone to kluczowa cecha rozpoznawcza.',
+    lookalikes:'Mleczaj wełnianka (Lactarius torminosus) — TRUJĄCY. Biały kłujący sok zamiast marchwiowoczerwonego, kapelusz z wełnistą, strefowaną powierzchnią, rośnie wyłącznie pod brzozami. Mleczaj zmienny (L. semisanguifluus) — mleczko zmienia barwę na winnoczerwone po 15 minutach; pod sosnami na glebach wapiennych; jadalny, mniej wartościowy.',
     weights:{tu:90,no:88,dr:82,pi:85,au:75,ps:80,dl:82,ch:85,ku:72,ma:68,bw:65,br:68,wk:60,ll:55,gr:70,lm:48,ka:42,sd:75,ta:60,be:78,po:75,bi:70,sl:65,se:70,sw:60,wy:85,nak:78,sep:82}
   },
   smerekowiec:{
@@ -30906,7 +30915,8 @@ const MUSHROOMS={
     soil:'Gleba żyzna, próchnicza',ph:'5.5–7.5',elev:'0–900 m',
     habitat:'Na skrajach lasów, łąkach i polanach. Przy ścieżkach i drogach.',
     desc:'Kapelusz do 30 cm, brunatny w centrum z łuskami. Trzon smukły z ruchomym pierścieniem. Blaszki białe.',
-    edib:'Doskonały — smażony jak kotlet lub w panierce.',
+    edib:'Doskonały. Smażony jak kotlet lub w panierce — używaj wyłącznie kapeluszy, trzony są łykowate i niesmaczne. Sporadycznie może wywołać mdłości u wrażliwych osób; wtedy unikać.',
+    lookalikes:'Czubajnik czerwieniejący (Chlorophyllum rhacodes) — miąższ szybko czerwienieje po uszkodzeniu, trzon blady bez zygzakowatego wzoru; jadalny, mniej smaczny. Czubajka sutkowata (M. mastoidea) — mniejsza, z charakterystycznym środkowym garbkiem; jadalna. Zawsze sprawdź ruchomy pierścień i brak pochwy u podstawy.',
     weights:{ka:78,lm:72,ku:68,sw:75,ro:75,lu:72,ja:70,bw:65,au:68,ma:65,ps:62,no:58,tu:55,ll:65,br:60,gr:58,sl:60,op:65,st:68,bi:60,be:62,po:65,sd:60,se:58,so:65,wy:72,nak:68,sep:70}
   },
   opienka:{
@@ -30915,7 +30925,8 @@ const MUSHROOMS={
     soil:'Gleba wilgotna, próchnicza. Pasożyt na pniach drzew.',ph:'5.0–7.0',elev:'0–1000 m',
     habitat:'Na pniach drzew liściastych (buk, dąb, jesion), w grupach. Pasożyt i saprofit.',
     desc:'Kapelusz miodowożółty 3–10 cm z brązowymi łuskami. Blaszki białawożółtawe. Trzon z pierścieniem. U podstawy drzew.',
-    edib:'Jadalny TYLKO po blanszowaniu (wylać wodę!). Surowa truje.',
+    edib:'Jadalna TYLKO po blanszowaniu — gotować, wodę wylać, nie używać do gotowania! Surowa i niedogotowana powoduje zaburzenia żołądkowe.',
+    lookalikes:'Hełmówka jadowita (Galerina marginata) — ŚMIERTELNA. Rośnie w tych samych miejscach na drewnie. Odróżnić: hełmówka ma rdzawobrązowy, pudrowy wysyp na blaszkach i rośnie zwykle pojedynczo lub w małych skupiskach; opieńka tworzy duże kolonie i ma białawy lub kremowy wysyp.',
     weights:{bw:85,au:80,kn:78,ka:72,lm:68,ku:75,sw:78,ro:80,lu:75,ja:78,be:82,bi:80,po:78,sd:72,se:68,so:75,sl:70,op:68,st:65,ps:70,ma:65,tu:60,no:58,ll:62,su:65,wi:68,wy:72,nak:68,sep:70}
   },
   purchawka:{
@@ -30978,7 +30989,8 @@ const MUSHROOMS={
     soil:'Gleba żyzna, wilgotna, wapienno-gliniasta',ph:'5.5–7.5',elev:'0–800 m',
     habitat:'Wiosenny grzyb. Pod drzewami owocowymi, przy strumieniach, w alejach.',
     desc:'Owocnik jajkowaty lub stożkowaty, kapelusz siatkowato-jamkowany, brązowy. 5–15 cm. Trzon biały, pustakowy. UWAGA: nie mylić z piestrzenicą!',
-    edib:'Wyśmienity po gotowaniu. Surowy zawiera trujące hydrazyny.',
+    edib:'Wyśmienity po ugotowaniu. Surowy zawiera trujące hydrazyny — bezwzględnie gotować.',
+    lookalikes:'Piestrzenica kasztanowata (Gyromitra esculenta) — TRUJĄCA. Kapelusz mózgopodobnie pofałdowany, nie siatkowaty. Piestrzenica jest zazwyczaj bardziej siodłowata i ciemnobrązowa; smardz — wydłużony, symetryczny z regularną siatką komórek.',
     weights:{ka:72,lm:68,sw:78,ro:75,lu:72,ja:68,ll:60,br:55,gr:52,sl:62,op:65,st:65,bw:60,au:55,so:65,bi:55,be:58,sd:62,wy:62,nak:58,sep:60}
   },
   zimowka:{
@@ -30988,6 +31000,7 @@ const MUSHROOMS={
     habitat:'Na pniach i gałęziach drzew liściastych. Październik–marzec. Przeżywa mróz.',
     desc:'Kapelusz pomarańczowożółty do brązowego, śluzowaty, 2–8 cm. Trzon brązowoczarny, aksamitny.',
     edib:'Smaczna, dobra do zup. Sprzedawana jako "enoki". Gotować min. 5 minut.',
+    lookalikes:'Hełmówka jadowita (Galerina marginata) — ŚMIERTELNA. Ten sam habitat na drewnie, podobna barwa. Odróżnij: zimówka ma trzon wyraźnie ciemnobrązowy z czarnym aksamitnym (szczotkowym) owłosieniem; hełmówka ma trzon jednobarwny brązowy z wyraźnym pierścieniem i rdzawobrązowym wysypem zarodników na blaszkach.',
     weights:{ka:70,lm:68,bw:72,au:65,ku:60,sw:65,ro:68,lu:65,ja:62,be:60,bi:58,sd:55,po:60,so:62,sl:60,op:58,br:55,gr:52,ps:58,ma:55,wy:68,nak:62,sep:65}
   },
   kolczakowka:{
@@ -31015,6 +31028,7 @@ const MUSHROOMS={
     habitat:'Wyłącznie pod sosnami. Pospolita, tworzą "czarcie kręgi".',
     desc:'Kapelusz szaroczarny do mysioszarego, fibrylosty, 3–8 cm. Blaszki białe z szarą barwą. Trzon biały.',
     edib:'Jadalna, dobry smak. Uwaga: nie mylić z gąskami trującymi (T. pardinum).',
+    lookalikes:'Gąska siarkowa (T. sulphureum) — TRUJĄCA; odróżnij intensywnym nieprzyjemnym zapachem przypominającym karbid lub gaz (gąska szara pachnie łagodnie mąkowo), i siarkowożółtym miąższem (u gąski szarej biały). Gąska plamista (T. pardinum) — silnie trująca; większa, kapelusz pokryty ciemnoszarymi, koncentrycznymi łuskami, pod bukami na glebach wapiennych.',
     weights:{tu:85,no:82,dr:78,pi:80,au:75,ps:78,dl:80,ch:82,ku:72,ma:68,bw:70,br:65,wk:62,ll:58,gr:68,sw:60,lm:50,ka:45,sd:70,se:65,wy:82,nak:75,sep:78}
   },
   hericium:{
@@ -31086,7 +31100,8 @@ const MUSHROOMS={
     soil:'Gleba żyzna, próchnicza',ph:'5.0–7.0',elev:'0–900 m',
     habitat:'Pod dębami, lipami i grabami. Pospolity w całej Polsce.',
     desc:'Kapelusz zielonkawy do oliwkowoszarego, 5–15 cm. Biała pochwa u podstawy. Blaszki BIAŁE. Pierścień wiszący. Brak zapachu na świeżo.',
-    danger:'ŚMIERTELNIE TRUJĄCY. 90% śmierci po grzybach. Amatoksyny niszczą wątrobę. Objawy po 6–48h. 1 kapelusz = śmierć. Brak odtrutki poza przeszczepem.',
+    danger:'ŚMIERTELNIE TRUJĄCY. Odpowiada za ok. 30% wszystkich śmiertelnych zatruć grzybami. Amatoksyny niszczą wątrobę i nerki. Pierwsze objawy (kolkowe bóle brzucha, wymioty, biegunka) pojawiają się dopiero po 4–16 godzinach. Jeden średni kapelusz może zabić dorosłego człowieka. Brak skutecznej odtrutki poza przeszczepem wątroby.',
+    lookalikes:'Zielone gołąbki (Russula virescens) — BRAK pochwy u podstawy trzonu, trzon kruchy. Gąski zielone (Tricholoma) — brak pochwy i brak pierścienia jednocześnie. Pieczarki — blaszki od różowawych do brązowych, nie białe. Zawsze szukaj białej, skórkowatej pochwy u podstawy trzonu — definiuje wszystkie śmiertelne muchomory.',
     weights:{ka:65,lm:60,sw:70,ro:68,lu:65,ja:62,be:60,bi:58,sd:55,po:60,so:60,sl:58,op:62,bw:55,kn:52,au:50,ku:55,ma:50,wy:52,nak:48,sep:50}
   },
   muszomor_jad:{
@@ -31123,6 +31138,7 @@ const MUSHROOMS={
     habitat:'Pod sosnami i świerkami. Mylony z borowikiem szlachetnym.',
     desc:'Wygląda jak borowik — brązowy kapelusz, siateczka. Rurki RÓŻOWAWE. Miąższ różowieje. Smak: piekielnie gorzki.',
     danger:'Niejadalny — ekstremalnie gorzki. Jeden kawałek psuje cały garnek. Sprawdź kolor rurek.',
+    lookalikes:'Borowik szlachetny i inne borowikowate — u nich rurki białe do żółtych, miąższ biały i nie różowieje. Najszybszy test: muśnij miąższ językiem — goryczak natychmiast da wyczuwalną, intensywną gorzkość.',
     weights:{tu:70,no:68,au:65,bw:62,ps:65,dl:68,ch:70,ku:60,dr:62,pi:65,br:58,ma:60,sd:62,be:60,bi:55,po:55,wy:72,nak:68,sep:70}
   },
   zasloniak:{
@@ -31131,7 +31147,8 @@ const MUSHROOMS={
     soil:'Gleba kwaśna do umiarkowanie kwaśnej',ph:'4.5–6.0',elev:'0–900 m',
     habitat:'Pod dębami i bukami. Coraz rzadszy.',
     desc:'Brązowy do rudocynamonowego, 3–9 cm. BRAK pierścienia. Kurtyzana z nici pajęczynowych tylko u młodych.',
-    danger:'ŚMIERTELNIE TRUJĄCY. Orellanina uszkadza nerki po 2–4 tygodniach. Przez ten czas brak objawów. Brak odtrutki.',
+    danger:'ŚMIERTELNIE TRUJĄCY. Orellanina niszczy nerki po 2–4 tygodniach — przez cały ten czas brak objawów zatrucia. Brak odtrutki. Do momentu diagnozy uszkodzenie nerek jest często nieodwracalne.',
+    lookalikes:'Inne zasłoniaki i brązowe grzyby leśne. Cały rodzaj Cortinarius jest podejrzany — żaden gatunek zasłoniaka nie jest zalecany do zbierania bez eksperckiej wiedzy. Zasłoniak rudy wygląda jak wiele niewinnych brązowych grzybów pod dębami.',
     weights:{ka:55,sw:52,ro:50,lu:55,ja:48,be:45,bi:42,sd:40,bw:50,kn:45,lm:48,ll:42,wy:38,nak:35,sep:42}
   },
   helmowka:{
@@ -31140,7 +31157,8 @@ const MUSHROOMS={
     soil:'Na pniach i kłodach drewna',ph:'Saprofit drewna',elev:'0–1000 m',
     habitat:'Na drewnie — pniach, korzeniach, kłodach. Rośnie jak opieńka.',
     desc:'Kapelusz miodowożółty 2–5 cm. Pierścień na trzonie. Bardzo podobna do opieńki i zimówki!',
-    danger:'ŚMIERTELNIE TRUJĄCY. Takie same amatoksyny co muchomor. Mylona z opieńką — przyczynia śmierci. Sprawdź kolor zarodnikówl (rdzawobrązowe u hełmówki).',
+    danger:'ŚMIERTELNIE TRUJĄCY. Takie same amatoksyny co muchomor sromotnikowy. Często mylona z opieńką i zimówką — przyczynia śmierci. Sprawdź rdzawobrązowy, pudrowy osad zarodników na blaszkach (u opieńki kremowy/biały).',
+    lookalikes:'Opieńka miodowa — jadalna po blanszowaniu; rośnie w dużych skupiskach, wysyp zarodników kremowy. Zimówka aksamitnotrzonowa — trzon czarnoaksamitny (szczotkowy), brak pierścienia lub słabo widoczny, zimowa; hełmówka ma wyraźny brązowy pierścień.',
     weights:{bw:60,au:58,ka:55,sw:58,ro:55,lu:52,be:55,bi:50,sd:48,po:50,so:52,sl:48,op:45,ps:52,ma:50,wy:62,nak:58,sep:60}
   },
   piestrzenica:{
@@ -31150,6 +31168,7 @@ const MUSHROOMS={
     habitat:'Wiosenna, pod sosnami na piaszczystej glebie. Mylona ze smardzem.',
     desc:'Kapelusz ciemnobrązowy, mocno sfałdowany (mózgopodobny), nie siatkowaty jak smardz. 5–10 cm.',
     danger:'TRUJĄCY na surowo — zawiera gyromitry. Może być przyrządzana tradycyjnie (patrz niżej), ale oficjalnie uważana za toksyczną w Polsce.',
+    lookalikes:'Smardz jadalny (Morchella esculenta) — odróżnij wyraźnie: smardz ma regularne, sześciokątne, miodowe komórki; piestrzenica ma nieregularne, mózgopodobne, płatowate fałdy. Owocnik piestrzennicy jest zazwyczaj bardziej siodłowaty lub falisty, smardza — wydłużony i symetryczny.',
     weights:{tu:65,no:62,au:60,bw:58,dr:55,pi:60,ps:58,dl:62,ch:65,ku:52,ma:50,br:50,ll:48,wy:75,nak:70,sep:72}
   },
   golabek_wym:{
@@ -39959,6 +39978,7 @@ function showInfoPanel(mid){
     <div class="isec"><h4>Siedlisko</h4><p>${m.habitat}</p></div>
     <div class="isec"><h4>Identyfikacja</h4><p>${m.desc}</p></div>
     ${m.edib?`<div class="isec"><h4>Wartość kulinarna</h4><p>${m.edib}</p></div>`:''}
+    ${m.lookalikes?`<div class="isec"><h4>Gatunki podobne — uwaga!</h4><div class="labox">⚠ ${m.lookalikes}</div></div>`:''}
     ${(()=>{const ld=MUSHROOM_LOCAL[mid];if(!ld)return '';return `<div class="isec" style="border-left:3px solid ${LOCAL_COLOR[ld.s]||'#888'};padding-left:8px;margin-top:4px"><h4 style="color:${LOCAL_COLOR[ld.s]||'#888'}">🗺 W regionie Krajna / Wyrzysk</h4><div style="font-weight:600;color:${LOCAL_COLOR[ld.s]};margin-bottom:4px">${LOCAL_LABEL[ld.s]}</div><p style="margin:0;font-size:12px">${ld.n}</p></div>`;})()}
   `;
   if(m.wiki){
