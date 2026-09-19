@@ -50,8 +50,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .si-sec{padding:5px 13px 3px;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
 #fb{display:flex;flex-direction:column;padding:0}
 #fb .fbody{display:flex;gap:5px;flex-wrap:wrap;padding:0 14px 10px}
-.fb{padding:4px 10px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--f-body);font-size:11px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap}
-.fb:hover{border-color:var(--gold);color:var(--text)}
+.fb{padding:4px 10px;border-radius:4px;border:1px solid var(--goldb);background:transparent;color:var(--text);font-family:var(--f-body);font-size:11px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap}
+.fb:hover{border-color:var(--gold);background:var(--goldd)}
 .fb.on{background:var(--gold);border-color:var(--gold);color:var(--bg);font-weight:600}
 #ml{flex:1;overflow-y:auto;padding:8px 10px 20px}
 #ml::-webkit-scrollbar{width:3px}
@@ -243,7 +243,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .fhdr:hover{background:rgba(212,160,48,.05)}
 [data-theme="light"] .fhdr:hover{background:rgba(122,80,16,.06)}
 .fcarr{font-size:9px;color:var(--muted);transition:transform .2s;line-height:1}
-.flabel{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);font-weight:700;white-space:nowrap;opacity:.8}
+.flabel{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);font-weight:700;white-space:nowrap}
 .fbody{overflow:hidden;transition:max-height .22s ease,padding .22s ease}
 .fbody.col{max-height:0!important;padding-top:0!important;padding-bottom:0!important}
 .terrain-info{background:var(--card);border-radius:var(--r);padding:9px 12px;margin-bottom:10px;font-size:12px}
@@ -262,7 +262,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.9.1</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.9.3</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -326,6 +326,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
       <div class="lb" data-base="sat"><span class="ldot" style="background:#1a3a6e"></span>Satelitarna</div>
       <div class="lb" data-base="osm"><span class="ldot" style="background:#e06020"></span>Szczegółowa</div>
       <div class="lb" data-base="hiking"><span class="ldot" style="background:#8b4513"></span>Szlaki turystyczne</div>
+      <div class="lb" data-base="cycling"><span class="ldot" style="background:#1a7abf"></span>Szlaki rowerowe</div>
     </div>
     <div class="cp scroll">
       <div class="ct">Warstwy</div>
@@ -31627,6 +31628,10 @@ const baseLayers={
   hiking:L.layerGroup([
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'OSM + Waymarked Trails',subdomains:'abc'}),
     L.tileLayer('https://tile.waymarkedtrails.org/hiking/{z}/{x}/{y}.png',{maxZoom:19,opacity:.85,attribution:'Waymarked Trails'})
+  ]),
+  cycling:L.layerGroup([
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'OSM + Waymarked Trails',subdomains:'abc'}),
+    L.tileLayer('https://tile.waymarkedtrails.org/cycling/{z}/{x}/{y}.png',{maxZoom:19,opacity:.85,attribution:'Waymarked Trails'})
   ]),
 };
 baseLayers.topo.addTo(map);
