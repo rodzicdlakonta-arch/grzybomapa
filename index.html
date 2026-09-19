@@ -41224,13 +41224,19 @@ function showAreaPanel(results,terrain){
 
 // ─── Draw ─────────────────────────────────────────────────
 try{
-  L.drawLocal.draw.toolbar.buttons.polygon='Wielokąt';
-  L.drawLocal.draw.toolbar.buttons.rectangle='Prostokąt';
-  L.drawLocal.draw.toolbar.actions.cancel.text='Anuluj';
-  L.drawLocal.draw.handlers.rectangle.tooltip.start='Kliknij i przeciągnij aby zaznaczyć obszar';
-  L.drawLocal.draw.handlers.polygon.tooltip.start='Kliknij aby dodać punkt';
-  L.drawLocal.draw.handlers.polygon.tooltip.cont='Kliknij aby kontynuować';
-  L.drawLocal.draw.handlers.polygon.tooltip.end='Kliknij pierwszy punkt aby zakończyć';
+  const dl=L.drawLocal.draw;
+  dl.toolbar.buttons.polygon='Wielokąt';
+  dl.toolbar.buttons.rectangle='Prostokąt';
+  dl.toolbar.actions.text='Anuluj';
+  dl.toolbar.actions.title='Anuluj rysowanie';
+  dl.toolbar.finish.text='Zakończ';
+  dl.toolbar.finish.title='Zakończ rysowanie';
+  dl.toolbar.undo.text='Cofnij punkt';
+  dl.toolbar.undo.title='Usuń ostatni punkt';
+  dl.handlers.rectangle.tooltip.start='Kliknij i przeciągnij aby zaznaczyć obszar';
+  dl.handlers.polygon.tooltip.start='Kliknij aby dodać punkt';
+  dl.handlers.polygon.tooltip.cont='Kliknij aby kontynuować';
+  dl.handlers.polygon.tooltip.end='Kliknij pierwszy punkt aby zakończyć';
 }catch(e){}
 const drawCtrl=new L.Control.Draw({
   draw:{
