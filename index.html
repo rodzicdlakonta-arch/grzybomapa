@@ -41223,17 +41223,15 @@ function showAreaPanel(results,terrain){
 }
 
 // ─── Draw ─────────────────────────────────────────────────
-if(L.drawLocal){
+try{
   L.drawLocal.draw.toolbar.buttons.polygon='Wielokąt';
   L.drawLocal.draw.toolbar.buttons.rectangle='Prostokąt';
   L.drawLocal.draw.toolbar.actions.cancel.text='Anuluj';
-  L.drawLocal.draw.toolbar.actions.undo.text='Cofnij';
-  L.drawLocal.draw.toolbar.finish.text='Zakończ';
   L.drawLocal.draw.handlers.rectangle.tooltip.start='Kliknij i przeciągnij aby zaznaczyć obszar';
   L.drawLocal.draw.handlers.polygon.tooltip.start='Kliknij aby dodać punkt';
   L.drawLocal.draw.handlers.polygon.tooltip.cont='Kliknij aby kontynuować';
   L.drawLocal.draw.handlers.polygon.tooltip.end='Kliknij pierwszy punkt aby zakończyć';
-}
+}catch(e){}
 const drawCtrl=new L.Control.Draw({
   draw:{
     polygon:{shapeOptions:{color:'#c9a84c',fillOpacity:.08,weight:2}},
