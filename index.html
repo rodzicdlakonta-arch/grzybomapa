@@ -56,9 +56,10 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .fb:hover{border-color:var(--gold);background:var(--goldd)}
 .fb.on{background:var(--gold);border-color:var(--gold);color:var(--bg);font-weight:600}
 #ml{flex:1;overflow-y:auto;padding:8px 10px 20px}
-#ml::-webkit-scrollbar{width:3px}
-#ml::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.mc{padding:10px 12px 10px 12px;border-radius:10px;background:var(--card);border-left:4px solid transparent;cursor:pointer;transition:all .15s;margin-bottom:5px;display:flex;align-items:center;gap:10px}
+#ml::-webkit-scrollbar{width:5px}
+#ml::-webkit-scrollbar-thumb{background:rgba(160,148,136,.35);border-radius:3px}
+#ml::-webkit-scrollbar-thumb:hover{background:rgba(160,148,136,.6)}
+.mc{padding:10px 12px 10px 12px;border-radius:10px;background:var(--card);border-left:4px solid transparent;cursor:pointer;transition:all .15s;margin-bottom:5px;display:flex;align-items:center;gap:10px;user-select:none}
 .mc:hover{transform:translateX(2px);box-shadow:0 4px 16px rgba(0,0,0,.4)}
 .mc.sel{background:var(--goldd);box-shadow:0 4px 16px rgba(0,0,0,.35)}
 .mc:has(.mico.edible){border-left-color:var(--acc-e)}
@@ -186,7 +187,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .sbar{display:flex;gap:2px;margin-top:6px}
 .sm{flex:1;height:5px;border-radius:2px;background:var(--card);position:relative}
 .sm.on{background:var(--gold)}
-.sm.cur::after{content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid var(--muted)}
+.sm.cur::after{content:'';position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid var(--muted)}
 #ap{position:fixed;bottom:-100%;left:320px;right:0;max-height:42vh;background:var(--sb);border-top:1px solid var(--border);z-index:1050;transition:bottom .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
 #ap.open{bottom:0}
 #aph{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
@@ -303,7 +304,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.27.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.28.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41014,8 +41015,8 @@ async function loadWikiPhoto(wiki,imgEl){
 function showInfoPanel(mid){
   const m=MUSHROOMS[mid];
   if(!m)return;
-  document.getElementById('pname').textContent=m.name;
-  document.getElementById('platin').textContent=m.latin;
+  document.getElementById('pname').innerHTML=`${m.name}<button onclick="navigator.clipboard.writeText('${m.name.replace(/'/g,"\\'")}');showToast('Skopiowano')" title="Kopiuj" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:0 3px 0 6px;opacity:.6;vertical-align:middle;line-height:1" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.6'">⧉</button>`;
+  document.getElementById('platin').innerHTML=`${m.latin}<button onclick="navigator.clipboard.writeText('${m.latin.replace(/'/g,"\\'")}');showToast('Skopiowano')" title="Kopiuj łacińską nazwę" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:10px;padding:0 3px 0 5px;opacity:.6;vertical-align:middle;line-height:1" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.6'">⧉</button>`;
   const badges=[catBadge(m)];
   if(m.rare)badges.push(`<span class="b b-r">✦ Rzadki</span>`);
   if(m.protected)badges.push(`<span class="b b-pr">§ Chroniony</span>`);
@@ -41829,6 +41830,7 @@ function showToast(msg){
           L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:'#1976D2',fillOpacity:1})
         ]).addTo(map);
         map.flyTo(ll,14,{duration:1.5});
+        fetchWeather(ll[0],ll[1]);
         showToast('Lokalizacja znaleziona');
       },()=>{
         busy=false;a.textContent='📍';a.style.animation='';a.style.opacity='';
@@ -41920,25 +41922,66 @@ renderList();
   const lb=document.getElementById('photo-lb');
   const img=document.getElementById('photo-lb-img');
   const attr=document.getElementById('photo-lb-attr');
-  let scale=1;
+  let scale=1,panX=0,panY=0;
+  let dragging=false,didDrag=false,sx=0,sy=0,spx=0,spy=0;
+  function applyTransform(){
+    if(scale<=1){img.style.transform='';panX=0;panY=0;}
+    else img.style.transform=`translate(${panX.toFixed(1)}px,${panY.toFixed(1)}px) scale(${scale.toFixed(2)})`;
+    img.style.cursor=scale>1?'grab':'zoom-in';
+  }
   function setScale(s){
     scale=Math.max(1,Math.min(5,s));
-    img.style.transform=scale>1?`scale(${scale.toFixed(2)})`:'';
-    img.style.cursor=scale>=5?'default':scale>1?'zoom-in':'zoom-in';
+    if(scale===1){panX=0;panY=0;}
+    applyTransform();
   }
   window._openLightbox=function(src,attribution){
     img.src=src;
     if(attr)attr.textContent=attribution||'';
-    setScale(1);
+    scale=1;panX=0;panY=0;applyTransform();
     lb.classList.add('open');
   };
-  img.addEventListener('click',e=>{e.stopPropagation();setScale(scale>=4?1:scale<=1?2:scale*2);});
+  // Click to cycle zoom (only if not dragging)
+  img.addEventListener('click',e=>{
+    e.stopPropagation();
+    if(didDrag){didDrag=false;return;}
+    setScale(scale>=4?1:scale<=1?2:scale*2);
+  });
+  // Backdrop closes
   lb.addEventListener('click',e=>{if(e.target===lb){lb.classList.remove('open');setScale(1);}});
+  // Scroll wheel zoom
   lb.addEventListener('wheel',e=>{
     if(!lb.classList.contains('open'))return;
     e.preventDefault();
     setScale(scale*(e.deltaY<0?1.15:1/1.15));
   },{passive:false});
+  // Mouse drag-to-pan
+  img.addEventListener('mousedown',e=>{
+    if(scale<=1)return;
+    e.preventDefault();dragging=true;didDrag=false;
+    sx=e.clientX;sy=e.clientY;spx=panX;spy=panY;
+    img.style.cursor='grabbing';
+  });
+  window.addEventListener('mousemove',e=>{
+    if(!dragging)return;
+    const dx=e.clientX-sx,dy=e.clientY-sy;
+    if(Math.abs(dx)>3||Math.abs(dy)>3)didDrag=true;
+    panX=spx+dx;panY=spy+dy;applyTransform();
+  });
+  window.addEventListener('mouseup',()=>{if(dragging){dragging=false;applyTransform();}});
+  // Touch drag-to-pan
+  let t0=null,tp={x:0,y:0};
+  img.addEventListener('touchstart',e=>{
+    if(scale<=1||e.touches.length!==1)return;
+    e.preventDefault();t0=e.touches[0];tp={x:panX,y:panY};
+  },{passive:false});
+  img.addEventListener('touchmove',e=>{
+    if(!t0||e.touches.length!==1)return;
+    e.preventDefault();
+    panX=tp.x+(e.touches[0].clientX-t0.clientX);
+    panY=tp.y+(e.touches[0].clientY-t0.clientY);
+    applyTransform();
+  },{passive:false});
+  img.addEventListener('touchend',()=>{t0=null;});
 })();
 
 // ─── Panel controls ────────────────────────────────────────────────────────
