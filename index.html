@@ -21,10 +21,10 @@
   --acc-e:#52b849;--acc-d:#e84040;--acc-r:#d4a030;--acc-h:#a060d4;--acc-i:#607060;
 }
 [data-theme="light"]{
-  --bg:#f4f0e8;--sb:#ece8de;--card:#ffffff;--card2:#f4f0e8;
-  --gold:#7a5010;--goldd:rgba(122,80,16,.09);--goldb:rgba(122,80,16,.25);
-  --green:#2a7020;--text:#1a1814;--muted:#8a8078;
-  --border:rgba(0,0,0,.1);
+  --bg:#f4f0e8;--sb:#e8e2d6;--card:#ffffff;--card2:#f0ebe0;
+  --gold:#7a5010;--goldd:rgba(122,80,16,.11);--goldb:rgba(122,80,16,.42);
+  --green:#2a7020;--text:#1a1814;--muted:#5c5650;
+  --border:rgba(0,0,0,.13);
   --acc-e:#2a7020;--acc-d:#c82828;--acc-r:#7a5010;--acc-h:#7840b8;--acc-i:#4a5848;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -84,9 +84,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .lsec::after{content:'';flex:1;height:1px;background:var(--goldb)}
 #mw{flex:1;position:relative;overflow:hidden}
 #map{width:100%;height:100%}
-#mc{position:absolute;top:12px;right:0;z-index:900;display:flex;flex-direction:column}
-#mc-body{display:flex;flex-direction:column;gap:8px;transition:max-height .22s ease,max-width .22s ease,opacity .15s;max-height:900px;max-width:500px;opacity:1;overflow:hidden}
-#mc.mc-col #mc-body{max-height:0;max-width:0;opacity:0}
+#mc{position:absolute;top:12px;right:0;z-index:900;display:flex;flex-direction:column;max-height:calc(100vh - 24px)}
+#mc-body{display:flex;flex-direction:column;gap:8px;transition:transform .25s cubic-bezier(.4,0,.2,1),opacity .2s;opacity:1;overflow-y:auto}
+#mc.mc-col #mc-body{transform:translateX(110%);opacity:0;pointer-events:none}
 #mc-tab{position:absolute;left:-14px;top:16px;width:14px;height:42px;background:var(--sb);border:1px solid var(--border);border-right:none;border-radius:var(--r) 0 0 var(--r);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);user-select:none;transition:background .12s,color .12s}
 #mc-tab:hover{background:var(--card);color:var(--text)}
 #wx{position:absolute;bottom:28px;left:12px;z-index:800;background:var(--sb);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;min-width:140px;max-width:200px;font-size:12px;line-height:1.7;pointer-events:auto}
@@ -119,7 +119,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #wx-cond{font-size:10px;color:var(--muted);margin-top:1px}
 .wx-good{color:#4a8a3a}.wx-ok{color:#9a8020}.wx-dry{color:#aa5a20}
 .cp{background:var(--sb);border:1px solid var(--border);border-radius:var(--r);padding:13px 14px;min-width:175px;backdrop-filter:blur(6px)}
-.cp.scroll{max-height:calc(100vh - 200px);overflow-y:auto}
+.cp.scroll{max-height:calc(100vh - 270px);overflow-y:auto}
 .cp.scroll::-webkit-scrollbar{width:3px}
 .cp.scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .ct{font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:var(--gold);font-weight:700;margin-bottom:11px;display:flex;align-items:center;gap:8px}
@@ -143,8 +143,6 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #drbtn{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:900;background:var(--gold);color:var(--bg);border:none;border-radius:var(--r);padding:10px 16px;font-family:var(--f-body);font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 18px rgba(212,160,48,.35);transition:all .2s;white-space:nowrap}
 #drbtn:hover{box-shadow:0 6px 22px rgba(212,160,48,.45);transform:translateX(-50%) translateY(-1px)}
 #drbtn.drawing{background:#5d9c55;box-shadow:0 4px 16px rgba(93,156,85,.3)}
-#locbtn{position:absolute;bottom:30px;right:14px;z-index:900;background:var(--sb);color:var(--muted);border:1px solid var(--border);border-radius:var(--r);padding:9px 14px;font-family:var(--f-body);font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 2px 12px rgba(0,0,0,.3);transition:all .2s;white-space:nowrap}
-#locbtn:hover{background:var(--card);color:var(--text);border-color:var(--gold);transform:translateY(-1px)}
 #hl{position:absolute;bottom:28px;left:12px;z-index:900;background:var(--sb);border:1px solid var(--border);border-radius:var(--r);padding:10px 13px;display:none}
 #hl.vis{display:block}
 #hl h5{font-size:11px;color:var(--text);margin-bottom:7px;font-weight:500}
@@ -209,8 +207,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 [data-theme="light"] .mico.inedible{background:rgba(80,90,80,.13)}
 [data-theme="light"] .b-pr{background:rgba(28,100,172,.14);color:#1c64ac}
 [data-theme="light"] .b-i{background:rgba(80,90,80,.14);color:#4a5a4a}
-[data-theme="light"] #locbtn{background:var(--sb);color:var(--muted)}
-[data-theme="light"] #locbtn:hover{background:var(--card);border-color:var(--gold);color:var(--text)}
+[data-theme="light"] .mc{box-shadow:0 2px 8px rgba(0,0,0,.07),0 0 0 1px rgba(0,0,0,.05)}
 [data-theme="light"] #map-loader{background:var(--bg)}
 [data-theme="light"] .leaflet-bar a{background:var(--card)!important;color:var(--text)!important}
 [data-theme="light"] .leaflet-popup-content-wrapper{background:var(--card)!important;color:var(--text)!important}
@@ -265,7 +262,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.8.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.9.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -325,22 +322,21 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
     <div id="mc-body"><div class="cp">
       <div class="ct">Podkład mapy</div>
       <div class="lb on" data-base="topo"><span class="ldot" style="background:#4a7c42"></span>Topograficzna</div>
-      <div class="lb" data-base="dark"><span class="ldot" style="background:#444"></span>Ciemna</div>
+      <div class="lb" data-base="topo25"><span class="ldot" style="background:#3a6a2a"></span>Szczegółowa topo</div>
       <div class="lb" data-base="sat"><span class="ldot" style="background:#1a3a6e"></span>Satelitarna</div>
-      <div class="lb" data-base="street"><span class="ldot" style="background:var(--gold)"></span>Ulice</div>
-      <div class="lb" data-base="topo25"><span class="ldot" style="background:#5a7a3a"></span>Topograficzna 25k</div>
+      <div class="lb" data-base="osm"><span class="ldot" style="background:#e06020"></span>Ścieżki (OSM)</div>
+      <div class="lb" data-base="carto"><span class="ldot" style="background:#5080c0"></span>Detaliczna</div>
     </div>
     <div class="cp scroll">
       <div class="ct">Warstwy</div>
-      <div class="lay-grp">Lasy i ochrona</div>
+      <div class="lay-grp">Pokrycie terenu</div>
       <div class="tr"><span>🌲 Główne lasy</span><div class="tog on" id="tgl-f"></div></div>
-      <div class="lay-grp">Użytkowanie terenu</div>
       <div class="tr"><span>💧 Wody</span><div class="tog" id="tgl-wet"></div></div>
       <div class="tr"><span>🌿 Bagna i mokradła</span><div class="tog" id="tgl-swamp"></div></div>
       <div class="tr"><span>🌸 Łąki i murawy</span><div class="tog" id="tgl-meadow"></div></div>
       <div class="tr"><span>🌾 Pola uprawne</span><div class="tog" id="tgl-crop"></div></div>
       <div class="tr"><span>🏘️ Zabudowania</span><div class="tog" id="tgl-urban"></div></div>
-      <div class="tr"><span>🗺️ Użytki</span><div class="tog" id="tgl-uzytki"></div></div>
+      <div class="tr"><span style="opacity:.75">🗺️ Użytki <small style="font-size:9.5px">(tylko topo 25k)</small></span><div class="tog" id="tgl-uzytki"></div></div>
       <div class="lay-grp">Gleba</div>
       <div class="tr"><span>🪨 Piasek gleby</span><div class="tog" id="tgl-sand"></div></div>
       <div class="tr"><span>🌱 Gleba bielicowa</span><div class="tog" id="tgl-podzol"></div></div>
@@ -370,7 +366,6 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
     <div class="ph-note">Niebieski = kwaśny (bory sosnowe)<br>Żółty = lekko kwaśny (lasy mieszane)<br>Pomarańcz = zasadowy (pola uprawne)</div>
   </div>
   <button id="drbtn">⬡ Analizuj obszar</button>
-  <button id="locbtn">📍 Gdzie jestem?</button>
   <div id="hl">
     <h5 id="hl-name">Heatmapa</h5>
     <div id="hl-hab" style="font-size:11px;color:#888;margin:-4px 0 6px;"></div>
@@ -31626,10 +31621,10 @@ const map=L.map('map',{center:_mv?[_mv.lat,_mv.lng]:[52.1,19.5],zoom:_mv?_mv.z:7
 
 const baseLayers={
   topo:L.tileLayer(`${E}/World_Topo_Map/MapServer/tile/{z}/{y}/{x}`,{maxZoom:18,attribution:'ESRI'}),
-  dark:L.tileLayer(`${E}/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}`,{maxZoom:16,attribution:'ESRI'}),
-  sat: L.tileLayer(`${E}/World_Imagery/MapServer/tile/{z}/{y}/{x}`,{maxZoom:18,attribution:'ESRI'}),
-  street:L.tileLayer(`${E}/World_Street_Map/MapServer/tile/{z}/{y}/{x}`,{maxZoom:18,attribution:'ESRI'}),
   topo25:L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'OpenTopoMap',subdomains:'abc'}),
+  sat: L.tileLayer(`${E}/World_Imagery/MapServer/tile/{z}/{y}/{x}`,{maxZoom:18,attribution:'ESRI'}),
+  osm:L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'OpenStreetMap contributors',subdomains:'abc'}),
+  carto:L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'CARTO',subdomains:'abcd'}),
 };
 baseLayers.topo.addTo(map);
 
@@ -40265,21 +40260,6 @@ function analyzePoint(lat,lng){
   document.getElementById('ap-loc').textContent=`📍 ${lat.toFixed(4)}, ${lng.toFixed(4)} · ${terrainLabel}`;
 }
 
-document.getElementById('locbtn').onclick=()=>{
-  if(!navigator.geolocation){showToast('Przeglądarka nie obsługuje geolokalizacji');return;}
-  showToast('Pobieranie lokalizacji…');
-  navigator.geolocation.getCurrentPosition(
-    pos=>{
-      const{latitude:lat,longitude:lng}=pos.coords;
-      map.setView([lat,lng],14);
-      L.circleMarker([lat,lng],{radius:7,color:'#c9a84c',fillColor:'#c9a84c',fillOpacity:.9,weight:2})
-        .bindTooltip('Twoja lokalizacja',{permanent:false}).addTo(map);
-      analyzePoint(lat,lng);
-      fetchWeather(lat,lng);
-    },
-    ()=>showToast('Nie można pobrać lokalizacji. Sprawdź uprawnienia GPS.')
-  );
-};
 
 function wxIcon(code){
   if(code===0)return'☀️';if(code<=3)return'⛅';if(code<=49)return'🌫️';
