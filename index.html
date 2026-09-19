@@ -317,7 +317,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.1</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.2</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41125,11 +41125,20 @@ function getTerrainFeatures(drawnPoly){
 function buildTerrainHTML(terrain){
   if(!terrain.forests.length&&!terrain.landuse.length)return'';
   let tags='';
-  terrain.forests.slice(0,5).forEach(f=>tags+=`<span class="terrain-tag tt-forest">🌲 ${forestDisplayName(f.n)}</span>`);
+  const seenFc=new Set();
+  terrain.forests.forEach(f=>{
+    const key=f.c||f.n||'?';
+    if(seenFc.has(key))return;seenFc.add(key);
+    const label=CORINE_LABEL[f.c]||(f.n?forestDisplayName(f.n):'Las');
+    tags+=`<span class="terrain-tag tt-forest">🌲 ${label}</span>`;
+  });
+  const seenLt=new Set();
+  const LU_LABEL={water:'Woda',wetland:'Mokradła',meadow:'Łąka',farmland:'Pole uprawne',pasture:'Pastwisko'};
+  const LU_ICO={water:'🏞️',wetland:'💧',meadow:'🌿',farmland:'🌾',pasture:'🌿'};
   terrain.landuse.forEach(lu=>{
+    if(seenLt.has(lu.t))return;seenLt.add(lu.t);
     const cls=lu.t==='wetland'||lu.t==='water'?'tt-wetland':lu.t==='farmland'?'tt-farmland':'tt-pasture';
-    const ico=lu.t==='wetland'?'💧':lu.t==='water'?'🏞️':lu.t==='farmland'?'🌾':lu.t==='meadow'?'🌿':'🌿';
-    tags+=`<span class="terrain-tag ${cls}">${ico} ${lu.n}</span>`;
+    tags+=`<span class="terrain-tag ${cls}">${LU_ICO[lu.t]||'🌿'} ${LU_LABEL[lu.t]||lu.t}</span>`;
   });
   return`<div class="terrain-info"><h4>Teren w zaznaczonym obszarze</h4>${tags}</div>`;
 }
@@ -41149,19 +41158,28 @@ function analyzeArea(layer){
     const thresh=reg.r+span/2;
     if(dist<thresh*1.8)rscores[rid]=Math.max(0,1-dist/(thresh*1.2));
   }
-  // Boost scores based on detected terrain features
+  // Detect terrain types from CLC forest codes + landuse
   const hasWetland=terrain.landuse.some(l=>l.t==='wetland');
   const hasPasture=terrain.landuse.some(l=>l.t==='pasture');
+  const hasMeadow=terrain.landuse.some(l=>l.t==='meadow');
   const hasFarmland=terrain.landuse.some(l=>l.t==='farmland');
+  const hasConifer=terrain.forests.some(f=>f.c==='312');
+  const hasBroadleaf=terrain.forests.some(f=>f.c==='311');
+  const hasMixed=terrain.forests.some(f=>f.c==='313');
+  const hasForest=terrain.forests.length>0;
   const results=Object.entries(MUSHROOMS).map(([mid,m])=>{
     let score=0,weight=0;
     for(const [rid,prox] of Object.entries(rscores)){
       score+=(m.weights[rid]||0)*prox;weight+=prox;
     }
     let base=weight>0?score/weight:0;
-    // Terrain boosts
+    // Forest boosts by type
+    if(hasConifer&&m.terrain.some(t=>/sosnow|iglast|modrzew|świerk/i.test(t)))base=Math.min(base*1.6,99);
+    else if(hasBroadleaf&&m.terrain.some(t=>/dąb|dębów|grąd|liściasty|buk|grab/i.test(t)))base=Math.min(base*1.5,99);
+    else if(hasMixed&&m.terrain.some(t=>/mieszan|sosnow|liściasty/i.test(t)))base=Math.min(base*1.3,99);
+    else if(hasForest&&base<4)base=4;
     if(hasWetland&&m.terrain.some(t=>/torf|bagien|podmok|wilgotn/i.test(t)))base=Math.min(base*1.2,99);
-    if(hasPasture&&m.terrain.some(t=>/łąk|pastw|murawa/i.test(t)))base=Math.min(base*1.25,99);
+    if((hasPasture||hasMeadow)&&m.terrain.some(t=>/łąk|pastw|murawa/i.test(t)))base=Math.min(base*1.25,99);
     if(hasFarmland&&m.terrain.some(t=>/łąk|pastw|ogród|kompost/i.test(t)))base=Math.min(base*1.1,99);
     return{mid,m,score:base};
   }).filter(x=>x.score>3).sort((a,b)=>b.score-a.score).slice(0,12);
@@ -41186,6 +41204,17 @@ function showAreaPanel(results,terrain){
 }
 
 // ─── Draw ─────────────────────────────────────────────────
+if(L.drawLocal){
+  L.drawLocal.draw.toolbar.buttons.polygon='Wielokąt';
+  L.drawLocal.draw.toolbar.buttons.rectangle='Prostokąt';
+  L.drawLocal.draw.toolbar.actions.cancel.text='Anuluj';
+  L.drawLocal.draw.toolbar.actions.undo.text='Cofnij';
+  L.drawLocal.draw.toolbar.finish.text='Zakończ';
+  L.drawLocal.draw.handlers.rectangle.tooltip.start='Kliknij i przeciągnij aby zaznaczyć obszar';
+  L.drawLocal.draw.handlers.polygon.tooltip.start='Kliknij aby dodać punkt';
+  L.drawLocal.draw.handlers.polygon.tooltip.cont='Kliknij aby kontynuować';
+  L.drawLocal.draw.handlers.polygon.tooltip.end='Kliknij pierwszy punkt aby zakończyć';
+}
 const drawCtrl=new L.Control.Draw({
   draw:{
     polygon:{shapeOptions:{color:'#c9a84c',fillOpacity:.08,weight:2}},
@@ -41203,7 +41232,7 @@ let _drBtn=null;
       const bar=L.DomUtil.create('div','leaflet-bar');
       const a=L.DomUtil.create('a','',bar);
       a.innerHTML='⬡';a.href='#';a.title='Narysuj obszar analizy';
-      a.style.fontSize='15px';
+      a.style.fontSize='16px';a.style.lineHeight='26px';a.style.width='26px';a.style.display='block';a.style.textAlign='center';
       L.DomEvent.on(a,'click',e=>{L.DomEvent.stop(e);
         if(drawing){
           map.removeControl(drawCtrl);drawing=false;
@@ -41300,8 +41329,18 @@ function analyzePoint(lat,lng,radiusM=0){
     return{mid,m,score:base};
   }).filter(x=>x&&x.score>2).sort((a,b)=>b.score-a.score).slice(0,12);
   const treeTypeLabel=hasPine?'bór sosnowy':hasBirch?'brzezina':hasOak?'dąbrowa':hasAlder?'olszyna':hasForest?'las':'';
-  const terrainLabel=hasWetland?'mokradło':hasMeadow?'łąka':hasFarmland?'pole':treeTypeLabel||'teren otwarty';
-  showAreaPanel(results,terrain);
+  const terrainLabel=hasWetland?'mokradło':hasMeadow?'łąka':hasFarmland&&!hasForest?'pole':treeTypeLabel||'teren otwarty';
+  // Build synthetic terrain from detected flags so terrain display matches analysis
+  const synTerrain={forests:[],landuse:[]};
+  if(hasForest){
+    const fc=hasPine?'312':hasOak?'311':'313';
+    synTerrain.forests.push({c:fc});
+  }
+  if(hasWetland)synTerrain.landuse.push({t:'wetland'});
+  if(hasMeadow)synTerrain.landuse.push({t:'meadow'});
+  if(hasFarmland&&!hasForest)synTerrain.landuse.push({t:'farmland'});
+  if(!hasForest&&!hasWetland&&!hasMeadow&&!hasFarmland)synTerrain.landuse.push({t:'open',n:'Teren otwarty'});
+  showAreaPanel(results,synTerrain);
   document.getElementById('ap-loc').textContent=`📍 ${lat.toFixed(4)}, ${lng.toFixed(4)} · ${terrainLabel}`;
 }
 
