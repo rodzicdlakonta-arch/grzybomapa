@@ -196,8 +196,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .fhdr{display:flex;justify-content:space-between;align-items:center;padding:5px 14px;cursor:pointer;user-select:none;transition:background .12s}
 .fhdr:hover{background:rgba(201,168,76,.06)}
 .fcarr{font-size:9px;color:var(--muted);transition:transform .2s;line-height:1}
-.fbody{overflow:hidden;transition:max-height .22s ease}
-.fbody.col{max-height:0!important}
+.fbody{overflow:hidden;transition:max-height .22s ease,padding .22s ease}
+.fbody.col{max-height:0!important;padding-top:0!important;padding-bottom:0!important}
 .terrain-info{background:var(--card);border-radius:var(--r);padding:9px 12px;margin-bottom:10px;font-size:12px}
 .terrain-info h4{font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px}
 .terrain-tag{display:inline-block;padding:2px 7px;border-radius:3px;font-size:11px;margin:2px 3px 2px 0;border:1px solid}
@@ -40856,6 +40856,10 @@ document.getElementById('sb-tab').onclick=()=>{
 
 // Filter section collapse toggles
 (function(){
+  const sbt=document.getElementById('sb-top');
+  function syncTopH(){
+    if(sbt.style.height)setTimeout(()=>{sbt.style.height=sbt.scrollHeight+'px';},240);
+  }
   [['fhdr-cat','fbody-cat','farr-cat','fc-cat'],
    ['fhdr-season','fbody-season','farr-season','fc-season'],
    ['fhdr-hab','fbody-hab','farr-hab','fc-hab']
@@ -40866,6 +40870,7 @@ document.getElementById('sb-tab').onclick=()=>{
       const col=b.classList.toggle('col');
       a.style.transform=col?'rotate(-90deg)':'';
       try{localStorage.setItem(key,col?'1':'0');}catch(e){}
+      syncTopH();
     });
   });
 })();
