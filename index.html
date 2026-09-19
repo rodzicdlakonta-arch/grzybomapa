@@ -222,7 +222,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 [data-theme="light"] .b-pr{background:rgba(28,100,172,.14);color:#1c64ac}
 [data-theme="light"] .b-i{background:rgba(80,90,80,.14);color:#4a5a4a}
 [data-theme="light"] .mc{box-shadow:0 2px 8px rgba(0,0,0,.07),0 0 0 1px rgba(0,0,0,.05)}
-[data-theme="light"] #map-loader{background:var(--bg)}
+[data-theme="light"] #map-loader{background:linear-gradient(rgba(0,0,0,.42),rgba(0,0,0,.42)),url('LoadingScreen.png') 50% 44%/145% no-repeat}
 [data-theme="light"] .leaflet-bar a{background:var(--card)!important;color:var(--text)!important}
 [data-theme="light"] .leaflet-popup-content-wrapper{background:var(--card)!important;color:var(--text)!important}
 [data-theme="light"] .leaflet-control-attribution{background:rgba(240,234,216,.8)!important}
@@ -245,11 +245,16 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .hbox{background:rgba(125,60,185,.14);border:1px solid rgba(125,60,185,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#c39de8;line-height:1.55}
 .cpbox{background:rgba(201,120,30,.14);border:1px solid rgba(201,120,30,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#e8a040;line-height:1.55}
 .labox{background:rgba(180,140,30,.09);border:1px solid rgba(180,140,30,.28);border-radius:var(--r);padding:11px 13px;margin-bottom:0;font-size:12.5px;color:#b8962a;line-height:1.55}
-#map-loader{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('LoadingScreen.png') center/cover no-repeat;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .5s ease,visibility .5s ease}
+#map-loader{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.54),rgba(0,0,0,.54)),url('LoadingScreen.png') 50% 44%/145% no-repeat;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:opacity .6s ease,visibility .6s ease}
 #map-loader.done{opacity:0;visibility:hidden;pointer-events:none}
-#map-loader .ml-ring{width:52px;height:52px;border:3px solid var(--card2);border-top-color:var(--gold);border-radius:50%;animation:spin .9s linear infinite}
-#map-loader .ml-title{font-family:var(--f-disp);font-size:26px;font-weight:600;color:var(--gold);letter-spacing:.04em}
-#map-loader .ml-sub{font-size:12px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.ml-mushrooms{display:flex;gap:6px;align-items:flex-end;margin-bottom:22px}
+.ml-mush{transform-origin:50% 100%;animation:mush-grow 2.4s ease-in-out infinite;line-height:1}
+.ml-mush:nth-child(1){font-size:30px;animation-delay:0s}
+.ml-mush:nth-child(2){font-size:46px;animation-delay:.8s}
+.ml-mush:nth-child(3){font-size:34px;animation-delay:1.6s}
+@keyframes mush-grow{0%,100%{transform:scale(.5) translateY(10px);opacity:.2}50%{transform:scale(1) translateY(0);opacity:1}}
+#map-loader .ml-title{font-family:var(--f-disp);font-size:30px;font-weight:600;font-style:italic;color:#e8c870;letter-spacing:.05em;text-shadow:0 2px 14px rgba(0,0,0,.9);margin-bottom:7px}
+#map-loader .ml-sub{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.14em;text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.9)}
 .mphoto{width:100%;height:160px;object-fit:cover;border-radius:8px;margin-bottom:16px;display:none;opacity:0;transition:opacity .3s}
 .mphoto.loaded{opacity:1}
 .mphoto-wrap{position:relative;margin-bottom:16px;border-radius:8px;overflow:hidden;background:var(--card);min-height:0}
@@ -369,8 +374,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 <div id="photo-lb"><img id="photo-lb-img" alt=""><div id="photo-lb-attr" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.5);white-space:nowrap;pointer-events:none"></div></div>
 <div id="mw">
   <div id="map-loader">
-    <div class="ml-ring"></div>
-    <div class="ml-title">🍄 GrzyboMapa</div>
+    <div class="ml-mushrooms"><span class="ml-mush">🍄</span><span class="ml-mush">🍄</span><span class="ml-mush">🍄</span></div>
+    <div class="ml-title">GrzyboMapa</div>
     <div class="ml-sub">Ładowanie mapy Polski…</div>
   </div>
   <div id="map"></div>
