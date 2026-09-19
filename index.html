@@ -158,7 +158,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .fav-btn.on{color:#FFD700}
 .stat-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .stat-lbl{font-size:10px;color:var(--muted);min-width:82px;text-transform:uppercase;letter-spacing:.07em}
-.stat-pips{display:flex;align-items:center;gap:4px}
+.stat-pips{display:flex;align-items:center;gap:3px}
+.mc-fav-ind{color:#FFD700;font-size:13px;flex-shrink:0;align-self:flex-start;padding:2px 0 0 4px;line-height:1}
 .pcls:hover{color:var(--text)}
 .pname{font-size:19px;font-weight:600;color:var(--text);line-height:1.2}
 .platin{font-family:var(--f-disp);font-style:italic;font-size:13.5px;color:var(--muted);margin-top:5px}
@@ -295,7 +296,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.24.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.25.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -315,6 +316,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
         <button class="fb" data-cat="rare">Rzadkie</button>
         <button class="fb" data-cat="hallucinogenic">🍄 Halucynogenne</button>
         <button class="fb" data-cat="fav">★ Ulubione</button>
+      </div>
+      <div class="fgl">Sezon</div>
+      <div class="fgrow">
         <button class="fb" data-season="spring">🌱 Wiosna</button>
         <button class="fb" data-season="summer">☀️ Lato</button>
         <button class="fb" data-season="autumn">🍂 Jesień</button>
@@ -32224,6 +32228,38 @@ const SPECIES_DIFF={
   tegoskór:3,luszczak:1,luskwiak:3,kosmaczek:3,grzybowka:2,
   lejkowka_gol:2,wilgotnica:2,wieruszka_zat:4,
 };
+// General rarity in Poland: 1=very common, 2=common, 3=moderately common, 4=rare, 5=very rare/endangered
+const SPECIES_RARITY={
+  borowik:1,borowik_sos:1,borowik_siat:2,borowik_ceg:2,
+  podgrzybek:1,podgrzybek_zaj:3,podgrz_zlot:3,
+  kurka:1,kurka_zim:2,kurka_czarna:3,
+  maslak:1,maslak_ziarn:2,maslak_mod:3,maslak_pst:2,maslak_krop:3,
+  kozlarz_cz:2,kozlarz_b:1,kozlarz_gr:3,
+  rydz:2,smerekowiec:2,
+  czubajka:1,czubajka_cz:2,
+  opienka:1,opienka_ciem:2,
+  purchawka:1,purchawka_olb:2,purchawka_grus:3,
+  pieczarka:2,pieczarka_las:3,pieczarka_krw:4,
+  boczniak:2,
+  golabek:2,golabek_chab:4,golabek_zolt:3,golabek_vesc:3,golabek_wym:2,
+  smardz:3,smardz_pol:3,smardz_sto:4,
+  zimowka:1,czernidlak:1,gaska_szara:1,
+  hericium:4,grifola:4,szmaciak:4,
+  rozites:3,trufla:5,polyporus_umb:4,ramaria:4,
+  zolciak_siar:2,uszak:2,podpienka:3,mleczaj_obrz:3,
+  twardzioszek:1,czarka:3,watrobka:3,sarniak:3,
+  kolczakowka:3,szyszkowiec:4,trzesak:3,blewit:2,gasowka:3,
+  muszomor_sroj:2,muszomor_jadow:1,muszomor_czub:2,
+  maslak_piep:1,holowek:3,piestrzenica:2,strzepiak:3,goryczak:1,
+  gaska_tyg:2,gaska_ziel:2,wieruszka_zat:2,
+  pieczarka_zolk:2,czernidlak_atr:3,mleczaj_piep:1,mleczaj_deb:2,
+  luskwiak:3,kosmaczek:3,grzybowka:3,lejkowka_gol:3,wilgotnica:3,
+  tegoskór:4,luszczak:2,lejkowka:4,krowiak:3,sromotnik:1,gwiazdosz:2,
+  maczuznik:4,kolpaczek:3,
+  muszomor_ziel:1,muszomor_wios:2,helmowka:4,
+  huba:1,lejkowka_trut:3,gaska_siar:2,zasloniak_fio:4,
+  lysiczka:2,
+};
 const LOCAL_COLOR={p:'#4a7a3a',f:'#8a7a20',r:'#aa5a20',v:'#aa2020',n:'#666'};
 
 
@@ -40949,7 +40985,11 @@ function showInfoPanel(mid){
   favBtn.classList.toggle('on',favs.has(mid));
   favBtn.onclick=()=>{if(favs.has(mid))favs.delete(mid);else favs.add(mid);_saveFavs();favBtn.textContent=favs.has(mid)?'★':'☆';favBtn.classList.toggle('on',favs.has(mid));renderList();};
   const dVal=SPECIES_DIFF[mid];
-  const statsHtml=(m.q||dVal)?`<div class="isec">${m.q&&m.cat==='edible'?_statRow('Smak',m.q,4,_forkPip):''}${dVal?_statRow('Trudność ID',dVal,4,_lensPip):''}</div>`:'';
+  const genRare=SPECIES_RARITY[mid];
+  const locD=MUSHROOM_LOCAL[mid];
+  const locRare=locD?{p:1,f:2,r:4,v:5,n:0}[locD.s]||0:0;
+  function _s5(v){return Math.round(v*5/4*2)/2;}
+  const statsHtml=`<div class="isec">${m.q&&m.cat==='edible'?_statRow('Smak',_s5(m.q),5,()=>_forkPip(true),_forkHalf,()=>_forkPip(false)):''}${dVal?_statRow('Trudność ID',_s5(dVal),5,()=>_lensPip(true),_lensHalf,()=>_lensPip(false)):''}${genRare?_statRow('Rzadkość (PL)',genRare,5,()=>_rarePip(true),_rareHalf,()=>_rarePip(false)):''}${locRare?_statRow('Rzadkość (region)',locRare,5,()=>_rarePip(true),_rareHalf,()=>_rarePip(false)):''}</div>`;
   document.getElementById('pbody').innerHTML=`
     <div class="mphoto-wrap loading" id="mphoto-wrap"><img id="mwiki-photo" class="mphoto" alt="${m.name}" onerror="this.parentElement.classList.remove('loading');this.style.display='none'" onload="this.classList.add('loaded');this.style.display='block';this.parentElement.classList.remove('loading')"></div>
     ${extra}${statsHtml}
@@ -41349,9 +41389,13 @@ document.addEventListener('click',e=>{if(!e.target.closest('#sw'))closeSearch();
 let activeCats=new Set(),activeSeasons=new Set(),activeHabs=new Set(),activeSortBy='default';
 let favs;try{favs=new Set(JSON.parse(localStorage.getItem('gm_favs')||'[]'));}catch(e){favs=new Set();}
 function _saveFavs(){try{localStorage.setItem('gm_favs',JSON.stringify([...favs]));}catch(e){}}
-function _forkPip(on){const c=on?'var(--gold)':'var(--border)';return `<svg viewBox="0 0 9 20" width="8" height="17" style="fill:${c}"><rect x="1" y="0" width="1.6" height="9" rx=".6"/><rect x="3.7" y="0" width="1.6" height="9" rx=".6"/><rect x="6.4" y="0" width="1.6" height="9" rx=".6"/><path d="M1 9v2.5q3.5 2.5 7 0V9z"/><rect x="3.5" y="11.5" width="2" height="8.5" rx="1"/></svg>`;}
-function _lensPip(on){const c=on?'#5B9BD5':'var(--border)';return `<svg viewBox="0 0 16 16" width="13" height="13" style="fill:none;stroke:${c};stroke-linecap:round"><circle cx="6.5" cy="6.5" r="4.5" stroke-width="2.2"/><line x1="9.8" y1="9.8" x2="13.5" y2="13.5" stroke-width="2.2"/></svg>`;}
-function _statRow(label,n,max,pipFn){return `<div class="stat-row"><span class="stat-lbl">${label}</span><div class="stat-pips">${Array.from({length:max},(_,i)=>pipFn(i<n)).join('')}</div></div>`;}
+function _forkPip(on){const c=on?'var(--gold)':'rgba(255,255,255,0.15)';return `<svg viewBox="0 0 9 20" width="8" height="17" style="fill:${c}"><rect x="1" y="0" width="1.6" height="9" rx=".6"/><rect x="3.7" y="0" width="1.6" height="9" rx=".6"/><rect x="6.4" y="0" width="1.6" height="9" rx=".6"/><path d="M1 9v2.5q3.5 2.5 7 0V9z"/><rect x="3.5" y="11.5" width="2" height="8.5" rx="1"/></svg>`;}
+function _forkHalf(){return `<svg viewBox="0 0 9 20" width="8" height="17"><defs><linearGradient id="fhg" x1="0" x2="1"><stop offset="50%" stop-color="var(--gold)"/><stop offset="50%" stop-color="rgba(255,255,255,0.15)"/></linearGradient></defs><rect x="1" y="0" width="1.6" height="9" rx=".6" fill="url(#fhg)"/><rect x="3.7" y="0" width="1.6" height="9" rx=".6" fill="url(#fhg)"/><rect x="6.4" y="0" width="1.6" height="9" rx=".6" fill="url(#fhg)"/><path d="M1 9v2.5q3.5 2.5 7 0V9z" fill="url(#fhg)"/><rect x="3.5" y="11.5" width="2" height="8.5" rx="1" fill="url(#fhg)"/></svg>`;}
+function _lensPip(on){const c=on?'#5B9BD5':'rgba(255,255,255,0.15)';return `<svg viewBox="0 0 16 16" width="13" height="13" style="fill:none;stroke:${c};stroke-linecap:round"><circle cx="6.5" cy="6.5" r="4.5" stroke-width="2.2"/><line x1="9.8" y1="9.8" x2="13.5" y2="13.5" stroke-width="2.2"/></svg>`;}
+function _lensHalf(){return `<svg viewBox="0 0 16 16" width="13" height="13" style="fill:none;stroke-linecap:round"><defs><linearGradient id="lhg" x1="0" x2="1"><stop offset="50%" stop-color="#5B9BD5"/><stop offset="50%" stop-color="rgba(255,255,255,0.15)"/></linearGradient></defs><circle cx="6.5" cy="6.5" r="4.5" stroke="url(#lhg)" stroke-width="2.2"/><line x1="9.8" y1="9.8" x2="13.5" y2="13.5" stroke="url(#lhg)" stroke-width="2.2"/></svg>`;}
+function _rarePip(on){const c=on?'#e07a30':'rgba(255,255,255,0.15)';return `<svg viewBox="0 0 12 12" width="11" height="11" style="fill:${c}"><path d="M6 1l1.4 3.1L11 4.6 8.5 7l.6 3.5L6 9l-3.1 1.5L3.5 7 1 4.6l3.6-.5z"/></svg>`;}
+function _rareHalf(){return `<svg viewBox="0 0 12 12" width="11" height="11"><defs><linearGradient id="rhg" x1="0" x2="1"><stop offset="50%" stop-color="#e07a30"/><stop offset="50%" stop-color="rgba(255,255,255,0.15)"/></linearGradient></defs><path d="M6 1l1.4 3.1L11 4.6 8.5 7l.6 3.5L6 9l-3.1 1.5L3.5 7 1 4.6l3.6-.5z" fill="url(#rhg)"/></svg>`;}
+function _statRow(label,val,max,full,half,empty){const pips=[];for(let i=0;i<max;i++){const d=val-i;pips.push(d>=1?full():d>=0.5?half():empty());}return `<div class="stat-row"><span class="stat-lbl">${label}</span><div class="stat-pips">${pips.join('')}</div></div>`;}
 const SEASON_MONTHS={spring:[3,4,5],summer:[6,7,8],autumn:[9,10,11],winter:[12,1,2]};
 const HAB_PATTERNS={
   forest:/las|bór|iglaste|liściaste|śwkrk|sosnow|świerkow|bukow|dąbrow|mieszany/i,
@@ -41374,7 +41418,7 @@ function _mkMushCard(mid,m){
   if(m.rare)bgs.push(`<span class="b b-r">✦</span>`);
   if(m.protected)bgs.push(`<span class="b b-pr">§</span>`);
   bgs.push(localBadge(mid));
-  return `<div class="mc" data-mid="${mid}" onclick="selectMushroom('${mid}')"><div class="mico ${cls}" style="font-size:0;padding:4px">${ico}</div><div style="flex:1;min-width:0"><div class="mn">${m.name}</div><div class="ml-lat">${m.latin}</div><div class="mbadges">${bgs.join('')}</div></div></div>`;
+  return `<div class="mc" data-mid="${mid}" onclick="selectMushroom('${mid}')"><div class="mico ${cls}" style="font-size:0;padding:4px">${ico}</div><div style="flex:1;min-width:0"><div class="mn">${m.name}</div><div class="ml-lat">${m.latin}</div><div class="mbadges">${bgs.join('')}</div></div>${favs.has(mid)?'<span class="mc-fav-ind">★</span>':''}</div>`;
 }
 function renderList(){
   let entries=Object.entries(MUSHROOMS);
