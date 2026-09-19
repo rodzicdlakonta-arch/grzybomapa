@@ -144,9 +144,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #ph-bar{height:12px;border-radius:3px;background:linear-gradient(to right,#1a8fdc,#54c06e,#c8e040,#e8c020,#d06010);margin-bottom:3px}
 #ph-labels{display:flex;justify-content:space-between;font-size:9.5px;color:var(--muted)}
 #ph-legend .ph-note{color:var(--muted);font-size:9.5px;margin-top:4px;line-height:1.3}
-#drbtn{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:900;background:var(--gold);color:var(--bg);border:none;border-radius:var(--r);padding:10px 16px;font-family:var(--f-body);font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 18px rgba(212,160,48,.35);transition:all .2s;white-space:nowrap}
-#drbtn:hover{box-shadow:0 6px 22px rgba(212,160,48,.45);transform:translateX(-50%) translateY(-1px)}
-#drbtn.drawing{background:#5d9c55;box-shadow:0 4px 16px rgba(93,156,85,.3)}
+#drbtn{position:absolute;top:94px;left:12px;z-index:1000;background:var(--card);border:2px solid rgba(0,0,0,.25);border-radius:var(--r);width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;padding:0;box-shadow:0 1px 5px rgba(0,0,0,.4);transition:background .15s}
+#drbtn:hover{background:var(--hover)}
+#drbtn.drawing{background:rgba(93,156,85,.18);border-color:#5d9c55}
 #hl{position:absolute;bottom:28px;left:12px;z-index:900;background:var(--sb);border:1px solid var(--border);border-radius:var(--r);padding:10px 13px;display:none}
 #hl.vis{display:block}
 #hl h5{font-size:11px;color:var(--text);margin-bottom:7px;font-weight:500}
@@ -191,15 +191,20 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .sm.cur::after{content:'';position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid var(--muted)}
 #ap{position:fixed;bottom:-100%;left:320px;right:0;max-height:42vh;background:var(--sb);border-top:1px solid var(--border);z-index:1050;transition:bottom .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
 #ap.open{bottom:0}
-#aph{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+#aph{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-shrink:0}
 #aph h3{font-size:13.5px;font-weight:500;color:var(--text)}
 #ar{overflow-y:auto;padding:10px 14px 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:7px}
-.ai{background:var(--card);border-radius:6px;padding:9px 11px;cursor:pointer;border:1px solid transparent;transition:border-color .15s}
+.ai{background:var(--card);border-radius:6px;padding:9px 11px;cursor:pointer;border:1px solid transparent;transition:border-color .15s;display:flex;align-items:center;gap:9px}
 .ai:hover{border-color:var(--border)}
+.ai-icon{flex-shrink:0;width:30px;height:30px}
+.ai-body{flex:1;min-width:0}
 .ain{font-size:12.5px;font-weight:500;margin-bottom:5px;display:flex;justify-content:space-between}
 .abar{height:4px;background:var(--bg);border-radius:2px;overflow:hidden}
 .abf{height:100%;border-radius:2px;transition:width .6s}
 .apct{font-size:10.5px;color:var(--muted);margin-top:3px;font-style:italic}
+#compass{position:absolute;bottom:52px;right:52px;z-index:800;width:44px;height:44px;pointer-events:none;opacity:.7;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))}
+#scan-r{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:11px;color:var(--muted);flex-wrap:wrap}
+#scan-r input[type=range]{width:76px;accent-color:#52b849;cursor:pointer}
 #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:9px 16px;font-size:12.5px;color:var(--text);z-index:9999;transition:transform .25s;pointer-events:none;white-space:nowrap}
 #toast.show{transform:translateX(-50%) translateY(0)}
 /* Light-mode overrides for status boxes */
@@ -294,7 +299,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #ip{right:0!important;width:100%;border-left:none;border-top:1px solid var(--border);border-radius:16px 16px 0 0;top:auto;bottom:0;height:90vh;transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1)!important}
   #ip.open{transform:translateY(0)}
   #wx{bottom:84px}
-  #drbtn{bottom:86px}
+  #drbtn{top:auto;bottom:86px;left:12px}
   #ph-legend{bottom:128px}
   #hl{bottom:84px}
   #toast{bottom:78px}
@@ -314,7 +319,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.28.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -384,6 +389,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
     <div class="ml-sub">Ładowanie mapy Polski…</div>
   </div>
   <div id="map"></div>
+  <div id="compass"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="19" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><path d="M20,4 L23.5,20 L20,17 L16.5,20Z" fill="#e55"/><path d="M20,36 L16.5,20 L20,23 L23.5,20Z" fill="var(--muted)"/><text x="20" y="11" text-anchor="middle" font-size="7" fill="#e55" font-family="sans-serif" font-weight="700">N</text><circle cx="20" cy="20" r="2.5" fill="var(--border)"/></svg></div>
   <div id="map-msg"></div>
   <div id="wx"><div id="wx-hdr"><span id="wx-loc">🌍 wczytywanie…</span><button class="pnl-btn" id="wx-col" title="Zwiń">▲</button></div><div id="wx-body"><div id="wx-temp">–</div><div id="wx-rain">–</div><div id="wx-cond">–</div><div id="wx-wind" style="font-size:11px;opacity:.8">–</div><div id="wx-moon" style="font-size:11px;opacity:.8">–</div><div id="wx-mush" style="margin-top:5px;padding-top:5px;border-top:1px solid var(--border)">–</div></div></div>
   <div id="mc"><div id="mc-tab" title="Pokaż/ukryj warstwy">◀</div>
@@ -433,7 +439,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
     <div id="ph-labels"><span>4.0</span><span>5.0</span><span>6.0</span><span>7.0</span><span>8.0+</span></div>
     <div class="ph-note">Niebieski = kwaśny (bory sosnowe)<br>Żółty = lekko kwaśny (lasy mieszane)<br>Pomarańcz = zasadowy (pola uprawne)</div>
   </div>
-  <button id="drbtn">⬡ Analizuj obszar</button>
+  <button id="drbtn" title="Narysuj obszar analizy">⬡</button>
   <div id="hl">
     <h5 id="hl-name" style="display:flex;align-items:center;gap:6px;justify-content:space-between">Heatmapa<button onclick="clearHeat()" title="Wyczyść zaznaczenie" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;line-height:1;padding:0 2px;flex-shrink:0" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">×</button></h5>
     <div id="hl-hab" style="font-size:11px;color:#888;margin:-4px 0 6px;"></div>
@@ -458,7 +464,10 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 
 <div id="ap">
   <div id="aph">
-    <h3>Analiza obszaru <small id="ap-loc" style="font-size:11px;color:var(--muted);font-weight:400"></small></h3>
+    <div>
+      <h3>Analiza obszaru <small id="ap-loc" style="font-size:11px;color:var(--muted);font-weight:400"></small></h3>
+      <div id="scan-r"><span>Promień:</span><input type="range" id="scan-rng" min="200" max="3000" step="100" value="500"><span id="scan-rv">500m</span></div>
+    </div>
     <button class="pcls" id="apcls">×</button>
   </div>
   <div id="ar"></div>
@@ -41168,9 +41177,12 @@ function showAreaPanel(results,terrain){
   document.getElementById('ap-loc').textContent='';
   document.getElementById('ar').innerHTML=terrainHTML+(results.length?results.map(({mid,m,score})=>`
     <div class="ai" onclick="selectMushroom('${mid}')">
-      <div class="ain"><span>${m.name}</span><span style="font-size:10.5px;color:var(--muted)">${Math.round(score)}%</span></div>
-      <div class="abar"><div class="abf" style="width:${(score/max*100).toFixed(0)}%;background:${cc(m)}"></div></div>
-      <div class="apct">${m.latin}</div>
+      <div class="ai-icon">${getMushSVG(mid)}</div>
+      <div class="ai-body">
+        <div class="ain"><span>${m.name}</span><span style="font-size:10.5px;color:var(--muted)">${Math.round(score)}%</span></div>
+        <div class="abar"><div class="abf" style="width:${(score/max*100).toFixed(0)}%;background:${cc(m)}"></div></div>
+        <div class="apct">${m.latin}</div>
+      </div>
     </div>`).join(''):`<div style="padding:20px;color:var(--muted);font-size:13px">Brak danych dla tego obszaru.</div>`);
   document.getElementById('ap').classList.add('open');
 }
@@ -41189,12 +41201,12 @@ document.getElementById('drbtn').onclick=()=>{
   if(drawing){
     map.removeControl(drawCtrl);drawing=false;
     document.getElementById('drbtn').classList.remove('drawing');
-    document.getElementById('drbtn').innerHTML='⬡ Analizuj obszar';
+    document.getElementById('drbtn').innerHTML='⬡';
     return;
   }
   drawing=true;
   document.getElementById('drbtn').classList.add('drawing');
-  document.getElementById('drbtn').innerHTML='✕ Anuluj';
+  document.getElementById('drbtn').innerHTML='✕';
   map.addControl(drawCtrl);
   showToast('Narysuj prostokąt lub wielokąt na mapie');
 };
@@ -41411,14 +41423,36 @@ function fetchWeather(lat,lng){
 fetchWeather(53.13,17.28);
 
 map.doubleClickZoom.disable();
-let _dblPin=null;
+let _scanPin=null,_scanRadius=500;
+
+function _removeScanPin(){
+  if(!_scanPin)return;
+  map.removeLayer(_scanPin.ring);
+  map.removeLayer(_scanPin.dot);
+  _scanPin=null;
+}
+
+function _placeScanPin(lat,lng){
+  _removeScanPin();
+  const ring=L.circle([lat,lng],{radius:_scanRadius,color:'#52b849',fillColor:'#52b849',fillOpacity:.07,weight:1.5,dashArray:'8 5'}).addTo(map);
+  const dot=L.circleMarker([lat,lng],{radius:7,color:'#fff',weight:2.5,fillColor:'#52b849',fillOpacity:1}).addTo(map);
+  _scanPin={lat,lng,ring,dot};
+  dot.on('click',e=>{L.DomEvent.stop(e);document.getElementById('ap').classList.add('open');});
+  dot.on('dblclick',e=>{L.DomEvent.stop(e);_removeScanPin();document.getElementById('ap').classList.remove('open');});
+}
+
 map.on('dblclick',e=>{
-  if(_dblPin)map.removeLayer(_dblPin);
   const{lat,lng}=e.latlng;
-  _dblPin=L.circleMarker([lat,lng],{radius:6,color:'#c9a84c',fillColor:'#c9a84c',fillOpacity:.8,weight:2}).addTo(map);
+  _placeScanPin(lat,lng);
   analyzePoint(lat,lng);
   fetchWeather(lat,lng);
 });
+
+document.getElementById('scan-rng').oninput=function(){
+  _scanRadius=+this.value;
+  document.getElementById('scan-rv').textContent=_scanRadius+'m';
+  if(_scanPin){_scanPin.ring.setRadius(_scanRadius);analyzePoint(_scanPin.lat,_scanPin.lng);}
+};
 
 map.on(L.Draw.Event.CREATED,e=>{
   if(drawnLayer)map.removeLayer(drawnLayer);
@@ -41426,7 +41460,7 @@ map.on(L.Draw.Event.CREATED,e=>{
   map.removeControl(drawCtrl);
   drawing=false;
   document.getElementById('drbtn').classList.remove('drawing');
-  document.getElementById('drbtn').innerHTML='⬡ Analizuj obszar';
+  document.getElementById('drbtn').innerHTML='⬡';
   analyzeArea(drawnLayer);
 });
 
