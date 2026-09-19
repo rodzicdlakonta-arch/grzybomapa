@@ -40854,8 +40854,8 @@ document.getElementById('sb-tab').onclick=()=>{
   }
   function move(y){
     if(!active)return;
-    // drag UP (y < startY) → delta negative → height shrinks → list grows
-    const h=Math.max(40,Math.min(naturalH,startH-(y-startY)));
+    // drag DOWN (y > startY) → delta positive → height shrinks → list grows
+    const h=Math.max(40,Math.min(naturalH,startH-(startY-y)));
     top.style.height=h+'px';
   }
   function end(){
