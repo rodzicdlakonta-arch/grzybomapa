@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.9</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.10</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41143,6 +41143,16 @@ function polyCentroid(pts){
   return[pts.reduce((s,p)=>s+p[0],0)/pts.length,pts.reduce((s,p)=>s+p[1],0)/pts.length];
 }
 
+function _getScanOpts(m){
+  const t=(m.terrain||[]).join(' ')+' '+(m.habitat||'');
+  const isF=/las|bór|iglaste|liściaste|sosnow|świerkow|bukow|dąbrow|mieszany/i.test(t);
+  const wetHab=/torf|bagien|podmok|wilgotn|bagno/i.test(t);
+  const openHab=/łąk|pastw|murawa|polana/i.test(t)&&!isF;
+  const farmlandSpec=/ogród|kompost|trawnik/i.test(t)&&!isF;
+  const coniferPref=/iglaste|bór|sosnow|świerkow/i.test(t);
+  const broadleafPref=/liściaste|dąbrow|bukow|grabowe|grąd/i.test(t);
+  return{openHab,wetHab,farmlandSpec,coniferPref,broadleafPref};
+}
 function getTerrainFeatures(drawnPoly){
   const pts=drawnPoly.map(p=>[p.lat,p.lng]);
   // Bounding box for sample grid
@@ -41242,22 +41252,37 @@ function _doAreaAnalysis(layer){
   const hasAlder=inAreaWyr.some(f=>f.type==='alder')||inAreaBDL.some(b=>/\b(OL|OLS)\b/i.test(b.cd||''));
   const hasMixed=terrain.forests.some(f=>f.c==='313');
   const hasForest=terrain.forests.length>0||inAreaWyr.length>0||inAreaBDL.length>0;
+  // Grid-scan whole area: deterministic coverage, same habitat logic as genHeat
+  const s0=b.getSouth(),n0=b.getNorth(),w0=b.getWest(),e0=b.getEast();
+  const nearF=FORESTS.filter(f=>{const c=polyCentroid(f.p);return c[0]>s0-.05&&c[0]<n0+.05&&c[1]>w0-.05&&c[1]<e0+.05;});
+  const nearL=LANDUSE.filter(l=>l.t!=='river'&&l.p.some(p=>p[0]>s0-.01&&p[0]<n0+.01&&p[1]>w0-.01&&p[1]<e0+.01));
+  const GN=14;const dlat=(n0-s0)/GN,dln=(e0-w0)/GN;
+  const habPts=[];
+  for(let i=0;i<GN;i++)for(let j=0;j<GN;j++){
+    const la=s0+(i+.5)*dlat,ln=w0+(j+.5)*dln;
+    if(!pipTest([la,ln],drawnArr))continue;
+    habPts.push({f:nearF.filter(f=>pipTest([la,ln],f.p)),we:nearL.some(l=>l.t==='wetland'&&pipTest([la,ln],l.p)),me:nearL.some(l=>l.t==='meadow'&&pipTest([la,ln],l.p)),fa:nearL.some(l=>l.t==='farmland'&&pipTest([la,ln],l.p))});
+  }
   const results=Object.entries(MUSHROOMS).map(([mid,m])=>{
-    let score=0,weight=0;
-    for(const [rid,prox] of Object.entries(rscores)){
-      score+=(m.weights[rid]||0)*prox;weight+=prox;
+    let rscore=0,rw=0;
+    for(const[rid,prox]of Object.entries(rscores)){rscore+=(m.weights[rid]||0)*prox;rw+=prox;}
+    const regional=rw>0?rscore/rw:0;
+    if(regional<3)return{mid,m,score:0};
+    const opts=_getScanOpts(m);
+    let hc=0;
+    habPts.forEach(h=>{
+      if(opts.wetHab){if(h.we)hc++;}
+      else if(opts.farmlandSpec){if(h.fa)hc++;}
+      else if(opts.openHab){if(h.me||(h.f.length===0&&!h.we))hc++;}
+      else{if(h.f.some(f=>(!opts.coniferPref||!f.c||f.c==='312')&&(!opts.broadleafPref||!f.c||f.c==='311')))hc++;}
+    });
+    const habFrac=habPts.length?hc/habPts.length:0;
+    let bdlB=0;
+    if(inAreaBDL.length&&!opts.openHab&&!opts.farmlandSpec){
+      const pref=opts.coniferPref?['SO','PI','ŚW','SW','JD','MD']:opts.broadleafPref?['DB','BK','GB','JW']:null;
+      if(pref&&inAreaBDL.some(bd=>pref.some(c=>bd.cd&&bd.cd.toUpperCase().startsWith(c))))bdlB=0.15;
     }
-    let base=weight>0?Math.min(score/weight*0.6,55):0;
-    if(hasPine&&m.terrain.some(t=>/sosnow|iglast|modrzew|świerk/i.test(t)))base=Math.min(base+40,99);
-    else if(hasBroadleaf&&m.terrain.some(t=>/dąb|dębów|grąd|liściasty|buk|grab/i.test(t)))base=Math.min(base+38,99);
-    else if(hasBirch&&m.terrain.some(t=>/brzozy|brzezin/i.test(t)))base=Math.min(base+35,99);
-    else if(hasAlder&&m.terrain.some(t=>/olsz|olch|olszyn/i.test(t)))base=Math.min(base+35,99);
-    else if(hasMixed&&m.terrain.some(t=>/mieszan|sosnow|liściasty/i.test(t)))base=Math.min(base+28,99);
-    else if(hasForest&&base<4)base=4;
-    if(hasWetland&&m.terrain.some(t=>/torf|bagien|podmok|wilgotn/i.test(t)))base=Math.min(base+18,99);
-    if((hasPasture||hasMeadow)&&m.terrain.some(t=>/łąk|pastw|murawa/i.test(t)))base=Math.min(base+22,99);
-    if(hasFarmland&&m.terrain.some(t=>/łąk|pastw|ogród|kompost/i.test(t)))base=Math.min(base+12,99);
-    return{mid,m,score:base};
+    return{mid,m,score:Math.min(regional*(habFrac+bdlB),99)};
   }).filter(x=>x.score>1).sort((a,b)=>b.score-a.score);
   const richTerrain={...terrain,bdlStands:inAreaBDL,wyrStands:inAreaWyr};
   _lastDebugData={clcForests:terrain.forests,wyrStands:inAreaWyr,bdlStands:inAreaBDL,landuse:terrain.landuse,mode:'area'};
@@ -41520,28 +41545,48 @@ function _doPointAnalysis(lat,lng,radiusM){
   const hasWetland=terrain.landuse.some(l=>l.t==='wetland');
   const hasMeadow=terrain.landuse.some(l=>l.t==='meadow');
   const hasFarmland=terrain.landuse.some(l=>l.t==='farmland');
+  // Habitat-sampling: same approach as genHeat
+  const R2=111000,cosLat2=Math.cos(lat*Math.PI/180);
+  const r2=Math.max(radiusM,200);
+  const dlat2=r2/R2,dlng2=r2/(R2*cosLat2);
+  const pla0=lat-dlat2,pla1=lat+dlat2,pln0=lng-dlng2,pln1=lng+dlng2;
+  const nearFP=FORESTS.filter(f=>{const c=polyCentroid(f.p);return c[0]>pla0-.05&&c[0]<pla1+.05&&c[1]>pln0-.05&&c[1]<pln1+.05;});
+  const nearLP=LANDUSE.filter(l=>l.t!=='river'&&l.p.some(p=>p[0]>pla0-.01&&p[0]<pla1+.01&&p[1]>pln0-.01&&p[1]<pln1+.01));
+  const habPts2=[];
+  if(radiusM>0){
+    const GP=12;
+    for(let i=0;i<GP;i++)for(let j=0;j<GP;j++){
+      const la=pla0+(i+.5)*(pla1-pla0)/GP,ln=pln0+(j+.5)*(pln1-pln0)/GP;
+      if(Math.hypot((la-lat)*R2,(ln-lng)*R2*cosLat2)>r2)continue;
+      habPts2.push({f:nearFP.filter(f=>pipTest([la,ln],f.p)),we:nearLP.some(l=>l.t==='wetland'&&pipTest([la,ln],l.p)),me:nearLP.some(l=>l.t==='meadow'&&pipTest([la,ln],l.p)),fa:nearLP.some(l=>l.t==='farmland'&&pipTest([la,ln],l.p))});
+    }
+  }else{
+    habPts2.push({f:terrain.forests,we:hasWetland,me:hasMeadow,fa:hasFarmland});
+  }
+  const inAreaBDL2=terrain.bdlStands||[];
   const results=Object.entries(MUSHROOMS).map(([mid,m])=>{
     if(!m.season.includes(month))return null;
     const ld=MUSHROOM_LOCAL[mid];
     if(ld&&ld.s==='n')return null;
-    let score=0,weight=0;
-    for(const[rid,prox]of Object.entries(rscores)){
-      score+=(m.weights[rid]||0)*prox;weight+=prox;
+    let rscore=0,rw=0;
+    for(const[rid,prox]of Object.entries(rscores)){rscore+=(m.weights[rid]||0)*prox;rw+=prox;}
+    const regional=rw>0?rscore/rw:0;
+    if(regional<3)return null;
+    const opts=_getScanOpts(m);
+    let hc=0;
+    habPts2.forEach(h=>{
+      if(opts.wetHab){if(h.we)hc++;}
+      else if(opts.farmlandSpec){if(h.fa)hc++;}
+      else if(opts.openHab){if(h.me||(h.f.length===0&&!h.we))hc++;}
+      else{if(h.f.some(f=>(!opts.coniferPref||!f.c||f.c==='312')&&(!opts.broadleafPref||!f.c||f.c==='311')))hc++;}
+    });
+    const habFrac=habPts2.length?hc/habPts2.length:0;
+    let bdlB=0;
+    if(inAreaBDL2.length&&!opts.openHab&&!opts.farmlandSpec){
+      const pref=opts.coniferPref?['SO','PI','ŚW','SW','JD','MD']:opts.broadleafPref?['DB','BK','GB','JW']:null;
+      if(pref&&inAreaBDL2.some(bd=>pref.some(c=>bd.cd&&bd.cd.toUpperCase().startsWith(c))))bdlB=0.15;
     }
-    let base=weight>0?Math.min(score/weight*0.6,55):0;
-    if(hasForest){
-      if(hasPine&&m.terrain.some(t=>/sosnow|iglast|modrzew/i.test(t)))base=Math.min(base+40,99);
-      else if(hasBirch&&m.terrain.some(t=>/brzozy|brzezin/i.test(t)))base=Math.min(base+35,99);
-      else if(hasOak&&m.terrain.some(t=>/dąb|dębów|grąd|liściasty/i.test(t)))base=Math.min(base+38,99);
-      else if(hasAlder&&m.terrain.some(t=>/olsz|olch|olszyn/i.test(t)))base=Math.min(base+35,99);
-      else if(m.terrain.some(t=>/sosnow|iglast/i.test(t)))base=Math.min(base+28,99);
-      else if(m.terrain.some(t=>/mieszan/i.test(t)))base=Math.min(base+22,99);
-      else if(base<5)base=5;
-    }
-    if(hasWetland&&m.terrain.some(t=>/torf|bagien|podmok|wilgotn/i.test(t)))base=Math.min(base+18,99);
-    if(hasMeadow&&m.terrain.some(t=>/łąk|pastw|murawa/i.test(t)))base=Math.min(base+22,99);
-    if(hasFarmland&&m.terrain.some(t=>/łąk|pastw|ogród|kompost/i.test(t)))base=Math.min(base+12,99);
-    return{mid,m,score:base};
+    return{mid,m,score:Math.min(regional*(habFrac+bdlB),99)};
   }).filter(x=>x&&x.score>0.5).sort((a,b)=>b.score-a.score);
   const treeTypeLabel=hasPine?'bór sosnowy':hasBirch?'brzezina':hasOak?'dąbrowa':hasAlder?'olszyna':hasForest?'las':'';
   const terrainLabel=hasWetland?'mokradło':hasMeadow?'łąka':hasFarmland&&!hasForest?'pole':treeTypeLabel||'teren otwarty';
