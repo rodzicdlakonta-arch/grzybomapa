@@ -337,7 +337,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.51</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.52</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42258,11 +42258,10 @@ function renderList(){
   let html='';
   if(activeSortBy==='name-az'){entries.sort(([,a],[,b])=>a.name.localeCompare(b.name,'pl'));html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');}
   else if(activeSortBy==='name-za'){entries.sort(([,a],[,b])=>b.name.localeCompare(a.name,'pl'));html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');}
-  else if(activeSortBy==='rarity-common'){
-    entries.sort(([am],[bm])=>(SPECIES_RARITY[am]||3)-(SPECIES_RARITY[bm]||3)||MUSHROOMS[am].name.localeCompare(MUSHROOMS[bm].name,'pl'));
-    html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
-  }else if(activeSortBy==='rarity-rare'){
-    entries.sort(([am],[bm])=>(SPECIES_RARITY[bm]||3)-(SPECIES_RARITY[am]||3)||MUSHROOMS[am].name.localeCompare(MUSHROOMS[bm].name,'pl'));
+  else if(activeSortBy==='rarity-common'||activeSortBy==='rarity-rare'){
+    const _rs=mid=>{const g=SPECIES_RARITY[mid]||0,ld=MUSHROOM_LOCAL[mid],l=ld?({p:1,f:2,r:4,v:5,n:0}[ld.s]||0):0,v=[g,l].filter(Boolean);return v.length?v.reduce((a,b)=>a+b,0)/v.length:3;};
+    const dir=activeSortBy==='rarity-common'?1:-1;
+    entries.sort(([am],[bm])=>dir*(_rs(am)-_rs(bm))||MUSHROOMS[am].name.localeCompare(MUSHROOMS[bm].name,'pl'));
     html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
   }else if(activeSortBy==='edibility'){
     entries.sort(([,a],[,b])=>(b.q||0)-(a.q||0)||a.name.localeCompare(b.name,'pl'));
