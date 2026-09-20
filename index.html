@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.5</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.6</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41207,16 +41207,14 @@ function buildTerrainHTML(terrain){
   return`<div class="terrain-info"><h4>Teren w zaznaczonym obszarze</h4>${tags}</div>`;
 }
 
-function analyzeArea(layer){
+function _doAreaAnalysis(layer){
   const b=layer.getBounds();
   const clat=(b.getNorth()+b.getSouth())/2;
   const clng=(b.getEast()+b.getWest())/2;
   const span=Math.max(b.getNorth()-b.getSouth(),b.getEast()-b.getWest());
   const drawnPts=layer.getLatLngs()[0];
   const terrain=getTerrainFeatures(drawnPts);
-  // Convert to [lat,lng] pairs for pipTest
   const drawnArr=drawnPts.map(p=>[p.lat,p.lng]);
-  // BDL stands and wyrForests polygons inside the drawn area
   const inAreaBDL=bdlStore.filter(b=>pipTest([b.lat,b.lng],drawnArr));
   const inAreaWyr=wyrForests.filter(f=>f.poly.some(pt=>pipTest(pt,drawnArr)));
   const rscores={};
@@ -41227,7 +41225,6 @@ function analyzeArea(layer){
     const thresh=reg.r+span/2;
     if(dist<thresh*1.8)rscores[rid]=Math.max(0,1-dist/(thresh*1.2));
   }
-  // Detect terrain types from all sources: CLC, wyrForests, BDL
   const hasWetland=terrain.landuse.some(l=>l.t==='wetland');
   const hasPasture=terrain.landuse.some(l=>l.t==='pasture');
   const hasMeadow=terrain.landuse.some(l=>l.t==='meadow');
@@ -41244,7 +41241,6 @@ function analyzeArea(layer){
       score+=(m.weights[rid]||0)*prox;weight+=prox;
     }
     let base=weight>0?score/weight:0;
-    // Forest boosts by specific type
     if(hasPine&&m.terrain.some(t=>/sosnow|iglast|modrzew|świerk/i.test(t)))base=Math.min(base*1.6,99);
     else if(hasBroadleaf&&m.terrain.some(t=>/dąb|dębów|grąd|liściasty|buk|grab/i.test(t)))base=Math.min(base*1.5,99);
     else if(hasBirch&&m.terrain.some(t=>/brzozy|brzezin/i.test(t)))base=Math.min(base*1.5,99);
@@ -41259,6 +41255,27 @@ function analyzeArea(layer){
   const richTerrain={...terrain,bdlStands:inAreaBDL,wyrStands:inAreaWyr};
   _lastDebugData={clcForests:terrain.forests,wyrStands:inAreaWyr,bdlStands:inAreaBDL,landuse:terrain.landuse,mode:'area'};
   showAreaPanel(results,richTerrain);
+}
+
+function analyzeArea(layer){
+  const b=layer.getBounds();
+  const bb=`${b.getSouth().toFixed(4)},${b.getWest().toFixed(4)},${b.getNorth().toFixed(4)},${b.getEast().toFixed(4)}`;
+  // Check if wyrForests already has data for this bbox
+  const alreadyLoaded=wyrForests.some(f=>f.poly.some(pt=>pt[0]>=b.getSouth()&&pt[0]<=b.getNorth()&&pt[1]>=b.getWest()&&pt[1]<=b.getEast()));
+  if(alreadyLoaded){_doAreaAnalysis(layer);return;}
+  // Fetch tree/forest polygons for the drawn area from Overpass first
+  const qf=`[out:json][timeout:15];(way["landuse"="forest"](${bb});way["natural"="wood"](${bb}););out tags geom;`;
+  fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qf)}`)
+    .then(r=>r.json()).then(data=>{
+      (data.elements||[]).forEach(el=>{
+        if(!el.geometry)return;
+        const poly=el.geometry.map(p=>[p.lat,p.lon]);
+        const type=getTreeType(el.tags||{});const name=getTreeDisplayName(el.tags||{});
+        if(!wyrForests.some(f=>f.poly[0]&&f.poly[0][0]===poly[0][0]&&f.poly[0][1]===poly[0][1]))
+          wyrForests.push({type,name,poly});
+      });
+      _doAreaAnalysis(layer);
+    }).catch(()=>_doAreaAnalysis(layer));
 }
 
 function showAreaPanel(results,terrain){
@@ -41465,7 +41482,7 @@ function _getTerrainInRadius(lat,lng,r){
   const bdlAge=bdlStands.length?Math.round(bdlStands.reduce((s,b)=>s+b.age,0)/bdlStands.length):0;
   return{forests:allF,landuse:allL,bdlSpp,bdlAge,bdlStands};
 }
-function analyzePoint(lat,lng,radiusM=0){
+function _doPointAnalysis(lat,lng,radiusM){
   const terrain=radiusM>300?_getTerrainInRadius(lat,lng,radiusM):getTerrainAtPoint(lat,lng);
   const month=new Date().getMonth()+1;
   // Region proximity from point
@@ -41533,6 +41550,27 @@ function analyzePoint(lat,lng,radiusM=0){
   _lastDebugData={clcForests:terrain.forests,wyrStands:matchedTrees,bdlStands:terrain.bdlStands||[],landuse:terrain.landuse,mode:'point',lat,lng,radiusM};
   showAreaPanel(results,synTerrain);
   document.getElementById('ap-loc').textContent=`📍 ${lat.toFixed(4)}, ${lng.toFixed(4)} · ${terrainLabel}`;
+}
+
+function analyzePoint(lat,lng,radiusM=0){
+  const R=111000,r=radiusM||500;
+  const dlat=r/R,dlng=r/(R*Math.cos(lat*Math.PI/180));
+  const s=(lat-dlat).toFixed(4),n=(lat+dlat).toFixed(4),w=(lng-dlng).toFixed(4),e=(lng+dlng).toFixed(4);
+  const bb=`${s},${w},${n},${e}`;
+  const alreadyLoaded=wyrForests.some(f=>f.poly.some(pt=>pt[0]>=parseFloat(s)&&pt[0]<=parseFloat(n)&&pt[1]>=parseFloat(w)&&pt[1]<=parseFloat(e)));
+  if(alreadyLoaded){_doPointAnalysis(lat,lng,radiusM);return;}
+  const qf=`[out:json][timeout:15];(way["landuse"="forest"](${bb});way["natural"="wood"](${bb}););out tags geom;`;
+  fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qf)}`)
+    .then(r=>r.json()).then(data=>{
+      (data.elements||[]).forEach(el=>{
+        if(!el.geometry)return;
+        const poly=el.geometry.map(p=>[p.lat,p.lon]);
+        const type=getTreeType(el.tags||{});const name=getTreeDisplayName(el.tags||{});
+        if(!wyrForests.some(f=>f.poly[0]&&f.poly[0][0]===poly[0][0]&&f.poly[0][1]===poly[0][1]))
+          wyrForests.push({type,name,poly});
+      });
+      _doPointAnalysis(lat,lng,radiusM);
+    }).catch(()=>_doPointAnalysis(lat,lng,radiusM));
 }
 
 
