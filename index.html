@@ -204,7 +204,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #compass{position:absolute;bottom:52px;right:52px;z-index:800;width:44px;height:44px;pointer-events:auto;cursor:pointer;opacity:.7;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4));transition:transform .3s ease,opacity .15s}
 #scan-r{display:none;align-items:center;gap:6px;margin-top:4px;font-size:11px;color:var(--muted);flex-wrap:wrap}
 #scan-r input[type=range]{width:76px;accent-color:#52b849;cursor:pointer}
-#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:9px 16px;font-size:12.5px;color:var(--text);z-index:9999;transition:transform .25s;pointer-events:none;white-space:nowrap}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(200px);background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:9px 16px;font-size:12.5px;color:var(--text);z-index:9999;transition:transform .25s;pointer-events:none;white-space:nowrap}
 #toast.show{transform:translateX(-50%) translateY(0);pointer-events:auto;cursor:pointer}
 /* Light-mode overrides for status boxes */
 [data-theme="light"] .dbox{background:rgba(160,40,28,.1);border-color:rgba(160,40,28,.25);color:#a02018}
@@ -306,8 +306,6 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #wx-temp{font-size:16px}
   #wx-wind,#wx-moon{font-size:10px}
   #compass{bottom:72px;right:10px}
-  .mob-ico{font-size:18px}
-
   #ph-legend{bottom:128px}
   #hl{bottom:84px}
   #toast{bottom:78px}
@@ -316,17 +314,18 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #mob-nav{display:flex}
 }
 @media(max-width:767px)and(orientation:landscape){
-  #sidebar{height:100vh;max-height:100vh}
-  #ip{height:80vh;border-radius:0;top:0;bottom:auto;transform:translateX(100%);right:-100%!important;width:60%!important;height:100vh!important}
+  #sidebar{height:100vh;max-height:100vh;overflow-y:auto;overflow-x:hidden}
+  #ip{border-radius:0;top:0;bottom:auto;transform:translateX(100%);right:-100%!important;width:55%!important;height:100vh!important}
   #ip.open{transform:translateX(0);right:0!important}
-  #ip.ip-mini{height:100vh!important;width:40%!important}
-  #mob-nav{flex-direction:column;width:52px;height:100vh;top:0;right:0;left:auto;border-top:none;border-left:1px solid var(--border)}
+  #ip.ip-mini{height:100vh!important;width:35%!important}
+  #mob-nav{flex-direction:column;width:52px;height:100vh;top:0;right:0;left:auto;border-top:none;border-left:1px solid var(--border);padding-bottom:0}
   #mw{padding-bottom:0;padding-right:52px}
-  .mob-tab{padding:8px 0}
+  .mob-tab{padding:6px 0;font-size:10px}
+  .mob-ico{font-size:17px}
 }
-.mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-size:9.5px;color:var(--muted);border:none;background:none;font-family:var(--f-body);transition:color .15s;user-select:none;padding:6px 0}
+.mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-size:11px;color:var(--muted);border:none;background:none;font-family:var(--f-body);transition:color .15s;user-select:none;padding:6px 0;overflow:visible}
 .mob-tab.active,.mob-tab:hover{color:var(--gold)}
-.mob-ico{font-size:21px;line-height:1}
+.mob-ico{font-size:20px;line-height:1;display:block}
 </style>
 </head>
 <body>
@@ -336,7 +335,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.42</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.44</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32620,7 +32619,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
 // ─── Map ─────────────────────────────────────────────────
 const E='https://server.arcgisonline.com/ArcGIS/rest/services';
 const _mv=JSON.parse(localStorage.getItem('mapView')||'null');
-const map=L.map('map',{center:_mv?[_mv.lat,_mv.lng]:[52.1,19.5],zoom:_mv?_mv.z:7,preferCanvas:true,minZoom:5,maxZoom:18,rotate:true,touchRotate:true,rotateControl:false});
+const map=L.map('map',{center:_mv?[_mv.lat,_mv.lng]:[52.1,19.5],zoom:_mv?_mv.z:7,preferCanvas:true,minZoom:5,maxZoom:18,rotate:true,touchRotate:false,rotateControl:false});
 
 const baseLayers={
   topo:L.tileLayer(`${E}/World_Topo_Map/MapServer/tile/{z}/{y}/{x}`,{maxZoom:18,attribution:'ESRI'}),
@@ -41603,7 +41602,7 @@ function showAreaPanel(results,terrain){
 }
 
 // ─── Draw (native drag + polygon modes) ──────────────────
-let drawnLayer=null,drawing=false,_drawStart=null,_drawPreview=null;
+let drawnLayer=null,drawing=false,_drawStart=null,_drawPreview=null,_drawLastLL=null;
 let _polyMode=false,_polyPts=[],_polyLine=null,_polyLastClick=0;
 let _drBtn=null,_polyBtn=null,_drawTogBtn=null,_drawExpanded=false;
 
@@ -41618,14 +41617,15 @@ function _collapseDrawTools(){
 
 function _exitDraw(){
   drawing=false;map.dragging.enable();map.getContainer().style.cursor='';
-  map.off('mousedown',_onDrawDown);
+  map.off('mousedown',_onDrawDown);map.off('touchstart',_onDrawDown);
   if(_drBtn){_drBtn.innerHTML='▭';_drBtn.classList.remove('dr-drawing');}
 }
-function _onDrawMove(e){if(!_drawPreview||!_drawStart)return;_drawPreview.setBounds(L.latLngBounds(_drawStart,e.latlng));}
+function _onDrawMove(e){if(!_drawPreview||!_drawStart)return;_drawLastLL=e.latlng;_drawPreview.setBounds(L.latLngBounds(_drawStart,e.latlng));}
 function _onDrawUp(e){
   map.off('mousemove',_onDrawMove);map.off('mouseup',_onDrawUp);
+  map.off('touchmove',_onDrawMove);map.off('touchend',_onDrawUp);
   if(!_drawStart||!_drawPreview){_exitDraw();return;}
-  const b=L.latLngBounds(_drawStart,e.latlng);
+  const b=L.latLngBounds(_drawStart,e.latlng||_drawLastLL);
   const sw=b.getSouthWest(),ne=b.getNorthEast();
   if(Math.abs(sw.lat-ne.lat)<0.0005&&Math.abs(sw.lng-ne.lng)<0.0005){
     map.removeLayer(_drawPreview);
@@ -41640,10 +41640,11 @@ function _onDrawUp(e){
 }
 function _onDrawDown(e){
   if(!drawing)return;
-  _drawStart=e.latlng;
+  _drawStart=e.latlng;_drawLastLL=e.latlng;
   if(_drawPreview)map.removeLayer(_drawPreview);
   _drawPreview=L.rectangle([[e.latlng.lat,e.latlng.lng],[e.latlng.lat,e.latlng.lng]],{color:'#c9a84c',fillOpacity:.08,weight:2,dashArray:'5,5'}).addTo(map);
   map.on('mousemove',_onDrawMove);map.on('mouseup',_onDrawUp);
+  map.on('touchmove',_onDrawMove);map.on('touchend',_onDrawUp);
 }
 
 function _exitPoly(){
@@ -41703,7 +41704,7 @@ function _onPolyDblClick(e){
         if(drawing){if(_drawPreview){map.removeLayer(_drawPreview);_drawPreview=null;}_drawStart=null;_exitDraw();return;}
         drawing=true;a.innerHTML='✕';a.classList.add('dr-drawing');
         map.dragging.disable();map.getContainer().style.cursor='crosshair';
-        map.on('mousedown',_onDrawDown);
+        map.on('mousedown',_onDrawDown);map.on('touchstart',_onDrawDown);
         showToast('Przeciągnij aby zaznaczyć obszar');
       });
       _drBtn=a;
@@ -42858,27 +42859,38 @@ document.getElementById('wx-col').onclick=e=>{
 (function(){
   const wx=document.getElementById('wx'),hdr=document.getElementById('wx-hdr');
   let active=false,ox=0,oy=0;
-  hdr.addEventListener('mousedown',e=>{
-    if(e.target.id==='wx-col')return;
+  function startDrag(cx,cy){
     active=true;
     if(wx.style.top===''){
       const mw=document.getElementById('mw').getBoundingClientRect();
       const r=wx.getBoundingClientRect();
       wx.style.top=(r.top-mw.top)+'px';wx.style.left=(r.left-mw.left)+'px';wx.style.bottom='auto';
     }
-    ox=e.clientX-wx.offsetLeft;oy=e.clientY-wx.offsetTop;
-    document.body.style.userSelect='none';
-    e.preventDefault();
-  });
-  document.addEventListener('mousemove',e=>{
+    ox=cx-wx.offsetLeft;oy=cy-wx.offsetTop;
+  }
+  function moveDrag(cx,cy){
     if(!active)return;
     const mw=document.getElementById('mw');
-    let l=e.clientX-ox,t=e.clientY-oy;
+    let l=cx-ox,t=cy-oy;
     l=Math.max(0,Math.min(mw.offsetWidth-wx.offsetWidth,l));
     t=Math.max(0,Math.min(mw.offsetHeight-wx.offsetHeight,t));
     wx.style.left=l+'px';wx.style.top=t+'px';
+  }
+  hdr.addEventListener('mousedown',e=>{
+    if(e.target.id==='wx-col')return;
+    startDrag(e.clientX,e.clientY);
+    document.body.style.userSelect='none';
+    e.preventDefault();
   });
+  hdr.addEventListener('touchstart',e=>{
+    if(e.target.id==='wx-col')return;
+    startDrag(e.touches[0].clientX,e.touches[0].clientY);
+    e.preventDefault();
+  },{passive:false});
+  document.addEventListener('mousemove',e=>moveDrag(e.clientX,e.clientY));
+  document.addEventListener('touchmove',e=>{if(active){moveDrag(e.touches[0].clientX,e.touches[0].clientY);e.preventDefault();}},{passive:false});
   document.addEventListener('mouseup',()=>{active=false;document.body.style.userSelect='';});
+  document.addEventListener('touchend',()=>{active=false;});
 })();
 
 // Map controls collapse
@@ -42900,11 +42912,17 @@ if(window.innerWidth<=767){
   // weather: start collapsed
   const wx=document.getElementById('wx'),btn=document.getElementById('wx-col');
   wx.classList.add('wx-col');btn.textContent='▼';
-  // info panel minimize
+  // info panel minimize — onclick + touchend for mobile reliability
   const ip=document.getElementById('ip');
-  function _ipMini(){ip.classList.toggle('ip-mini');}
-  document.getElementById('ip-min').onclick=e=>{e.stopPropagation();_ipMini();};
-  document.getElementById('ip-handle').onclick=_ipMini;
+  const _ipMini=()=>ip.classList.toggle('ip-mini');
+  const ipMin=document.getElementById('ip-min');
+  const ipHandle=document.getElementById('ip-handle');
+  ipMin.addEventListener('click',e=>{e.stopPropagation();_ipMini();});
+  ipMin.addEventListener('touchend',e=>{e.stopPropagation();e.preventDefault();_ipMini();});
+  ipHandle.addEventListener('click',_ipMini);
+  ipHandle.addEventListener('touchend',e=>{e.preventDefault();_ipMini();});
+  // re-fit map on orientation change
+  window.addEventListener('orientationchange',()=>setTimeout(()=>map.invalidateSize(),300));
 }
 
 
