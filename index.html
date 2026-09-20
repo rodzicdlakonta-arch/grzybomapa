@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.20</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.21</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32370,6 +32370,21 @@ function genHeat(weights,seed=42,total=500,opts={}){
     }
   }
 
+  // Add points near farmland polygon edges (mushrooms grow at field margins, not inside tilled fields)
+  function _farmlandEdgePts(reg,w,n){
+    const near=lu=>{const c=polyCentroid(lu.p);return Math.abs(c[0]-reg.c[0])<reg.r*1.5&&Math.abs(c[1]-reg.c[1])<reg.r*2;};
+    const fls=LANDUSE.filter(lu=>lu.t==='farmland'&&near(lu));
+    for(let i=0;i<n;i++){
+      if(!fls.length){pts.push([rng.gauss(reg.c[0],reg.r*.4),rng.gauss(reg.c[1],reg.r*.5),(w/100)*(.4+rng.next()*.6)]);continue;}
+      const fl=fls[Math.floor(rng.next()*fls.length)];
+      const ep=fl.p[Math.floor(rng.next()*fl.p.length)];
+      const la=ep[0]+(rng.next()-.5)*.003;
+      const ln=ep[1]+(rng.next()-.5)*.004;
+      if(avoidUrban&&_inUrban(la,ln)&&rng.next()>(urbanTolerant?.3:.05))continue;
+      pts.push([la,ln,(w/100)*(.5+rng.next()*.5)]);
+    }
+  }
+
   // Add points near water body edges (150–250m buffer around random edge points)
   function _waterEdgePts(reg,w,n){
     const near=lu=>{const c=polyCentroid(lu.p);return Math.abs(c[0]-reg.c[0])<reg.r*1.5&&Math.abs(c[1]-reg.c[1])<reg.r*2;};
@@ -32409,12 +32424,11 @@ function genHeat(weights,seed=42,total=500,opts={}){
       continue;
     }
 
-    // 2. Farmland/garden species → LANDUSE farmland polygons + open scatter
+    // 2. Farmland/garden species → farmland polygon EDGES + open scatter (interiors tractor-damaged)
     if(farmlandSpec){
-      const fls=LANDUSE.filter(lu=>lu.t==='farmland'&&lu.p.length>=3&&near(lu));
-      const fn=fls.length?Math.round(n*.55):0;
-      if(fn)_sp(fls,reg.c[0],reg.c[1],w,fn);
-      for(let i=0;i<n-fn;i++){const la=rng.gauss(reg.c[0],reg.r*.55),ln=rng.gauss(reg.c[1],reg.r*.65);if(avoidUrban&&_inUrban(la,ln)&&rng.next()>(urbanTolerant?.3:.05))continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
+      const en=Math.round(n*.6);
+      _farmlandEdgePts(reg,w,en);
+      for(let i=0;i<n-en;i++){const la=rng.gauss(reg.c[0],reg.r*.55),ln=rng.gauss(reg.c[1],reg.r*.65);if(avoidUrban&&_inUrban(la,ln)&&rng.next()>(urbanTolerant?.3:.05))continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
       continue;
     }
 
@@ -41044,7 +41058,7 @@ function _showBestSpot(mid){
     scanHab.forEach(h=>{
       let ok=false;
       if(opts.wetHab)ok=h.we;
-      else if(opts.farmlandSpec)ok=h.ur||h.pa;
+      else if(opts.farmlandSpec)ok=h.ur||h.pa||h.fa;
       else if(opts.openHab)ok=h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur);
       else ok=h.f.some(f=>(!opts.coniferPref||f.c==='312')&&(!opts.broadleafPref||f.c==='311'));
       if(ok)pts.push([h.la,h.ln,2.5]);
@@ -41336,7 +41350,7 @@ function _doAreaAnalysis(layer){
     let hc=0;
     habPts.forEach(h=>{
       if(opts.wetHab){if(h.we)hc++;}
-      else if(opts.farmlandSpec){if(h.ur||h.pa)hc++;}
+      else if(opts.farmlandSpec){if(h.ur||h.pa||h.fa)hc++;}
       else if(opts.openHab){if(h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur))hc++;}
       else{if(h.f.some(f=>(!opts.coniferPref||!f.c||f.c==='312')&&(!opts.broadleafPref||!f.c||f.c==='311')))hc++;}
     });
@@ -41645,7 +41659,7 @@ function _doPointAnalysis(lat,lng,radiusM){
     let hc=0;
     habPts2.forEach(h=>{
       if(opts.wetHab){if(h.we)hc++;}
-      else if(opts.farmlandSpec){if(h.ur||h.pa)hc++;}
+      else if(opts.farmlandSpec){if(h.ur||h.pa||h.fa)hc++;}
       else if(opts.openHab){if(h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur))hc++;}
       else{if(h.f.some(f=>(!opts.coniferPref||!f.c||f.c==='312')&&(!opts.broadleafPref||!f.c||f.c==='311')))hc++;}
     });
