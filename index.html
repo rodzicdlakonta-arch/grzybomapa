@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.37</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.38</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -31971,6 +31971,28 @@ const MUSHROOMS={
     lookalikes:'Dzwonkówka wiosenna (E. clypeatum) — wiosenna, pod głogami i różami; blaszki białe→różowe (nie żółte); przez niektórych spożywana ale ryzykowna. Gąska szara (T. terreum) — mniejsza, sosnowy bór. Gąsówka łąkowa (L. saeva) — fiołkowy trzon, na łące, nie w lesie. Żółtawe blaszki + las liściasty + mączny zapach = wieruszka zatokowata — nie zbierać.',
     weights:{bw:65,au:60,sw:75,ro:72,lu:70,ja:68,be:78,bi:72,go:70,sd:72,se:68,ta:60,po:70,so:65,ka:68,kn:62,lm:60,op:68,st:70,sl:62,ll:58,wy:68,nak:63,sep:70}
   },
+
+  gaska_sos:{
+    name:'Gąska sosnowa',latin:'Tricholoma vaccinum',cat:'inedible',rare:false,wiki:'Tricholoma_vaccinum',
+    season:[8,9,10,11],terrain:['Bory sosnowe','Lasy iglaste'],
+    soil:'Gleba piaszczysta, kwaśna — mykoryza wyłącznie z sosną',ph:'3.8–5.5',elev:'0–1200 m',
+    habitat:'Wyłącznie pod sosnami, na piaszczystej kwaśnej glebie. Jeden z typowych grzybów borów sosnowych. Pospolita w całej Polsce.',
+    desc:'Kapelusz 4–10 cm, RDZAWOBRĄZOWY do ceglanego, suchy, pokryty włóknistymi ciemnymi łuskami lub filcowatą powierzchnią. Krawędź podwinięta, włóknista. Blaszki białe do kremowych, drobno ząbkowane. Trzon 4–8 cm, biały z brązowymi włókienkami. Miąższ biały, twardy, zapach mączysty lub niedosłodzonego chleba.',
+    danger:'Niejadalny — powoduje dolegliwości żołądkowe u większości osób. Historycznie jadana w niektórych tradycjach po długiej obróbce, dziś zalecane całkowite unikanie.',
+    lookalikes:'Gąska szara (T. terreum) — NIEJADALNA; szarawa, bez wyrazistych rdzawych łusek, pod sosnami i bukami. Gąska zielonka (T. equestre) — TRUJĄCA; żółtozielona. Gąska mydlana (T. saponaceum) — zapach mydła, różowiejący miąższ. Rdzawobrązowe włókniste łuski + wyłącznie pod sosnami = gąska sosnowa.',
+    weights:{tu:72,no:70,dr:68,pi:75,au:65,ps:70,dl:68,ch:72,bw:60,ku:58,ma:55,br:52,wk:50,ll:48,sd:65,se:60,be:58,po:58,bi:55,wy:72,nak:68,sep:72}
+  },
+
+  lysiczka_fal:{
+    name:'Łysiczka falista',latin:'Psilocybe cyanescens',cat:'poisonous',rare:false,wiki:'Psilocybe_cyanescens',hallucinogenic:true,
+    season:[10,11,12,1],terrain:['Parki','Ogrody','Zieleń miejska'],
+    soil:'Na zrębkach drzewnych i mulczu — saprofit drewna liściastego',ph:'Saprofit drewna',elev:'0–500 m',
+    habitat:'Na zrębkach i mulczu drzewnym w parkach, ogrodach i przy ścieżkach leśnych. Preferuje mulcz z drzew liściastych. Jesień–wczesna zima. Coraz częstsza w Polsce wraz z popularyzacją mulczowania.',
+    desc:'Kapelusz 2–5 cm, KARMELOWY do rdzawobrązowego, gładki, błyszczący, hygrofaniczny (blednie od zewnątrz przy suszeniu). Krawędź FALISTA i undulowana — cecha nazewnicza. Niebieskawy przy uszkodzeniu (psilocybina). Blaszki szarofioletowe, ciemniejące. Trzon 4–8 cm, włóknisty, kremowobiały do brązowego.',
+    danger:'SILNIE HALUCYNOGENNA — jedna z najsilniejszych łysiczek, bogata w psilocybinę i psilocynę. W Polsce NIELEGALNA (posiadanie karalne). Grozi pomyleniem z jadalnymi grzybami na mulczu w parkach. Niebieskie przebarwienie przy uszkodzeniu to ostrzegawczy sygnał psilocybiny.',
+    lookalikes:'Łysiczka stożkowa (P. semilanceata) — spiczasta czapeczka, na trawie przy nawozie, NIE na mulczu. Hełmówka jadowita (G. marginata) — ŚMIERTELNA; brązowe zarodniki, pierścień, nie niebieskawy, kępki na pniakach. Łuskwiak nastroszony (P. squarrosa) — sterczące łuski, zapach czosnku. Falista krawędź + mulcz + niebieskie zabarwienie przy uszkodzeniu = łysiczka falista.',
+    weights:{bw:52,au:48,ka:60,lm:55,ku:58,br:52,sw:55,ro:50,lu:48,be:52,bi:45,sd:45,op:62,st:65,sl:55,so:52,wy:50,nak:48,sep:50}
+  },
 };
 
 
@@ -32079,6 +32101,8 @@ const MUSH_ICON_CFG={
   gasowka:      {s:'flat',c:'#D0C8B0',t:'#8060C0'},
   wilgotnica:   {s:'flat',c:'#E82020',t:'#FF6020'},
   wieruszka_zat:{s:'flat',c:'#C8A870',t:'#F0C8A0'},
+  gaska_sos:    {s:'flat',c:'#A06030',t:'#E0C0A0'},
+  lysiczka_fal: {s:'flat',c:'#C89040',t:'#E8C870'},
 };
 
 function getMushSVG(mid){
@@ -32252,6 +32276,8 @@ const MUSHROOM_LOCAL={
   gasowka:      {s:'f',n:'Na łąkach i pastwiskach regionu późną jesienią. Fiołkowy trzon na łące od października to gąsówka.'},
   wilgotnica:   {s:'r',n:'Na starych nienawożonych łąkach Krainy. Rzadka — jej obecność oznacza cenny stary biotop. Fotografować, nie zbierać.'},
   wieruszka_zat:{s:'f',n:'W lasach liściastych i mieszanych regionu — grądy i dąbrowy przy Noteci. Jedna z groźniejszych trujących grzybów Krainy, często mylona z jadalnymi gatunkami. Żółtawe blaszki to sygnał alarmowy.'},
+  gaska_sos:    {s:'f',n:'Pospolita w borach sosnowych Krainy. Typowy grzyb września–października — rdzawe łuski wyróżniają ją na tle szarej i zielonej gąski.'},
+  lysiczka_fal: {s:'r',n:'Rzadka — szukać w parkach z mulczem drzewnym w Bydgoszczy, Pile i Nakle. Coraz częstsza wraz z popularyzacją mulczowania.'},
 };
 
 const LOCAL_LABEL={p:'Pospolity w regionie',f:'Częsty w regionie',r:'Rzadki w regionie',v:'Bardzo rzadki',n:'Nie występuje w regionie'};
