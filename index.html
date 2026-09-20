@@ -149,10 +149,10 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #hl h5{font-size:11px;color:var(--text);margin-bottom:7px;font-weight:500}
 .hg{width:120px;height:7px;border-radius:3px;background:linear-gradient(to right,rgba(0,128,0,.5),rgba(255,200,0,.8),rgba(255,0,0,.9));margin-bottom:3px}
 .hlbl{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
-#ip{position:fixed;top:0;right:-400px;width:380px;height:100vh;background:var(--sb);border-left:1px solid var(--border);z-index:1100;transition:right .28s cubic-bezier(.4,0,.2,1);overflow-y:auto;display:flex;flex-direction:column}
+#ip{position:fixed;top:0;right:-400px;width:380px;height:100vh;background:var(--sb);border-left:1px solid var(--border);z-index:1100;transition:right .28s cubic-bezier(.4,0,.2,1);overflow-y:auto;display:flex;flex-direction:column;pointer-events:none}
 #ip-handle{display:none}
 .ip-min-btn{display:none;align-items:center;justify-content:center;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0 2px;line-height:1;transition:transform .2s}
-#ip.open{right:0}
+#ip.open{right:0;pointer-events:auto}
 #ip::-webkit-scrollbar{width:3px}
 #ip::-webkit-scrollbar-thumb{background:var(--border)}
 .ph{padding:18px 18px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
@@ -296,7 +296,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #ap{left:0!important}
   #ap.open{bottom:56px}
   #ip{right:0!important;width:100%;border-left:none;border-top:1px solid var(--border);border-radius:16px 16px 0 0;top:auto;bottom:0;height:90vh;transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1),height .22s ease!important}
-  #ip.open{transform:translateY(0)}
+  #ip.open{transform:translateY(0);pointer-events:auto}
   #ip.ip-mini{height:72px;overflow:hidden}
   #ip.ip-mini #pbody{pointer-events:none}
   #ip-handle{display:block;width:36px;height:4px;background:var(--border);border-radius:2px;margin:8px auto 4px;cursor:pointer;flex-shrink:0}
@@ -307,6 +307,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #wx-wind,#wx-moon{font-size:10px}
   #compass{bottom:72px;right:10px}
   #mc{max-height:calc(100vh - 80px)}
+  .leaflet-bottom{margin-bottom:56px}
   #ph-legend{bottom:128px}
   #hl{bottom:84px}
   #toast{bottom:78px}
@@ -336,7 +337,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.45</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.46</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42931,6 +42932,8 @@ if(window.innerWidth<=767){
   ipHandle.addEventListener('touchend',e=>{e.preventDefault();_ipMini();});
   // re-fit map on orientation change
   window.addEventListener('orientationchange',()=>setTimeout(()=>map.invalidateSize(),300));
+  // move zoom debug label above nav bar
+  if(typeof _zdbg!=='undefined')_zdbg.style.bottom='66px';
 }
 
 
