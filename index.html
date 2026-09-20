@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.38</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.39</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -31993,6 +31993,83 @@ const MUSHROOMS={
     lookalikes:'Łysiczka stożkowa (P. semilanceata) — spiczasta czapeczka, na trawie przy nawozie, NIE na mulczu. Hełmówka jadowita (G. marginata) — ŚMIERTELNA; brązowe zarodniki, pierścień, nie niebieskawy, kępki na pniakach. Łuskwiak nastroszony (P. squarrosa) — sterczące łuski, zapach czosnku. Falista krawędź + mulcz + niebieskie zabarwienie przy uszkodzeniu = łysiczka falista.',
     weights:{bw:52,au:48,ka:60,lm:55,ku:58,br:52,sw:55,ro:50,lu:48,be:52,bi:45,sd:45,op:62,st:65,sl:55,so:52,wy:50,nak:48,sep:50}
   },
+
+  maslak_zw:{
+    name:'Maślak zwyczajny',latin:'Suillus luteus',cat:'edible',rare:false,wiki:'Suillus_luteus',
+    season:[8,9,10,11],terrain:['Bory sosnowe','Lasy iglaste','Lasy z sosną'],
+    soil:'Gleba piaszczysta lub wapienna — mykoryza wyłącznie z sosną',ph:'4.5–7.0',elev:'0–1200 m',
+    habitat:'Wyłącznie pod sosnami, w borach i lasach iglastych. Jeden z najpospolitszych maślaków w Polsce — szczególnie obfity w borach sosnowych na piaszczystych glebach nizin. Owocnikuje od sierpnia do listopada.',
+    desc:'Kapelusz 5–12 cm, CZEKOLADOWOBRĄZOWY do żółtobrązowego, przy wilgotnej pogodzie bardzo ŚLUZOWATY i błyszczący. Skórka łatwo schodzi. Rurki jasnożółte z drobnymi okrągłymi ujściami. Trzon kremowobiały z wyraźnym PIERŚCIENIEM — od góry żółtawy, od dołu fioletowoszarawy, pokryty brązawymi kropkami. Miąższ biały do bladożółtawego, bez niebiesienia.',
+    danger:'Jadalny. Skórkę kapelusza warto obrać — surowa śluzowata skórka może wywoływać dolegliwości żołądkowe u wrażliwych osób. Po obraniu i ugotowaniu smaczny i aromatyczny.',
+    lookalikes:'Maślak ziarnisty (S. granulatus) — BEZ PIERŚCIENIA, jaśniejszy. Maślak pstry (S. variegatus) — ciemniejsze rurki, bez pierścienia. Maślak rdzawobrązowy (S. fluryi) — rzadszy, podobny. Śluzowaty kapelusz + wyraźny pierścień na trzonie + wyłącznie pod sosną = maślak zwyczajny.',
+    weights:{tu:78,no:75,dr:72,pi:80,au:70,ps:75,dl:72,ch:78,bw:65,ku:62,ma:60,br:58,wk:55,ll:52,sd:72,se:68,be:62,po:62,bi:58,wy:76,nak:74,sep:76}
+  },
+
+  mleczaj_wel:{
+    name:'Mleczaj wełnianka',latin:'Lactarius torminosus',cat:'inedible',rare:false,wiki:'Lactarius_torminosus',
+    season:[8,9,10],terrain:['Brzeziny','Lasy liściaste','Lasy mieszane z brzozą','Parki'],
+    soil:'Gleba kwaśna, piaszczysta — mykoryza wyłącznie z brzozą',ph:'4.0–5.5',elev:'0–1000 m',
+    habitat:'Wyłącznie pod brzozami, na kwaśnych glebach piaszczystych. W lasach, borach mieszanych z domieszką brzozy i parkach. Jeden z najpospolitszych mleczajowatych w polskich lasach brzozowych.',
+    desc:'Kapelusz 5–12 cm, RÓŻOWAWY do bladoróżowobrązowego, koncentrycznie strefowany. Krawędź WYRAŹNIE WEŁNISTO-KOSMATA — to kluczowa cecha rozpoznawcza. Skórka lekko mazista przy wilgoci. Blaszki bladokremowe. Trzon biały lub bladoróżowy. Mleczko białe, niezmienne, SMAK WYJĄTKOWO OSTRY.',
+    danger:'Niejadalny — zawiera żywice o ostrym smaku wywołujące mdłości, wymioty i biegunkę. W Polsce nie zaleca się spożycia nawet po obróbce. W tradycji wschodnioeuropejskiej bywa kiszony po wielokrotnym moczeniu z wymianą wody — ryzyko nie do zaakceptowania.',
+    lookalikes:'Mleczaj omszony (L. pubescens) — mniejszy, bardziej blady, bez wyraźnej strefowości. Rydz (L. deliciosus) — JADALNY; pomarańczowe mleczko, pod sosnami, NIE pod brzozą. Mleczaj dębowy (L. quietus) — łagodny smak, pod dębami. Wełnista kosmata krawędź + białe ostre mleczko + wyłącznie pod brzozą = mleczaj wełnianka.',
+    weights:{tu:62,no:60,dr:58,pi:65,au:55,ps:60,dl:55,ch:62,bw:58,ku:55,ma:52,br:50,wk:48,ll:45,sd:60,se:55,be:52,po:52,bi:48,wy:62,nak:60,sep:62}
+  },
+
+  borowik_sz:{
+    name:'Borowik szatański',latin:'Rubroboletus satanas',cat:'poisonous',rare:true,wiki:'Rubroboletus_satanas',
+    season:[7,8,9],terrain:['Lasy liściaste','Buczyny','Dąbrowy','Grądy'],
+    soil:'Gleba wapienna lub zasadowa — mykoryza z dębami i bukami wyłącznie na glebach bogatych w wapń',ph:'6.5–8.0',elev:'0–800 m',
+    habitat:'Pod dębami i bukami, wyłącznie na glebach wapiennych lub bogatych w wapń. Rzadki — głównie na południu i zachodzie Polski. W Krainie sporadyczny, na ciepłych ekspozycjach z podłożem wapiennym.',
+    desc:'Kapelusz 10–30 cm, BIAŁAWY do szarobrązowego. Rurki JASKRAWOCZERWONE do krwistoczerwonych, po ugnieceniu nieco siniejące. Trzon BECZUŁKOWATY, żółty do karminowoczerwonego z wyraźną czerwonawą siecią. ZAPACH: z początku słodkawy owocowy, u starszych okazów intensywny jak padlina. Miąższ biały, po przekrojeniu intensywnie SINIEJE.',
+    danger:'SILNIE TRUJĄCY — wywołuje gwałtowne długotrwałe zaburzenia żołądkowo-jelitowe z silnymi wymiotami. Nawet mała ilość surowego owocnika powoduje ciężkie zatrucie. Gotowanie nie inaktywuje w pełni toksyn. Sinienie + smród u starszych okazów to podwójny sygnał alarmowy.',
+    lookalikes:'Borowik ceglastopory (B. erythropus) — TRUJĄCY surowy; czerwone rurki, intensywne niebiesienie, ale BEZ smrodu padliny. Borowik szlachetny — brązowy kapelusz, żółte rurki, brak czerwieni w trzonie. Borowik żółtopory (B. calopus) — gorzki smak, żółte rurki. Biały kapelusz + jaskrawoczerwone rurki + smród u starszych okazów = borowik szatański.',
+    weights:{tu:15,no:12,dr:10,pi:8,au:18,ps:15,dl:10,ch:12,bw:18,ku:15,ma:12,br:20,wk:15,ll:12,sd:10,se:12,be:20,po:18,bi:15,wy:10,nak:8,sep:10}
+  },
+
+  lakowka:{
+    name:'Łakówka jesienna',latin:'Laccaria laccata',cat:'edible',rare:false,wiki:'Laccaria_laccata',
+    season:[6,7,8,9,10,11],terrain:['Lasy liściaste','Lasy iglaste','Parki','Ogrody','Lasy mieszane'],
+    soil:'Brak wymagań glebowych — saprofit ściółki leśnej i glebowej, rośnie na wielu typach podłoża',ph:'4.0–7.0',elev:'0–1500 m',
+    habitat:'W lasach liściastych i iglastych, parkach, ogrodach — bez szczególnych wymagań glebowych. Jeden z najpospolitszych i najdłużej owocnikujących małych grzybów w Polsce. Owocnikuje od wiosny do późnej jesieni.',
+    desc:'Kapelusz 1–5 cm, CIELISTORÓŻOWY do cielistobrązowego. Silnie BLAKNĄCY przy suszy — wysuszony może wyglądać jak zupełnie inny, blady gatunek. Blaszki cielistoróżowe, rzadkie, szerokie. Trzon tego samego koloru co kapelusz, włókienkowaty. Zarodniki kuliste z kolcami. Smak i zapach łagodne.',
+    danger:'Jadalny, choć małej wartości kulinarnej — mały, cienkomiąższowy, wiotczeje. Dobry jako aromatyczny dodatek do potraw. Przy silnym wyblakaniu może mylić.',
+    lookalikes:'Łakówka okazała (L. proxima) — większa, chropowata skórka, w wilgotnych miejscach. Łakówka dwubarwna (L. bicolor) — fioletowy trzon. Gwoździak (Mycena) — przyrośnięte blaszki, cieńszy trzon, inne proporcje. Cielistoróżowe rzadkie szerokie blaszki + blaknięcie przy suszy = łakówka jesienna.',
+    weights:{tu:70,no:68,dr:65,pi:72,au:62,ps:68,dl:65,ch:70,bw:60,ku:58,ma:55,br:52,wk:50,ll:48,sd:65,se:62,be:58,po:58,bi:55,wy:70,nak:68,sep:70}
+  },
+
+  lejkowka_mgla:{
+    name:'Lejkówka mglistozielonkawa',latin:'Lepista nebularis',cat:'inedible',rare:false,wiki:'Lepista_nebularis',
+    season:[9,10,11],terrain:['Lasy liściaste','Lasy iglaste','Parki','Lasy mieszane'],
+    soil:'Na ściółce leśnej — saprofit materii organicznej, tworzy kręgi i rzędy',ph:'5.0–7.0',elev:'0–1000 m',
+    habitat:'W lasach liściastych i iglastych, parkach. Rośnie w dużych grupach, długich rzędach lub kręgach czarownic. Jeden z najczęstszych i najbardziej rozpoznawalnych zapachowo grzybów późnej jesieni.',
+    desc:'Kapelusz 5–15 cm, SZARY do szarobrązowego, z charakterystycznym łagodnym GARBKIEM pośrodku. Skórka gładka lub lekko oszroniona. Blaszki białokremowe, bardzo gęste, zbiegające na trzon. Trzon zwarty, białoszary. ZAPACH silnie słodkawy, mączno-perfumowy — wyjątkowo intensywny, wyczuwalny z odległości kilku metrów.',
+    danger:'Niejadalny — może powodować zaburzenia trawienne u wrażliwych osób, nawet po gotowaniu. Pomimo intensywnego zapachu NIE jest jadalny. Może być mylona ze śmiertelnie trującą dzwonkówką trującą (Clitocybe geotropa).',
+    lookalikes:'Dzwonkówka trująca (Clitocybe geotropa) — TRUJĄCA; silnie lejkowaty kapelusz, niemal bez garbka, bladsza, mniej intensywny zapach. Gąsówka szarofioletowa (Lepista nuda) — JADALNA; fioletowe zabarwienie, inne siedlisko. Pieczarka — różowawe/brązowe blaszki, zapach piernikowy. Szary kapelusz z garbkiem + kremowe gęste zbiegające blaszki + słodko-mączny perfumowy zapach w kręgach = lejkówka mglistozielonkawa.',
+    weights:{tu:68,no:65,dr:62,pi:70,au:58,ps:65,dl:62,ch:68,bw:58,ku:55,ma:52,br:50,wk:48,ll:45,sd:62,se:58,be:55,po:55,bi:52,wy:68,nak:65,sep:68}
+  },
+
+  golabek_sin:{
+    name:'Gołąbek siniejący',latin:'Russula cyanoxantha',cat:'edible',rare:false,wiki:'Russula_cyanoxantha',
+    season:[7,8,9,10],terrain:['Lasy liściaste','Buczyny','Dąbrowy','Lasy mieszane','Grądy'],
+    soil:'Gleba umiarkowanie kwaśna do obojętnej — mykoryza z bukami i dębami',ph:'5.5–7.5',elev:'0–1200 m',
+    habitat:'Pod bukami i dębami, w lasach liściastych i mieszanych. Jeden z najczęstszych jadalnych gołąbków w Polsce — szczególnie obfity w buczyny i grądach. Pospolity na glebach zasobnych w wapń.',
+    desc:'Kapelusz 5–15 cm, SZAROLILIOWY do różowoliliowego lub zielonkawy — barwa wyjątkowo zmienna, często z plamistym pomieszaniem odcieni. Skórka matowa, bez połysku. Blaszki BIAŁE, ELASTYCZNE — nie kruszą się i nie rozłupują po przesunięciu palcem (w odróżnieniu od prawie wszystkich innych gołąbków). Trzon biały. Miąższ biały, nie zmienia barwy. Smak łagodny.',
+    danger:'Jadalny, dobry. Elastyczność blaszek to kluczowa cecha odróżniająca od trujących gołąbków z kruchymi blaszkami. Pewna identyfikacja wymaga sprawdzenia elastyczności blaszek.',
+    lookalikes:'Gołąbek fiołkowozielony (R. ionochlora) — podobna barwa, blaszki KRUCHE, nie elastyczne. Gołąbek chmurny (R. grisea) — bardziej szary. Gołąbek wymiotny (R. emetica) — TRUJĄCY; czerwony kapelusz, ostry smak, kruche blaszki. Elastyczne białe blaszki + szaroliliowy/zielonkawy zmienny kapelusz + łagodny smak = gołąbek siniejący.',
+    weights:{tu:65,no:62,dr:60,pi:55,au:70,ps:65,dl:60,ch:62,bw:68,ku:65,ma:62,br:70,wk:65,ll:62,sd:58,se:60,be:70,po:68,bi:65,wy:60,nak:55,sep:58}
+  },
+
+  kozlarz_pom:{
+    name:'Koźlarz pomarańczowożółty',latin:'Leccinum versipelle',cat:'edible',rare:false,wiki:'Leccinum_versipelle',
+    season:[6,7,8,9,10],terrain:['Brzeziny','Lasy liściaste','Lasy mieszane z brzozą','Wrzosowiska'],
+    soil:'Gleba kwaśna, piaszczysta, wrzosowiskowa — mykoryza z brzozą i osiką na wrzosowiskach',ph:'3.5–5.5',elev:'0–1000 m',
+    habitat:'Pod brzozami i osikami, szczególnie na kwaśnych piaszczystych glebach porośniętych wrzosem. Typowy grzyb wrzosowisk i borów mieszanych. Pospolity w Polsce, szczególnie w rejonach wrzosowiskowych Krainy Krajeńskiej.',
+    desc:'Kapelusz 8–20 cm, POMARAŃCZOWY do pomarańczowobrązowego, niekiedy z czasem blaknie ku czerwonobrązowemu. Skórka wystająca poza brzeg kapelusza jak rąbek. Rurki szarawe, z wiekiem szarożółtawe, po ugnieceniu prawie niesiniejące. Trzon biały z CZARNAWYMI SZORSTKIMI ŁUSKAMI. Miąższ białawy, po przekrojeniu różowieje przez fioletowoszary i CZERNIEJE — normalne zjawisko.',
+    danger:'Jadalny. Miąższ i trzon intensywnie ciemnieją i czernieją po przekrojeniu oraz gotowaniu — jest to normalne i nie oznacza szkodliwości. Dobry grzyb, szczególnie smaczny ze wrzosowisk.',
+    lookalikes:'Koźlarz czarny (L. scabrum) — JADALNY; szarobrązowy kapelusz bez pomarańczowych odcieni, pod brzozą. Koźlarz babka — brunatny, nie czernieje tak intensywnie. Koźlarz grabowy — pod grabem, mniejszy, ciemniejszy. Pomarańczowy kapelusz + czarne łuski na trzonie + czernienie miąższu pod brzozą = koźlarz pomarańczowożółty.',
+    weights:{tu:65,no:62,dr:60,pi:68,au:55,ps:62,dl:58,ch:65,bw:60,ku:58,ma:55,br:52,wk:50,ll:48,sd:62,se:58,be:55,po:55,bi:52,wy:65,nak:62,sep:65}
+  },
 };
 
 
@@ -32103,6 +32180,13 @@ const MUSH_ICON_CFG={
   wieruszka_zat:{s:'flat',c:'#C8A870',t:'#F0C8A0'},
   gaska_sos:    {s:'flat',c:'#A06030',t:'#E0C0A0'},
   lysiczka_fal: {s:'flat',c:'#C89040',t:'#E8C870'},
+  maslak_zw:    {s:'cap',c:'#6B3A1A',t:'#E0D4B8',ring:1},
+  mleczaj_wel:  {s:'flat',c:'#D08070',t:'#F0B0A0'},
+  borowik_sz:   {s:'cap',c:'#D0D0C0',t:'#FF4030'},
+  lakowka:      {s:'flat',c:'#C88070',t:'#E0A090'},
+  lejkowka_mgla:{s:'flat',c:'#909080',t:'#C8C8B8'},
+  golabek_sin:  {s:'flat',c:'#8890A8',t:'#C8D0D8'},
+  kozlarz_pom:  {s:'cap',c:'#E07030',t:'#B8A090'},
 };
 
 function getMushSVG(mid){
@@ -32278,6 +32362,13 @@ const MUSHROOM_LOCAL={
   wieruszka_zat:{s:'f',n:'W lasach liściastych i mieszanych regionu — grądy i dąbrowy przy Noteci. Jedna z groźniejszych trujących grzybów Krainy, często mylona z jadalnymi gatunkami. Żółtawe blaszki to sygnał alarmowy.'},
   gaska_sos:    {s:'f',n:'Pospolita w borach sosnowych Krainy. Typowy grzyb września–października — rdzawe łuski wyróżniają ją na tle szarej i zielonej gąski.'},
   lysiczka_fal: {s:'r',n:'Rzadka — szukać w parkach z mulczem drzewnym w Bydgoszczy, Pile i Nakle. Coraz częstsza wraz z popularyzacją mulczowania.'},
+  maslak_zw:    {s:'p',n:'Pospolity we wszystkich borach sosnowych Krainy. Obfity po deszczach w sierpniu–październiku, szczególnie w młodszych sosnowych nasadzeniach.'},
+  mleczaj_wel:  {s:'p',n:'Pospolity pod brzozami w borach mieszanych Krainy. Różowawy kapelusz z wełnistą krawędzią to łatwy znak rozpoznawczy — nie zbierać.'},
+  borowik_sz:   {s:'r',n:'Rzadki — sporadycznie na wapiennych skałkach i glebach zasadowych Krainy. Biały kapelusz z czerwonymi rurkami to jednoznaczny sygnał zagrożenia.'},
+  lakowka:      {s:'p',n:'Pospolita we wszystkich typach lasów Krainy przez pół roku. Mały, blaknie przy suszy, ale rośnie w ogromnych ilościach od czerwca do listopada.'},
+  lejkowka_mgla:{s:'p',n:'Pospolita jesienią we wszystkich lasach regionu. Kręgi z szarych kapeluszów z intensywnym słodkawym zapachem — charakterystyczny widok późnej jesieni.'},
+  golabek_sin:  {s:'f',n:'Częsty w dąbrowach i grądach Krainy przy Noteci. Jeden z nielicznych jadalnych gołąbków — elastyczne blaszki go wyróżniają.'},
+  kozlarz_pom:  {s:'p',n:'Pospolity w wrzosowiskach i borach mieszanych Krainy. Pomarańczowy kapelusz z czarnymi łuskami trzonu — efektowny i smaczny grzyb brzozowy.'},
 };
 
 const LOCAL_LABEL={p:'Pospolity w regionie',f:'Częsty w regionie',r:'Rzadki w regionie',v:'Bardzo rzadki',n:'Nie występuje w regionie'};
@@ -32304,6 +32395,7 @@ const SPECIES_DIFF={
   mleczaj_piep:2,mleczaj_deb:2,huba:1,lejkowka_trut:3,gaska_siar:1,
   tegoskór:3,luszczak:1,luskwiak:3,kosmaczek:3,grzybowka:2,
   lejkowka_gol:2,wilgotnica:2,wieruszka_zat:4,
+  maslak_zw:2,mleczaj_wel:2,borowik_sz:2,lakowka:2,lejkowka_mgla:2,golabek_sin:3,kozlarz_pom:2,
 };
 // General rarity in Poland: 1=very common, 2=common, 3=moderately common, 4=rare, 5=very rare/endangered
 const SPECIES_RARITY={
@@ -32336,6 +32428,7 @@ const SPECIES_RARITY={
   muszomor_ziel:1,muszomor_wios:2,helmowka:4,
   huba:1,lejkowka_trut:3,gaska_siar:2,zasloniak_fio:4,
   lysiczka:2,kolpaczek_ob:2,strzepiak_nbl:3,
+  maslak_zw:1,mleczaj_wel:2,borowik_sz:4,lakowka:1,lejkowka_mgla:1,golabek_sin:2,kozlarz_pom:2,
 };
 const LOCAL_COLOR={p:'#4a7a3a',f:'#8a7a20',r:'#aa5a20',v:'#aa2020',n:'#666'};
 
