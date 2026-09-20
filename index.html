@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.22</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.23</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41919,15 +41919,35 @@ function closeSearch(){srEl.style.display='none';siEl.blur();}
 document.addEventListener('click',e=>{if(!e.target.closest('#sw'))closeSearch();});
 
 // ─── F2 debug overlay ─────────────────────────────────────
-let _dbgMapLayer=null;
+let _dbgMapLayer=null,_dbgEdgeLayer=null;
 function _closeDebugOverlay(){
   const el=document.getElementById('dbg-overlay');if(el)el.remove();
   if(_dbgMapLayer){_dbgMapLayer.remove();_dbgMapLayer=null;}
+  if(_dbgEdgeLayer){_dbgEdgeLayer.remove();_dbgEdgeLayer=null;}
+}
+function _drawDebugEdges(){
+  if(_dbgEdgeLayer){_dbgEdgeLayer.remove();_dbgEdgeLayer=null;}
+  const o=_lastDebugData?.heatOpts;
+  if(!o||(!o.waterEdge&&!o.farmlandSpec))return;
+  _dbgEdgeLayer=L.layerGroup().addTo(map);
+  const c=map.getCenter();const R=1.2; // ~120km box around map center
+  const inRange=lu=>lu.p.some(p=>Math.abs(p[0]-c.lat)<R&&Math.abs(p[1]-c.lng)<R*1.5);
+  if(o.waterEdge){
+    LANDUSE.filter(lu=>(lu.t==='water'||lu.t==='river'||lu.t==='wetland')&&inRange(lu)).forEach(lu=>{
+      L.polygon(lu.p,{color:'#4af',fill:false,weight:2,dashArray:'6,4',opacity:.85}).addTo(_dbgEdgeLayer);
+    });
+  }
+  if(o.farmlandSpec){
+    LANDUSE.filter(lu=>lu.t==='farmland'&&inRange(lu)).forEach(lu=>{
+      L.polygon(lu.p,{color:'#fa0',fill:false,weight:2,dashArray:'6,4',opacity:.85}).addTo(_dbgEdgeLayer);
+    });
+  }
 }
 function _showDebugOverlay(){
   _closeDebugOverlay();
   if(!_lastDebugData){showToast('Brak danych — zeskanuj obszar najpierw');return;}
   const d=_lastDebugData;
+  _drawDebugEdges();
   // Draw grid points on map
   _dbgMapLayer=L.layerGroup().addTo(map);
   const pts=d.habPts||[];
@@ -41988,7 +42008,7 @@ function _showDebugOverlay(){
     <button onclick="_closeDebugOverlay()" style="width:100%;padding:5px;background:var(--card2);border:1px solid var(--border);border-radius:4px;cursor:pointer;color:var(--text);font-size:12px">Zamknij</button>`;
   document.body.appendChild(div);
 }
-function _refreshDebugOverlay(){if(document.getElementById('dbg-overlay'))_showDebugOverlay();}
+function _refreshDebugOverlay(){if(document.getElementById('dbg-overlay')){_showDebugOverlay();_drawDebugEdges();}}
 document.addEventListener('keydown',e=>{
   if(e.key!=='F2')return;
   e.preventDefault();
