@@ -41112,10 +41112,9 @@ function _buildBaseHeat(mid){
 function selectMushroom(mid,e){
   if(!MUSHROOMS[mid])return;
   const isShift=e?.shiftKey;
-  const mobListOpen=window.innerWidth<=767&&document.getElementById('sidebar').classList.contains('mob-open');
 
-  if(isShift&&selectedMids.size>0||mobListOpen){
-    // Multi-select: toggle this mushroom; on mobile list — keep list open
+  if(isShift&&selectedMids.size>0){
+    // Shift+click: multi-select toggle
     if(selectedMids.has(mid)){selectedMids.delete(mid);delete _midHeatCache[mid];}
     else{selectedMids.add(mid);if(!_midHeatCache[mid])_midHeatCache[mid]=_buildBaseHeat(mid).pts;}
     if(!selectedMids.size){clearHeat();return;}
@@ -41125,12 +41124,10 @@ function selectMushroom(mid,e){
     if(heatLayer)map.removeLayer(heatLayer);
     heatLayer=_mkHeat(allPts,map.getZoom()).addTo(map);_heatPts=allPts;
     document.getElementById('hl').classList.add('vis');
-    document.getElementById('hl-name').textContent=selectedMids.size>1?`${selectedMids.size} gatunki`:MUSHROOMS[mid].name;
+    document.getElementById('hl-name').textContent=selectedMids.size>1?`${selectedMids.size} gatunki`:'';
     if(selectedMids.size>1){document.getElementById('hl-hab').textContent='Połączona mapa ciepła';document.getElementById('hl-cert').textContent='';}
-    if(!mobListOpen){
-      showInfoPanel(mid);
-      if(window.innerWidth<=767){document.getElementById('sidebar').classList.remove('mob-open');const tabList=document.getElementById('mob-list');if(tabList)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabList);});}
-    }
+    showInfoPanel(mid);
+    if(window.innerWidth<=767){document.getElementById('sidebar').classList.remove('mob-open');const tabList=document.getElementById('mob-list');if(tabList)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabList);});}
     return;
   }
 
@@ -42575,7 +42572,18 @@ document.querySelectorAll('.lb[data-base]').forEach(btn=>{
   };
 });
 
-document.getElementById('pcls').onclick=()=>{document.getElementById('ip').classList.remove('open');clearHeat();};
+document.getElementById('pcls').onclick=()=>{
+  document.getElementById('ip').classList.remove('open');
+  if(window.innerWidth<=767){
+    // On mobile: reopen the list instead of clearing everything
+    const sb=document.getElementById('sidebar');
+    const tabList=document.getElementById('mob-list');
+    sb.classList.add('mob-open');
+    if(tabList)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabList);});
+  }else{
+    clearHeat();
+  }
+};
 document.getElementById('apcls').onclick=()=>{
   document.getElementById('ap').classList.remove('open');
   if(drawnLayer){map.removeLayer(drawnLayer);drawnLayer=null;}
