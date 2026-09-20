@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.24</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.25</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32455,8 +32455,8 @@ function genHeat(weights,seed=42,total=500,opts={}){
     const localForests=FORESTS.filter(f=>{
       const c=polyCentroid(f.p);
       if(Math.abs(c[0]-reg.c[0])>=reg.r||Math.abs(c[1]-reg.c[1])>=reg.r*1.6)return false;
-      if(coniferPref&&f.c&&f.c!=='312')return false;
-      if(broadleafPref&&f.c&&f.c!=='311')return false;
+      if(coniferPref&&!broadleafPref&&f.c&&f.c!=='312')return false;
+      if(broadleafPref&&!coniferPref&&f.c&&f.c!=='311')return false;
       return true;
     });
     const forestN=Math.round(n*(waterEdge?.72:1.0));
@@ -40986,7 +40986,7 @@ function selectMushroom(mid,e){
   document.querySelectorAll('.mc').forEach(c=>c.classList.toggle('sel',c.dataset.mid===mid));
   if(heatLayer)map.removeLayer(heatLayer);
   const m=MUSHROOMS[mid];
-  const {pts,openHab,wetHab,waterEdge,farmlandSpec,coniferPref,broadleafPref}=_buildBaseHeat(mid);
+  const {pts,openHab,wetHab,waterEdge,farmlandSpec,urbanSpec,coniferPref,broadleafPref}=_buildBaseHeat(mid);
   _heatPts=pts;_midHeatCache[mid]=pts.slice();
   heatLayer=_mkHeat(_heatPts,map.getZoom()).addTo(map);
   document.getElementById('hl').classList.add('vis');
@@ -41072,7 +41072,7 @@ function _showBestSpot(mid){
       else if(opts.urbanSpec)ok=h.ur||h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur);
       else if(opts.farmlandSpec)ok=h.fa||h.pa;
       else if(opts.openHab)ok=h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur);
-      else ok=h.f.some(f=>(!opts.coniferPref||f.c==='312')&&(!opts.broadleafPref||f.c==='311'));
+      else ok=h.f.some(f=>{if(opts.coniferPref&&!opts.broadleafPref)return f.c==='312';if(opts.broadleafPref&&!opts.coniferPref)return f.c==='311';return true;});
       if(ok)pts.push([h.la,h.ln,2.5]);
     });
   }
@@ -41942,10 +41942,17 @@ function _closeDebugOverlay(){
 function _drawDebugEdges(){
   if(_dbgEdgeLayer){_dbgEdgeLayer.remove();_dbgEdgeLayer=null;}
   const o=_lastDebugData?.heatOpts;
-  if(!o||(!o.waterEdge&&!o.farmlandSpec&&!o.urbanSpec))return;
+  if(!o)return;
   _dbgEdgeLayer=L.layerGroup().addTo(map);
   const c=map.getCenter();const R=1.2;
   const inRange=lu=>lu.p.some(p=>Math.abs(p[0]-c.lat)<R&&Math.abs(p[1]-c.lng)<R*1.5);
+  const isForest=!o.wetHab&&!o.openHab&&!o.farmlandSpec&&!o.urbanSpec;
+  if(isForest){
+    FORESTS.filter(f=>{const cc=polyCentroid(f.p);return Math.abs(cc[0]-c.lat)<R&&Math.abs(cc[1]-c.lng)<R*1.5;}).forEach(f=>{
+      const col=f.c==='312'?'#1a7a1a':f.c==='311'?'#5aaa3a':'#3a9a5a';
+      L.polygon(f.p,{color:col,fill:false,weight:2,dashArray:'5,4',opacity:.75}).addTo(_dbgEdgeLayer);
+    });
+  }
   if(o.waterEdge){
     LANDUSE.filter(lu=>(lu.t==='water'||lu.t==='river'||lu.t==='wetland')&&inRange(lu)).forEach(lu=>{
       L.polygon(lu.p,{color:'#4af',fill:false,weight:2,dashArray:'6,4',opacity:.85}).addTo(_dbgEdgeLayer);
