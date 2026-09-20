@@ -42907,27 +42907,6 @@ if(window.innerWidth<=767){
   document.getElementById('ip-handle').onclick=_ipMini;
 }
 
-// ── Mobile nav toggle-to-close ────────────────────────────────────────────
-(function(){
-  const sb=document.getElementById('sidebar');
-  const tabMap=document.getElementById('mob-map');
-  const tabList=document.getElementById('mob-list');
-  const tabFilters=document.getElementById('mob-filters');
-  function setActive(btn){[tabMap,tabList,tabFilters].forEach(t=>t.classList.remove('active'));btn.classList.add('active');}
-  tabMap.onclick=()=>{setActive(tabMap);sb.classList.remove('mob-open');};
-  tabList.onclick=()=>{
-    if(sb.classList.contains('mob-open')&&tabList.classList.contains('active')){
-      setActive(tabMap);sb.classList.remove('mob-open');
-    }else{
-      setActive(tabList);sb.classList.add('mob-open');
-      setTimeout(()=>document.getElementById('ml').scrollIntoView(),50);
-    }
-  };
-  tabFilters.onclick=()=>{
-    _mcToggle();
-    setActive(tabFilters.classList.contains('active')?tabMap:tabFilters);
-  };
-})();
 
 // ── Compass: bearing sync + click to reset ────────────────────────────────
 (function(){
@@ -42968,5 +42947,27 @@ document.getElementById('toast').addEventListener('click',()=>{
     <span>Filtry</span>
   </button>
 </div>
+<script>
+(function(){
+  const sb=document.getElementById('sidebar');
+  const tabMap=document.getElementById('mob-map');
+  const tabList=document.getElementById('mob-list');
+  const tabFilters=document.getElementById('mob-filters');
+  function setActive(btn){[tabMap,tabList,tabFilters].forEach(t=>t.classList.remove('active'));btn.classList.add('active');}
+  tabMap.onclick=()=>{setActive(tabMap);sb.classList.remove('mob-open');};
+  tabList.onclick=()=>{
+    if(sb.classList.contains('mob-open')&&tabList.classList.contains('active')){
+      setActive(tabMap);sb.classList.remove('mob-open');
+    }else{
+      setActive(tabList);sb.classList.add('mob-open');
+      setTimeout(()=>document.getElementById('ml').scrollIntoView(),50);
+    }
+  };
+  tabFilters.onclick=()=>{
+    _mcToggle();
+    setActive(document.getElementById('mc').classList.contains('mc-col')?tabMap:tabFilters);
+  };
+})();
+</script>
 </body>
 </html>
