@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.3</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.4</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41027,6 +41027,28 @@ async function loadWikiPhoto(wiki,imgEl){
   }catch{}
 }
 
+function _showBestSpot(mid){
+  let pts=_midHeatCache[mid];
+  if(!pts||!pts.length){const res=_buildBaseHeat(mid);pts=res.pts;_midHeatCache[mid]=pts.slice();}
+  if(!pts||!pts.length){showToast('Brak danych ciepłomapowych');return;}
+  const R=111000;
+  let best=null,bestScore=-1;
+  pts.forEach(p=>{
+    let score=p[2];
+    if(_userGPS){
+      const km=Math.hypot((p[0]-_userGPS[0])*R,(p[1]-_userGPS[1])*R*Math.cos(_userGPS[0]*Math.PI/180))/1000;
+      if(km<300)score*=Math.max(0.2,1-km/200);
+    }
+    if(score>bestScore){bestScore=score;best=p;}
+  });
+  if(!best){showToast('Nie znaleziono miejsca');return;}
+  document.getElementById('ip').classList.remove('open');
+  map.flyTo([best[0],best[1]],13,{duration:1.8});
+  const mk=L.circleMarker([best[0],best[1]],{radius:12,color:'#d4a030',weight:3,fillColor:'#d4a030',fillOpacity:.25}).addTo(map);
+  setTimeout(()=>map.removeLayer(mk),10000);
+  showToast('Najlepsze miejsce: '+MUSHROOMS[mid].name);
+}
+
 function showInfoPanel(mid){
   const m=MUSHROOMS[mid];
   if(!m)return;
@@ -41078,7 +41100,9 @@ function showInfoPanel(mid){
     ${m.edib?`<div class="isec"><h4>Wartość kulinarna</h4><p>${m.edib}</p></div>`:''}
     ${m.lookalikes?`<div class="isec"><h4>Gatunki podobne — uwaga!</h4><div class="labox">⚠ ${m.lookalikes}</div></div>`:''}
     ${(()=>{const ld=MUSHROOM_LOCAL[mid];if(!ld)return '';return `<div class="isec" style="border-left:3px solid ${LOCAL_COLOR[ld.s]||'#888'};padding-left:8px;margin-top:4px"><h4 style="color:${LOCAL_COLOR[ld.s]||'#888'}">🗺 W regionie Krajna / Wyrzysk</h4><div style="font-weight:600;color:${LOCAL_COLOR[ld.s]};margin-bottom:4px">${LOCAL_LABEL[ld.s]}</div><p style="margin:0;font-size:12px">${ld.n}</p></div>`;})()}
+    <div class="isec" style="padding-bottom:4px"><button id="pbest-btn" style="width:100%;padding:10px 14px;background:rgba(82,184,73,.13);color:var(--green);border:1px solid rgba(82,184,73,.3);border-radius:var(--r);cursor:pointer;font-size:13px;font-family:var(--f-body)">📍 Znajdź najlepsze miejsce na mapie</button></div>
   `;
+  document.getElementById('pbest-btn').onclick=()=>_showBestSpot('${mid}');
   if(m.wiki){
     const img=document.getElementById('mwiki-photo');
     if(img){
@@ -41180,6 +41204,11 @@ function analyzeArea(layer){
   const span=Math.max(b.getNorth()-b.getSouth(),b.getEast()-b.getWest());
   const drawnPts=layer.getLatLngs()[0];
   const terrain=getTerrainFeatures(drawnPts);
+  // Convert to [lat,lng] pairs for pipTest
+  const drawnArr=drawnPts.map(p=>[p.lat,p.lng]);
+  // BDL stands and wyrForests polygons inside the drawn area
+  const inAreaBDL=bdlStore.filter(b=>pipTest([b.lat,b.lng],drawnArr));
+  const inAreaWyr=wyrForests.filter(f=>f.poly.some(pt=>pipTest(pt,drawnArr)));
   const rscores={};
   for(const [rid,reg] of Object.entries(REGIONS)){
     const dlat=clat-reg.c[0];
@@ -41188,24 +41217,28 @@ function analyzeArea(layer){
     const thresh=reg.r+span/2;
     if(dist<thresh*1.8)rscores[rid]=Math.max(0,1-dist/(thresh*1.2));
   }
-  // Detect terrain types from CLC forest codes + landuse
+  // Detect terrain types from all sources: CLC, wyrForests, BDL
   const hasWetland=terrain.landuse.some(l=>l.t==='wetland');
   const hasPasture=terrain.landuse.some(l=>l.t==='pasture');
   const hasMeadow=terrain.landuse.some(l=>l.t==='meadow');
   const hasFarmland=terrain.landuse.some(l=>l.t==='farmland');
-  const hasConifer=terrain.forests.some(f=>f.c==='312');
-  const hasBroadleaf=terrain.forests.some(f=>f.c==='311');
+  const hasPine=terrain.forests.some(f=>f.c==='312')||inAreaWyr.some(f=>f.type==='pine'||f.type==='larch')||inAreaBDL.some(b=>/\b(SO|PI|ŚW|SW|JD|MD)\b/i.test(b.cd||''));
+  const hasBroadleaf=terrain.forests.some(f=>f.c==='311')||inAreaWyr.some(f=>f.type==='oak'||f.type==='beech')||inAreaBDL.some(b=>/\b(DB|BK|GB|JW)\b/i.test(b.cd||''));
+  const hasBirch=inAreaWyr.some(f=>f.type==='birch')||inAreaBDL.some(b=>/\bBRZ\b/i.test(b.cd||''));
+  const hasAlder=inAreaWyr.some(f=>f.type==='alder')||inAreaBDL.some(b=>/\b(OL|OLS)\b/i.test(b.cd||''));
   const hasMixed=terrain.forests.some(f=>f.c==='313');
-  const hasForest=terrain.forests.length>0;
+  const hasForest=terrain.forests.length>0||inAreaWyr.length>0||inAreaBDL.length>0;
   const results=Object.entries(MUSHROOMS).map(([mid,m])=>{
     let score=0,weight=0;
     for(const [rid,prox] of Object.entries(rscores)){
       score+=(m.weights[rid]||0)*prox;weight+=prox;
     }
     let base=weight>0?score/weight:0;
-    // Forest boosts by type
-    if(hasConifer&&m.terrain.some(t=>/sosnow|iglast|modrzew|świerk/i.test(t)))base=Math.min(base*1.6,99);
+    // Forest boosts by specific type
+    if(hasPine&&m.terrain.some(t=>/sosnow|iglast|modrzew|świerk/i.test(t)))base=Math.min(base*1.6,99);
     else if(hasBroadleaf&&m.terrain.some(t=>/dąb|dębów|grąd|liściasty|buk|grab/i.test(t)))base=Math.min(base*1.5,99);
+    else if(hasBirch&&m.terrain.some(t=>/brzozy|brzezin/i.test(t)))base=Math.min(base*1.5,99);
+    else if(hasAlder&&m.terrain.some(t=>/olsz|olch|olszyn/i.test(t)))base=Math.min(base*1.5,99);
     else if(hasMixed&&m.terrain.some(t=>/mieszan|sosnow|liściasty/i.test(t)))base=Math.min(base*1.3,99);
     else if(hasForest&&base<4)base=4;
     if(hasWetland&&m.terrain.some(t=>/torf|bagien|podmok|wilgotn/i.test(t)))base=Math.min(base*1.2,99);
@@ -41213,7 +41246,8 @@ function analyzeArea(layer){
     if(hasFarmland&&m.terrain.some(t=>/łąk|pastw|ogród|kompost/i.test(t)))base=Math.min(base*1.1,99);
     return{mid,m,score:base};
   }).filter(x=>x.score>1).sort((a,b)=>b.score-a.score);
-  showAreaPanel(results,terrain);
+  const richTerrain={...terrain,bdlStands:inAreaBDL};
+  showAreaPanel(results,richTerrain);
 }
 
 function showAreaPanel(results,terrain){
@@ -41221,10 +41255,25 @@ function showAreaPanel(results,terrain){
   const max=results[0]?.score||1;
   const cc=m=>m.cat==='deadly'?'#c0392b':m.cat==='poisonous'?'#e07060':m.cat==='inedible'?'#7f8c8d':m.rare?'var(--gold)':'var(--green)';
   const PAGE=15;
-  let shown=Math.min(PAGE,results.length);
   const ar=document.getElementById('ar');
+  let shown=PAGE,activeFilter='all';
+  const FILTERS=[['all','Wszystkie'],['edible','Jadalne'],['poisonous','Trujące'],['rare','Rzadkie'],['inedible','Niejadalne']];
+  function getFiltered(){
+    if(activeFilter==='all')return results;
+    if(activeFilter==='edible')return results.filter(({m})=>m.cat==='edible');
+    if(activeFilter==='poisonous')return results.filter(({m})=>m.cat==='poisonous'||m.cat==='deadly'||m.cat==='hallucinogenic');
+    if(activeFilter==='rare')return results.filter(({m})=>m.rare);
+    if(activeFilter==='inedible')return results.filter(({m})=>m.cat==='inedible');
+    return results;
+  }
   function renderCards(){
-    const cards=results.slice(0,shown).map(({mid,m,score})=>`
+    const filtered=getFiltered();
+    const page=filtered.slice(0,shown);
+    const rem=filtered.length-shown;
+    const filterBar=`<div style="display:flex;gap:5px;padding:10px 12px 6px;flex-wrap:wrap">${
+      FILTERS.map(([k,label])=>`<button data-fcat="${k}" style="padding:3px 10px;font-size:11px;background:${activeFilter===k?'var(--green)':'var(--card2)'};color:${activeFilter===k?'#fff':'var(--text)'};border:1px solid ${activeFilter===k?'var(--green)':'var(--border)'};border-radius:20px;cursor:pointer">${label}</button>`).join('')
+    }</div>`;
+    const cards=page.map(({mid,m,score})=>`
       <div class="ai" onclick="selectMushroom('${mid}')">
         <div class="ai-icon">${getMushSVG(mid)}</div>
         <div class="ai-body">
@@ -41233,26 +41282,28 @@ function showAreaPanel(results,terrain){
           <div class="apct">${m.latin}</div>
         </div>
       </div>`).join('');
-    const rem=results.length-shown;
     const moreBtn=rem>0?`<div style="padding:8px 16px 16px"><button id="ar-more-btn" style="width:100%;padding:10px;background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:var(--r);cursor:pointer;font-size:13px">Pokaż więcej (${rem})</button></div>`:'';
-    ar.innerHTML=terrainHTML+(results.length?cards+moreBtn:`<div style="padding:20px;color:var(--muted);font-size:13px">Brak danych dla tego obszaru.</div>`);
-    const btn=document.getElementById('ar-more-btn');
-    if(btn)btn.onclick=()=>{shown=Math.min(shown+PAGE,results.length);renderCards();};
+    ar.innerHTML=terrainHTML+filterBar+(filtered.length?cards+moreBtn:`<div style="padding:20px;color:var(--muted);font-size:13px">Brak wyników dla tego filtru.</div>`);
+    ar.querySelectorAll('[data-fcat]').forEach(btn=>{btn.onclick=()=>{activeFilter=btn.dataset.fcat;shown=PAGE;renderCards();};});
+    const mBtn=document.getElementById('ar-more-btn');
+    if(mBtn)mBtn.onclick=()=>{shown+=PAGE;renderCards();};
   }
   document.getElementById('ap-loc').textContent='';
   renderCards();
   document.getElementById('ap').classList.add('open');
 }
 
-// ─── Draw (native drag-draw) ─────────────────────────────
+// ─── Draw (native drag + polygon modes) ──────────────────
 let drawnLayer=null,drawing=false,_drawStart=null,_drawPreview=null;
-let _drBtn=null;
+let _polyMode=false,_polyPts=[],_polyLine=null,_polyLastClick=0;
+let _drBtn=null,_polyBtn=null;
+
+function _btnStyle(a){a.style.fontSize='16px';a.style.lineHeight='30px';a.style.width='30px';a.style.display='block';a.style.textAlign='center';}
+
 function _exitDraw(){
-  drawing=false;
-  map.dragging.enable();
-  map.getContainer().style.cursor='';
+  drawing=false;map.dragging.enable();map.getContainer().style.cursor='';
   map.off('mousedown',_onDrawDown);
-  if(_drBtn){_drBtn.innerHTML='⬡';_drBtn.classList.remove('dr-drawing');}
+  if(_drBtn){_drBtn.innerHTML='▭';_drBtn.classList.remove('dr-drawing');}
 }
 function _onDrawMove(e){if(!_drawPreview||!_drawStart)return;_drawPreview.setBounds(L.latLngBounds(_drawStart,e.latlng));}
 function _onDrawUp(e){
@@ -41277,22 +41328,67 @@ function _onDrawDown(e){
   _drawPreview=L.rectangle([[e.latlng.lat,e.latlng.lng],[e.latlng.lat,e.latlng.lng]],{color:'#c9a84c',fillOpacity:.08,weight:2,dashArray:'5,5'}).addTo(map);
   map.on('mousemove',_onDrawMove);map.on('mouseup',_onDrawUp);
 }
+
+function _exitPoly(){
+  _polyMode=false;map.dragging.enable();map.getContainer().style.cursor='';
+  map.off('click',_onPolyClick);map.off('dblclick',_onPolyDblClick);
+  if(_polyLine){map.removeLayer(_polyLine);_polyLine=null;}
+  _polyPts=[];
+  if(_polyBtn){_polyBtn.innerHTML='✏';_polyBtn.classList.remove('dr-drawing');}
+}
+function _onPolyClick(e){
+  const now=Date.now();
+  if(now-_polyLastClick<350&&_polyPts.length>1)return; // ignore first click of a dblclick
+  _polyLastClick=now;
+  _polyPts.push(e.latlng);
+  if(_polyLine)map.removeLayer(_polyLine);
+  if(_polyPts.length>1)_polyLine=L.polyline(_polyPts,{color:'#c9a84c',weight:2,dashArray:'5,5'}).addTo(map);
+}
+function _onPolyDblClick(e){
+  // Remove last vertex if it duplicates the dblclick position
+  if(_polyPts.length>0&&_polyPts[_polyPts.length-1].distanceTo(e.latlng)<20)_polyPts.pop();
+  if(_polyPts.length<3){showToast('Potrzebujesz co najmniej 3 punktów');_exitPoly();return;}
+  if(_polyLine){map.removeLayer(_polyLine);_polyLine=null;}
+  const poly=L.polygon(_polyPts,{color:'#c9a84c',fillOpacity:.08,weight:2}).addTo(map);
+  if(drawnLayer)map.removeLayer(drawnLayer);
+  drawnLayer=poly;_polyPts=[];
+  document.getElementById('scan-r').style.display='none';
+  analyzeArea(drawnLayer);
+  _exitPoly();
+}
+
 {
   const DrCtrl=L.Control.extend({
     options:{position:'topleft'},
     onAdd(){
       const bar=L.DomUtil.create('div','leaflet-bar');
+      // Rectangle drag button
       const a=L.DomUtil.create('a','',bar);
-      a.innerHTML='⬡';a.href='#';a.title='Narysuj obszar analizy';
-      a.style.fontSize='16px';a.style.lineHeight='30px';a.style.width='30px';a.style.display='block';a.style.textAlign='center';
+      a.innerHTML='▭';a.href='#';a.title='Zaznacz prostokąt';_btnStyle(a);
+      L.DomEvent.on(a,'mousedown',L.DomEvent.stop); // prevent triggering draw on cancel click
       L.DomEvent.on(a,'click',e=>{L.DomEvent.stop(e);
+        if(_polyMode){_exitPoly();}
         if(drawing){if(_drawPreview){map.removeLayer(_drawPreview);_drawPreview=null;}_drawStart=null;_exitDraw();return;}
         drawing=true;a.innerHTML='✕';a.classList.add('dr-drawing');
         map.dragging.disable();map.getContainer().style.cursor='crosshair';
         map.on('mousedown',_onDrawDown);
-        showToast('Przeciągnij aby zaznaczyć obszar analizy');
+        showToast('Przeciągnij aby zaznaczyć obszar');
       });
-      _drBtn=a;return bar;
+      _drBtn=a;
+      // Polygon draw button
+      const p=L.DomUtil.create('a','',bar);
+      p.innerHTML='✏';p.href='#';p.title='Narysuj wielokąt';_btnStyle(p);p.style.fontSize='14px';
+      L.DomEvent.on(p,'mousedown',L.DomEvent.stop);
+      L.DomEvent.on(p,'click',e=>{L.DomEvent.stop(e);
+        if(drawing){if(_drawPreview){map.removeLayer(_drawPreview);_drawPreview=null;}_drawStart=null;_exitDraw();}
+        if(_polyMode){_exitPoly();return;}
+        _polyMode=true;p.innerHTML='✕';p.classList.add('dr-drawing');
+        map.dragging.disable();map.getContainer().style.cursor='crosshair';
+        _polyPts=[];_polyLastClick=0;
+        map.on('click',_onPolyClick);map.on('dblclick',_onPolyDblClick);
+        showToast('Klikaj aby dodać punkty · dwuklik aby zakończyć');
+      });
+      _polyBtn=p;return bar;
     }
   });
   new DrCtrl().addTo(map);
@@ -41542,7 +41638,7 @@ function fetchWeather(lat,lng){
 fetchWeather(53.13,17.28);
 
 map.doubleClickZoom.disable();
-let _scanPin=null,_scanRadius=500;
+let _scanPin=null,_scanRadius=500,_userGPS=null;
 
 function _removeScanPin(){
   if(!_scanPin)return;
@@ -41561,6 +41657,8 @@ function _placeScanPin(lat,lng){
 }
 
 map.on('dblclick',e=>{
+  if(_polyMode)return; // polygon mode handles its own dblclick
+  if(_scanPin){_removeScanPin();document.getElementById('ap').classList.remove('open');document.getElementById('scan-r').style.display='none';return;}
   const{lat,lng}=e.latlng;
   _placeScanPin(lat,lng);
   document.getElementById('scan-r').style.display='flex';
@@ -41967,6 +42065,8 @@ document.getElementById('pcls').onclick=()=>{document.getElementById('ip').class
 document.getElementById('apcls').onclick=()=>{
   document.getElementById('ap').classList.remove('open');
   if(drawnLayer){map.removeLayer(drawnLayer);drawnLayer=null;}
+  _removeScanPin();
+  document.getElementById('scan-r').style.display='none';
 };
 
 let tTimer=null;
@@ -41995,6 +42095,7 @@ function showToast(msg){
       a.textContent='○';a.style.animation='spin 1s linear infinite';a.style.opacity='.5';
       navigator.geolocation.getCurrentPosition(pos=>{
         busy=false;a.textContent='📍';a.style.animation='';a.style.opacity='';
+        _userGPS=[pos.coords.latitude,pos.coords.longitude];
         const ll=[pos.coords.latitude,pos.coords.longitude];
         if(gpsLayer)map.removeLayer(gpsLayer);
         gpsLayer=L.layerGroup([
