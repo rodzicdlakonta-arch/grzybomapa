@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.16</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.17</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -40865,7 +40865,7 @@ function _buildBaseHeat(mid){
   const openHab=HAB_PATTERNS.meadow.test(terrainStr)&&!HAB_PATTERNS.forest.test(terrainStr);
   const wetHab=HAB_PATTERNS.wetland.test(terrainStr);
   const waterEdge=/olsz|olch|łęg|rip|rzek|potok|strum|brzeg|jezioro|woda|nadwodny/i.test(terrainStr+' '+(m.habitat||''));
-  const farmlandSpec=/ogród|kompost|trawnik|pastw.*pole|pole.*pastw/i.test(terrainStr)&&!HAB_PATTERNS.forest.test(terrainStr);
+  const farmlandSpec=/ogród|kompost|trawnik|pobocz|przydroż|obornik|nawóz|pastw.*pole|pole.*pastw/i.test(terrainStr)&&!HAB_PATTERNS.forest.test(terrainStr);
   const coniferTerrain=/iglaste|bór|sosnow|świerkow/i.test(terrainStr);
   const broadleafTerrain=/liściaste|dąbrow|bukow|grabowe|grąd/i.test(terrainStr);
   const sandySoil=/piaszczysta|piaskow|ubogie bory/i.test(soilStr);
@@ -40890,7 +40890,7 @@ function _buildBaseHeat(mid){
   else if(/grabowy|grądow/i.test(terrainStr))preferredCodes=['GB','DB'];
   else if(/olsz|olchow/i.test(terrainStr))preferredCodes=['OL'];
   else if(/brzozow/i.test(terrainStr))preferredCodes=['BRZ'];
-  const urbanTolerant=/park|skwer|trawnik|ogród.*miejsk|zieleń.*miejsk|skraj.*mias/i.test(terrainStr+' '+(m.habitat||''));
+  const urbanTolerant=/park|skwer|trawnik|ogród|kompost|pobocz|przydroż|obornik|ogród.*miejsk|zieleń.*miejsk|skraj.*mias/i.test(terrainStr+' '+(m.habitat||''));
   let pts=genHeat(m.weights,seed,400,{openHab,wetHab,farmlandSpec,waterEdge,coniferPref,broadleafPref,mountainSpec,avoidUrban:true,urbanTolerant,preferredCodes}).map(p=>[p[0],p[1],p[2]*.72]);
   if(bdlStore.length&&!openHab&&!farmlandSpec){
     const isSaprofit=/saprofit drewna|pasożyt/i.test(m.ph||'');
@@ -41038,7 +41038,7 @@ function _showBestSpot(mid){
     scanHab.forEach(h=>{
       let ok=false;
       if(opts.wetHab)ok=h.we;
-      else if(opts.farmlandSpec)ok=h.fa;
+      else if(opts.farmlandSpec)ok=h.fa||h.ur||h.pa;
       else if(opts.openHab)ok=h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur);
       else ok=h.f.some(f=>(!opts.coniferPref||f.c==='312')&&(!opts.broadleafPref||f.c==='311'));
       if(ok)pts.push([h.la,h.ln,2.5]);
@@ -41159,7 +41159,7 @@ function _getScanOpts(m){
   const isF=/las|bór|iglaste|liściaste|sosnow|świerkow|bukow|dąbrow|mieszany/i.test(t);
   const wetHab=/torf|bagien|podmok|wilgotn|bagno/i.test(t);
   const openHab=/łąk|pastw|murawa|polana/i.test(t)&&!isF;
-  const farmlandSpec=/ogród|kompost|trawnik/i.test(t)&&!isF;
+  const farmlandSpec=/ogród|kompost|trawnik|pobocz|przydroż|obornik|nawóz/i.test(t)&&!isF;
   const coniferPref=/iglaste|bór|sosnow|świerkow/i.test(t);
   const broadleafPref=/liściaste|dąbrow|bukow|grabowe|grąd/i.test(t);
   const acidicSoil=m.ph&&m.ph[0]<5.8;
@@ -41316,7 +41316,7 @@ function _doAreaAnalysis(layer){
     let hc=0;
     habPts.forEach(h=>{
       if(opts.wetHab){if(h.we)hc++;}
-      else if(opts.farmlandSpec){if(h.fa)hc++;}
+      else if(opts.farmlandSpec){if(h.fa||h.ur||h.pa)hc++;}
       else if(opts.openHab){if(h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur))hc++;}
       else{if(h.f.some(f=>(!opts.coniferPref||!f.c||f.c==='312')&&(!opts.broadleafPref||!f.c||f.c==='311')))hc++;}
     });
@@ -41625,7 +41625,7 @@ function _doPointAnalysis(lat,lng,radiusM){
     let hc=0;
     habPts2.forEach(h=>{
       if(opts.wetHab){if(h.we)hc++;}
-      else if(opts.farmlandSpec){if(h.fa)hc++;}
+      else if(opts.farmlandSpec){if(h.fa||h.ur||h.pa)hc++;}
       else if(opts.openHab){if(h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur))hc++;}
       else{if(h.f.some(f=>(!opts.coniferPref||!f.c||f.c==='312')&&(!opts.broadleafPref||!f.c||f.c==='311')))hc++;}
     });
