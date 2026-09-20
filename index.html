@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.21</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.22</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -40944,6 +40944,7 @@ function _buildBaseHeat(mid){
   _lastDebugData.heatMid=mid;_lastDebugData.heatName=m.name;
   _lastDebugData.heatOpts={openHab,wetHab,farmlandSpec,waterEdge,coniferPref,broadleafPref,mountainSpec,acidicSoil,alkalineSoil,urbanTolerant,preferredCodes,phLow,phHigh,elevMin};
   _lastDebugData.heatPtsCount=pts.length;
+  _refreshDebugOverlay();
   return {pts,openHab,wetHab,waterEdge,farmlandSpec,coniferPref,broadleafPref};
 }
 
@@ -40982,7 +40983,7 @@ function selectMushroom(mid,e){
   const _wxEl=document.getElementById('wx');
   if(_wxEl&&!_wxEl.classList.contains('wx-col')){_wxEl.classList.add('wx-col');_wxEl.dataset.autoCollapsed='1';document.getElementById('wx-col').textContent='▼';}
   document.getElementById('hl-name').textContent=m.name;
-  const habLabel=wetHab?'🌿 Mokradła i torfowiska':waterEdge?'💧 Olsy i brzegi wód':openHab?'🌿 Łąki i pola':farmlandSpec?'🌾 Pola i ogrody':coniferPref?'🌲 Lasy iglaste':broadleafPref?'🍂 Lasy liściaste':'🌲 Lasy i ich skraje';
+  const habLabel=wetHab?'🌿 Mokradła i torfowiska':waterEdge?'💧 Olsy i brzegi wód':openHab?'🌿 Łąki i pola':farmlandSpec?'🌾 Skraje pól i ogrody':coniferPref?'🌲 Lasy iglaste':broadleafPref?'🍂 Lasy liściaste':'🌲 Lasy i ich skraje';
   document.getElementById('hl-hab').textContent=habLabel;
   const certEl=document.getElementById('hl-cert');
   certEl.textContent='Pobieranie danych…';certEl.style.color='var(--muted)';
@@ -41966,10 +41967,10 @@ function _showDebugOverlay(){
     ${d.heatOpts?`
     <hr style="border-color:var(--border);margin:8px 0">
     <div style="font-weight:700;font-size:12px;margin-bottom:6px">🗺️ Heatmapa: ${d.heatName||'?'}</div>
-    ${(()=>{const o=d.heatOpts;const scoringType=o.wetHab?'🌿 Mokradło':o.farmlandSpec?'🏙️ Ogrody/urban':o.openHab?'🌾 Łąki/otwarte':o.coniferPref&&o.broadleafPref?'🌲 Las (mieszany)':o.coniferPref?'🌲 Bór iglasty':o.broadleafPref?'🍂 Las liściasty':'🌲 Las (ogólny)';return`<div style="margin-bottom:6px"><b>Scoring:</b> ${scoringType}<br>
-      <span style="color:var(--muted)">mokradło:</span> ${o.wetHab?'✓':'✗'}  <span style="color:var(--muted)">łąki:</span> ${o.openHab?'✓':'✗'}  <span style="color:var(--muted)">ogrody:</span> ${o.farmlandSpec?'✓':'✗'}<br>
+    ${(()=>{const o=d.heatOpts;const scoringType=o.wetHab?'🌿 Mokradło':o.farmlandSpec?'🌾 Skraje pól/ogrody':o.openHab?'🌾 Łąki/otwarte':o.coniferPref&&o.broadleafPref?'🌲 Las (mieszany)':o.coniferPref?'🌲 Bór iglasty':o.broadleafPref?'🍂 Las liściasty':'🌲 Las (ogólny)';return`<div style="margin-bottom:6px"><b>Scoring:</b> ${scoringType}<br>
+      <span style="color:var(--muted)">mokradło:</span> ${o.wetHab?'✓':'✗'}  <span style="color:var(--muted)">łąki:</span> ${o.openHab?'✓':'✗'}  <span style="color:var(--muted)">skraj pól:</span> ${o.farmlandSpec?'✓':'✗'}<br>
       <span style="color:var(--muted)">iglaste:</span> ${o.coniferPref?'✓':'✗'}  <span style="color:var(--muted)">liściaste:</span> ${o.broadleafPref?'✓':'✗'}  <span style="color:var(--muted)">góry:</span> ${o.mountainSpec?'✓':'✗'}<br>
-      <span style="color:var(--muted)">brzegi wód:</span> ${o.waterEdge?'✓':'✗'}  <span style="color:var(--muted)">urban-tolerant:</span> ${o.urbanTolerant?'✓':'✗'}<br>
+      <span style="color:var(--muted)">skraj wód:</span> ${o.waterEdge?'✓':'✗'}  <span style="color:var(--muted)">urban-tolerant:</span> ${o.urbanTolerant?'✓':'✗'}<br>
       <span style="color:var(--muted)">pH:</span> ${o.phLow}–${o.phHigh}${o.acidicSoil?' (kwaśne)':o.alkalineSoil?' (zasadowe)':''}<br>
       <span style="color:var(--muted)">elev min:</span> ${o.elevMin}m${o.mountainSpec?' → górski':''}${o.preferredCodes?`  <span style="color:var(--muted)">BDL:</span> ${o.preferredCodes.join(',')}`:''}</div>
       <div style="color:var(--muted);font-size:10.5px">${d.heatPtsCount||0} pkt ciepłomapy wygenerowanych</div>`;})()}
