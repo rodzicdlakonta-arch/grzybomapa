@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.39</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.40</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -31994,13 +31994,14 @@ const MUSHROOMS={
     weights:{bw:52,au:48,ka:60,lm:55,ku:58,br:52,sw:55,ro:50,lu:48,be:52,bi:45,sd:45,op:62,st:65,sl:55,so:52,wy:50,nak:48,sep:50}
   },
 
-  maslak_zw:{
+  maslak_zw:{q:3,
     name:'Maślak zwyczajny',latin:'Suillus luteus',cat:'edible',rare:false,wiki:'Suillus_luteus',
     season:[8,9,10,11],terrain:['Bory sosnowe','Lasy iglaste','Lasy z sosną'],
     soil:'Gleba piaszczysta lub wapienna — mykoryza wyłącznie z sosną',ph:'4.5–7.0',elev:'0–1200 m',
     habitat:'Wyłącznie pod sosnami, w borach i lasach iglastych. Jeden z najpospolitszych maślaków w Polsce — szczególnie obfity w borach sosnowych na piaszczystych glebach nizin. Owocnikuje od sierpnia do listopada.',
     desc:'Kapelusz 5–12 cm, CZEKOLADOWOBRĄZOWY do żółtobrązowego, przy wilgotnej pogodzie bardzo ŚLUZOWATY i błyszczący. Skórka łatwo schodzi. Rurki jasnożółte z drobnymi okrągłymi ujściami. Trzon kremowobiały z wyraźnym PIERŚCIENIEM — od góry żółtawy, od dołu fioletowoszarawy, pokryty brązawymi kropkami. Miąższ biały do bladożółtawego, bez niebiesienia.',
-    danger:'Jadalny. Skórkę kapelusza warto obrać — surowa śluzowata skórka może wywoływać dolegliwości żołądkowe u wrażliwych osób. Po obraniu i ugotowaniu smaczny i aromatyczny.',
+    edib:'Dobry po obraniu śluzowatej skórki kapelusza przed gotowaniem. Smażyć, dusić lub marynować. Skórka surowa może drażnić żołądek — zawsze obierać.',
+    danger:'Surowa skórka kapelusza może wywoływać dolegliwości żołądkowe. Po obraniu i ugotowaniu bezpieczny i smaczny.',
     lookalikes:'Maślak ziarnisty (S. granulatus) — BEZ PIERŚCIENIA, jaśniejszy. Maślak pstry (S. variegatus) — ciemniejsze rurki, bez pierścienia. Maślak rdzawobrązowy (S. fluryi) — rzadszy, podobny. Śluzowaty kapelusz + wyraźny pierścień na trzonie + wyłącznie pod sosną = maślak zwyczajny.',
     weights:{tu:78,no:75,dr:72,pi:80,au:70,ps:75,dl:72,ch:78,bw:65,ku:62,ma:60,br:58,wk:55,ll:52,sd:72,se:68,be:62,po:62,bi:58,wy:76,nak:74,sep:76}
   },
@@ -32027,13 +32028,14 @@ const MUSHROOMS={
     weights:{tu:15,no:12,dr:10,pi:8,au:18,ps:15,dl:10,ch:12,bw:18,ku:15,ma:12,br:20,wk:15,ll:12,sd:10,se:12,be:20,po:18,bi:15,wy:10,nak:8,sep:10}
   },
 
-  lakowka:{
+  lakowka:{q:2,
     name:'Łakówka jesienna',latin:'Laccaria laccata',cat:'edible',rare:false,wiki:'Laccaria_laccata',
     season:[6,7,8,9,10,11],terrain:['Lasy liściaste','Lasy iglaste','Parki','Ogrody','Lasy mieszane'],
     soil:'Brak wymagań glebowych — saprofit ściółki leśnej i glebowej, rośnie na wielu typach podłoża',ph:'4.0–7.0',elev:'0–1500 m',
     habitat:'W lasach liściastych i iglastych, parkach, ogrodach — bez szczególnych wymagań glebowych. Jeden z najpospolitszych i najdłużej owocnikujących małych grzybów w Polsce. Owocnikuje od wiosny do późnej jesieni.',
     desc:'Kapelusz 1–5 cm, CIELISTORÓŻOWY do cielistobrązowego. Silnie BLAKNĄCY przy suszy — wysuszony może wyglądać jak zupełnie inny, blady gatunek. Blaszki cielistoróżowe, rzadkie, szerokie. Trzon tego samego koloru co kapelusz, włókienkowaty. Zarodniki kuliste z kolcami. Smak i zapach łagodne.',
-    danger:'Jadalny, choć małej wartości kulinarnej — mały, cienkomiąższowy, wiotczeje. Dobry jako aromatyczny dodatek do potraw. Przy silnym wyblakaniu może mylić.',
+    edib:'Jadalny, małej wartości kulinarnej — cienki i mały. Najlepszy jako aromatyczny dodatek do sosów i zup. Zbierać w ilościach; sam w sobie zbyt mały.',
+    danger:'Małej wartości kulinarnej. Przy silnym wyblakaniu może mylić z innymi gatunkami.',
     lookalikes:'Łakówka okazała (L. proxima) — większa, chropowata skórka, w wilgotnych miejscach. Łakówka dwubarwna (L. bicolor) — fioletowy trzon. Gwoździak (Mycena) — przyrośnięte blaszki, cieńszy trzon, inne proporcje. Cielistoróżowe rzadkie szerokie blaszki + blaknięcie przy suszy = łakówka jesienna.',
     weights:{tu:70,no:68,dr:65,pi:72,au:62,ps:68,dl:65,ch:70,bw:60,ku:58,ma:55,br:52,wk:50,ll:48,sd:65,se:62,be:58,po:58,bi:55,wy:70,nak:68,sep:70}
   },
@@ -32049,24 +32051,26 @@ const MUSHROOMS={
     weights:{tu:68,no:65,dr:62,pi:70,au:58,ps:65,dl:62,ch:68,bw:58,ku:55,ma:52,br:50,wk:48,ll:45,sd:62,se:58,be:55,po:55,bi:52,wy:68,nak:65,sep:68}
   },
 
-  golabek_sin:{
+  golabek_sin:{q:3,
     name:'Gołąbek siniejący',latin:'Russula cyanoxantha',cat:'edible',rare:false,wiki:'Russula_cyanoxantha',
     season:[7,8,9,10],terrain:['Lasy liściaste','Buczyny','Dąbrowy','Lasy mieszane','Grądy'],
     soil:'Gleba umiarkowanie kwaśna do obojętnej — mykoryza z bukami i dębami',ph:'5.5–7.5',elev:'0–1200 m',
     habitat:'Pod bukami i dębami, w lasach liściastych i mieszanych. Jeden z najczęstszych jadalnych gołąbków w Polsce — szczególnie obfity w buczyny i grądach. Pospolity na glebach zasobnych w wapń.',
     desc:'Kapelusz 5–15 cm, SZAROLILIOWY do różowoliliowego lub zielonkawy — barwa wyjątkowo zmienna, często z plamistym pomieszaniem odcieni. Skórka matowa, bez połysku. Blaszki BIAŁE, ELASTYCZNE — nie kruszą się i nie rozłupują po przesunięciu palcem (w odróżnieniu od prawie wszystkich innych gołąbków). Trzon biały. Miąższ biały, nie zmienia barwy. Smak łagodny.',
-    danger:'Jadalny, dobry. Elastyczność blaszek to kluczowa cecha odróżniająca od trujących gołąbków z kruchymi blaszkami. Pewna identyfikacja wymaga sprawdzenia elastyczności blaszek.',
+    edib:'Dobry smak, łagodny. Smażyć lub gotować. Jeden z najsmaczniejszych pospolitych gołąbków — miąższ nie zmienia barwy i nie gorzknieje.',
+    danger:'Elastyczność blaszek to kluczowa cecha odróżniająca od trujących gołąbków z kruchymi blaszkami — zawsze sprawdzić przed zjedzeniem.',
     lookalikes:'Gołąbek fiołkowozielony (R. ionochlora) — podobna barwa, blaszki KRUCHE, nie elastyczne. Gołąbek chmurny (R. grisea) — bardziej szary. Gołąbek wymiotny (R. emetica) — TRUJĄCY; czerwony kapelusz, ostry smak, kruche blaszki. Elastyczne białe blaszki + szaroliliowy/zielonkawy zmienny kapelusz + łagodny smak = gołąbek siniejący.',
     weights:{tu:65,no:62,dr:60,pi:55,au:70,ps:65,dl:60,ch:62,bw:68,ku:65,ma:62,br:70,wk:65,ll:62,sd:58,se:60,be:70,po:68,bi:65,wy:60,nak:55,sep:58}
   },
 
-  kozlarz_pom:{
+  kozlarz_pom:{q:3,
     name:'Koźlarz pomarańczowożółty',latin:'Leccinum versipelle',cat:'edible',rare:false,wiki:'Leccinum_versipelle',
     season:[6,7,8,9,10],terrain:['Brzeziny','Lasy liściaste','Lasy mieszane z brzozą','Wrzosowiska'],
     soil:'Gleba kwaśna, piaszczysta, wrzosowiskowa — mykoryza z brzozą i osiką na wrzosowiskach',ph:'3.5–5.5',elev:'0–1000 m',
     habitat:'Pod brzozami i osikami, szczególnie na kwaśnych piaszczystych glebach porośniętych wrzosem. Typowy grzyb wrzosowisk i borów mieszanych. Pospolity w Polsce, szczególnie w rejonach wrzosowiskowych Krainy Krajeńskiej.',
     desc:'Kapelusz 8–20 cm, POMARAŃCZOWY do pomarańczowobrązowego, niekiedy z czasem blaknie ku czerwonobrązowemu. Skórka wystająca poza brzeg kapelusza jak rąbek. Rurki szarawe, z wiekiem szarożółtawe, po ugnieceniu prawie niesiniejące. Trzon biały z CZARNAWYMI SZORSTKIMI ŁUSKAMI. Miąższ białawy, po przekrojeniu różowieje przez fioletowoszary i CZERNIEJE — normalne zjawisko.',
-    danger:'Jadalny. Miąższ i trzon intensywnie ciemnieją i czernieją po przekrojeniu oraz gotowaniu — jest to normalne i nie oznacza szkodliwości. Dobry grzyb, szczególnie smaczny ze wrzosowisk.',
+    edib:'Dobry jadalny. Musi być dobrze ugotowany — surowy niestrawny. Miąższ intensywnie czernieje po przekrojeniu i gotowaniu — normalne zjawisko, nie oznacza psucia.',
+    danger:'Surowy niestrawny — obowiązkowo gotować. Miąższ czernieje — normalne. Nie mylić z trującymi gatunkami.',
     lookalikes:'Koźlarz czarny (L. scabrum) — JADALNY; szarobrązowy kapelusz bez pomarańczowych odcieni, pod brzozą. Koźlarz babka — brunatny, nie czernieje tak intensywnie. Koźlarz grabowy — pod grabem, mniejszy, ciemniejszy. Pomarańczowy kapelusz + czarne łuski na trzonie + czernienie miąższu pod brzozą = koźlarz pomarańczowożółty.',
     weights:{tu:65,no:62,dr:60,pi:68,au:55,ps:62,dl:58,ch:65,bw:60,ku:58,ma:55,br:52,wk:50,ll:48,sd:62,se:58,be:55,po:55,bi:52,wy:65,nak:62,sep:65}
   },
