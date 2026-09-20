@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.14</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.15</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41189,7 +41189,7 @@ function buildTerrainHTML(terrain){
   if(!hasHabPts&&!terrain.forests.length&&!terrain.landuse.length&&!hasBDL&&!hasWyr)return'';
   let tags='';
   if(hasHabPts){
-    let nUrb=0,nWet=0,nCon=0,nBL=0,nMix=0,nMea=0,nFarm=0,nOpen=0;
+    let nUrb=0,nWet=0,nCon=0,nBL=0,nMix=0,nMea=0,nPas=0,nFarm=0,nOpen=0;
     pts.forEach(h=>{
       if(h.ur)nUrb++;
       else if(h.we)nWet++;
@@ -41197,6 +41197,7 @@ function buildTerrainHTML(terrain){
       else if(h.f.some(f=>f.c==='311'))nBL++;
       else if(h.f&&h.f.length)nMix++;
       else if(h.me)nMea++;
+      else if(h.pa)nPas++;
       else if(h.fa)nFarm++;
       else nOpen++;
     });
@@ -41207,6 +41208,7 @@ function buildTerrainHTML(terrain){
     if(pct(nMix)>=MIN)tags+=`<span class="terrain-tag tt-forest">🌲 Las mieszany (${pct(nMix)}%)</span>`;
     if(pct(nWet)>=MIN)tags+=`<span class="terrain-tag tt-wetland">💧 Mokradła (${pct(nWet)}%)</span>`;
     if(pct(nMea)>=MIN)tags+=`<span class="terrain-tag tt-pasture">🌿 Łąka (${pct(nMea)}%)</span>`;
+    if(pct(nPas)>=MIN)tags+=`<span class="terrain-tag tt-pasture">🐄 Pastwisko (${pct(nPas)}%)</span>`;
     if(pct(nFarm)>=MIN)tags+=`<span class="terrain-tag tt-farmland">🌾 Pole (${pct(nFarm)}%)</span>`;
     if(pct(nOpen)>=15)tags+=`<span class="terrain-tag">🏞️ Ugory / polany (${pct(nOpen)}%)</span>`;
     if(!tags)tags+=`<span class="terrain-tag">🏞️ Ugory / polany</span>`;
@@ -41290,7 +41292,7 @@ function _doAreaAnalysis(layer){
   for(let i=0;i<GN;i++)for(let j=0;j<GN;j++){
     const la=s0+(i+.5)*dlat,ln=w0+(j+.5)*dln;
     if(!pipTest([la,ln],drawnArr))continue;
-    habPts.push({la,ln,f:nearF.filter(f=>pipTest([la,ln],f.p)),we:nearL.some(l=>l.t==='wetland'&&pipTest([la,ln],l.p)),me:nearL.some(l=>l.t==='meadow'&&pipTest([la,ln],l.p)),fa:nearL.some(l=>l.t==='farmland'&&pipTest([la,ln],l.p)),ur:nearU.some(u=>pipTest([la,ln],u.p))});
+    habPts.push({la,ln,f:nearF.filter(f=>pipTest([la,ln],f.p)),we:nearL.some(l=>l.t==='wetland'&&pipTest([la,ln],l.p)),me:nearL.some(l=>l.t==='meadow'&&pipTest([la,ln],l.p)),pa:nearL.some(l=>l.t==='pasture'&&pipTest([la,ln],l.p)),fa:nearL.some(l=>l.t==='farmland'&&pipTest([la,ln],l.p)),ur:nearU.some(u=>pipTest([la,ln],u.p))});
   }
   const results=Object.entries(MUSHROOMS).map(([mid,m])=>{
     let rscore=0,rw=0;
@@ -41302,7 +41304,7 @@ function _doAreaAnalysis(layer){
     habPts.forEach(h=>{
       if(opts.wetHab){if(h.we)hc++;}
       else if(opts.farmlandSpec){if(h.fa)hc++;}
-      else if(opts.openHab){if(h.me||(h.f.length===0&&!h.we))hc++;}
+      else if(opts.openHab){if(h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur))hc++;}
       else{if(h.f.some(f=>(!opts.coniferPref||!f.c||f.c==='312')&&(!opts.broadleafPref||!f.c||f.c==='311')))hc++;}
     });
     const habFrac=habPts.length?hc/habPts.length:0;
@@ -41591,10 +41593,11 @@ function _doPointAnalysis(lat,lng,radiusM){
     for(let i=0;i<GP;i++)for(let j=0;j<GP;j++){
       const la=pla0+(i+.5)*(pla1-pla0)/GP,ln=pln0+(j+.5)*(pln1-pln0)/GP;
       if(Math.hypot((la-lat)*R2,(ln-lng)*R2*cosLat2)>r2)continue;
-      habPts2.push({la,ln,f:nearFP.filter(f=>pipTest([la,ln],f.p)),we:nearLP.some(l=>l.t==='wetland'&&pipTest([la,ln],l.p)),me:nearLP.some(l=>l.t==='meadow'&&pipTest([la,ln],l.p)),fa:nearLP.some(l=>l.t==='farmland'&&pipTest([la,ln],l.p)),ur:nearUP.some(u=>pipTest([la,ln],u.p))});
+      habPts2.push({la,ln,f:nearFP.filter(f=>pipTest([la,ln],f.p)),we:nearLP.some(l=>l.t==='wetland'&&pipTest([la,ln],l.p)),me:nearLP.some(l=>l.t==='meadow'&&pipTest([la,ln],l.p)),pa:nearLP.some(l=>l.t==='pasture'&&pipTest([la,ln],l.p)),fa:nearLP.some(l=>l.t==='farmland'&&pipTest([la,ln],l.p)),ur:nearUP.some(u=>pipTest([la,ln],u.p))});
     }
   }else{
-    habPts2.push({f:terrain.forests,we:hasWetland,me:hasMeadow,fa:hasFarmland,ur:false});
+    const hasPasture=terrain.landuse.some(l=>l.t==='pasture');
+    habPts2.push({f:terrain.forests,we:hasWetland,me:hasMeadow,pa:hasPasture,fa:hasFarmland,ur:false});
   }
   const inAreaBDL2=terrain.bdlStands||[];
   const results=Object.entries(MUSHROOMS).map(([mid,m])=>{
@@ -41610,7 +41613,7 @@ function _doPointAnalysis(lat,lng,radiusM){
     habPts2.forEach(h=>{
       if(opts.wetHab){if(h.we)hc++;}
       else if(opts.farmlandSpec){if(h.fa)hc++;}
-      else if(opts.openHab){if(h.me||(h.f.length===0&&!h.we))hc++;}
+      else if(opts.openHab){if(h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur))hc++;}
       else{if(h.f.some(f=>(!opts.coniferPref||!f.c||f.c==='312')&&(!opts.broadleafPref||!f.c||f.c==='311')))hc++;}
     });
     const habFrac=habPts2.length?hc/habPts2.length:0;
@@ -41882,14 +41885,14 @@ function _showDebugOverlay(){
   const pts=d.habPts||[];
   pts.forEach(h=>{
     const conifer=h.f.some(f=>f.c==='312'),broadleaf=h.f.some(f=>f.c==='311'),mixed=h.f.some(f=>f.c==='313');
-    const color=h.ur?'#666':h.we?'#4a90d9':h.me?'#b8e040':h.fa?'#e0c840':conifer?'#1a7a1a':broadleaf?'#5aaa3a':mixed?'#3a9a5a':h.f.length?'#52b849':'#bbb';
+    const color=h.ur?'#666':h.we?'#4a90d9':h.me?'#b8e040':h.pa?'#a0d040':h.fa?'#e0c840':conifer?'#1a7a1a':broadleaf?'#5aaa3a':mixed?'#3a9a5a':h.f.length?'#52b849':'#bbb';
     L.circleMarker([h.la,h.ln],{radius:4,fillColor:color,color:'rgba(0,0,0,.3)',fillOpacity:.85,weight:1}).addTo(_dbgMapLayer);
   });
   // Count habitat types
   const total=pts.length;
   const fc=(fn)=>pts.filter(fn).length;
   const nCon=fc(h=>h.f.some(f=>f.c==='312')),nBL=fc(h=>h.f.some(f=>f.c==='311')),nMix=fc(h=>h.f.some(f=>f.c==='313'));
-  const nWet=fc(h=>h.we),nMea=fc(h=>h.me),nFarm=fc(h=>h.fa),nUrb=fc(h=>h.ur),nOpen=fc(h=>h.f.length===0&&!h.we&&!h.me&&!h.fa&&!h.ur);
+  const nWet=fc(h=>h.we),nMea=fc(h=>h.me),nPas=fc(h=>h.pa),nFarm=fc(h=>h.fa),nUrb=fc(h=>h.ur),nOpen=fc(h=>h.f.length===0&&!h.we&&!h.me&&!h.pa&&!h.fa&&!h.ur);
   const pct=n=>total?Math.round(n/total*100)+'%':'—';
   const fmt=(arr,fn)=>arr&&arr.length?arr.map(fn).join('<br>'):'<span style="color:var(--muted)">brak</span>';
   const div=document.createElement('div');
@@ -41905,6 +41908,7 @@ function _showDebugOverlay(){
       <span style="color:#3a9a5a">■</span> Mieszany (313): ${nMix} (${pct(nMix)})<br>
       <span style="color:#4a90d9">■</span> Mokradło: ${nWet} (${pct(nWet)})<br>
       <span style="color:#b8e040">■</span> Łąka: ${nMea} (${pct(nMea)})<br>
+      <span style="color:#a0d040">■</span> Pastwisko: ${nPas} (${pct(nPas)})<br>
       <span style="color:#e0c840">■</span> Pole: ${nFarm} (${pct(nFarm)})<br>
       <span style="color:#666">■</span> Zabudowania: ${nUrb} (${pct(nUrb)})<br>
       <span style="color:#bbb">■</span> Otwarty: ${nOpen} (${pct(nOpen)})
