@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.4</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.5</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41043,10 +41043,10 @@ function _showBestSpot(mid){
   });
   if(!best){showToast('Nie znaleziono miejsca');return;}
   document.getElementById('ip').classList.remove('open');
-  map.flyTo([best[0],best[1]],13,{duration:1.8});
-  const mk=L.circleMarker([best[0],best[1]],{radius:12,color:'#d4a030',weight:3,fillColor:'#d4a030',fillOpacity:.25}).addTo(map);
-  setTimeout(()=>map.removeLayer(mk),10000);
-  showToast('Najlepsze miejsce: '+MUSHROOMS[mid].name);
+  map.flyTo([best[0],best[1]],14,{duration:1.5});
+  const mk=L.circleMarker([best[0],best[1]],{radius:18,color:'#d4a030',weight:3,fillColor:'#d4a030',fillOpacity:.45}).addTo(map);
+  setTimeout(()=>map.removeLayer(mk),20000);
+  showToast('📍 Najlepsze miejsce: '+MUSHROOMS[mid].name);
 }
 
 function showInfoPanel(mid){
@@ -41165,7 +41165,8 @@ function getTerrainFeatures(drawnPoly){
 
 function buildTerrainHTML(terrain){
   const hasBDL=terrain.bdlStands&&terrain.bdlStands.length>0;
-  if(!terrain.forests.length&&!terrain.landuse.length&&!hasBDL)return'';
+  const hasWyr=terrain.wyrStands&&terrain.wyrStands.length>0;
+  if(!terrain.forests.length&&!terrain.landuse.length&&!hasBDL&&!hasWyr)return'';
   let tags='';
   const seenFc=new Set();
   terrain.forests.forEach(f=>{
@@ -41174,6 +41175,15 @@ function buildTerrainHTML(terrain){
     const label=CORINE_LABEL[f.c]||(f.n?forestDisplayName(f.n):'Las');
     tags+=`<span class="terrain-tag tt-forest">🌲 ${label}</span>`;
   });
+  if(hasWyr){
+    const WYR_NAME={pine:'Sosna',larch:'Modrzew',birch:'Brzoza',oak:'Dąb',beech:'Buk',alder:'Olcha'};
+    const seenWyr=new Set();
+    terrain.wyrStands.forEach(f=>{
+      if(!seenWyr.has(f.type)){seenWyr.add(f.type);
+        tags+=`<span class="terrain-tag tt-forest" style="opacity:.9">🌳 ${WYR_NAME[f.type]||f.type}</span>`;
+      }
+    });
+  }
   if(hasBDL){
     const BDL_NAME={SO:'Sosna',PI:'Sosna',SW:'Świerk',ŚW:'Świerk',JD:'Jodła',MD:'Modrzew',BK:'Buk',DB:'Dąb',GB:'Grab',JW:'Jawor',LP:'Lipa',OL:'Olcha',OLS:'Olcha',JS:'Jesion',BRZ:'Brzoza'};
     const seenBdl=new Set();
@@ -41246,7 +41256,8 @@ function analyzeArea(layer){
     if(hasFarmland&&m.terrain.some(t=>/łąk|pastw|ogród|kompost/i.test(t)))base=Math.min(base*1.1,99);
     return{mid,m,score:base};
   }).filter(x=>x.score>1).sort((a,b)=>b.score-a.score);
-  const richTerrain={...terrain,bdlStands:inAreaBDL};
+  const richTerrain={...terrain,bdlStands:inAreaBDL,wyrStands:inAreaWyr};
+  _lastDebugData={clcForests:terrain.forests,wyrStands:inAreaWyr,bdlStands:inAreaBDL,landuse:terrain.landuse,mode:'area'};
   showAreaPanel(results,richTerrain);
 }
 
@@ -41296,9 +41307,16 @@ function showAreaPanel(results,terrain){
 // ─── Draw (native drag + polygon modes) ──────────────────
 let drawnLayer=null,drawing=false,_drawStart=null,_drawPreview=null;
 let _polyMode=false,_polyPts=[],_polyLine=null,_polyLastClick=0;
-let _drBtn=null,_polyBtn=null;
+let _drBtn=null,_polyBtn=null,_drawTogBtn=null,_drawExpanded=false;
 
 function _btnStyle(a){a.style.fontSize='16px';a.style.lineHeight='30px';a.style.width='30px';a.style.display='block';a.style.textAlign='center';}
+
+function _collapseDrawTools(){
+  _drawExpanded=false;
+  if(_drawTogBtn){_drawTogBtn.innerHTML='🔍';_drawTogBtn.title='Zaznacz obszar';_drawTogBtn.classList.remove('dr-drawing');}
+  if(_drBtn)_drBtn.style.display='none';
+  if(_polyBtn)_polyBtn.style.display='none';
+}
 
 function _exitDraw(){
   drawing=false;map.dragging.enable();map.getContainer().style.cursor='';
@@ -41362,10 +41380,25 @@ function _onPolyDblClick(e){
     options:{position:'topleft'},
     onAdd(){
       const bar=L.DomUtil.create('div','leaflet-bar');
-      // Rectangle drag button
+      // Toggle button — always visible
+      const tog=L.DomUtil.create('a','',bar);
+      tog.innerHTML='🔍';tog.href='#';tog.title='Zaznacz obszar';_btnStyle(tog);tog.style.fontSize='15px';
+      L.DomEvent.on(tog,'mousedown',L.DomEvent.stop);
+      L.DomEvent.on(tog,'click',e=>{L.DomEvent.stop(e);
+        if(_drawExpanded){
+          if(drawing){if(_drawPreview){map.removeLayer(_drawPreview);_drawPreview=null;}_drawStart=null;_exitDraw();}
+          if(_polyMode){_exitPoly();}
+          _collapseDrawTools();
+        } else {
+          _drawExpanded=true;tog.innerHTML='✕';tog.classList.add('dr-drawing');
+          _drBtn.style.display='block';_polyBtn.style.display='block';
+        }
+      });
+      _drawTogBtn=tog;
+      // Rectangle drag button (hidden until toggle)
       const a=L.DomUtil.create('a','',bar);
-      a.innerHTML='▭';a.href='#';a.title='Zaznacz prostokąt';_btnStyle(a);
-      L.DomEvent.on(a,'mousedown',L.DomEvent.stop); // prevent triggering draw on cancel click
+      a.innerHTML='▭';a.href='#';a.title='Zaznacz prostokąt';_btnStyle(a);a.style.display='none';
+      L.DomEvent.on(a,'mousedown',L.DomEvent.stop);
       L.DomEvent.on(a,'click',e=>{L.DomEvent.stop(e);
         if(_polyMode){_exitPoly();}
         if(drawing){if(_drawPreview){map.removeLayer(_drawPreview);_drawPreview=null;}_drawStart=null;_exitDraw();return;}
@@ -41375,9 +41408,9 @@ function _onPolyDblClick(e){
         showToast('Przeciągnij aby zaznaczyć obszar');
       });
       _drBtn=a;
-      // Polygon draw button
+      // Polygon draw button (hidden until toggle)
       const p=L.DomUtil.create('a','',bar);
-      p.innerHTML='✏';p.href='#';p.title='Narysuj wielokąt';_btnStyle(p);p.style.fontSize='14px';
+      p.innerHTML='✏';p.href='#';p.title='Narysuj wielokąt';_btnStyle(p);p.style.fontSize='14px';p.style.display='none';
       L.DomEvent.on(p,'mousedown',L.DomEvent.stop);
       L.DomEvent.on(p,'click',e=>{L.DomEvent.stop(e);
         if(drawing){if(_drawPreview){map.removeLayer(_drawPreview);_drawPreview=null;}_drawStart=null;_exitDraw();}
@@ -41488,7 +41521,7 @@ function analyzePoint(lat,lng,radiusM=0){
   const treeTypeLabel=hasPine?'bór sosnowy':hasBirch?'brzezina':hasOak?'dąbrowa':hasAlder?'olszyna':hasForest?'las':'';
   const terrainLabel=hasWetland?'mokradło':hasMeadow?'łąka':hasFarmland&&!hasForest?'pole':treeTypeLabel||'teren otwarty';
   // Build synthetic terrain from detected flags so terrain display matches analysis
-  const synTerrain={forests:[],landuse:[],bdlStands:terrain.bdlStands||[]};
+  const synTerrain={forests:[],landuse:[],bdlStands:terrain.bdlStands||[],wyrStands:matchedTrees};
   if(hasForest){
     const fc=hasPine?'312':hasOak?'311':'313';
     synTerrain.forests.push({c:fc});
@@ -41497,6 +41530,7 @@ function analyzePoint(lat,lng,radiusM=0){
   if(hasMeadow)synTerrain.landuse.push({t:'meadow'});
   if(hasFarmland&&!hasForest)synTerrain.landuse.push({t:'farmland'});
   if(!hasForest&&!hasWetland&&!hasMeadow&&!hasFarmland)synTerrain.landuse.push({t:'open',n:'Teren otwarty'});
+  _lastDebugData={clcForests:terrain.forests,wyrStands:matchedTrees,bdlStands:terrain.bdlStands||[],landuse:terrain.landuse,mode:'point',lat,lng,radiusM};
   showAreaPanel(results,synTerrain);
   document.getElementById('ap-loc').textContent=`📍 ${lat.toFixed(4)}, ${lng.toFixed(4)} · ${terrainLabel}`;
 }
@@ -41638,7 +41672,7 @@ function fetchWeather(lat,lng){
 fetchWeather(53.13,17.28);
 
 map.doubleClickZoom.disable();
-let _scanPin=null,_scanRadius=500,_userGPS=null;
+let _scanPin=null,_scanRadius=500,_userGPS=null,_lastDebugData=null;
 
 function _removeScanPin(){
   if(!_scanPin)return;
@@ -41702,6 +41736,29 @@ siEl.addEventListener('input',()=>{
 function flyTo(lat,lng){map.flyTo([parseFloat(lat),parseFloat(lng)],12,{duration:1.4});closeSearch();}
 function closeSearch(){srEl.style.display='none';siEl.blur();}
 document.addEventListener('click',e=>{if(!e.target.closest('#sw'))closeSearch();});
+
+// ─── F2 debug overlay ─────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(e.key!=='F2')return;
+  e.preventDefault();
+  const existing=document.getElementById('dbg-overlay');
+  if(existing){existing.remove();return;}
+  if(!_lastDebugData){showToast('Brak danych — zeskanuj obszar najpierw');return;}
+  const d=_lastDebugData;
+  const div=document.createElement('div');
+  div.id='dbg-overlay';
+  div.style.cssText='position:fixed;top:54px;right:10px;width:290px;max-height:72vh;overflow-y:auto;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;z-index:9999;font-size:11.5px;font-family:monospace;line-height:1.6;box-shadow:0 4px 20px rgba(0,0,0,.4)';
+  const fmt=(arr,fn)=>arr&&arr.length?arr.map(fn).join('<br>'):'<span style="color:var(--muted)">brak</span>';
+  div.innerHTML=`
+    <div style="font-weight:700;font-size:13px;margin-bottom:8px;font-family:var(--f-body)">🔍 Debug: dane obszaru <span style="font-weight:400;font-size:11px;color:var(--muted)">[F2 zamknij]</span></div>
+    <div style="color:var(--muted);margin-bottom:6px;font-size:11px">Tryb: ${d.mode||'?'}${d.lat?` · ${d.lat.toFixed(4)},${d.lng?.toFixed(4)} r=${d.radiusM}m`:''}</div>
+    <div style="margin-bottom:6px"><b>CLC lasy (${d.clcForests?.length||0}):</b><br>${fmt(d.clcForests,f=>`${f.c||'?'} — ${CORINE_LABEL?.[f.c]||'Las'}`)}</div>
+    <div style="margin-bottom:6px"><b>Wyrzysk drzewostany (${d.wyrStands?.length||0}):</b><br>${fmt(d.wyrStands,f=>`${f.type}${f.name?' ('+f.name+')':''}`)}</div>
+    <div style="margin-bottom:6px"><b>BDL stanowiska (${d.bdlStands?.length||0}):</b><br>${fmt((d.bdlStands||[]).slice(0,15),b=>`${b.cd||'?'} lat=${b.age} @${b.lat?.toFixed(3)},${b.lng?.toFixed(3)}`)}</div>
+    <div style="margin-bottom:8px"><b>Użytkowanie terenu (${d.landuse?.length||0}):</b><br>${fmt(d.landuse,l=>l.t)}</div>
+    <button onclick="document.getElementById('dbg-overlay').remove()" style="width:100%;padding:5px;background:var(--card2);border:1px solid var(--border);border-radius:4px;cursor:pointer;color:var(--text);font-size:12px">Zamknij</button>`;
+  document.body.appendChild(div);
+});
 
 // ─── Sidebar list ─────────────────────────────────────────
 let activeCats=new Set(),activeSeasons=new Set(),activeHabs=new Set(),activeSortBy='default';
