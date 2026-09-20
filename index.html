@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.29</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.30</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -31141,7 +31141,7 @@ const MUSHROOMS={
   },
   smardz:{q:4,
     name:'Smardz jadalny',latin:'Morchella esculenta',cat:'edible',rare:false,wiki:'Morchella_esculenta',
-    season:[4,5],terrain:['Sady','Ogródki'],
+    season:[4,5],terrain:['Łęgi','Lasy liściaste','Sady'],
     soil:'Gleba żyzna, wilgotna, wapienno-gliniasta',ph:'5.5–7.5',elev:'0–800 m',
     habitat:'Wiosenny grzyb. Pod drzewami owocowymi, przy strumieniach, w alejach.',
     desc:'Owocnik jajkowaty lub stożkowaty, kapelusz siatkowato-jamkowany, brązowy. 5–15 cm. Trzon biały, pustakowy. UWAGA: nie mylić z piestrzenicą!',
@@ -31604,7 +31604,7 @@ const MUSHROOMS={
     soil:'Gleba wilgotna, żyzna, często na ściółce lub przy strumieniach',ph:'6.0–7.5',elev:'0–800 m',
     habitat:'W wilgotnych lasach liściastych, przy strumieniach i w łęgach. Pojawia się wczesną wiosną — jeden z pierwszych grzybów roku.',
     desc:'Różni się od smardza jadalnego tym, że dolna połowa główki jest wolna (nie zlana z trzonem). Główka stożkowata, ciemnobrązowa, 2–5 cm, z regularną siatką żeberkowatych grzebieni. Trzon biały, dłuższy niż u smardza jadalnego. Całość 6–15 cm.',
-    edib:'Jadalny po obróbce cieplnej. Jak wszystkie smardze — NIGDY na surowo. Surowe zawierają gyromitrin (lotna hydrazyna szkodliwa dla wątroby). Gotować 10 min, wodę wylać. Wyśmienity po blanszowaniu i usmażeniu z masłem.',
+    edib:'Jadalny po obróbce cieplnej. Jak wszystkie smardze — NIGDY na surowo. Surowe zawierają toksyczne substancje termolabilne (hemolizyny). Gotować 10 min, wodę wylać. Wyśmienity po blanszowaniu i usmażeniu z masłem.',
     lookalikes:'Smardz jadalny (M. esculenta) — główka całkowicie zlana z trzonem, bardziej kulista. Piestrzenica (G. esculenta) — TRUJĄCA; fałdowana jak mózg, nie siatkowata. Kielichowiec Morrisa — inny kształt.',
     weights:{ka:70,sw:78,ro:75,lu:72,ja:68,ll:60,br:55,bw:62,au:58,be:68,bi:62,sd:65,so:65,op:65,st:68,sl:62,lm:60,wy:62,nak:58,sep:60}
   },
@@ -31677,7 +31677,7 @@ const MUSHROOMS={
 
   huba:{
     name:'Hubka pospolita',latin:'Fomes fomentarius',cat:'inedible',rare:false,wiki:'Fomes_fomentarius',
-    season:[1,2,3,4,5,6,7,8,9,10,11,12],terrain:['Lasy liściaste','Lasy mieszane','Olszyny'],
+    season:[1,2,3,4,5,6,7,8,9,10,11,12],terrain:['Lasy liściaste','Lasy mieszane','Buczyny'],
     soil:'Na pniach żywych i martwych drzew liściastych (buk, brzoza, olcha, osika)',ph:'Saprofit/pasożyt drewna',elev:'0–1200 m',
     habitat:'Na pniach buków i brzóz, rzadziej olch i osik. Wieloletni, kopytowaty — rośnie przez dziesiątki lat. Pospolity w całej Polsce.',
     desc:'Kopiasto kopytowata hubka, 10–50 cm, szara do szarobrązowej, z koncentrycznymi strefami. Powierzchnia twarda, drewnopodobna. Spód biały z drobnymi porami. Wnętrze rdzawobrązowe, filcowate (ta tkanka = "tonder/hubka" do rozpalania ognia).',
@@ -31842,7 +31842,7 @@ const MUSHROOMS={
 
   golabek_zolt:{q:3,
     name:'Gołąbek bladożółty',latin:'Russula claroflava',cat:'edible',rare:false,wiki:'Russula_claroflava',
-    season:[7,8,9],terrain:['Lasy liściaste','Olszyny','Mokradła leśne'],
+    season:[7,8,9],terrain:['Brzeziny','Olszyny','Mokradła leśne'],
     soil:'Gleba mokra, torfowa lub podmokła, wyłącznie pod brzozami i olchami',ph:'4.5–6.5',elev:'0–900 m',
     habitat:'Wyłącznie pod brzozami na podmokłych, wilgotnych glebach, przy bagnach i torfowiskach. Niezawodny wskaźnik wilgotnego środowiska.',
     desc:'Kapelusz JASKRAWOŻÓŁTY, cytrynowy do złocistego, 5–12 cm, gładki, matowy. Blaszki kremowobiałe, kruche. Trzon biały, zabarwia się szaro do czarnego przy uszkodzeniu i suszeniu — cecha diagnostyczna. Zapach łagodny.',
@@ -31875,7 +31875,7 @@ const MUSHROOMS={
 
   zasloniak_krus:{
     name:'Zasłonak kruszcowy',latin:'Cortinarius armillatus',cat:'poisonous',rare:false,wiki:'Cortinarius_armillatus',
-    season:[8,9,10],terrain:['Lasy liściaste','Olszyny','Mokradła leśne'],
+    season:[8,9,10],terrain:['Brzeziny','Torfowiska','Mokradła leśne'],
     soil:'Gleba podmokła, torfowa lub kwaśna, wyłącznie pod brzozami',ph:'4.0–5.5',elev:'0–1200 m',
     habitat:'Wyłącznie pod brzozami na podmokłych glebach. Jeden z pospolitszych i najpiękniejszych zasłoniaków — czerwone opaski na trzonie niepowtarzalne.',
     desc:'Kapelusz rdzawobrązowy, 5–12 cm. Trzon jasnobrązowy z 2–4 INTENSYWNIE POMARAŃCZOWOCZERWONYMI WEŁNISTYMI PASKAMI (opaski z rozerwanych pajęczynowych zasłonek) — cecha absolutnie unikalna w całym rodzaju. Blaszki rdzawe, brudnordzawe.',
@@ -31912,7 +31912,7 @@ const MUSHROOMS={
     soil:'Gleba żyzna, często wapniowa, przy strumieniach lub po pożarach',ph:'6.0–8.0',elev:'0–1200 m',
     habitat:'W iglastych lasach, sadach, przy rumowiskach i po pożarach leśnych. Nieco wcześniej niż smardz jadalny.',
     desc:'Główka STOŻKOWATA do cylindrycznej, ciemnobrązowa do czarnobrązowej, 4–10 cm, z pionowymi żeberkami tworzącymi siatkę. Ciemniejszy niż smardz jadalny. Trzon biały, gruby. Owocnik pusty w środku przy przekroju.',
-    edib:'Jadalny jak smardz jadalny — WYŁĄCZNIE po gotowaniu. Surowy zawiera gyromitrin (nie kwas helvellowy). Jeden z wybitnych jadalnych wiosennych grzybów. Ciemnobrązowa stożkowata głowa wyróżnia go od smardza jadalnego.',
+    edib:'Jadalny jak smardz jadalny — WYŁĄCZNIE po gotowaniu. Surowy zawiera toksyczne substancje termolabilne (hemolizyny). Jeden z wybitnych jadalnych wiosennych grzybów. Ciemnobrązowa stożkowata głowa wyróżnia go od smardza jadalnego.',
     lookalikes:'Smardz jadalny (M. esculenta) — JADALNY; głowa kulista/jajowata, jaśniejsza. Smardz półwolny (M. semilibera) — dolna połowa głowy wolna od trzonu. Piestrzenica (G. esculenta) — TRUJĄCA; głowa mózgowata, zafałdowana, nie siatkowata. Ciemna stożkowata siatka = smardz stożkowaty.',
     weights:{sd:75,se:70,ta:68,be:72,bi:70,go:68,po:68,bw:62,sw:70,ro:68,lu:65,ja:62,ka:58,ll:55,op:62,st:65,au:55,br:52,wy:62,nak:58,sep:60}
   },
@@ -40888,7 +40888,7 @@ function _buildBaseHeat(mid){
   const soilStr=m.soil||'';
   const openHab=(HAB_PATTERNS.meadow.test(terrainStr)||/nieużytk/i.test(terrainStr))&&!HAB_PATTERNS.forest.test(terrainForF);
   const wetHab=HAB_PATTERNS.wetland.test(terrainStr);
-  const waterEdge=/olsz|olch|łęg|rip|rzek|potok|strum|brzeg|jezioro|woda|nadwodny/i.test(terrainStr+' '+(m.habitat||''));
+  const waterEdge=/olsz|łęg|rip|rzek|potok|strum|brzeg|jezioro|woda|nadwodny/i.test(terrainStr+' '+(m.habitat||''));
   const urbanSpec=/ogród|trawnik|przydroż|park|skwer|zieleń.*miejsk/i.test(terrainStr)&&!HAB_PATTERNS.forest.test(terrainForF);
   const farmlandSpec=/kompost|pobocz|obornik|nawóz|pastw.*pole|pole.*pastw/i.test(terrainStr)&&!HAB_PATTERNS.forest.test(terrainForF);
   const coniferTerrain=/iglaste|bór|sosnow|świerkow/i.test(terrainStr);
@@ -41414,11 +41414,12 @@ function showAreaPanel(results,terrain){
   const PAGE=15;
   const ar=document.getElementById('ar');
   let shown=PAGE,activeFilter='all';
-  const FILTERS=[['all','Wszystkie'],['edible','Jadalne'],['poisonous','Trujące'],['rare','Rzadkie'],['inedible','Niejadalne']];
+  const FILTERS=[['all','Wszystkie'],['edible','Jadalne'],['poisonous','Trujące'],['hallucinogenic','🍄 Halucynogenne'],['rare','Rzadkie'],['inedible','Niejadalne']];
   function getFiltered(){
     if(activeFilter==='all')return results;
     if(activeFilter==='edible')return results.filter(({m})=>m.cat==='edible');
-    if(activeFilter==='poisonous')return results.filter(({m})=>m.cat==='poisonous'||m.cat==='deadly'||m.cat==='hallucinogenic');
+    if(activeFilter==='poisonous')return results.filter(({m})=>m.cat==='poisonous'||m.cat==='deadly');
+    if(activeFilter==='hallucinogenic')return results.filter(({m})=>m.cat==='hallucinogenic');
     if(activeFilter==='rare')return results.filter(({m})=>m.rare);
     if(activeFilter==='inedible')return results.filter(({m})=>m.cat==='inedible');
     return results;
@@ -41957,7 +41958,11 @@ function _drawDebugEdges(){
   }
   if(o.waterEdge){
     LANDUSE.filter(lu=>(lu.t==='water'||lu.t==='river'||lu.t==='wetland')&&inRange(lu)).forEach(lu=>{
-      L.polygon(lu.p,{color:'#4af',fill:false,weight:2,dashArray:'6,4',opacity:.85}).addTo(_dbgEdgeLayer);
+      if(lu.desc&&lu.desc.includes('river')&&lu.p.length>6){
+        L.polyline(lu.p.slice(0,Math.ceil(lu.p.length/2)),{color:'#4af',weight:2,dashArray:'6,4',opacity:.85,smoothFactor:0}).addTo(_dbgEdgeLayer);
+      } else {
+        L.polygon(lu.p,{color:'#4af',fill:false,weight:2,dashArray:'6,4',opacity:.85,smoothFactor:0}).addTo(_dbgEdgeLayer);
+      }
     });
   }
   if(o.farmlandSpec){
@@ -42057,7 +42062,7 @@ function _rareHalf(){return `<svg viewBox="0 0 12 12" width="12" height="12"><de
 function _statRow(label,val,max,full,half,empty){const pips=[];for(let i=0;i<max;i++){const d=val-i;pips.push(d>=1?full():d>=0.5?half():empty());}return `<div class="stat-row"><span class="stat-lbl">${label}</span><div class="stat-pips">${pips.join('')}</div></div>`;}
 const SEASON_MONTHS={spring:[3,4,5],summer:[6,7,8],autumn:[9,10,11],winter:[12,1,2]};
 const HAB_PATTERNS={
-  forest:/las|bór|iglaste|liściaste|śwkrk|sosnow|świerkow|bukow|dąbrow|mieszany/i,
+  forest:/las|bór|iglaste|liściaste|śwkrk|sosnow|świerkow|bukow|dąbrow|mieszany|brzezin|olszyn/i,
   sandy:/piaszczyst|bór sosnow|sucha gleba/i,
   alpine:/górsk|górskie|piętro regla|subalpejsk|tatrzańsk|Tatry|Karpat|Beszczad|Sudety/i,
   park:/park|trawnik|ogród|skwer|zieleń miejsk/i,
