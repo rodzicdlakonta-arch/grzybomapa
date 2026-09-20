@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.33</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.34</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -31019,7 +31019,7 @@ const MUSHROOMS={
   },
   kozlarz_cz:{q:2,
     name:'Koźlarz czerwony',latin:'Leccinum aurantiacum',cat:'edible',rare:false,wiki:'Leccinum_aurantiacum',
-    season:[7,8,9,10],terrain:['Lasy z osiką','Topólki','Lasy mieszane'],
+    season:[7,8,9,10],terrain:['Lasy z osiką','Topólki','Lasy liściaste','Lasy mieszane'],
     soil:'Gleba gliniasta lub gliniasto-piaszczysta, żyzna',ph:'5.0–6.5',elev:'0–900 m',
     habitat:'Wyłącznie pod osikami i topolami. Przy drogach i skrajach lasu.',
     desc:'Kapelusz ceglastoczerwony do pomarańczowego, 5–20 cm. Trzon z ciemnobrązowymi łuseczkami. Miąższ szybko czernieje.',
@@ -31029,7 +31029,7 @@ const MUSHROOMS={
   },
   kozlarz_b:{q:2,
     name:'Koźlarz babka',latin:'Leccinum scabrum',cat:'edible',rare:false,wiki:'Leccinum_scabrum',
-    season:[7,8,9,10],terrain:['Brzeziny','Lasy mieszane z brzozą'],
+    season:[7,8,9,10],terrain:['Brzeziny','Lasy liściaste','Lasy mieszane z brzozą'],
     soil:'Gleba torfowa lub piaszczysta, wilgotna',ph:'4.0–6.0',elev:'0–1100 m',
     habitat:'Wyłącznie pod brzozami. Pospolity na torfowiskach i w podmokłych brzezinach.',
     desc:'Kapelusz szarobrązowy, 4–15 cm. Trzon z czarnymi łuseczkami. Miąższ nie sinieje lub lekko.',
@@ -31067,7 +31067,7 @@ const MUSHROOMS={
   },
   czubajka:{q:4,
     name:'Czubajka kania',latin:'Macrolepiota procera',cat:'edible',rare:false,wiki:'Macrolepiota_procera',
-    season:[8,9,10],terrain:['Łąki','Skraje lasów','Murawy'],
+    season:[8,9,10],terrain:['Łąki','Murawy','Polany'],
     soil:'Gleba żyzna, próchnicza',ph:'5.5–7.5',elev:'0–900 m',
     habitat:'Na skrajach lasów, łąkach i polanach. Przy ścieżkach i drogach.',
     desc:'Kapelusz do 30 cm, brunatny w centrum z łuskami. Trzon smukły z ruchomym pierścieniem. Blaszki białe.',
@@ -31096,7 +31096,7 @@ const MUSHROOMS={
   },
   purchawka_olb:{q:3,
     name:'Purchawka olbrzymia',latin:'Calvatia gigantea',cat:'edible',rare:false,wiki:'Calvatia_gigantea',
-    season:[8,9,10],terrain:['Łąki','Pastwiska','Skraje lasów'],
+    season:[8,9,10],terrain:['Łąki','Pastwiska','Polany'],
     soil:'Gleba żyzna, nawożona',ph:'6.0–7.5',elev:'0–700 m',
     habitat:'Na łąkach, pastwiskach i parkach. Preferuje żyzne tereny otwarte.',
     desc:'Ogromna biała kula, 20–80 cm. Zbierać gdy wewnątrz całkowicie biały.',
@@ -31271,7 +31271,7 @@ const MUSHROOMS={
   },
   muszomor_cz:{
     name:'Muchomor czerwony',latin:'Amanita muscaria',cat:'poisonous',rare:false,wiki:'Amanita_muscaria',hallucinogenic:true,
-    season:[8,9,10],terrain:['Bory sosnowe','Lasy iglaste','Lasy z brzozą'],
+    season:[8,9,10],terrain:['Bory sosnowe','Lasy iglaste','Lasy liściaste','Lasy z brzozą'],
     soil:'Gleba kwaśna, piaszczysta',ph:'3.8–5.5',elev:'0–1400 m',
     habitat:'Najczęściej pod brzozami i sosnami. Jeden z najpospolitszych trujących.',
     desc:'Czerwony kapelusz z białymi plamkami, 5–20 cm. Biała pochwa i pierścień. Blaszki BIAŁE.',
@@ -31387,7 +31387,7 @@ const MUSHROOMS={
   },
   krowiak:{
     name:'Krowiak podwinięty',latin:'Paxillus involutus',cat:'deadly',rare:false,wiki:'Paxillus_involutus',
-    season:[7,8,9,10,11],terrain:['Lasy iglaste','Lasy mieszane','Brzeziny','Bory sosnowe'],
+    season:[7,8,9,10,11],terrain:['Lasy iglaste','Lasy liściaste','Lasy mieszane','Brzeziny','Bory sosnowe'],
     soil:'Gleba kwaśna, piaszczysta lub torfowa, mykoryza z brzozą i sosną',ph:'3.5–6.0',elev:'0–1200 m',
     habitat:'Bardzo pospolity — jeden z najczęstszych leśnych grzybów. Pod brzozami i sosnami, na ściółce, przy pniach i korzeniach.',
     desc:'Kapelusz oliwkowobrązowy 5–15 cm, brzeg SILNIE podwinięty do wewnątrz (cecha charakterystyczna!). Blaszki żółtawobrązowe, gęste, zbiegające na trzon, łatwo się ścierają. Miąższ żółknie po dotknięciu. Smak kwaśnozaciągający.',
@@ -31405,7 +31405,7 @@ const MUSHROOMS={
   },
   maslak_mod:{q:3,
     name:'Maślak modrzewnikowy',latin:'Suillus grevillei',cat:'edible',rare:false,wiki:'Suillus_grevillei',
-    season:[7,8,9,10],terrain:['Lasy z modrzewiem','Parki z modrzewiem','Aleje modrzewiowe'],
+    season:[7,8,9,10],terrain:['Lasy iglaste','Lasy z modrzewiem','Parki z modrzewiem','Aleje modrzewiowe'],
     soil:'Gleba kwaśna, mykoryza WYŁĄCZNIE z modrzewiem europejskim',ph:'4.0–6.0',elev:'0–1400 m',
     habitat:'WYŁĄCZNIE pod modrzewiem europejskim (Larix decidua). Przy alejach, parkach i lasach z modrzewiem.',
     desc:'Kapelusz złotożółty do pomarańczowobrązowego, lśniący, 4–10 cm. Pierścień na trzonie, biały→żółtawy. Rurki żółte. Podobny do maślaka zwyczajnego ale żółtszy i bez fioletowawego pierścienia.',
@@ -31468,7 +31468,7 @@ const MUSHROOMS={
 
   twardzioszek:{q:3,
     name:'Twardzioszek przydrożny',latin:'Marasmius oreades',cat:'edible',rare:false,wiki:'Marasmius_oreades',
-    season:[5,6,7,8,9,10],terrain:['Łąki','Trawniki','Pastwiska','Skraje lasów'],
+    season:[5,6,7,8,9,10],terrain:['Łąki','Trawniki','Pastwiska'],
     soil:'Gleba żyzna, próchnicza, trawiasta',ph:'5.5–7.5',elev:'0–1200 m',
     habitat:'Na trawnikach, łąkach i pastwiskach. Rośnie w charakterystycznych "czarcich kręgach". Bardzo pospolity.',
     desc:'Mały 2–6 cm, kapelusz kremowy do miodowego, z delikatnym garbkiem, lejkowaty lub płaski. Blaszki kremowobiałe, rzadkie. Trzon cienki, łykowaty i elastyczny (nie łamie się! — cecha kluczowa). Zapach migdałów lub anyżu.',
@@ -31754,7 +31754,7 @@ const MUSHROOMS={
 
   zasloniak_fio:{
     name:'Zasłonak fiołkowy',latin:'Cortinarius violaceus',cat:'inedible',rare:true,protected:true,wiki:'Cortinarius_violaceus',
-    season:[8,9,10],terrain:['Bory sosnowe','Buczyny','Lasy iglaste'],
+    season:[8,9,10],terrain:['Bory sosnowe','Buczyny','Lasy iglaste','Lasy liściaste'],
     soil:'Gleba kwaśna, uboga, pod sosnami i bukami',ph:'4.0–6.0',elev:'0–1500 m',
     habitat:'Pod sosnami, świerkami i bukami w lasach o kwaśnych glebach. Rzadki, chroniony. Jeden z najpiękniejszych grzybów Europy.',
     desc:'Kapelusz INTENSYWNIE GŁĘBOKOFIOŁKOWY do prawie czarnego, 6–15 cm, matowy, suchy. Blaszki fioletowe, brązowiejące. Trzon fioletowy, bulwiasty u dołu. Pajęczynka (cortina) fioletowa. Miąższ fioletowy. Zapach cedrowy. Niepowtarzalny kolor.',
@@ -31842,8 +31842,8 @@ const MUSHROOMS={
 
   golabek_zolt:{q:3,
     name:'Gołąbek bladożółty',latin:'Russula claroflava',cat:'edible',rare:false,wiki:'Russula_claroflava',
-    season:[7,8,9],terrain:['Brzeziny','Olszyny','Mokradła leśne'],
-    soil:'Gleba mokra, torfowa lub podmokła, wyłącznie pod brzozami i olchami',ph:'4.5–6.5',elev:'0–900 m',
+    season:[7,8,9],terrain:['Brzeziny','Lasy liściaste','Mokradła leśne'],
+    soil:'Gleba mokra, torfowa lub podmokła, wyłącznie pod brzozami',ph:'4.5–6.5',elev:'0–900 m',
     habitat:'Wyłącznie pod brzozami na podmokłych, wilgotnych glebach, przy bagnach i torfowiskach. Niezawodny wskaźnik wilgotnego środowiska.',
     desc:'Kapelusz JASKRAWOŻÓŁTY, cytrynowy do złocistego, 5–12 cm, gładki, matowy. Blaszki kremowobiałe, kruche. Trzon biały, zabarwia się szaro do czarnego przy uszkodzeniu i suszeniu — cecha diagnostyczna. Zapach łagodny.',
     edib:'Dobry jadalny — smak łagodny, orzechowy. Jeden z bezpieczniejszych gołąbków do zbierania: jaskrawożółty + wyłącznie pod brzozą = bezpieczny test. Dobry w zupach i sosach.',
@@ -31875,7 +31875,7 @@ const MUSHROOMS={
 
   zasloniak_krus:{
     name:'Zasłonak kruszcowy',latin:'Cortinarius armillatus',cat:'poisonous',rare:false,wiki:'Cortinarius_armillatus',
-    season:[8,9,10],terrain:['Brzeziny','Torfowiska','Mokradła leśne'],
+    season:[8,9,10],terrain:['Brzeziny','Lasy liściaste','Torfowiska','Mokradła leśne'],
     soil:'Gleba podmokła, torfowa lub kwaśna, wyłącznie pod brzozami',ph:'4.0–5.5',elev:'0–1200 m',
     habitat:'Wyłącznie pod brzozami na podmokłych glebach. Jeden z pospolitszych i najpiękniejszych zasłoniaków — czerwone opaski na trzonie niepowtarzalne.',
     desc:'Kapelusz rdzawobrązowy, 5–12 cm. Trzon jasnobrązowy z 2–4 INTENSYWNIE POMARAŃCZOWOCZERWONYMI WEŁNISTYMI PASKAMI (opaski z rozerwanych pajęczynowych zasłonek) — cecha absolutnie unikalna w całym rodzaju. Blaszki rdzawe, brudnordzawe.',
