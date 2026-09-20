@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.15</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.16</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41028,15 +41028,28 @@ async function loadWikiPhoto(wiki,imgEl){
 }
 
 function _showBestSpot(mid){
-  let pts=_midHeatCache[mid];
-  if(!pts||!pts.length){const res=_buildBaseHeat(mid);pts=res.pts;_midHeatCache[mid]=pts.slice();}
-  if(!pts||!pts.length){showToast('Brak danych ciepłomapowych');return;}
+  let pts=[...(_midHeatCache[mid]||[])];
+  if(!pts.length){const res=_buildBaseHeat(mid);pts=res.pts;_midHeatCache[mid]=pts.slice();}
+  if(!pts.length){showToast('Brak danych ciepłomapowych');return;}
+  // Supplement with suitable cells from the last scan — these represent the area the user just analyzed
+  const scanHab=_lastDebugData?.habPts;
+  if(scanHab&&scanHab.length){
+    const m=MUSHROOMS[mid];const opts=_getScanOpts(m);
+    scanHab.forEach(h=>{
+      let ok=false;
+      if(opts.wetHab)ok=h.we;
+      else if(opts.farmlandSpec)ok=h.fa;
+      else if(opts.openHab)ok=h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur);
+      else ok=h.f.some(f=>(!opts.coniferPref||f.c==='312')&&(!opts.broadleafPref||f.c==='311'));
+      if(ok)pts.push([h.la,h.ln,2.5]);
+    });
+  }
   const R=111000;
   const ref=_userGPS||[map.getCenter().lat,map.getCenter().lng];
   let best=null,bestScore=-1;
   pts.forEach(p=>{
     const km=Math.hypot((p[0]-ref[0])*R,(p[1]-ref[1])*R*Math.cos(ref[0]*Math.PI/180))/1000;
-    const score=p[2]*Math.exp(-km/40);
+    const score=p[2]*Math.exp(-km/20);
     if(score>bestScore){bestScore=score;best=p;}
   });
   if(!best){showToast('Nie znaleziono miejsca');return;}
@@ -41285,14 +41298,14 @@ function _doAreaAnalysis(layer){
   const s0=b.getSouth(),n0=b.getNorth(),w0=b.getWest(),e0=b.getEast();
   const nearF=FORESTS.filter(f=>{const c=polyCentroid(f.p);return c[0]>s0-.05&&c[0]<n0+.05&&c[1]>w0-.05&&c[1]<e0+.05;});
   const nearL=LANDUSE.filter(l=>l.t!=='river'&&l.p.some(p=>p[0]>s0-.01&&p[0]<n0+.01&&p[1]>w0-.01&&p[1]<e0+.01));
-  const nearU=URBAN_DATA.filter(u=>u.p.some(p=>p[0]>s0-.01&&p[0]<n0+.01&&p[1]>w0-.01&&p[1]<e0+.01));
+  const nearU=URBAN_DATA.filter(u=>u.some(p=>p[0]>s0-.01&&p[0]<n0+.01&&p[1]>w0-.01&&p[1]<e0+.01));
   const GN=Math.max(10,Math.min(55,Math.round(Math.max(n0-s0,e0-w0)*1300)));
   const dlat=(n0-s0)/GN,dln=(e0-w0)/GN;
   const habPts=[];
   for(let i=0;i<GN;i++)for(let j=0;j<GN;j++){
     const la=s0+(i+.5)*dlat,ln=w0+(j+.5)*dln;
     if(!pipTest([la,ln],drawnArr))continue;
-    habPts.push({la,ln,f:nearF.filter(f=>pipTest([la,ln],f.p)),we:nearL.some(l=>l.t==='wetland'&&pipTest([la,ln],l.p)),me:nearL.some(l=>l.t==='meadow'&&pipTest([la,ln],l.p)),pa:nearL.some(l=>l.t==='pasture'&&pipTest([la,ln],l.p)),fa:nearL.some(l=>l.t==='farmland'&&pipTest([la,ln],l.p)),ur:nearU.some(u=>pipTest([la,ln],u.p))});
+    habPts.push({la,ln,f:nearF.filter(f=>pipTest([la,ln],f.p)),we:nearL.some(l=>l.t==='wetland'&&pipTest([la,ln],l.p)),me:nearL.some(l=>l.t==='meadow'&&pipTest([la,ln],l.p)),pa:nearL.some(l=>l.t==='pasture'&&pipTest([la,ln],l.p)),fa:nearL.some(l=>l.t==='farmland'&&pipTest([la,ln],l.p)),ur:nearU.some(u=>pipTest([la,ln],u))});
   }
   const results=Object.entries(MUSHROOMS).map(([mid,m])=>{
     let rscore=0,rw=0;
@@ -41586,14 +41599,14 @@ function _doPointAnalysis(lat,lng,radiusM){
   const pla0=lat-dlat2,pla1=lat+dlat2,pln0=lng-dlng2,pln1=lng+dlng2;
   const nearFP=FORESTS.filter(f=>{const c=polyCentroid(f.p);return c[0]>pla0-.05&&c[0]<pla1+.05&&c[1]>pln0-.05&&c[1]<pln1+.05;});
   const nearLP=LANDUSE.filter(l=>l.t!=='river'&&l.p.some(p=>p[0]>pla0-.01&&p[0]<pla1+.01&&p[1]>pln0-.01&&p[1]<pln1+.01));
-  const nearUP=URBAN_DATA.filter(u=>u.p.some(p=>p[0]>pla0-.01&&p[0]<pla1+.01&&p[1]>pln0-.01&&p[1]<pln1+.01));
+  const nearUP=URBAN_DATA.filter(u=>u.some(p=>p[0]>pla0-.01&&p[0]<pla1+.01&&p[1]>pln0-.01&&p[1]<pln1+.01));
   const habPts2=[];
   if(radiusM>0){
     const GP=Math.max(10,Math.min(50,Math.round(r2*2/150)));
     for(let i=0;i<GP;i++)for(let j=0;j<GP;j++){
       const la=pla0+(i+.5)*(pla1-pla0)/GP,ln=pln0+(j+.5)*(pln1-pln0)/GP;
       if(Math.hypot((la-lat)*R2,(ln-lng)*R2*cosLat2)>r2)continue;
-      habPts2.push({la,ln,f:nearFP.filter(f=>pipTest([la,ln],f.p)),we:nearLP.some(l=>l.t==='wetland'&&pipTest([la,ln],l.p)),me:nearLP.some(l=>l.t==='meadow'&&pipTest([la,ln],l.p)),pa:nearLP.some(l=>l.t==='pasture'&&pipTest([la,ln],l.p)),fa:nearLP.some(l=>l.t==='farmland'&&pipTest([la,ln],l.p)),ur:nearUP.some(u=>pipTest([la,ln],u.p))});
+      habPts2.push({la,ln,f:nearFP.filter(f=>pipTest([la,ln],f.p)),we:nearLP.some(l=>l.t==='wetland'&&pipTest([la,ln],l.p)),me:nearLP.some(l=>l.t==='meadow'&&pipTest([la,ln],l.p)),pa:nearLP.some(l=>l.t==='pasture'&&pipTest([la,ln],l.p)),fa:nearLP.some(l=>l.t==='farmland'&&pipTest([la,ln],l.p)),ur:nearUP.some(u=>pipTest([la,ln],u))});
     }
   }else{
     const hasPasture=terrain.landuse.some(l=>l.t==='pasture');
