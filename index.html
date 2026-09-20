@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet-rotate@0.2.8/dist/leaflet-rotate-src.js"></script>
 <style>
 :root{
   --bg:#0b0b0b;--sb:#111111;--card:#1a1a1a;--card2:#222222;
@@ -200,11 +201,11 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .abar{height:4px;background:var(--bg);border-radius:2px;overflow:hidden}
 .abf{height:100%;border-radius:2px;transition:width .6s}
 .apct{font-size:10.5px;color:var(--muted);margin-top:3px;font-style:italic}
-#compass{position:absolute;bottom:52px;right:52px;z-index:800;width:44px;height:44px;pointer-events:none;opacity:.7;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))}
+#compass{position:absolute;bottom:52px;right:52px;z-index:800;width:44px;height:44px;pointer-events:auto;cursor:pointer;opacity:.7;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4));transition:transform .3s ease,opacity .15s}
 #scan-r{display:none;align-items:center;gap:6px;margin-top:4px;font-size:11px;color:var(--muted);flex-wrap:wrap}
 #scan-r input[type=range]{width:76px;accent-color:#52b849;cursor:pointer}
 #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:9px 16px;font-size:12.5px;color:var(--text);z-index:9999;transition:transform .25s;pointer-events:none;white-space:nowrap}
-#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.show{transform:translateX(-50%) translateY(0);pointer-events:auto;cursor:pointer}
 /* Light-mode overrides for status boxes */
 [data-theme="light"] .dbox{background:rgba(160,40,28,.1);border-color:rgba(160,40,28,.25);color:#a02018}
 [data-theme="light"] .rbox{background:rgba(138,98,24,.1);border-color:rgba(138,98,24,.25);color:#7a5614}
@@ -304,8 +305,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #wx{bottom:84px;max-width:172px;font-size:11px}
   #wx-temp{font-size:16px}
   #wx-wind,#wx-moon{font-size:10px}
-  #mc{transform:translateX(100%)}
-  #mc-body{opacity:0;pointer-events:none}
+  #compass{bottom:72px;right:10px}
+  .mob-ico{font-size:18px}
 
   #ph-legend{bottom:128px}
   #hl{bottom:84px}
@@ -313,6 +314,15 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #sand-legend{bottom:128px!important}
   #podzol-legend{bottom:176px!important}
   #mob-nav{display:flex}
+}
+@media(max-width:767px)and(orientation:landscape){
+  #sidebar{height:100vh;max-height:100vh}
+  #ip{height:80vh;border-radius:0;top:0;bottom:auto;transform:translateX(100%);right:-100%!important;width:60%!important;height:100vh!important}
+  #ip.open{transform:translateX(0);right:0!important}
+  #ip.ip-mini{height:100vh!important;width:40%!important}
+  #mob-nav{flex-direction:column;width:52px;height:100vh;top:0;right:0;left:auto;border-top:none;border-left:1px solid var(--border)}
+  #mw{padding-bottom:0;padding-right:52px}
+  .mob-tab{padding:8px 0}
 }
 .mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-size:9.5px;color:var(--muted);border:none;background:none;font-family:var(--f-body);transition:color .15s;user-select:none;padding:6px 0}
 .mob-tab.active,.mob-tab:hover{color:var(--gold)}
@@ -326,7 +336,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.41</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.42</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32610,7 +32620,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
 // ─── Map ─────────────────────────────────────────────────
 const E='https://server.arcgisonline.com/ArcGIS/rest/services';
 const _mv=JSON.parse(localStorage.getItem('mapView')||'null');
-const map=L.map('map',{center:_mv?[_mv.lat,_mv.lng]:[52.1,19.5],zoom:_mv?_mv.z:7,preferCanvas:true,minZoom:5,maxZoom:18});
+const map=L.map('map',{center:_mv?[_mv.lat,_mv.lng]:[52.1,19.5],zoom:_mv?_mv.z:7,preferCanvas:true,minZoom:5,maxZoom:18,rotate:true,touchRotate:true,rotateControl:false});
 
 const baseLayers={
   topo:L.tileLayer(`${E}/World_Topo_Map/MapServer/tile/{z}/{y}/{x}`,{maxZoom:18,attribution:'ESRI'}),
@@ -42872,24 +42882,76 @@ document.getElementById('wx-col').onclick=e=>{
 })();
 
 // Map controls collapse
-document.getElementById('mc-tab').onclick=()=>{
+// ── Layers panel toggle ───────────────────────────────────────────────────
+function _mcToggle(){
   const mc=document.getElementById('mc'),t=document.getElementById('mc-tab');
   const col=mc.classList.toggle('mc-col');
   t.textContent=col?'►':'◄';
   t.title=col?'Pokaż warstwy':'Ukryj warstwy';
-};
-if(window.innerWidth<=767){
-  const t=document.getElementById('mc-tab');
-  t.textContent='►';
-  t.title='Pokaż warstwy';
-  const wx=document.getElementById('wx'),btn=document.getElementById('wx-col');
-  wx.classList.add('wx-col');
-  btn.textContent='▼';
-  const ip=document.getElementById('ip');
-  function toggleIpMini(){ip.classList.toggle('ip-mini');}
-  document.getElementById('ip-min').onclick=e=>{e.stopPropagation();toggleIpMini();};
-  document.getElementById('ip-handle').onclick=toggleIpMini;
 }
+document.getElementById('mc-tab').onclick=_mcToggle;
+
+// ── Mobile init ───────────────────────────────────────────────────────────
+if(window.innerWidth<=767){
+  // layers: start collapsed
+  const mc=document.getElementById('mc'),mct=document.getElementById('mc-tab');
+  mc.classList.add('mc-col');
+  mct.textContent='►';mct.title='Pokaż warstwy';
+  // weather: start collapsed
+  const wx=document.getElementById('wx'),btn=document.getElementById('wx-col');
+  wx.classList.add('wx-col');btn.textContent='▼';
+  // info panel minimize
+  const ip=document.getElementById('ip');
+  function _ipMini(){ip.classList.toggle('ip-mini');}
+  document.getElementById('ip-min').onclick=e=>{e.stopPropagation();_ipMini();};
+  document.getElementById('ip-handle').onclick=_ipMini;
+}
+
+// ── Mobile nav toggle-to-close ────────────────────────────────────────────
+(function(){
+  const sb=document.getElementById('sidebar');
+  const tabMap=document.getElementById('mob-map');
+  const tabList=document.getElementById('mob-list');
+  const tabFilters=document.getElementById('mob-filters');
+  function setActive(btn){[tabMap,tabList,tabFilters].forEach(t=>t.classList.remove('active'));btn.classList.add('active');}
+  tabMap.onclick=()=>{setActive(tabMap);sb.classList.remove('mob-open');};
+  tabList.onclick=()=>{
+    if(sb.classList.contains('mob-open')&&tabList.classList.contains('active')){
+      setActive(tabMap);sb.classList.remove('mob-open');
+    }else{
+      setActive(tabList);sb.classList.add('mob-open');
+      setTimeout(()=>document.getElementById('ml').scrollIntoView(),50);
+    }
+  };
+  tabFilters.onclick=()=>{
+    _mcToggle();
+    setActive(tabFilters.classList.contains('active')?tabMap:tabFilters);
+  };
+})();
+
+// ── Compass: bearing sync + click to reset ────────────────────────────────
+(function(){
+  const cmp=document.getElementById('compass');
+  if(map.setBearing){
+    map.on('rotate',()=>{
+      const b=map.getBearing();
+      cmp.style.transform=`rotate(${b}deg)`;
+      cmp.style.opacity=b===0?'.7':'1';
+    });
+    cmp.onclick=()=>map.setBearing(0,{animate:true,duration:.4});
+    document.addEventListener('keydown',e=>{
+      const tag=document.activeElement.tagName;
+      if(tag==='INPUT'||tag==='TEXTAREA')return;
+      if(e.key==='q'||e.key==='Q'){e.preventDefault();map.setBearing(map.getBearing()-15);}
+      if(e.key==='e'||e.key==='E'){e.preventDefault();map.setBearing(map.getBearing()+15);}
+    });
+  }
+})();
+
+// ── Toast: tap to dismiss ─────────────────────────────────────────────────
+document.getElementById('toast').addEventListener('click',()=>{
+  document.getElementById('toast').classList.remove('show');
+});
 
 </script>
 <div id="mob-nav">
@@ -42906,23 +42968,5 @@ if(window.innerWidth<=767){
     <span>Filtry</span>
   </button>
 </div>
-<script>
-(function(){
-  const sb=document.getElementById('sidebar');
-  const tabMap=document.getElementById('mob-map');
-  const tabList=document.getElementById('mob-list');
-  const tabFilters=document.getElementById('mob-filters');
-  function setActive(btn){[tabMap,tabList,tabFilters].forEach(t=>t.classList.remove('active'));btn.classList.add('active');}
-  tabMap.onclick=()=>{setActive(tabMap);sb.classList.remove('mob-open');};
-  tabList.onclick=()=>{
-    setActive(tabList);sb.classList.add('mob-open');
-    setTimeout(()=>document.getElementById('ml').scrollIntoView(),50);
-  };
-  tabFilters.onclick=()=>{
-    setActive(tabFilters);sb.classList.add('mob-open');
-    setTimeout(()=>document.getElementById('sb-top').scrollIntoView(),50);
-  };
-})();
-</script>
 </body>
 </html>
