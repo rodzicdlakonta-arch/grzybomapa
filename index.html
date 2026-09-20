@@ -337,7 +337,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.46</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.47</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41131,14 +41131,8 @@ function selectMushroom(mid,e){
     return;
   }
 
-  // Single select
-  if(selectedMids.size===1&&selectedMid===mid){
-    // On mobile with sidebar open, show the panel instead of toggling off
-    if(window.innerWidth<=767&&document.getElementById('sidebar').classList.contains('mob-open')){
-      showInfoPanel(mid);return;
-    }
-    clearHeat();return;
-  }
+  // Single select — tapping same mushroom restores panel; only X clears heat
+  if(selectedMids.size===1&&selectedMid===mid){showInfoPanel(mid);return;}
   _midHeatCache={};selectedMids=new Set([mid]);selectedMid=mid;
   document.querySelectorAll('.mc').forEach(c=>c.classList.toggle('sel',c.dataset.mid===mid));
   if(heatLayer)map.removeLayer(heatLayer);
