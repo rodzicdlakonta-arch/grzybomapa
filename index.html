@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.11</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.12</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41032,13 +41032,12 @@ function _showBestSpot(mid){
   if(!pts||!pts.length){const res=_buildBaseHeat(mid);pts=res.pts;_midHeatCache[mid]=pts.slice();}
   if(!pts||!pts.length){showToast('Brak danych ciepłomapowych');return;}
   const R=111000;
+  const ref=_userGPS||[map.getCenter().lat,map.getCenter().lng];
   let best=null,bestScore=-1;
   pts.forEach(p=>{
-    let score=p[2];
-    if(_userGPS){
-      const km=Math.hypot((p[0]-_userGPS[0])*R,(p[1]-_userGPS[1])*R*Math.cos(_userGPS[0]*Math.PI/180))/1000;
-      if(km<300)score*=Math.max(0.2,1-km/200);
-    }
+    const km=Math.hypot((p[0]-ref[0])*R,(p[1]-ref[1])*R*Math.cos(ref[0]*Math.PI/180))/1000;
+    if(km>80)return;
+    const score=p[2]*(1-km/80);
     if(score>bestScore){bestScore=score;best=p;}
   });
   if(!best){showToast('Nie znaleziono miejsca');return;}
@@ -41256,7 +41255,8 @@ function _doAreaAnalysis(layer){
   const s0=b.getSouth(),n0=b.getNorth(),w0=b.getWest(),e0=b.getEast();
   const nearF=FORESTS.filter(f=>{const c=polyCentroid(f.p);return c[0]>s0-.05&&c[0]<n0+.05&&c[1]>w0-.05&&c[1]<e0+.05;});
   const nearL=LANDUSE.filter(l=>l.t!=='river'&&l.p.some(p=>p[0]>s0-.01&&p[0]<n0+.01&&p[1]>w0-.01&&p[1]<e0+.01));
-  const GN=14;const dlat=(n0-s0)/GN,dln=(e0-w0)/GN;
+  const GN=Math.max(8,Math.min(40,Math.round(Math.max(n0-s0,e0-w0)*900)));
+  const dlat=(n0-s0)/GN,dln=(e0-w0)/GN;
   const habPts=[];
   for(let i=0;i<GN;i++)for(let j=0;j<GN;j++){
     const la=s0+(i+.5)*dlat,ln=w0+(j+.5)*dln;
@@ -41282,7 +41282,7 @@ function _doAreaAnalysis(layer){
       const pref=opts.coniferPref?['SO','PI','ŚW','SW','JD','MD']:opts.broadleafPref?['DB','BK','GB','JW']:null;
       if(pref&&inAreaBDL.some(bd=>pref.some(c=>bd.cd&&bd.cd.toUpperCase().startsWith(c))))bdlB=0.15;
     }
-    return{mid,m,score:Math.min(regional*(habFrac+bdlB),99)};
+    return{mid,m,score:Math.min(regional*(habFrac+bdlB)*(m.rare?0.45:1),99)};
   }).filter(x=>x.score>1).sort((a,b)=>b.score-a.score);
   const richTerrain={...terrain,bdlStands:inAreaBDL,wyrStands:inAreaWyr};
   _lastDebugData={clcForests:terrain.forests,wyrStands:inAreaWyr,bdlStands:inAreaBDL,landuse:terrain.landuse,mode:'area',habPts};
@@ -41556,7 +41556,7 @@ function _doPointAnalysis(lat,lng,radiusM){
   const nearLP=LANDUSE.filter(l=>l.t!=='river'&&l.p.some(p=>p[0]>pla0-.01&&p[0]<pla1+.01&&p[1]>pln0-.01&&p[1]<pln1+.01));
   const habPts2=[];
   if(radiusM>0){
-    const GP=12;
+    const GP=Math.max(8,Math.min(32,Math.round(r2*2/200)));
     for(let i=0;i<GP;i++)for(let j=0;j<GP;j++){
       const la=pla0+(i+.5)*(pla1-pla0)/GP,ln=pln0+(j+.5)*(pln1-pln0)/GP;
       if(Math.hypot((la-lat)*R2,(ln-lng)*R2*cosLat2)>r2)continue;
@@ -41588,7 +41588,7 @@ function _doPointAnalysis(lat,lng,radiusM){
       const pref=opts.coniferPref?['SO','PI','ŚW','SW','JD','MD']:opts.broadleafPref?['DB','BK','GB','JW']:null;
       if(pref&&inAreaBDL2.some(bd=>pref.some(c=>bd.cd&&bd.cd.toUpperCase().startsWith(c))))bdlB=0.15;
     }
-    return{mid,m,score:Math.min(regional*(habFrac+bdlB),99)};
+    return{mid,m,score:Math.min(regional*(habFrac+bdlB)*(m.rare?0.45:1),99)};
   }).filter(x=>x&&x.score>0.5).sort((a,b)=>b.score-a.score);
   const treeTypeLabel=hasPine?'bór sosnowy':hasBirch?'brzezina':hasOak?'dąbrowa':hasAlder?'olszyna':hasForest?'las':'';
   const terrainLabel=hasWetland?'mokradło':hasMeadow?'łąka':hasFarmland&&!hasForest?'pole':treeTypeLabel||'teren otwarty';
