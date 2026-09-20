@@ -42980,13 +42980,18 @@ document.getElementById('toast').addEventListener('click',()=>{
   tabMap.onclick=()=>{setActive(tabMap);sb.classList.remove('mob-open');};
   tabList.onclick=()=>{
     const ip=document.getElementById('ip');
-    if(ip.classList.contains('open')){
-      // Info panel is open — restore it fully and close list
-      ip.classList.remove('ip-mini');
-      sb.classList.remove('mob-open');
-      setActive(tabList);
-    }else if(sb.classList.contains('mob-open')&&tabList.classList.contains('active')){
-      // List already open — close it
+    const ipOpen=ip.classList.contains('open');
+    const listOpen=sb.classList.contains('mob-open');
+    const tabActive=tabList.classList.contains('active');
+    if(ipOpen&&tabActive&&!listOpen){
+      // Panel is fully visible and 🍄 is active → close it
+      if(typeof clearHeat==='function')clearHeat();
+      setActive(tabMap);
+    }else if(ipOpen){
+      // Panel open but minimized or list is covering → restore
+      ip.classList.remove('ip-mini');sb.classList.remove('mob-open');setActive(tabList);
+    }else if(listOpen&&tabActive){
+      // List is open → close
       setActive(tabMap);sb.classList.remove('mob-open');
     }else{
       // Open list
