@@ -315,7 +315,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.8</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.9</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41247,16 +41247,16 @@ function _doAreaAnalysis(layer){
     for(const [rid,prox] of Object.entries(rscores)){
       score+=(m.weights[rid]||0)*prox;weight+=prox;
     }
-    let base=weight>0?score/weight:0;
-    if(hasPine&&m.terrain.some(t=>/sosnow|iglast|modrzew|świerk/i.test(t)))base=Math.min(base*1.6,99);
-    else if(hasBroadleaf&&m.terrain.some(t=>/dąb|dębów|grąd|liściasty|buk|grab/i.test(t)))base=Math.min(base*1.5,99);
-    else if(hasBirch&&m.terrain.some(t=>/brzozy|brzezin/i.test(t)))base=Math.min(base*1.5,99);
-    else if(hasAlder&&m.terrain.some(t=>/olsz|olch|olszyn/i.test(t)))base=Math.min(base*1.5,99);
-    else if(hasMixed&&m.terrain.some(t=>/mieszan|sosnow|liściasty/i.test(t)))base=Math.min(base*1.3,99);
+    let base=weight>0?Math.min(score/weight*0.6,55):0;
+    if(hasPine&&m.terrain.some(t=>/sosnow|iglast|modrzew|świerk/i.test(t)))base=Math.min(base+40,99);
+    else if(hasBroadleaf&&m.terrain.some(t=>/dąb|dębów|grąd|liściasty|buk|grab/i.test(t)))base=Math.min(base+38,99);
+    else if(hasBirch&&m.terrain.some(t=>/brzozy|brzezin/i.test(t)))base=Math.min(base+35,99);
+    else if(hasAlder&&m.terrain.some(t=>/olsz|olch|olszyn/i.test(t)))base=Math.min(base+35,99);
+    else if(hasMixed&&m.terrain.some(t=>/mieszan|sosnow|liściasty/i.test(t)))base=Math.min(base+28,99);
     else if(hasForest&&base<4)base=4;
-    if(hasWetland&&m.terrain.some(t=>/torf|bagien|podmok|wilgotn/i.test(t)))base=Math.min(base*1.2,99);
-    if((hasPasture||hasMeadow)&&m.terrain.some(t=>/łąk|pastw|murawa/i.test(t)))base=Math.min(base*1.25,99);
-    if(hasFarmland&&m.terrain.some(t=>/łąk|pastw|ogród|kompost/i.test(t)))base=Math.min(base*1.1,99);
+    if(hasWetland&&m.terrain.some(t=>/torf|bagien|podmok|wilgotn/i.test(t)))base=Math.min(base+18,99);
+    if((hasPasture||hasMeadow)&&m.terrain.some(t=>/łąk|pastw|murawa/i.test(t)))base=Math.min(base+22,99);
+    if(hasFarmland&&m.terrain.some(t=>/łąk|pastw|ogród|kompost/i.test(t)))base=Math.min(base+12,99);
     return{mid,m,score:base};
   }).filter(x=>x.score>1).sort((a,b)=>b.score-a.score);
   const richTerrain={...terrain,bdlStands:inAreaBDL,wyrStands:inAreaWyr};
@@ -41508,7 +41508,7 @@ function _doPointAnalysis(lat,lng,radiusM){
   let hasBirch=matchedTrees.some(f=>f.type==='birch');
   let hasOak=matchedTrees.some(f=>f.type==='oak'||f.type==='beech');
   let hasAlder=matchedTrees.some(f=>f.type==='alder');
-  let hasForest=matchedTrees.length>0||terrain.forests.length>0||Object.values(rscores).some(s=>s>0.4);
+  let hasForest=matchedTrees.length>0||terrain.forests.length>0;
   if(terrain.bdlSpp){
     const cd=terrain.bdlSpp.toUpperCase();
     if(/\bSO\b|\bSW\b|\bJD\b|\bMD\b/.test(cd))hasPine=true;
@@ -41528,19 +41528,19 @@ function _doPointAnalysis(lat,lng,radiusM){
     for(const[rid,prox]of Object.entries(rscores)){
       score+=(m.weights[rid]||0)*prox;weight+=prox;
     }
-    let base=weight>0?score/weight:0;
+    let base=weight>0?Math.min(score/weight*0.6,55):0;
     if(hasForest){
-      if(hasPine&&m.terrain.some(t=>/sosnow|iglast|modrzew/i.test(t)))base=Math.min(base*1.6,99);
-      else if(hasBirch&&m.terrain.some(t=>/brzozy|brzezin/i.test(t)))base=Math.min(base*1.5,99);
-      else if(hasOak&&m.terrain.some(t=>/dąb|dębów|grąd|liściasty/i.test(t)))base=Math.min(base*1.5,99);
-      else if(hasAlder&&m.terrain.some(t=>/olsz|olch|olszyn/i.test(t)))base=Math.min(base*1.5,99);
-      else if(m.terrain.some(t=>/sosnow|iglast/i.test(t)))base=Math.min(base*1.3,99);
-      else if(m.terrain.some(t=>/mieszan/i.test(t)))base=Math.min(base*1.2,99);
+      if(hasPine&&m.terrain.some(t=>/sosnow|iglast|modrzew/i.test(t)))base=Math.min(base+40,99);
+      else if(hasBirch&&m.terrain.some(t=>/brzozy|brzezin/i.test(t)))base=Math.min(base+35,99);
+      else if(hasOak&&m.terrain.some(t=>/dąb|dębów|grąd|liściasty/i.test(t)))base=Math.min(base+38,99);
+      else if(hasAlder&&m.terrain.some(t=>/olsz|olch|olszyn/i.test(t)))base=Math.min(base+35,99);
+      else if(m.terrain.some(t=>/sosnow|iglast/i.test(t)))base=Math.min(base+28,99);
+      else if(m.terrain.some(t=>/mieszan/i.test(t)))base=Math.min(base+22,99);
       else if(base<5)base=5;
     }
-    if(hasWetland&&m.terrain.some(t=>/torf|bagien|podmok|wilgotn/i.test(t)))base=Math.min(base*1.35,99);
-    if(hasMeadow&&m.terrain.some(t=>/łąk|pastw|murawa/i.test(t)))base=Math.min(base*1.35,99);
-    if(hasFarmland&&m.terrain.some(t=>/łąk|pastw|ogród|kompost/i.test(t)))base=Math.min(base*1.15,99);
+    if(hasWetland&&m.terrain.some(t=>/torf|bagien|podmok|wilgotn/i.test(t)))base=Math.min(base+18,99);
+    if(hasMeadow&&m.terrain.some(t=>/łąk|pastw|murawa/i.test(t)))base=Math.min(base+22,99);
+    if(hasFarmland&&m.terrain.some(t=>/łąk|pastw|ogród|kompost/i.test(t)))base=Math.min(base+12,99);
     return{mid,m,score:base};
   }).filter(x=>x&&x.score>0.5).sort((a,b)=>b.score-a.score);
   const treeTypeLabel=hasPine?'bór sosnowy':hasBirch?'brzezina':hasOak?'dąbrowa':hasAlder?'olszyna':hasForest?'las':'';
