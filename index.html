@@ -339,7 +339,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.56</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.57</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42070,10 +42070,20 @@ let sTimer=null;
 siEl.addEventListener('input',()=>{
   clearTimeout(sTimer);
   const q=siEl.value.trim().toLowerCase();
+  activeSearch=q;
+  renderList();
   if(!q){srEl.style.display='none';return;}
-  const mm=Object.entries(MUSHROOMS).filter(([,m])=>m.name.toLowerCase().includes(q)||m.latin.toLowerCase().includes(q)).slice(0,5);
-  const mh=mm.map(([mid,m])=>`<div class="si-item" onclick="selectMushroom('${mid}');closeSearch()"><span>🍄</span><div><div>${m.name}</div><div style="font-size:11px;color:var(--muted);font-style:italic">${m.latin}</div></div></div>`).join('');
-  srEl.innerHTML=(mh?`<div class="si-sec">Grzyby</div>`+mh:`<div class="si-item" style="color:var(--muted)">Szukam…</div>`);
+  // On mobile: ensure list is visible while searching
+  if(window.innerWidth<=767){
+    const sb=document.getElementById('sidebar');
+    const tabList=document.getElementById('mob-list');
+    if(!sb.classList.contains('mob-open')){
+      sb.classList.add('mob-open');
+      if(tabList)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabList);});
+    }
+  }
+  // Dropdown: location search only (mushrooms already shown in filtered list)
+  srEl.innerHTML=`<div class="si-item" style="color:var(--muted)">Szukam miejscowości…</div>`;
   srEl.style.display='block';
   if(q.length>=3){
     sTimer=setTimeout(async()=>{
@@ -42081,15 +42091,14 @@ siEl.addEventListener('input',()=>{
         const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q+' Polska')}&format=json&limit=5&countrycodes=pl`);
         const d=await r.json();
         const lh=d.map(l=>`<div class="si-item" onclick="flyTo(${l.lat},${l.lon})"><span>📍</span><div><div>${l.display_name.split(',').slice(0,2).join(', ')}</div><div style="font-size:11px;color:var(--muted)">${l.type}</div></div></div>`).join('');
-        srEl.innerHTML=(mh?`<div class="si-sec">Grzyby</div>`+mh:'')+(lh?`<div class="si-sec">Miejscowości</div>`+lh:'');
-        if(!mh&&!lh)srEl.innerHTML=`<div class="si-item" style="color:var(--muted)">Brak wyników</div>`;
-      }catch{}
+        srEl.innerHTML=lh?`<div class="si-sec">Miejscowości</div>`+lh:`<div class="si-item" style="color:var(--muted)">Brak miejscowości</div>`;
+      }catch{srEl.style.display='none';}
     },350);
   }
 });
 
 function flyTo(lat,lng){map.flyTo([parseFloat(lat),parseFloat(lng)],12,{duration:1.4});closeSearch();}
-function closeSearch(){srEl.style.display='none';siEl.blur();}
+function closeSearch(){srEl.style.display='none';siEl.blur();siEl.value='';if(activeSearch){activeSearch='';renderList();}}
 document.addEventListener('click',e=>{if(!e.target.closest('#sw'))closeSearch();});
 
 // ─── F2 debug overlay ─────────────────────────────────────
@@ -42207,7 +42216,7 @@ document.addEventListener('keydown',e=>{
 });
 
 // ─── Sidebar list ─────────────────────────────────────────
-let activeCats=new Set(),activeSeasons=new Set(),activeHabs=new Set(),activeSortBy='default';
+let activeCats=new Set(),activeSeasons=new Set(),activeHabs=new Set(),activeSortBy='default',activeSearch='';
 let favs;try{favs=new Set(JSON.parse(localStorage.getItem('gm_favs')||'[]'));}catch(e){favs=new Set();}
 function _saveFavs(){try{localStorage.setItem('gm_favs',JSON.stringify([...favs]));}catch(e){}}
 function _forkPip(on){const c=on?'var(--gold)':'var(--pip-empty)';return `<svg viewBox="0 0 9 20" width="9" height="18" style="fill:${c}"><rect x="1" y="0" width="1.6" height="9" rx=".6"/><rect x="3.7" y="0" width="1.6" height="9" rx=".6"/><rect x="6.4" y="0" width="1.6" height="9" rx=".6"/><path d="M1 9v2.5q3.5 2.5 7 0V9z"/><rect x="3.5" y="11.5" width="2" height="8.5" rx="1"/></svg>`;}
@@ -42257,6 +42266,7 @@ function renderList(){
   }));
   if(activeSeasons.size) entries=entries.filter(([,m])=>[...activeSeasons].some(s=>{const mo=SEASON_MONTHS[s]||[];return m.season.some(x=>mo.includes(x));}));
   if(activeHabs.size) entries=entries.filter(([,m])=>[...activeHabs].some(h=>{const pat=HAB_PATTERNS[h];if(!pat)return false;return m.terrain.some(t=>pat.test(t))||(m.habitat&&pat.test(m.habitat));}));
+  if(activeSearch) entries=entries.filter(([,m])=>m.name.toLowerCase().includes(activeSearch)||m.latin.toLowerCase().includes(activeSearch));
   let html='';
   if(activeSortBy==='name-az'){entries.sort(([,a],[,b])=>a.name.localeCompare(b.name,'pl'));html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');}
   else if(activeSortBy==='name-za'){entries.sort(([,a],[,b])=>b.name.localeCompare(a.name,'pl'));html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');}
@@ -42638,6 +42648,15 @@ function showToast(msg){
   };
   ctl.addTo(map);
 })();
+
+// Auto-locate on load (silent — no toast, no error if denied)
+if(navigator.geolocation){
+  navigator.geolocation.getCurrentPosition(pos=>{
+    _userGPS=[pos.coords.latitude,pos.coords.longitude];
+    map.flyTo([pos.coords.latitude,pos.coords.longitude],13,{duration:1.5});
+    fetchWeather(pos.coords.latitude,pos.coords.longitude);
+  },()=>{},{timeout:8000,maximumAge:300000,enableHighAccuracy:false});
+}
 
 // ── Mushroom find markers (localStorage) ──────────────────────────────────
 const MKEY='grzybomapa_markers';
