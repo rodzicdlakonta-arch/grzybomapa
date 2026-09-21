@@ -308,6 +308,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #compass{bottom:72px;right:10px}
   #mc{max-height:calc(100vh - 80px);overflow:hidden}
   #mc-body{flex:1;min-height:0}
+  .cp{min-height:0;overflow-y:auto}
+  .cp.scroll{min-height:0;overflow-y:auto}
   #pbody{padding-bottom:100px!important}
   .leaflet-bottom{margin-bottom:56px}
   #ph-legend{bottom:128px}
@@ -345,8 +347,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   /* Scanner panel: full width, readable height */
   #ap{left:0!important}
   #ap.open{bottom:0;max-height:60vh}
-  /* Layers panel: definite height on #mc so %.cp resolves; overflow:visible lets mc-tab extend left (portrait CSS sets overflow:hidden which persists when both queries apply) */
-  #mc{height:calc(100vh - 24px);overflow:visible}
+  /* Layers panel: overflow:hidden+padding-left:14px lets mc-tab sit inside mc's box (left:0) so scroll works AND arrow is visible */
+  #mc{height:calc(100vh - 24px);overflow:hidden;padding-left:14px}
+  #mc-tab{left:0}
   #mc-body{flex:1;min-height:0}
   .cp{max-height:35%;overflow-y:auto}
   .cp.scroll{flex:1;min-height:80px;max-height:none;overflow-y:auto}
@@ -363,7 +366,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.70</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.71</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42672,9 +42675,9 @@ document.getElementById('pcls').onclick=e=>{
   // Reset list/filter split to natural height (same as double-click the drag handle)
   const _sbt=document.getElementById('sb-top');
   if(_sbt){_sbt.style.height='';try{localStorage.removeItem('sb-top-h');}catch(_){}}
+  document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));
   if(window.innerWidth<=767){
     const sb=document.getElementById('sidebar');
-    document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));
     setTimeout(()=>{sb.classList.add('mob-open');},80);
   }
 };
