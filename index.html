@@ -310,7 +310,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #compass{display:none!important}
   #mc{max-height:calc(100vh - 80px - env(safe-area-inset-bottom));overflow:hidden}
   #mc-body{flex:1;min-height:0}
-  #mc.mc-col{transform:none!important}
+  #mc.mc-col{transform:none!important;min-width:14px;overflow:visible!important}
+  #mc.mc-col #mc-tab{left:0}
   #mc.mc-col #mc-body{display:none!important}
   .cp{min-height:0;overflow-y:auto}
   .cp.scroll{min-height:0;overflow-y:auto}
@@ -356,7 +357,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #sidebar.mob-open{display:flex!important;position:fixed!important;left:0;top:0;height:100vh!important;width:300px;z-index:1201;transform:none!important;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
   #mw{padding-left:0!important}
   /* Species list padding in landscape sidebar */
-  #ml{padding-top:8px;padding-bottom:20px}
+  #ml{padding-top:8px;padding-bottom:48px}
   /* Small phones override — restore full-width sidebar when mob-open */
   #sb-top{max-height:55vh;overflow-y:auto;flex-shrink:0}
   #ml{min-height:0;overflow-y:auto;flex:1}
@@ -366,7 +367,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   /* Layers panel: overflow:hidden+padding-left:14px lets mc-tab sit inside mc's box (left:0) so scroll works AND arrow is visible */
   #mc{height:calc(100vh - 24px);overflow:hidden;padding-left:14px}
   #mc-tab{left:0}
-  #mc-body{flex:1;min-height:0;overflow:hidden}
+  #mc-body{flex:1;min-height:0;overflow-y:auto}
   .cp{max-height:28vh;overflow-y:auto;padding:4px 0}
   .cp.scroll{flex:1;min-height:0;max-height:none;overflow-y:auto;padding:4px 0}
   /* Collapsed layers panel: keep mc at right:0, hide body, leave mc-tab visible */
@@ -41423,6 +41424,7 @@ function showInfoPanel(mid){
   }
   // lightbox close handled by _openLightbox setup (one-time, see below)
   const ipEl=document.getElementById('ip');
+  ipEl.scrollTop=0;
   ipEl.classList.add('open');ipEl.classList.remove('ip-mini');
   // On mobile: close sidebar, keep Grzyby tab active so info panel feels part of that flow
   if(window.innerWidth<=767){
@@ -43217,7 +43219,7 @@ document.getElementById('toast').addEventListener('click',()=>{
     map.invalidateSize();
   };
   new MutationObserver(_update).observe(sb,{attributes:true,attributeFilter:['class']});
-  window.addEventListener('orientationchange',()=>{_sbOpen=false;sb.classList.remove('mob-open');_restoreIp();document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));setTimeout(_update,350);});
+  window.addEventListener('orientationchange',()=>{_sbOpen=false;sb.classList.remove('mob-open');_restoreIp();document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));setTimeout(()=>{_update();const ip=document.getElementById('ip');if(ip)ip.scrollTop=0;},350);});
   window.addEventListener('resize',_update);
   window._closeSidebar=()=>{_sbOpen=false;sb.classList.remove('mob-open');_update();};
   _update();
@@ -43255,13 +43257,13 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.4</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.5</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
   <button class="mchip on" data-mcat="all">Wszystkie</button>
   <button class="mchip" data-mcat="edible">Jadalne</button>
-  <button class="mchip" data-mcat="dangerous">Trujące</button>
+  <button class="mchip" data-mcat="poisonous">Trujące</button>
   <button class="mchip" data-mcat="rare">Rzadkie</button>
   <button class="mchip mchip-more" id="mob-more">🎛️ Filtry</button>
 </div>
@@ -43368,22 +43370,27 @@ document.getElementById('toast').addEventListener('click',()=>{
   // Capture initial DOM order for stable tiebreaking
   function syncMobChips(){
     const noFilters=activeCats.size===0&&activeSeasons.size===0&&activeHabs.size===0&&activeSortBy==='default';
-    // Update static category chips
     const allChip=parent.querySelector('.mchip[data-mcat="all"]');
     if(allChip)allChip.classList.toggle('on',noFilters);
     const staticCats=Array.from(parent.querySelectorAll('.mchip[data-mcat]:not([data-mcat="all"])'));
+    const staticCatKeys=new Set(staticCats.map(c=>c.dataset.mcat));
     staticCats.forEach(c=>c.classList.toggle('on',activeCats.has(c.dataset.mcat)));
-    // Remove previous dynamic chips
+    // Remove old dynamic chips
     parent.querySelectorAll('.mchip-dyn').forEach(c=>c.remove());
-    // Helper: build a removable chip with given label that clicks the matching .fb
-    function _dyn(label,selector){
+    function _dyn(lbl,sel){
       const c=document.createElement('button');
-      c.className='mchip mchip-dyn on';
-      c.textContent=label;
-      c.onclick=()=>{document.querySelector(selector)?.click();};
+      c.className='mchip mchip-dyn on';c.textContent=lbl;
+      c.onclick=()=>{document.querySelector(sel)?.click();};
       return c;
     }
     const dynChips=[];
+    // Extra activeCats not covered by static chips (hallucinogenic, fav, season…)
+    for(const cat of activeCats){
+      if(!staticCatKeys.has(cat)){
+        const lbl=document.querySelector(`.fb[data-cat="${cat}"]`)?.textContent||cat;
+        dynChips.push(_dyn(lbl,`.fb[data-cat="${cat}"]`));
+      }
+    }
     for(const s of activeSeasons){
       const lbl=document.querySelector(`.fb[data-season="${s}"]`)?.textContent||s;
       dynChips.push(_dyn(lbl,`.fb[data-season="${s}"]`));
@@ -43396,10 +43403,11 @@ document.getElementById('toast').addEventListener('click',()=>{
       const lbl=document.querySelector(`.fb[data-sort="${activeSortBy}"]`)?.textContent||activeSortBy;
       dynChips.push(_dyn(lbl,`.fb[data-sort="${activeSortBy}"]`));
     }
-    // Order: all → active static cats → dynamic (active) → inactive static cats → 🎛️
+    // Order: 🎛️Filtry (pinned first) → all → active static → dynamic → inactive static
     const activeStatic=staticCats.filter(c=>c.classList.contains('on'));
     const inactiveStatic=staticCats.filter(c=>!c.classList.contains('on'));
-    [allChip,...activeStatic,...dynChips,...inactiveStatic].forEach(c=>{if(c)parent.insertBefore(c,moreBtn);});
+    [allChip,...activeStatic,...dynChips,...inactiveStatic].forEach(c=>{if(c)parent.appendChild(c);});
+    parent.insertBefore(moreBtn,parent.firstChild); // pin 🎛️ to front
   }
   window.syncMobChips=syncMobChips;
 
