@@ -296,7 +296,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #mw{padding-bottom:0}
   #ap{left:0!important}
   #ap.open{bottom:0}
-  #ip{right:0!important;width:100%;border-left:none;border-top:1px solid var(--border);border-radius:16px 16px 0 0;top:auto;bottom:0;height:100vh;transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1),height .22s ease!important;padding-top:20px}
+  #ip{right:0!important;width:100%;border-left:none;border-top:1px solid var(--border);border-radius:16px 16px 0 0;top:auto;bottom:0;height:100vh;transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1),height .22s ease!important;padding-top:28px}
   #ip.open ~ #mob-pill{display:none!important}
   #ip.open{transform:translateY(0)!important;pointer-events:auto}
   #ip.ip-mini{height:72px!important;overflow:hidden}
@@ -349,7 +349,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 @media (max-height:700px) and (orientation:landscape){
   /* List-toggle button (large phones only, shown via JS) */
   #ls-toggle{display:none!important}
-  #mob-handle{display:none;position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:1300;width:14px;height:48px;background:var(--sb);border:1px solid var(--border);border-left:none;border-radius:0 8px 8px 0;align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:var(--muted);padding:0;box-shadow:2px 0 8px rgba(0,0,0,.3)}
+  #mob-handle{display:none;position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:1300;width:28px;height:48px;background:var(--sb);border:1px solid var(--border);border-left:none;border-radius:0 8px 8px 0;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:var(--muted);padding:0;box-shadow:2px 0 8px rgba(0,0,0,.3)}
   /* Hide desktop sidebar controls — not usable in landscape mobile */
   #sb-tab,#sb-resize{display:none!important}
   /* Sidebar: always in DOM, slides in via transform so it animates with the mob-handle */
@@ -367,7 +367,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   /* Layers panel: overflow:hidden+padding-left:28px lets mc-tab sit inside mc's box (left:0) so scroll works AND arrow is visible */
   #mc{height:calc(100vh - 24px);overflow:hidden;padding-left:28px}
   #mc-tab{left:0}
-  #mc-body{flex:1;min-height:0;overflow-y:scroll;touch-action:pan-y}
+  #mc-body{display:block!important;height:calc(100vh - 24px);overflow-y:scroll;touch-action:pan-y;padding-bottom:16px}
   .cp{max-height:none;overflow-y:visible;padding:4px 0}
   .cp.scroll{flex:none;max-height:none;overflow-y:visible;padding:4px 0}
   /* Info panel best-spot button clearance */
@@ -433,7 +433,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.8</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.9</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43261,13 +43261,13 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.8</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.9</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
   <button class="mchip on" data-mcat="all">Wszystkie</button>
   <button class="mchip" data-mcat="edible">Jadalne</button>
-  <button class="mchip" data-mcat="poisonous">Trujące</button>
+  <button class="mchip" data-mcat="dangerous">Trujące</button>
   <button class="mchip" data-mcat="rare">Rzadkie</button>
   <button class="mchip mchip-more" id="mob-more">🎛️ Filtry</button>
 </div>
@@ -43354,12 +43354,20 @@ document.getElementById('toast').addEventListener('click',()=>{
   const modal=document.getElementById('filter-modal');
   const body=document.getElementById('filter-modal-body');
   if(!modal||!body)return;
-  if(window.innerWidth<=767){
+  const sbTop=document.getElementById('sb-top');
+  function _teleportFilters(){
     const fp=document.getElementById('filters-panel');
     const sb=document.getElementById('season-bar');
-    if(fp)body.appendChild(fp);
-    if(sb)body.appendChild(sb);
+    if(!fp||!sb)return;
+    if(window.innerWidth<=767){
+      if(fp.parentElement!==body){body.appendChild(fp);body.appendChild(sb);}
+    } else {
+      if(sbTop&&fp.parentElement!==sbTop){sbTop.appendChild(fp);sbTop.appendChild(sb);}
+    }
   }
+  _teleportFilters();
+  window.addEventListener('resize',_teleportFilters);
+  window.addEventListener('orientationchange',()=>setTimeout(_teleportFilters,200));
   function openModal(){modal.classList.add('open');}
   function closeModal(){modal.classList.remove('open');}
   document.getElementById('mob-more')?.addEventListener('click',openModal);
