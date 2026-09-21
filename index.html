@@ -353,7 +353,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   /* Hide desktop sidebar controls — not usable in landscape mobile */
   #sb-tab,#sb-resize{display:none!important}
   /* Sidebar: always in DOM, slides in via transform so it animates with the mob-handle */
-  #sidebar{display:flex!important;position:fixed!important;left:0;top:0;height:100vh!important;width:300px;z-index:1201;transform:translateX(-302px);transition:transform .3s cubic-bezier(.4,0,.2,1)!important;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
+  #sidebar{display:flex!important;position:fixed!important;left:0;top:0;height:100vh!important;width:300px;z-index:1201;transform:translateX(-320px);transition:transform .3s cubic-bezier(.4,0,.2,1)!important;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
   #sidebar.mob-open{transform:translateX(0)!important}
   #mw{padding-left:0!important}
   /* Species list padding in landscape sidebar */
@@ -375,8 +375,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   /* Collapsed layers panel: keep mc at right:0, hide body, leave mc-tab visible */
   #mc.mc-col{transform:none!important}
   #mc.mc-col #mc-body{display:none!important}
-  /* Override desktop tab CSS — show all sidebar content in landscape */
-  #sb-tabs{display:none!important}
+  #sb-tabs{display:flex!important}
   /* Hide compass in landscape too */
   #compass{display:none!important}
 }
@@ -419,12 +418,6 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #ml-resize{display:none!important}
 }
 @media(max-width:767px){#sb-tabs{display:none!important}}
-/* Landscape: re-apply sidebar tab overrides AFTER desktop min-width MQ so they win */
-@media(max-height:700px) and (orientation:landscape) and (max-width:1366px){
-  body.sbt-grzyby #filters-panel,body.sbt-grzyby #season-bar{display:block!important}
-  body.sbt-filtry #sw{display:block!important}
-  body.sbt-filtry #ml{display:flex!important}
-}
 </style>
 </head>
 <body>
@@ -43203,9 +43196,9 @@ document.getElementById('toast').addEventListener('click',()=>{
   function _update(){
     if(isLargeLS()){
       btn.style.display='flex';
-      btn.style.left=_sbOpen?'300px':'0';
+      btn.style.left=_sbOpen?'320px':'0';
       btn.style.transition='left .3s cubic-bezier(.4,0,.2,1)';
-      btn.textContent=_sbOpen?'›':'‹';
+      btn.textContent=_sbOpen?'‹':'›';
       btn.setAttribute('aria-label',_sbOpen?'Ukryj listę':'Pokaż listę');
     }else{
       btn.style.display='none';
