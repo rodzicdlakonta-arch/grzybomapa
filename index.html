@@ -364,6 +364,17 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-size:11px;color:var(--muted);border:none;background:none;font-family:var(--f-body);transition:color .15s;user-select:none;padding:6px 0;overflow:visible}
 .mob-tab.active,.mob-tab:hover{color:var(--gold)}
 .mob-ico{font-size:20px;line-height:1;display:block}
+/* ── Desktop sidebar tabs ── */
+#sb-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;padding:0 12px}
+.sb-tab{flex:1;background:none;border:none;border-bottom:2px solid transparent;padding:9px 0 8px;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .15s,border-color .15s;font-family:var(--f-body)}
+.sb-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.sb-tab:hover:not(.active){color:var(--text)}
+@media(min-width:768px){
+  body.sbt-filtry #sw,body.sbt-filtry #ml{display:none!important}
+  body.sbt-grzyby #filters-panel,body.sbt-grzyby #season-bar{display:none!important}
+  #ml-resize{display:none!important}
+}
+@media(max-width:767px){#sb-tabs{display:none!important}}
 </style>
 </head>
 <body>
@@ -376,6 +387,10 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
       <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.77</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
+  </div>
+  <div id="sb-tabs">
+    <button class="sb-tab active" data-tab="grzyby">Grzyby</button>
+    <button class="sb-tab" data-tab="filtry">Filtry</button>
   </div>
   <div id="sw">
     <input id="si" type="text" placeholder="Szukaj grzyba lub miejscowości…" autocomplete="off">
@@ -43109,6 +43124,20 @@ if(window.innerWidth<=767){
 document.getElementById('toast').addEventListener('click',()=>{
   document.getElementById('toast').classList.remove('show');
 });
+
+// ── Desktop sidebar tabs ──────────────────────────────────────────────────
+(()=>{
+  document.body.classList.add('sbt-grzyby');
+  document.querySelectorAll('.sb-tab').forEach(btn=>{
+    btn.onclick=()=>{
+      document.querySelectorAll('.sb-tab').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const t=btn.dataset.tab;
+      document.body.classList.toggle('sbt-grzyby',t==='grzyby');
+      document.body.classList.toggle('sbt-filtry',t==='filtry');
+    };
+  });
+})();
 
 // ── Landscape list-toggle (large phones only — small phones use mob-nav) ──
 (()=>{
