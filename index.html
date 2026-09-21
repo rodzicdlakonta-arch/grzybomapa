@@ -344,8 +344,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   .mob-ico{font-size:17px}
   #ap.open{bottom:0;right:52px}
 }
-/* Landscape layout — max-height:700px catches phones (no phone has >700px CSS height in LS); max-width:1366px excludes most laptops */
-@media (max-height:700px) and (orientation:landscape) and (max-width:1366px){
+/* Landscape layout — max-height:700px catches phones (no phone has ≥700px CSS height in LS); orientation:landscape excludes portrait; no width constraint needed */
+@media (max-height:700px) and (orientation:landscape){
   /* List-toggle button (large phones only, shown via JS) */
   #ls-toggle{display:none!important}
   #mob-handle{display:none;position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:1300;width:14px;height:48px;background:var(--sb);border:1px solid var(--border);border-left:none;border-radius:0 8px 8px 0;align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:var(--muted);padding:0;box-shadow:2px 0 8px rgba(0,0,0,.3)}
@@ -42462,7 +42462,7 @@ document.querySelectorAll('.fb[data-season]').forEach(btn=>{
   btn.onclick=()=>{
     const s=btn.dataset.season;
     activeSeasons.has(s)?(activeSeasons.delete(s),btn.classList.remove('on')):(activeSeasons.add(s),btn.classList.add('on'));
-    _updateFilterBadge();renderList();
+    _updateFilterBadge();renderList();if(typeof syncMobChips==='function')syncMobChips();
   };
 });
 // Habitat multi-select
@@ -42470,7 +42470,7 @@ document.querySelectorAll('.fb[data-hab]').forEach(btn=>{
   btn.onclick=()=>{
     const h=btn.dataset.hab;
     activeHabs.has(h)?(activeHabs.delete(h),btn.classList.remove('on')):(activeHabs.add(h),btn.classList.add('on'));
-    _updateFilterBadge();renderList();
+    _updateFilterBadge();renderList();if(typeof syncMobChips==='function')syncMobChips();
   };
 });
 // Sort single-select — click active to deselect (back to default grouped view)
@@ -42479,7 +42479,7 @@ document.querySelectorAll('.fb[data-sort]').forEach(btn=>{
     const already=btn.classList.contains('on');
     document.querySelectorAll('.fb[data-sort]').forEach(b=>b.classList.remove('on'));
     if(already){activeSortBy='default';}else{btn.classList.add('on');activeSortBy=btn.dataset.sort;}
-    _updateFilterBadge();renderList();
+    _updateFilterBadge();renderList();if(typeof syncMobChips==='function')syncMobChips();
   };
 });
 // Single collapsible for all filters
@@ -43185,7 +43185,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   const ip=document.getElementById('ip');
   if(!btn||!sb||!ip)return;
   // Only large landscape phones (>767px CSS width); small phones have mob-nav
-  const isLargeLS=()=>window.innerWidth>window.innerHeight&&window.innerWidth>767&&window.innerWidth<=1366;
+  const isLargeLS=()=>window.innerWidth>window.innerHeight&&window.innerHeight<700;
   let _sbOpen=false,_ipWasClosed=false;
   function _restoreIp(){if(_ipWasClosed){_ipWasClosed=false;ip.classList.add('open');}}
   function _update(){
@@ -43195,8 +43195,11 @@ document.getElementById('toast').addEventListener('click',()=>{
       btn.style.transition='left .3s cubic-bezier(.4,0,.2,1)';
       btn.textContent=_sbOpen?'›':'‹';
       btn.setAttribute('aria-label',_sbOpen?'Ukryj listę':'Pokaż listę');
+      // JS fallback: hide sidebar when closed (CSS MQ may not match on all phones)
+      sb.style.display=_sbOpen?'':'none';
     }else{
       btn.style.display='none';
+      sb.style.display=''; // restore CSS control
       if(_sbOpen){_sbOpen=false;sb.classList.remove('mob-open');}
       _restoreIp();
     }
@@ -43252,7 +43255,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.3</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.4</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
@@ -43363,24 +43366,40 @@ document.getElementById('toast').addEventListener('click',()=>{
   const parent=document.getElementById('mob-chips');
   const moreBtn=document.getElementById('mob-more');
   // Capture initial DOM order for stable tiebreaking
-  const origOrder=Array.from(parent.querySelectorAll('.mchip[data-mcat]')).map(c=>c.dataset.mcat);
   function syncMobChips(){
-    const chips=Array.from(parent.querySelectorAll('.mchip[data-mcat]'));
-    chips.forEach(c=>{
-      const cat=c.dataset.mcat;
-      if(cat==='all') c.classList.toggle('on',activeCats.size===0);
-      else c.classList.toggle('on',activeCats.has(cat));
-    });
-    // Bubble active non-all chips to front, keep original order within groups
-    chips.sort((a,b)=>{
-      if(a.dataset.mcat==='all') return -1;
-      if(b.dataset.mcat==='all') return 1;
-      const aOn=a.classList.contains('on'),bOn=b.classList.contains('on');
-      if(aOn&&!bOn) return -1;
-      if(!aOn&&bOn) return 1;
-      return origOrder.indexOf(a.dataset.mcat)-origOrder.indexOf(b.dataset.mcat);
-    });
-    chips.forEach(c=>parent.insertBefore(c,moreBtn));
+    const noFilters=activeCats.size===0&&activeSeasons.size===0&&activeHabs.size===0&&activeSortBy==='default';
+    // Update static category chips
+    const allChip=parent.querySelector('.mchip[data-mcat="all"]');
+    if(allChip)allChip.classList.toggle('on',noFilters);
+    const staticCats=Array.from(parent.querySelectorAll('.mchip[data-mcat]:not([data-mcat="all"])'));
+    staticCats.forEach(c=>c.classList.toggle('on',activeCats.has(c.dataset.mcat)));
+    // Remove previous dynamic chips
+    parent.querySelectorAll('.mchip-dyn').forEach(c=>c.remove());
+    // Helper: build a removable chip with given label that clicks the matching .fb
+    function _dyn(label,selector){
+      const c=document.createElement('button');
+      c.className='mchip mchip-dyn on';
+      c.textContent=label;
+      c.onclick=()=>{document.querySelector(selector)?.click();};
+      return c;
+    }
+    const dynChips=[];
+    for(const s of activeSeasons){
+      const lbl=document.querySelector(`.fb[data-season="${s}"]`)?.textContent||s;
+      dynChips.push(_dyn(lbl,`.fb[data-season="${s}"]`));
+    }
+    for(const h of activeHabs){
+      const lbl=document.querySelector(`.fb[data-hab="${h}"]`)?.textContent||h;
+      dynChips.push(_dyn(lbl,`.fb[data-hab="${h}"]`));
+    }
+    if(activeSortBy!=='default'){
+      const lbl=document.querySelector(`.fb[data-sort="${activeSortBy}"]`)?.textContent||activeSortBy;
+      dynChips.push(_dyn(lbl,`.fb[data-sort="${activeSortBy}"]`));
+    }
+    // Order: all → active static cats → dynamic (active) → inactive static cats → 🎛️
+    const activeStatic=staticCats.filter(c=>c.classList.contains('on'));
+    const inactiveStatic=staticCats.filter(c=>!c.classList.contains('on'));
+    [allChip,...activeStatic,...dynChips,...inactiveStatic].forEach(c=>{if(c)parent.insertBefore(c,moreBtn);});
   }
   window.syncMobChips=syncMobChips;
 
