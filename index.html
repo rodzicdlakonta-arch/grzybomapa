@@ -43179,6 +43179,7 @@ document.getElementById('toast').addEventListener('click',()=>{
       const t=btn.dataset.tab;
       document.body.classList.toggle('sbt-grzyby',t==='grzyby');
       document.body.classList.toggle('sbt-filtry',t==='filtry');
+      if(t==='filtry'){const fb=document.getElementById('fbody-filters'),fa=document.getElementById('farr-filters');if(fb&&fb.classList.contains('col')){fb.classList.remove('col');if(fa)fa.style.transform='';}}
     };
   });
 })();
@@ -43382,7 +43383,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   _teleportFilters();
   window.addEventListener('resize',_teleportFilters);
   window.addEventListener('orientationchange',()=>setTimeout(_teleportFilters,200));
-  function openModal(){modal.classList.add('open');}
+  function openModal(){modal.classList.add('open');const fb=document.getElementById('fbody-filters'),fa=document.getElementById('farr-filters');if(fb&&fb.classList.contains('col')){fb.classList.remove('col');if(fa)fa.style.transform='';}}
   function closeModal(){modal.classList.remove('open');}
   document.getElementById('mob-more')?.addEventListener('click',openModal);
   document.getElementById('filter-close')?.addEventListener('click',closeModal);
