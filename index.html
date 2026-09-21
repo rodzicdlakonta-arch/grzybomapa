@@ -318,7 +318,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #mob-nav{display:flex}
 }
 @media(max-width:767px)and(orientation:landscape){
-  #sidebar{height:100vh;max-height:100vh;overflow-y:auto;overflow-x:hidden}
+  #sidebar{height:100vh;overflow:hidden;display:flex;flex-direction:column}
+  #sb-top{max-height:55vh;overflow-y:auto;flex-shrink:0}
+  #ml{flex:1;min-height:0;overflow-y:auto}
   #ip{border-radius:0;top:0;bottom:auto;transform:translateX(100%);right:-100%!important;width:55%!important;height:100vh!important}
   #ip.open{transform:translateX(0);right:0!important}
   #ip.ip-mini{height:100vh!important;width:35%!important}
@@ -339,7 +341,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.58</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.59</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42329,7 +42331,7 @@ document.querySelectorAll('.fb[data-sort]').forEach(btn=>{
 (()=>{
   const h=document.getElementById('fhdr-filters'),b=document.getElementById('fbody-filters'),a=document.getElementById('farr-filters');
   if(!h)return;
-  try{const s=localStorage.getItem('fc-filters');const mob=window.innerWidth<=767;if(mob?s!=='0':s==='1'){b.classList.add('col');a.style.transform='rotate(-90deg)';}}catch(e){}
+  try{const s=localStorage.getItem('fc-filters');const mob=window.innerWidth<=767||window.innerHeight<=600;if(mob?s!=='0':s==='1'){b.classList.add('col');a.style.transform='rotate(-90deg)';}}catch(e){}
   h.addEventListener('click',()=>{const col=b.classList.toggle('col');a.style.transform=col?'rotate(-90deg)':'';try{localStorage.setItem('fc-filters',col?'1':'0');}catch(e){}});
 })();
 
@@ -42652,10 +42654,17 @@ function showToast(msg){
 
 // Auto-locate on load (silent — no toast, no error if denied)
 if(navigator.geolocation){
+  let _autoGpsLayer=null;
   navigator.geolocation.getCurrentPosition(pos=>{
     _userGPS=[pos.coords.latitude,pos.coords.longitude];
-    map.flyTo([pos.coords.latitude,pos.coords.longitude],13,{duration:1.5});
-    fetchWeather(pos.coords.latitude,pos.coords.longitude);
+    const ll=[pos.coords.latitude,pos.coords.longitude];
+    if(_autoGpsLayer)map.removeLayer(_autoGpsLayer);
+    _autoGpsLayer=L.layerGroup([
+      L.circle(ll,{radius:Math.max(pos.coords.accuracy/2,30),color:'#1976D2',fillColor:'#1976D2',fillOpacity:.10,weight:1}),
+      L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:'#1976D2',fillOpacity:1})
+    ]).addTo(map);
+    map.flyTo(ll,13,{duration:1.5});
+    fetchWeather(ll[0],ll[1]);
   },()=>{},{timeout:8000,maximumAge:300000,enableHighAccuracy:false});
 }
 
