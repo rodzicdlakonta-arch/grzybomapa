@@ -328,7 +328,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #mw{padding-bottom:0;padding-right:52px}
   .mob-tab{padding:6px 0;font-size:10px}
   .mob-ico{font-size:17px}
-  #ap.open{bottom:0}
+  #ap.open{bottom:0;right:52px}
 }
 /* Landscape layout + toggle button — max-height:700px catches all phones */
 @media(max-height:700px)and(orientation:landscape){
@@ -340,7 +340,6 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   body.ls-full-map #ls-toggle{right:16px}
   #sb-top{max-height:55vh;overflow-y:auto;flex-shrink:0}
   #ml{min-height:0;overflow-y:auto}
-  #ap{left:0!important}
   #ap.open{bottom:0}
 }
 .mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-size:11px;color:var(--muted);border:none;background:none;font-family:var(--f-body);transition:color .15s;user-select:none;padding:6px 0;overflow:visible}
@@ -355,7 +354,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.61</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.62</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41711,7 +41710,14 @@ function _exitPoly(){
   map.off('click',_onPolyClick);map.off('dblclick',_onPolyDblClick);
   if(_polyLine){map.removeLayer(_polyLine);_polyLine=null;}
   _polyPts=[];
-  if(_polyBtn){_polyBtn.innerHTML='✏';_polyBtn.classList.remove('dr-drawing');}
+  _updatePolyBtn();
+  if(_polyBtn)_polyBtn.classList.remove('dr-drawing');
+}
+function _updatePolyBtn(){
+  if(!_polyBtn)return;
+  if(_polyMode&&_polyPts.length>=3){_polyBtn.innerHTML='✓';_polyBtn.title='Zamknij wielokąt';}
+  else if(_polyMode){_polyBtn.innerHTML='✕';_polyBtn.title='Anuluj';}
+  else{_polyBtn.innerHTML='✏';_polyBtn.title='Narysuj wielokąt';}
 }
 function _onPolyClick(e){
   const now=Date.now();
@@ -41720,6 +41726,7 @@ function _onPolyClick(e){
   _polyPts.push(e.latlng);
   if(_polyLine)map.removeLayer(_polyLine);
   if(_polyPts.length>1)_polyLine=L.polyline(_polyPts,{color:'#c9a84c',weight:2,dashArray:'5,5'}).addTo(map);
+  _updatePolyBtn();
 }
 function _onPolyDblClick(e){
   // Remove last vertex if it duplicates the dblclick position
@@ -41773,12 +41780,16 @@ function _onPolyDblClick(e){
       L.DomEvent.on(p,'mousedown',L.DomEvent.stop);
       L.DomEvent.on(p,'click',e=>{L.DomEvent.stop(e);
         if(drawing){if(_drawPreview){map.removeLayer(_drawPreview);_drawPreview=null;}_drawStart=null;_exitDraw();}
-        if(_polyMode){_exitPoly();return;}
+        if(_polyMode){
+          if(_polyPts.length>=3){_onPolyDblClick({latlng:_polyPts[_polyPts.length-1]});}
+          else{_exitPoly();}
+          return;
+        }
         _polyMode=true;p.innerHTML='✕';p.classList.add('dr-drawing');
         map.dragging.disable();map.getContainer().style.cursor='crosshair';
         _polyPts=[];_polyLastClick=0;
         map.on('click',_onPolyClick);map.on('dblclick',_onPolyDblClick);
-        showToast('Klikaj aby dodać punkty · dwuklik aby zakończyć');
+        showToast('Klikaj aby dodać punkty · ✓ aby zakończyć');
       });
       _polyBtn=p;return bar;
     }
@@ -43074,7 +43085,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   const isMobLandscape=()=>window.innerWidth>window.innerHeight&&window.innerWidth<=1024;
   let _mapMode=false;
   function _update(){
-    if(isMobLandscape()&&ip.classList.contains('open')){
+    if(isMobLandscape()){
       btn.style.display='flex';
       btn.textContent=_mapMode?'📋':'🗺️';
       btn.title=_mapMode?'Pokaż info':'Pełna mapa';
