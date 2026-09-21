@@ -295,7 +295,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #mw{padding-bottom:0}
   #ap{left:0!important}
   #ap.open{bottom:0}
-  #ip{right:0!important;width:100%;border-left:none;border-top:1px solid var(--border);border-radius:16px 16px 0 0;top:auto;bottom:0;height:90vh;transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1),height .22s ease!important}
+  #ip{right:0!important;width:100%;border-left:none;border-top:1px solid var(--border);border-radius:16px 16px 0 0;top:96px;bottom:0;height:auto;transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1),height .22s ease!important}
+  #ip.open ~ #mob-pill{display:none!important}
   #ip.open{transform:translateY(0);pointer-events:auto}
   #ip.ip-mini{height:72px;overflow:hidden}
   #ip.ip-mini #pbody{pointer-events:none}
@@ -360,7 +361,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #mc{height:calc(100vh - 24px);overflow:hidden;padding-left:14px}
   #mc-tab{left:0}
   #mc-body{flex:1;min-height:0}
-  .cp{max-height:35%;overflow-y:auto}
+  .cp{max-height:28vh;overflow-y:auto}
   .cp.scroll{flex:1;min-height:80px;max-height:none;overflow-y:auto}
   /* Collapsed layers panel: keep mc at right:0, hide body, leave mc-tab visible */
   #mc.mc-col{transform:none!important}
@@ -413,7 +414,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.1</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41411,7 +41412,7 @@ function showInfoPanel(mid){
   ipEl.classList.add('open');ipEl.classList.remove('ip-mini');
   // On mobile: close sidebar, keep Grzyby tab active so info panel feels part of that flow
   if(window.innerWidth<=767){
-    document.getElementById('sidebar').classList.remove('mob-open');
+    window._closeMobList?.();
     const tabList=document.getElementById('mob-list');
     if(tabList)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabList);});
   }
@@ -42728,6 +42729,7 @@ document.querySelectorAll('.lb[data-base]').forEach(btn=>{
 
 document.getElementById('pcls').onclick=e=>{
   e.stopPropagation();
+  document.getElementById('ip')?.classList.remove('open','ip-mini');
   clearHeat();
   document.getElementById('ml').scrollTop=0;
   // Reset list/filter split to natural height (same as double-click the drag handle)
@@ -43356,6 +43358,7 @@ document.getElementById('toast').addEventListener('click',()=>{
       const cat=chip.dataset.mcat;
       document.querySelector(`.fb[data-cat="${cat}"]`)?.click();
       syncMobChips();
+      if(window.innerWidth<=767)window._openMobList?.();
     };
   });
 
