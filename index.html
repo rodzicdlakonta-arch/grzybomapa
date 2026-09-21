@@ -370,7 +370,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.74</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.75</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43138,11 +43138,27 @@ document.getElementById('toast').addEventListener('click',()=>{
     map.invalidateSize();
   };
   new MutationObserver(_update).observe(sb,{attributes:true,attributeFilter:['class']});
-  window.addEventListener('orientationchange',()=>{_sbOpen=false;sb.classList.remove('mob-open');_restoreIp();document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));setTimeout(()=>{_update();const mc=document.getElementById('mc'),mct=document.getElementById('mc-tab');if(window.innerWidth>window.innerHeight&&window.innerWidth>767){if(mc.classList.contains('mc-col')){mc.classList.remove('mc-col');mct.textContent='◄';mct.title='Ukryj warstwy';}}else if(window.innerWidth<=767){if(!mc.classList.contains('mc-col')){mc.classList.add('mc-col');mct.textContent='►';mct.title='Pokaż warstwy';}}},350);});
+  window.addEventListener('orientationchange',()=>{_sbOpen=false;sb.classList.remove('mob-open');_restoreIp();document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));setTimeout(_update,350);});
   window.addEventListener('resize',_update);
   // Called when scan panel opens so sidebar stays in sync
   window._closeSidebar=()=>{_sbOpen=false;sb.classList.remove('mob-open');_update();};
   _update();
+})();
+
+// Sync mc-col with orientation on resize (fires after viewport dims update, unlike orientationchange)
+(()=>{
+  let _prevPortrait=window.innerWidth<=767;
+  window.addEventListener('resize',()=>{
+    const nowPortrait=window.innerWidth<=767;
+    if(nowPortrait===_prevPortrait)return;
+    _prevPortrait=nowPortrait;
+    const mc=document.getElementById('mc'),mct=document.getElementById('mc-tab');
+    if(!nowPortrait){
+      if(mc.classList.contains('mc-col')){mc.classList.remove('mc-col');mct.textContent='◄';mct.title='Ukryj warstwy';}
+    } else {
+      if(!mc.classList.contains('mc-col')){mc.classList.add('mc-col');mct.textContent='►';mct.title='Pokaż warstwy';}
+    }
+  });
 })();
 
 </script>
