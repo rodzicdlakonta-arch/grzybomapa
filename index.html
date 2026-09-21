@@ -42754,6 +42754,14 @@ function showToast(msg){
 }
 
 // ── GPS / locate button ───────────────────────────────────────────────────
+let _gpsLayer=null;
+function _setGpsLayer(ll,accuracy){
+  if(_gpsLayer)map.removeLayer(_gpsLayer);
+  _gpsLayer=L.layerGroup([
+    L.circle(ll,{radius:Math.max(accuracy/2,30),color:'#1976D2',fillColor:'#1976D2',fillOpacity:.10,weight:1}),
+    L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:'#1976D2',fillOpacity:1})
+  ]).addTo(map);
+}
 (()=>{
   const ctl=L.control({position:'topleft'});
   ctl.onAdd=()=>{
@@ -42765,7 +42773,7 @@ function showToast(msg){
     div.appendChild(a);
     L.DomEvent.on(div,'click',L.DomEvent.stopPropagation);
     L.DomEvent.on(div,'click',L.DomEvent.preventDefault);
-    let gpsLayer=null,busy=false;
+    let busy=false;
     div.onclick=()=>{
       if(busy||!navigator.geolocation){if(!navigator.geolocation)showToast('GPS niedostępny');return;}
       busy=true;
@@ -42774,11 +42782,7 @@ function showToast(msg){
         busy=false;a.textContent='📍';a.style.animation='';a.style.opacity='';
         _userGPS=[pos.coords.latitude,pos.coords.longitude];
         const ll=[pos.coords.latitude,pos.coords.longitude];
-        if(gpsLayer)map.removeLayer(gpsLayer);
-        gpsLayer=L.layerGroup([
-          L.circle(ll,{radius:pos.coords.accuracy/2,color:'#1976D2',fillColor:'#1976D2',fillOpacity:.10,weight:1}),
-          L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:'#1976D2',fillOpacity:1})
-        ]).addTo(map);
+        _setGpsLayer(ll,pos.coords.accuracy);
         map.flyTo(ll,14,{duration:1.5});
         fetchWeather(ll[0],ll[1]);
         showToast('Lokalizacja znaleziona');
@@ -42794,15 +42798,10 @@ function showToast(msg){
 
 // Auto-locate on load (silent — no toast, no error if denied)
 if(navigator.geolocation){
-  let _autoGpsLayer=null;
   navigator.geolocation.getCurrentPosition(pos=>{
     _userGPS=[pos.coords.latitude,pos.coords.longitude];
     const ll=[pos.coords.latitude,pos.coords.longitude];
-    if(_autoGpsLayer)map.removeLayer(_autoGpsLayer);
-    _autoGpsLayer=L.layerGroup([
-      L.circle(ll,{radius:Math.max(pos.coords.accuracy/2,30),color:'#1976D2',fillColor:'#1976D2',fillOpacity:.10,weight:1}),
-      L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:'#1976D2',fillOpacity:1})
-    ]).addTo(map);
+    _setGpsLayer(ll,pos.coords.accuracy);
     map.flyTo(ll,13,{duration:1.5});
     fetchWeather(ll[0],ll[1]);
   },()=>{},{timeout:8000,maximumAge:300000,enableHighAccuracy:false});
