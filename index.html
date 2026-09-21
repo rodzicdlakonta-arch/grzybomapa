@@ -328,18 +328,20 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #mw{padding-bottom:0;padding-right:52px}
   .mob-tab{padding:6px 0;font-size:10px}
   .mob-ico{font-size:17px}
+  #ap.open{bottom:0}
 }
-/* Landscape toggle button — catches all landscape phones (wide & narrow) */
-@media(max-height:500px)and(orientation:landscape){
-  #ls-toggle{position:fixed;bottom:16px;right:64px;z-index:1290;width:42px;height:42px;border-radius:10px;background:var(--sb);border:1px solid var(--border);font-size:19px;display:flex!important;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35);padding:0}
+/* Landscape layout + toggle button — max-height:700px catches all phones */
+@media(max-height:700px)and(orientation:landscape){
+  #ls-toggle{position:fixed;bottom:16px;right:64px;z-index:1290;width:42px;height:42px;border-radius:10px;background:var(--sb);border:1px solid var(--border);font-size:19px;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35);padding:0}
   body.ls-full-map #sidebar{display:none!important}
   body.ls-full-map #mob-nav{opacity:0;pointer-events:none}
   body.ls-full-map #mw{padding-right:0}
   body.ls-full-map #ip.open{right:0!important}
   body.ls-full-map #ls-toggle{right:16px}
-  /* Also fix sidebar scroll layout for taller landscape phones (>767px wide) */
   #sb-top{max-height:55vh;overflow-y:auto;flex-shrink:0}
   #ml{min-height:0;overflow-y:auto}
+  #ap{left:0!important}
+  #ap.open{bottom:0}
 }
 .mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-size:11px;color:var(--muted);border:none;background:none;font-family:var(--f-body);transition:color .15s;user-select:none;padding:6px 0;overflow:visible}
 .mob-tab.active,.mob-tab:hover{color:var(--gold)}
@@ -353,7 +355,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.60</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.61</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41637,13 +41639,12 @@ function _collapseDrawTools(){
 
 function _exitDraw(){
   drawing=false;map.dragging.enable();map.getContainer().style.cursor='';
-  map.off('mousedown',_onDrawDown);map.off('touchstart',_onDrawDown);
+  map.off('mousedown',_onDrawDown);
   if(_drBtn){_drBtn.innerHTML='▭';_drBtn.classList.remove('dr-drawing');}
 }
 function _onDrawMove(e){if(!_drawPreview||!_drawStart)return;_drawLastLL=e.latlng;_drawPreview.setBounds(L.latLngBounds(_drawStart,e.latlng));}
 function _onDrawUp(e){
   map.off('mousemove',_onDrawMove);map.off('mouseup',_onDrawUp);
-  map.off('touchmove',_onDrawMove);map.off('touchend',_onDrawUp);
   if(!_drawStart||!_drawPreview){_exitDraw();return;}
   const b=L.latLngBounds(_drawStart,e.latlng||_drawLastLL);
   const sw=b.getSouthWest(),ne=b.getNorthEast();
@@ -41664,8 +41665,46 @@ function _onDrawDown(e){
   if(_drawPreview)map.removeLayer(_drawPreview);
   _drawPreview=L.rectangle([[e.latlng.lat,e.latlng.lng],[e.latlng.lat,e.latlng.lng]],{color:'#c9a84c',fillOpacity:.08,weight:2,dashArray:'5,5'}).addTo(map);
   map.on('mousemove',_onDrawMove);map.on('mouseup',_onDrawUp);
-  map.on('touchmove',_onDrawMove);map.on('touchend',_onDrawUp);
 }
+// Touch draw: bypass Leaflet's event system (touchstart has no synthetic latlng)
+(()=>{
+  const cont=map.getContainer();
+  function _tStart(e){
+    if(!drawing)return;
+    e.preventDefault();e.stopPropagation();
+    const t=e.touches[0];const r=cont.getBoundingClientRect();
+    _drawStart=map.containerPointToLatLng([t.clientX-r.left,t.clientY-r.top]);
+    _drawLastLL=_drawStart;
+    if(_drawPreview)map.removeLayer(_drawPreview);
+    _drawPreview=L.rectangle([[_drawStart.lat,_drawStart.lng],[_drawStart.lat,_drawStart.lng]],{color:'#c9a84c',fillOpacity:.08,weight:2,dashArray:'5,5'}).addTo(map);
+    cont.addEventListener('touchmove',_tMove,{passive:false});
+    cont.addEventListener('touchend',_tEnd,{passive:false});
+  }
+  function _tMove(e){
+    if(!_drawPreview||!_drawStart)return;
+    e.preventDefault();
+    const t=e.touches[0];const r=cont.getBoundingClientRect();
+    _drawLastLL=map.containerPointToLatLng([t.clientX-r.left,t.clientY-r.top]);
+    _drawPreview.setBounds(L.latLngBounds(_drawStart,_drawLastLL));
+  }
+  function _tEnd(){
+    cont.removeEventListener('touchmove',_tMove);cont.removeEventListener('touchend',_tEnd);
+    if(!_drawStart||!_drawPreview){_exitDraw();return;}
+    const b=L.latLngBounds(_drawStart,_drawLastLL);
+    const sw=b.getSouthWest(),ne=b.getNorthEast();
+    if(Math.abs(sw.lat-ne.lat)<0.0005&&Math.abs(sw.lng-ne.lng)<0.0005){
+      map.removeLayer(_drawPreview);
+    }else{
+      if(drawnLayer)map.removeLayer(drawnLayer);
+      if(_dbgMapLayer){_dbgMapLayer.remove();_dbgMapLayer=null;}
+      drawnLayer=_drawPreview;
+      document.getElementById('scan-r').style.display='none';
+      analyzeArea(drawnLayer);
+    }
+    _drawPreview=null;_drawStart=null;_exitDraw();
+  }
+  cont.addEventListener('touchstart',_tStart,{passive:false});
+})();
 
 function _exitPoly(){
   _polyMode=false;map.dragging.enable();map.getContainer().style.cursor='';
@@ -43032,7 +43071,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   const btn=document.getElementById('ls-toggle');
   const ip=document.getElementById('ip');
   if(!btn||!ip)return;
-  const isMobLandscape=()=>window.innerHeight<=500&&window.innerWidth>window.innerHeight;
+  const isMobLandscape=()=>window.innerWidth>window.innerHeight&&window.innerWidth<=1024;
   let _mapMode=false;
   function _update(){
     if(isMobLandscape()&&ip.classList.contains('open')){
@@ -43054,6 +43093,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   new MutationObserver(_update).observe(ip,{attributes:true,attributeFilter:['class']});
   window.addEventListener('orientationchange',()=>setTimeout(_update,350));
   window.addEventListener('resize',_update);
+  _update();
 })();
 
 </script>
