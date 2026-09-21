@@ -357,6 +357,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #mc-body{flex:1;min-height:0}
   .cp{max-height:35%;overflow-y:auto}
   .cp.scroll{flex:1;min-height:80px;max-height:none;overflow-y:auto}
+  /* Collapsed layers panel: keep mc at right:0, hide body, leave mc-tab visible */
+  #mc.mc-col{transform:none!important}
+  #mc.mc-col #mc-body{display:none!important}
 }
 .mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-size:11px;color:var(--muted);border:none;background:none;font-family:var(--f-body);transition:color .15s;user-select:none;padding:6px 0;overflow:visible}
 .mob-tab.active,.mob-tab:hover{color:var(--gold)}
@@ -370,7 +373,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.76</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.77</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41639,10 +41642,12 @@ function showAreaPanel(results,terrain){
 }
 
 function _openApPanel(){
-  // Close sidebar and layers panel before showing scan results
+  // Close sidebar, layers panel, and info panel before showing scan results
   if(window._closeSidebar)window._closeSidebar();
   const _mc=document.getElementById('mc'),_mct=document.getElementById('mc-tab');
   if(_mc&&!_mc.classList.contains('mc-col')){_mc.classList.add('mc-col');if(_mct){_mct.textContent='►';_mct.title='Pokaż warstwy';}}
+  const _ip=document.getElementById('ip');
+  if(_ip&&_ip.classList.contains('open')){_ip.classList.remove('open');_ip.classList.remove('ip-mini');}
   document.getElementById('ap').classList.add('open');
 }
 // ─── Draw (native drag + polygon modes) ──────────────────
@@ -42687,6 +42692,7 @@ document.getElementById('pcls').onclick=e=>{
   const _sbt=document.getElementById('sb-top');
   if(_sbt){_sbt.style.height='';try{localStorage.removeItem('sb-top-h');}catch(_){}}
   document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('mob-list').classList.add('active');
   if(window.innerWidth<=767){
     const sb=document.getElementById('sidebar');
     setTimeout(()=>{sb.classList.add('mob-open');},80);
