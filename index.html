@@ -306,7 +306,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #wx-temp{font-size:16px}
   #wx-wind,#wx-moon{font-size:10px}
   #compass{bottom:72px;right:10px}
-  #mc{max-height:calc(100vh - 80px)}
+  #mc{max-height:calc(100vh - 80px);overflow:hidden}
+  #mc-body{flex:1;min-height:0}
+  #pbody{padding-bottom:80px}
   .leaflet-bottom{margin-bottom:56px}
   #ph-legend{bottom:128px}
   #hl{bottom:84px}
@@ -337,7 +339,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.52</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.53</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32621,7 +32623,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
 // ─── Map ─────────────────────────────────────────────────
 const E='https://server.arcgisonline.com/ArcGIS/rest/services';
 const _mv=JSON.parse(localStorage.getItem('mapView')||'null');
-const map=L.map('map',{center:_mv?[_mv.lat,_mv.lng]:[52.1,19.5],zoom:_mv?_mv.z:7,preferCanvas:true,minZoom:5,maxZoom:18,rotate:true,touchRotate:false,rotateControl:false});
+const map=L.map('map',{center:_mv?[_mv.lat,_mv.lng]:[52.1,19.5],zoom:_mv?_mv.z:7,preferCanvas:true,minZoom:5,maxZoom:18,rotate:false,touchRotate:false,rotateControl:false});
 
 const baseLayers={
   topo:L.tileLayer(`${E}/World_Topo_Map/MapServer/tile/{z}/{y}/{x}`,{maxZoom:18,attribution:'ESRI'}),
@@ -42571,14 +42573,18 @@ document.querySelectorAll('.lb[data-base]').forEach(btn=>{
   };
 });
 
-document.getElementById('pcls').onclick=()=>{
+document.getElementById('pcls').onclick=e=>{
+  e.stopPropagation();
   document.getElementById('ip').classList.remove('open');
   if(window.innerWidth<=767){
     // On mobile: reopen the list instead of clearing everything
     const sb=document.getElementById('sidebar');
     const tabList=document.getElementById('mob-list');
-    sb.classList.add('mob-open');
-    if(tabList)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabList);});
+    // Brief delay lets the touch event settle before the list items become tappable
+    setTimeout(()=>{
+      sb.classList.add('mob-open');
+      if(tabList)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabList);});
+    },80);
   }else{
     clearHeat();
   }
@@ -42762,20 +42768,36 @@ renderList();
     panX=spx+dx;panY=spy+dy;applyTransform();
   });
   window.addEventListener('mouseup',()=>{if(dragging){dragging=false;applyTransform();}});
-  // Touch drag-to-pan
-  let t0=null,tp={x:0,y:0};
+  // Touch: pan when zoomed + pinch-to-zoom + tap-to-cycle-zoom
+  let t0=null,tp={x:0,y:0},tMoved=false,pinchD=null,pinchS=1;
   img.addEventListener('touchstart',e=>{
-    if(scale<=1||e.touches.length!==1)return;
-    e.preventDefault();t0=e.touches[0];tp={x:panX,y:panY};
+    e.preventDefault();
+    if(e.touches.length===2){
+      const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;
+      pinchD=Math.hypot(dx,dy);pinchS=scale;t0=null;
+    }else if(e.touches.length===1){
+      t0=e.touches[0];tp={x:panX,y:panY};tMoved=false;pinchD=null;
+    }
   },{passive:false});
   img.addEventListener('touchmove',e=>{
-    if(!t0||e.touches.length!==1)return;
     e.preventDefault();
-    panX=tp.x+(e.touches[0].clientX-t0.clientX);
-    panY=tp.y+(e.touches[0].clientY-t0.clientY);
-    applyTransform();
+    if(e.touches.length===2&&pinchD){
+      const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;
+      const d=Math.hypot(dx,dy);setScale(pinchS*d/pinchD);
+    }else if(e.touches.length===1&&t0){
+      const dx=e.touches[0].clientX-t0.clientX,dy=e.touches[0].clientY-t0.clientY;
+      if(Math.abs(dx)>4||Math.abs(dy)>4)tMoved=true;
+      if(scale>1){panX=tp.x+dx;panY=tp.y+dy;applyTransform();}
+    }
   },{passive:false});
-  img.addEventListener('touchend',()=>{t0=null;});
+  img.addEventListener('touchend',e=>{
+    if(e.touches.length===0&&!tMoved&&t0){
+      // tap: cycle zoom
+      setScale(scale>=4?1:scale<=1?2:scale*2);
+    }
+    if(e.touches.length<2)pinchD=null;
+    if(e.touches.length===0)t0=null;
+  });
 })();
 
 // ─── Panel controls ────────────────────────────────────────────────────────
@@ -42856,7 +42878,9 @@ document.getElementById('sb-tab').onclick=()=>{
   handle.addEventListener('touchstart',e=>{start(e.touches[0].clientY);e.preventDefault();},{passive:false});
   document.addEventListener('touchmove',e=>{if(active)move(e.touches[0].clientY);},{passive:false});
   document.addEventListener('touchend',end);
-  handle.addEventListener('dblclick',()=>{top.style.height='';try{localStorage.removeItem('sb-top-h');}catch(e){}});
+  function _resetSbTop(){top.style.height='';try{localStorage.removeItem('sb-top-h');}catch(e){}}
+  handle.addEventListener('dblclick',_resetSbTop);
+  let _lastTap=0;handle.addEventListener('touchend',e=>{const now=Date.now();if(now-_lastTap<320){e.preventDefault();_resetSbTop();}_lastTap=now;},{passive:false});
 })();
 
 // Weather collapse
@@ -42934,6 +42958,19 @@ if(window.innerWidth<=767){
   ipMin.addEventListener('touchend',e=>{e.stopPropagation();e.preventDefault();_ipMini();});
   ipHandle.addEventListener('click',_ipMini);
   ipHandle.addEventListener('touchend',e=>{e.preventDefault();_ipMini();});
+  // Swipe down on info panel to minimize
+  let _ipSwipeY=null;
+  ip.addEventListener('touchstart',e=>{
+    if(ip.classList.contains('ip-mini'))return;
+    _ipSwipeY=e.touches[0].clientY;
+  },{passive:true});
+  ip.addEventListener('touchend',e=>{
+    if(_ipSwipeY===null)return;
+    const dy=e.changedTouches[0].clientY-_ipSwipeY;
+    if(dy>70&&ip.scrollTop===0)ip.classList.add('ip-mini');
+    _ipSwipeY=null;
+  },{passive:true});
+  ip.addEventListener('touchcancel',()=>{_ipSwipeY=null;},{passive:true});
   // re-fit map on orientation change
   window.addEventListener('orientationchange',()=>setTimeout(()=>map.invalidateSize(),300));
   // move zoom debug label above nav bar
@@ -42941,24 +42978,7 @@ if(window.innerWidth<=767){
 }
 
 
-// ── Compass: bearing sync + click to reset ────────────────────────────────
-(function(){
-  const cmp=document.getElementById('compass');
-  if(map.setBearing){
-    map.on('rotate',()=>{
-      const b=map.getBearing();
-      cmp.style.transform=`rotate(${b}deg)`;
-      cmp.style.opacity=b===0?'.7':'1';
-    });
-    cmp.onclick=()=>map.setBearing(0,{animate:true,duration:.4});
-    document.addEventListener('keydown',e=>{
-      const tag=document.activeElement.tagName;
-      if(tag==='INPUT'||tag==='TEXTAREA')return;
-      if(e.key==='q'||e.key==='Q'){e.preventDefault();map.setBearing(map.getBearing()-15);}
-      if(e.key==='e'||e.key==='E'){e.preventDefault();map.setBearing(map.getBearing()+15);}
-    });
-  }
-})();
+// ── Compass: static north indicator (rotation removed) ───────────────────
 
 // ── Toast: tap to dismiss ─────────────────────────────────────────────────
 document.getElementById('toast').addEventListener('click',()=>{
