@@ -289,7 +289,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .tt-pasture{background:rgba(80,154,58,.2);border-color:rgba(80,154,58,.4);color:#82c96e}
 #mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--sb);border-top:1px solid var(--border);z-index:1300;padding-bottom:env(safe-area-inset-bottom)}
 @media(max-width:767px){
-  #sidebar{position:fixed;bottom:0;left:0;right:0;width:100%!important;min-width:0!important;height:80vh;border-right:none;border-top:1px solid var(--border);border-radius:16px 16px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)!important;z-index:1200}
+  #sidebar{position:fixed;top:96px;left:0;right:0;bottom:0;width:100%!important;min-width:0!important;height:auto!important;border-right:none;border-top:none;border-radius:0;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)!important;z-index:1200}
   #sidebar.mob-open{transform:translateY(0)}
   #sb-resize,#sb-tab{display:none!important}
   #mw{padding-bottom:0}
@@ -310,7 +310,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #mc-body{flex:1;min-height:0}
   .cp{min-height:0;overflow-y:auto}
   .cp.scroll{min-height:0;overflow-y:auto}
-  #ml{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+  #ml{padding-bottom:calc(70px + env(safe-area-inset-bottom))}
   #pbody{padding-bottom:100px!important}
   #ph-legend{bottom:128px}
   #hl{bottom:84px}
@@ -380,6 +380,10 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .mchip:hover{border-color:var(--gold);background:var(--goldd,rgba(180,130,60,.15))}
 .mchip.on{background:var(--gold);border-color:var(--gold);color:#1a1208;font-weight:600}
 .mchip-more{border-style:dashed}
+/* ── Mobile pill ── */
+#mob-pill{display:none;position:fixed;bottom:calc(16px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:1310;padding:10px 22px;border-radius:20px;background:var(--sb);border:1px solid var(--border);box-shadow:0 3px 12px rgba(0,0,0,.45);cursor:pointer;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;transition:opacity .15s}
+#mob-pill:active{opacity:.7}
+@media(max-width:767px){#mob-pill{display:block}}
 /* ── Desktop sidebar tabs ── */
 #sb-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;padding:0 12px}
 .sb-tab{flex:1;background:none;border:none;border-bottom:2px solid transparent;padding:9px 0 8px;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .15s,border-color .15s;font-family:var(--f-body)}
@@ -42206,12 +42210,8 @@ siEl.addEventListener('input',()=>{
   if(!q){srEl.style.display='none';return;}
   // On mobile: ensure list is visible while searching
   if(window.innerWidth<=767){
-    const sb=document.getElementById('sidebar');
-    const tabList=document.getElementById('mob-list');
-    if(!sb.classList.contains('mob-open')){
-      sb.classList.add('mob-open');
-      if(tabList)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabList);});
-    }
+    if(typeof window._openMobList==='function') window._openMobList();
+    else document.getElementById('sidebar')?.classList.add('mob-open');
   }
   // Dropdown: location search only (mushrooms already shown in filtered list)
   srEl.innerHTML=`<div class="si-item" style="color:var(--muted)">Szukam miejscowości…</div>`;
@@ -42726,8 +42726,7 @@ document.getElementById('pcls').onclick=e=>{
   document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('mob-list').classList.add('active');
   if(window.innerWidth<=767){
-    const sb=document.getElementById('sidebar');
-    setTimeout(()=>{sb.classList.add('mob-open');},80);
+    setTimeout(()=>{if(typeof window._openMobList==='function') window._openMobList(); else document.getElementById('sidebar')?.classList.add('mob-open');},80);
   }
 };
 document.getElementById('apcls').onclick=()=>{
@@ -43239,6 +43238,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   <button class="mchip" data-mcat="rare">Rzadkie</button>
   <button class="mchip mchip-more" id="mob-more">🎛️ Filtry</button>
 </div>
+<button id="mob-pill" aria-label="Lista gatunków">📋 Lista</button>
 <script>
 (function(){
   const sb=document.getElementById('sidebar');
@@ -43279,7 +43279,30 @@ document.getElementById('toast').addEventListener('click',()=>{
 })();
 
 // ── Mobile portrait list overlay + pill ───────────────────────────────────
-// (inserted here so DOM elements exist; added in Task 3)
+(()=>{
+  const pill=document.getElementById('mob-pill');
+  const sb=document.getElementById('sidebar');
+  if(!pill||!sb)return;
+
+  function _openMobList(){
+    sb.classList.add('mob-open');
+    pill.textContent='🗺️ Mapa';
+  }
+  function _closeMobList(){
+    sb.classList.remove('mob-open');
+    pill.textContent='📋 Lista';
+    if(typeof syncMobChips==='function')syncMobChips();
+  }
+
+  window._openMobList=_openMobList;
+  window._closeMobList=_closeMobList;
+  window._closeSidebar=_closeMobList;
+
+  pill.onclick=()=>{
+    if(sb.classList.contains('mob-open')) _closeMobList();
+    else _openMobList();
+  };
+})();
 
 // ── Mobile filter modal ───────────────────────────────────────────────────
 // (inserted here in Task 4)
