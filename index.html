@@ -308,7 +308,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #compass{bottom:72px;right:10px}
   #mc{max-height:calc(100vh - 80px);overflow:hidden}
   #mc-body{flex:1;min-height:0}
-  #pbody{padding-bottom:80px}
+  #pbody{padding-bottom:100px}
   .leaflet-bottom{margin-bottom:56px}
   #ph-legend{bottom:128px}
   #hl{bottom:84px}
@@ -346,7 +346,6 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #ap{left:0!important}
   #ap.open{bottom:0;max-height:60vh}
   /* Layers panel: cap map-styles section so toggles (incl. BDL) get usable scroll space */
-  #mc{overflow:hidden}
   #mc-body{flex:1;min-height:0}
   .cp{max-height:35%;overflow-y:auto}
   .cp.scroll{flex:1;min-height:80px;max-height:none;overflow-y:auto}
@@ -363,7 +362,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.67</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.68</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42674,11 +42673,7 @@ document.getElementById('pcls').onclick=e=>{
   if(_sbt){_sbt.style.height='';try{localStorage.removeItem('sb-top-h');}catch(_){}}
   if(window.innerWidth<=767){
     const sb=document.getElementById('sidebar');
-    const tabList=document.getElementById('mob-list');
-    setTimeout(()=>{
-      sb.classList.add('mob-open');
-      if(tabList)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabList);});
-    },80);
+    setTimeout(()=>{sb.classList.add('mob-open');},80);
   }
 };
 document.getElementById('apcls').onclick=()=>{
