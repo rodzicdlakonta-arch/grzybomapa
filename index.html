@@ -308,7 +308,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #compass{bottom:72px;right:10px}
   #mc{max-height:calc(100vh - 80px);overflow:hidden}
   #mc-body{flex:1;min-height:0}
-  #pbody{padding-bottom:100px}
+  #pbody{padding-bottom:100px!important}
   .leaflet-bottom{margin-bottom:56px}
   #ph-legend{bottom:128px}
   #hl{bottom:84px}
@@ -345,7 +345,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   /* Scanner panel: full width, readable height */
   #ap{left:0!important}
   #ap.open{bottom:0;max-height:60vh}
-  /* Layers panel: cap map-styles section so toggles (incl. BDL) get usable scroll space */
+  /* Layers panel: definite height on #mc so %.cp resolves; flex fills mc-body */
+  #mc{height:calc(100vh - 24px)}
   #mc-body{flex:1;min-height:0}
   .cp{max-height:35%;overflow-y:auto}
   .cp.scroll{flex:1;min-height:80px;max-height:none;overflow-y:auto}
@@ -362,7 +363,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.68</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.69</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41153,7 +41154,7 @@ function selectMushroom(mid,e){
     document.getElementById('hl-name').textContent=selectedMids.size>1?`${selectedMids.size} gatunki`:'';
     if(selectedMids.size>1){document.getElementById('hl-hab').textContent='Połączona mapa ciepła';document.getElementById('hl-cert').textContent='';}
     showInfoPanel(mid);
-    if(window.innerWidth<=767){document.getElementById('sidebar').classList.remove('mob-open');const tabList=document.getElementById('mob-list');if(tabList)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabList);});}
+    if(window.innerWidth<=767){document.getElementById('sidebar').classList.remove('mob-open');}
     return;
   }
 
@@ -42673,6 +42674,7 @@ document.getElementById('pcls').onclick=e=>{
   if(_sbt){_sbt.style.height='';try{localStorage.removeItem('sb-top-h');}catch(_){}}
   if(window.innerWidth<=767){
     const sb=document.getElementById('sidebar');
+    document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));
     setTimeout(()=>{sb.classList.add('mob-open');},80);
   }
 };
