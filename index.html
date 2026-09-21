@@ -380,6 +380,14 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .mchip:hover{border-color:var(--gold);background:var(--goldd,rgba(180,130,60,.15))}
 .mchip.on{background:var(--gold);border-color:var(--gold);color:#1a1208;font-weight:600}
 .mchip-more{border-style:dashed}
+/* ── Mobile filter modal ── */
+#filter-modal{display:none;position:fixed;inset:0;z-index:1400;flex-direction:column;justify-content:flex-end}
+#filter-modal.open{display:flex}
+#filter-scrim{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+#filter-sheet{position:relative;background:var(--sb);border-radius:16px 16px 0 0;max-height:75vh;overflow-y:auto;z-index:1;padding-bottom:env(safe-area-inset-bottom)}
+#filter-sheet-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;border-bottom:1px solid var(--border);font-weight:600;font-size:14px;flex-shrink:0;position:sticky;top:0;background:var(--sb);z-index:1}
+#filter-close{background:none;border:none;cursor:pointer;font-size:20px;color:var(--muted);padding:2px 8px;line-height:1}
+#filter-modal-body{padding:0 8px 16px}
 /* ── Mobile pill ── */
 #mob-pill{display:none;position:fixed;bottom:calc(16px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:1310;padding:10px 22px;border-radius:20px;background:var(--sb);border:1px solid var(--border);box-shadow:0 3px 12px rgba(0,0,0,.45);cursor:pointer;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;transition:opacity .15s}
 #mob-pill:active{opacity:.7}
@@ -43239,6 +43247,16 @@ document.getElementById('toast').addEventListener('click',()=>{
   <button class="mchip mchip-more" id="mob-more">🎛️ Filtry</button>
 </div>
 <button id="mob-pill" aria-label="Lista gatunków">📋 Lista</button>
+<div id="filter-modal">
+  <div id="filter-scrim"></div>
+  <div id="filter-sheet">
+    <div id="filter-sheet-head">
+      <span>Filtry i sortowanie</span>
+      <button id="filter-close">✕</button>
+    </div>
+    <div id="filter-modal-body"></div>
+  </div>
+</div>
 <script>
 (function(){
   const sb=document.getElementById('sidebar');
@@ -43305,7 +43323,22 @@ document.getElementById('toast').addEventListener('click',()=>{
 })();
 
 // ── Mobile filter modal ───────────────────────────────────────────────────
-// (inserted here in Task 4)
+(()=>{
+  const modal=document.getElementById('filter-modal');
+  const body=document.getElementById('filter-modal-body');
+  if(!modal||!body)return;
+  if(window.innerWidth<=767){
+    const fp=document.getElementById('filters-panel');
+    const sb=document.getElementById('season-bar');
+    if(fp)body.appendChild(fp);
+    if(sb)body.appendChild(sb);
+  }
+  function openModal(){modal.classList.add('open');}
+  function closeModal(){modal.classList.remove('open');}
+  document.getElementById('mob-more')?.addEventListener('click',openModal);
+  document.getElementById('filter-close')?.addEventListener('click',closeModal);
+  document.getElementById('filter-scrim')?.addEventListener('click',closeModal);
+})();
 
 // ── Mobile top chips + search ─────────────────────────────────────────────
 (()=>{
