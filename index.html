@@ -340,7 +340,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 /* Landscape layout — max-height:700px and max-width:1024px catches phones, excludes laptops */
 @media (max-height:700px) and (orientation:landscape) and (max-width:1024px){
   /* List-toggle button (large phones only, shown via JS) */
-  #ls-toggle{position:fixed;bottom:16px;left:16px;z-index:1290;width:42px;height:42px;border-radius:10px;background:var(--sb);border:1px solid var(--border);font-size:19px;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35);padding:0}
+  #ls-toggle{display:none!important}
+  #mob-handle{display:none;position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:1300;width:14px;height:48px;background:var(--sb);border:1px solid var(--border);border-left:none;border-radius:0 8px 8px 0;align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:var(--muted);padding:0;box-shadow:2px 0 8px rgba(0,0,0,.3)}
   /* Hide desktop sidebar controls — not usable in landscape mobile */
   #sb-tab,#sb-resize{display:none!important}
   /* Auto-hide desktop sidebar; overlay when mob-open */
@@ -574,6 +575,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 
 <div id="toast"></div>
 <button id="ls-toggle" style="display:none" title="Pełna mapa">🗺️</button>
+<button id="mob-handle" aria-label="Pokaż listę">‹</button>
 
 <script>
 const REGIONS={
@@ -43165,7 +43167,7 @@ document.getElementById('toast').addEventListener('click',()=>{
 
 // ── Landscape list-toggle (large phones only — small phones use mob-nav) ──
 (()=>{
-  const btn=document.getElementById('ls-toggle');
+  const btn=document.getElementById('mob-handle');
   const sb=document.getElementById('sidebar');
   const ip=document.getElementById('ip');
   if(!btn||!sb||!ip)return;
@@ -43176,12 +43178,12 @@ document.getElementById('toast').addEventListener('click',()=>{
   function _update(){
     if(isLargeLS()){
       btn.style.display='flex';
-      btn.textContent=_sbOpen?'🗺️':'📋';
-      btn.title=_sbOpen?'Ukryj listę':'Pokaż listę';
+      btn.textContent=_sbOpen?'›':'‹';
+      btn.setAttribute('aria-label',_sbOpen?'Ukryj listę':'Pokaż listę');
     }else{
       btn.style.display='none';
       if(_sbOpen){_sbOpen=false;sb.classList.remove('mob-open');}
-      _restoreIp(); // restore ip when leaving landscape
+      _restoreIp();
     }
   }
   btn.onclick=e=>{
@@ -43191,7 +43193,7 @@ document.getElementById('toast').addEventListener('click',()=>{
     if(!_sbOpen&&ip.classList.contains('open')){
       _ipWasClosed=true;ip.classList.remove('open');ip.classList.remove('ip-mini');
     } else if(_sbOpen){
-      _restoreIp(); // restore ip when opening list
+      _restoreIp();
     }
     _update();
     map.invalidateSize();
@@ -43199,7 +43201,6 @@ document.getElementById('toast').addEventListener('click',()=>{
   new MutationObserver(_update).observe(sb,{attributes:true,attributeFilter:['class']});
   window.addEventListener('orientationchange',()=>{_sbOpen=false;sb.classList.remove('mob-open');_restoreIp();document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));setTimeout(_update,350);});
   window.addEventListener('resize',_update);
-  // Called when scan panel opens so sidebar stays in sync
   window._closeSidebar=()=>{_sbOpen=false;sb.classList.remove('mob-open');_update();};
   _update();
 })();
