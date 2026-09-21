@@ -90,7 +90,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #mc.mc-col{transform:translateX(100%)}
 #mc-body{display:flex;flex-direction:column;gap:8px;overflow-y:auto;transition:opacity .15s ease}
 #mc.mc-col #mc-body{opacity:0;pointer-events:none}
-#mc-tab{position:absolute;left:-14px;top:16px;width:14px;height:42px;background:var(--sb);border:1px solid var(--border);border-right:none;border-radius:var(--r) 0 0 var(--r);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);user-select:none;transition:background .12s,color .12s}
+#mc-tab{position:absolute;left:-28px;top:16px;width:28px;height:48px;background:var(--sb);border:1px solid var(--border);border-right:none;border-radius:var(--r) 0 0 var(--r);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);user-select:none;transition:background .12s,color .12s}
 #mc-tab:hover{background:var(--card);color:var(--text)}
 #wx{position:absolute;bottom:28px;left:12px;z-index:800;background:var(--sb);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;min-width:140px;max-width:200px;font-size:12px;line-height:1.7;pointer-events:auto}
 #wx-hdr{cursor:grab;display:flex;justify-content:space-between;align-items:center;gap:6px;user-select:none;margin-bottom:3px}
@@ -308,9 +308,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #wx-temp{font-size:16px}
   #wx-wind,#wx-moon{font-size:10px}
   #compass{display:none!important}
-  #mc{max-height:calc(100vh - 80px - env(safe-area-inset-bottom));overflow:hidden}
+  #mc{max-height:calc(100vh - 80px - env(safe-area-inset-bottom));overflow:visible}
   #mc-body{flex:1;min-height:0}
-  #mc.mc-col{transform:none!important;min-width:14px;overflow:visible!important}
+  #mc.mc-col{transform:none!important;min-width:28px;overflow:visible!important}
   #mc.mc-col #mc-tab{left:0}
   #mc.mc-col #mc-body{display:none!important}
   .cp{min-height:0;overflow-y:auto}
@@ -364,8 +364,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   /* Scanner panel: full width, readable height */
   #ap{left:0!important}
   #ap.open{bottom:0;max-height:60vh}
-  /* Layers panel: overflow:hidden+padding-left:14px lets mc-tab sit inside mc's box (left:0) so scroll works AND arrow is visible */
-  #mc{height:calc(100vh - 24px);overflow:hidden;padding-left:14px}
+  /* Layers panel: overflow:hidden+padding-left:28px lets mc-tab sit inside mc's box (left:0) so scroll works AND arrow is visible */
+  #mc{height:calc(100vh - 24px);overflow:hidden;padding-left:28px}
   #mc-tab{left:0}
   #mc-body{flex:1;min-height:0;overflow-y:auto}
   .cp{max-height:28vh;overflow-y:auto;padding:4px 0}
@@ -428,7 +428,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.3</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.6</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -41426,6 +41426,7 @@ function showInfoPanel(mid){
   const ipEl=document.getElementById('ip');
   ipEl.scrollTop=0;
   ipEl.classList.add('open');ipEl.classList.remove('ip-mini');
+  setTimeout(()=>{ ipEl.scrollTop=0; },320);
   // On mobile: close sidebar, keep Grzyby tab active so info panel feels part of that flow
   if(window.innerWidth<=767){
     window._closeMobList?.();
@@ -43257,7 +43258,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.5</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.6</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
