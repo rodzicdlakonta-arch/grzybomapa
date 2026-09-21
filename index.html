@@ -358,7 +358,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.65</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.66</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43096,7 +43096,8 @@ document.getElementById('toast').addEventListener('click',()=>{
   if(!btn||!sb||!ip)return;
   // Only large landscape phones (>767px CSS width); small phones have mob-nav
   const isLargeLS=()=>window.innerWidth>window.innerHeight&&window.innerWidth>767&&window.innerWidth<=1024;
-  let _sbOpen=false;
+  let _sbOpen=false,_ipWasClosed=false;
+  function _restoreIp(){if(_ipWasClosed){_ipWasClosed=false;ip.classList.add('open');}}
   function _update(){
     if(isLargeLS()){
       btn.style.display='flex';
@@ -43105,14 +43106,18 @@ document.getElementById('toast').addEventListener('click',()=>{
     }else{
       btn.style.display='none';
       if(_sbOpen){_sbOpen=false;sb.classList.remove('mob-open');}
+      _restoreIp(); // restore ip when leaving landscape
     }
   }
   btn.onclick=e=>{
     e.stopPropagation();
     _sbOpen=!_sbOpen;
     sb.classList.toggle('mob-open',_sbOpen);
-    // Close info panel when going full map
-    if(!_sbOpen&&ip.classList.contains('open')){ip.classList.remove('open');ip.classList.remove('ip-mini');}
+    if(!_sbOpen&&ip.classList.contains('open')){
+      _ipWasClosed=true;ip.classList.remove('open');ip.classList.remove('ip-mini');
+    } else if(_sbOpen){
+      _restoreIp(); // restore ip when opening list
+    }
     _update();
     map.invalidateSize();
   };
