@@ -255,6 +255,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .cpbox{background:rgba(201,120,30,.14);border:1px solid rgba(201,120,30,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#e8a040;line-height:1.55}
 .labox{background:rgba(180,140,30,.09);border:1px solid rgba(180,140,30,.28);border-radius:var(--r);padding:11px 13px;margin-bottom:0;font-size:12.5px;color:#b8962a;line-height:1.55}
 #map-loader{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.54),rgba(0,0,0,.54)),url('LoadingScreen.png') 50% 44%/145% no-repeat;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:opacity .6s ease,visibility .6s ease}
+@media(max-width:767px)and(orientation:portrait){#map-loader{background:linear-gradient(rgba(0,0,0,.54),rgba(0,0,0,.54)),url('LoadingScreen.png') center/cover no-repeat}[data-theme="light"] #map-loader{background:linear-gradient(rgba(0,0,0,.42),rgba(0,0,0,.42)),url('LoadingScreen.png') center/cover no-repeat}}
 #map-loader.done{opacity:0;visibility:hidden;pointer-events:none}
 .ml-mushrooms{display:flex;gap:6px;align-items:flex-end;margin-bottom:22px}
 .ml-mush{transform-origin:50% 100%;animation:mush-grow 2.4s ease-in-out infinite;line-height:1}
@@ -376,7 +377,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #mc.mc-col{transform:none!important}
   #mc.mc-col #mc-body{display:none!important}
   #sb-tabs{display:flex!important}
-  body.sbt-filtry #sb-top{max-height:100vh!important;flex:1}
+  body.sbt-filtry #sb-top{max-height:100vh!important;flex:1;padding-bottom:36px}
   /* Hide compass in landscape too */
   #compass{display:none!important}
 }
@@ -41092,7 +41093,7 @@ map.on('moveend zoomend',_updateTreePins);
 // ─── Heatmap ─────────────────────────────────────────────
 let heatLayer=null,selectedMid=null,selectedMids=new Set(),_heatPts=[],_midHeatCache={};
 const _inatSpecCache={},_gbifCache={};
-const HEAT_GRAD={0.15:'#c6ff40',0.45:'#ffc200',0.72:'#ff5500',1.0:'#cc0033'};
+const HEAT_GRAD={0.15:'#ffeb3b',0.45:'#ff6d00',0.72:'#e53935',1.0:'#ad1457'};
 
 // Zoom-adaptive radius: large blobs when zoomed out, tighter when zoomed in
 // Geo-consistent radius: ~250m real-world blob size. pixels = 250m / (94234m/2^z) at lat≈53°.
@@ -42753,9 +42754,10 @@ document.getElementById('pcls').onclick=e=>{
   // Reset list/filter split to natural height (same as double-click the drag handle)
   const _sbt=document.getElementById('sb-top');
   if(_sbt){_sbt.style.height='';try{localStorage.removeItem('sb-top-h');}catch(_){}}
+  const _apOpen=document.getElementById('ap')?.classList.contains('open');
   document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('mob-list').classList.add('active');
-  if(window.innerWidth<=767){
+  if(!_apOpen)document.getElementById('mob-list').classList.add('active');
+  if(window.innerWidth<=767&&!_apOpen){
     setTimeout(()=>{if(typeof window._openMobList==='function') window._openMobList(); else document.getElementById('sidebar')?.classList.add('mob-open');},80);
   }
 };
