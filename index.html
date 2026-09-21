@@ -345,8 +345,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   /* Scanner panel: full width, readable height */
   #ap{left:0!important}
   #ap.open{bottom:0;max-height:60vh}
-  /* Layers panel: definite height on #mc so %.cp resolves; flex fills mc-body */
-  #mc{height:calc(100vh - 24px)}
+  /* Layers panel: definite height on #mc so %.cp resolves; overflow:visible lets mc-tab extend left (portrait CSS sets overflow:hidden which persists when both queries apply) */
+  #mc{height:calc(100vh - 24px);overflow:visible}
   #mc-body{flex:1;min-height:0}
   .cp{max-height:35%;overflow-y:auto}
   .cp.scroll{flex:1;min-height:80px;max-height:none;overflow-y:auto}
@@ -363,7 +363,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.69</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.70</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -448,6 +448,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
     </div>
     <div class="cp scroll">
       <div class="ct">Warstwy</div>
+      <div class="lay-grp">Dane zewnętrzne</div>
+      <div class="tr"><span>📍 Obserwacje (iNat)</span><div class="tog" id="tgl-inat"></div></div>
+      <div class="tr"><span>📊 Dane BDL (kliknij las)</span><div class="tog" id="tgl-bdl"></div></div>
       <div class="lay-grp">Pokrycie terenu</div>
       <div class="tr"><span>🌲 Główne lasy</span><div class="tog on" id="tgl-f"></div></div>
       <div class="tr"><span>💧 Wody</span><div class="tog" id="tgl-wet"></div></div>
@@ -460,9 +463,6 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
       <div class="tr"><span>🪨 Piasek gleby</span><div class="tog" id="tgl-sand"></div></div>
       <div class="tr"><span>🌱 Gleba bielicowa</span><div class="tog" id="tgl-podzol"></div></div>
       <div class="tr"><span>🧪 pH gleby (0–5cm)</span><div class="tog" id="tgl-ph"></div></div>
-      <div class="lay-grp">Dane zewnętrzne</div>
-      <div class="tr"><span>📍 Obserwacje (iNat)</span><div class="tog" id="tgl-inat"></div></div>
-      <div class="tr"><span>📊 Dane BDL (kliknij las)</span><div class="tog" id="tgl-bdl"></div></div>
     </div>
   </div></div>
   <div id="sand-legend" style="position:absolute;bottom:72px;left:12px;z-index:900;background:var(--sb);border:1px solid var(--border);border-radius:var(--r);padding:7px 9px;font-size:10.5px;display:none;width:160px">
@@ -43124,7 +43124,7 @@ document.getElementById('toast').addEventListener('click',()=>{
     map.invalidateSize();
   };
   new MutationObserver(_update).observe(sb,{attributes:true,attributeFilter:['class']});
-  window.addEventListener('orientationchange',()=>{_sbOpen=false;sb.classList.remove('mob-open');_restoreIp();setTimeout(_update,350);});
+  window.addEventListener('orientationchange',()=>{_sbOpen=false;sb.classList.remove('mob-open');_restoreIp();document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));setTimeout(_update,350);});
   window.addEventListener('resize',_update);
   _update();
 })();
