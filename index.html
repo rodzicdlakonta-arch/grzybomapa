@@ -339,7 +339,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.57</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.58</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42451,11 +42451,12 @@ map.on('click',function(e){
   const size=map.getSize(),b=map.getBounds();
   const pt=map.latLngToContainerPoint(e.latlng);
   const bbox=`${b.getSouth()},${b.getWest()},${b.getNorth()},${b.getEast()}`;
-  const url=`https://mapserver.bdl.lasy.gov.pl/arcgis/services/WMS_BDL_mapa_drzewostanow/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&BBOX=${bbox}&CRS=EPSG:4326&WIDTH=${size.x}&HEIGHT=${size.y}&LAYERS=0,1&STYLES=&FORMAT=image/png&QUERY_LAYERS=0,1&I=${Math.round(pt.x)}&J=${Math.round(pt.y)}&INFO_FORMAT=application/geo%2Bjson`;
+  const url=`https://mapserver.bdl.lasy.gov.pl/arcgis/services/WMS_BDL_mapa_drzewostanow/MapServer/WMSServer?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&BBOX=${bbox}&CRS=EPSG:4326&WIDTH=${size.x}&HEIGHT=${size.y}&LAYERS=0,1,2,3,4,5&STYLES=&FORMAT=image/png&QUERY_LAYERS=0,1,2,3,4,5&I=${Math.round(pt.x)}&J=${Math.round(pt.y)}&INFO_FORMAT=application/geo%2Bjson`;
   showMsg('Pobieranie danych drzewostanu…');
   fetch(url).then(r=>r.json()).then(d=>{
     hideMsg();
-    const f=d.features?.[0];
+    // Pick the first feature with actual species data; fall back to first feature
+    const f=(d.features||[]).find(ft=>{const v=ft.properties?.species_cd;return v&&v!=='Null'&&v!=='-';}) || d.features?.[0];
     if(!f){bdlPopup=L.popup({className:'inat-pop',maxWidth:220}).setLatLng(e.latlng).setContent('<span style="font-size:11px;opacity:.7">Brak danych BDL w tym miejscu.<br>Spróbuj zoom 14+ i kliknij las.</span>').openOn(map);return;}
     const p=f.properties||{};
     const SPP={'SO':'Sosna zwyczajna','S':'Sosna','SW':'Świerk pospolity','JD':'Jodła pospolita','MD':'Modrzew europejski','DB':'Dąb szypułkowy','DBB':'Dąb bezszypułkowy','BK':'Buk pospolity','GB':'Grab pospolity','LP':'Lipa drobnolistna','JS':'Jesion wyniosły','KL':'Klon','WZ':'Wiąz','JW':'Jawor','BRZ':'Brzoza brodawkowata','B':'Brzoza','OL':'Olcha czarna','OLS':'Olsza','OS':'Osika','TP':'Topola','AK':'Robinia akacjowa','WB':'Wierzba'};
