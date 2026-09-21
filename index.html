@@ -345,15 +345,15 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   .mob-ico{font-size:17px}
   #ap.open{bottom:0;right:52px}
 }
-/* Landscape layout — max-height:700px catches phones (no phone has ≥700px CSS height in LS); orientation:landscape excludes portrait; no width constraint needed */
-@media (max-height:700px) and (orientation:landscape){
+/* Landscape layout — pointer:coarse excludes desktop/laptop (mouse pointer) so PC with small window isn't affected */
+@media (max-height:700px) and (orientation:landscape) and (pointer:coarse){
   /* List-toggle button (large phones only, shown via JS) */
   #ls-toggle{display:none!important}
   #mob-handle{display:none;position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:1300;width:28px;height:48px;background:var(--sb);border:1px solid var(--border);border-left:none;border-radius:0 8px 8px 0;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:var(--muted);padding:0;box-shadow:2px 0 8px rgba(0,0,0,.3)}
   /* Hide desktop sidebar controls — not usable in landscape mobile */
   #sb-tab,#sb-resize{display:none!important}
   /* Sidebar: always in DOM, slides in via transform so it animates with the mob-handle */
-  #sidebar{display:flex!important;position:fixed!important;left:0;top:0;height:100vh!important;width:300px;z-index:1201;transform:translateX(-300px);transition:transform .3s cubic-bezier(.4,0,.2,1)!important;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
+  #sidebar{display:flex!important;position:fixed!important;left:0;top:0;height:100vh!important;width:300px;z-index:1201;transform:translateX(-302px);transition:transform .3s cubic-bezier(.4,0,.2,1)!important;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
   #sidebar.mob-open{transform:translateX(0)!important}
   #mw{padding-left:0!important}
   /* Species list padding in landscape sidebar */
@@ -364,8 +364,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   /* Scanner panel: full width, readable height */
   #ap{left:0!important}
   #ap.open{bottom:0;max-height:60vh}
-  /* Layers panel: overflow:hidden+padding-left:28px lets mc-tab sit inside mc's box (left:0) so scroll works AND arrow is visible */
-  #mc{height:calc(100vh - 24px);overflow:hidden;padding-left:28px}
+  /* Layers panel: position:fixed removes ancestor stacking context so overflow-y:scroll on mc-body works natively; padding-left:28px for mc-tab */
+  #mc{position:fixed!important;top:12px;right:0;height:calc(100vh - 24px);overflow:hidden;padding-left:28px}
   #mc-tab{left:0}
   #mc-body{display:block!important;height:calc(100vh - 24px);overflow-y:scroll;touch-action:pan-y;padding-bottom:16px}
   .cp{max-height:none;overflow-y:visible;padding:4px 0}
@@ -403,7 +403,8 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #filter-sheet-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;border-bottom:1px solid var(--border);font-weight:600;font-size:14px;flex-shrink:0;position:sticky;top:0;background:var(--sb);z-index:1}
 #filter-close{background:none;border:none;cursor:pointer;font-size:20px;color:var(--muted);padding:2px 8px;line-height:1}
 #filter-modal-body{padding:0 8px 16px}
-/* ── Mobile pill ── */
+/* ── Mobile pill + landscape handle (hidden by default, shown by JS) ── */
+#mob-handle{display:none}
 #mob-pill{display:none;position:fixed;bottom:calc(16px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:1310;padding:10px 22px;border-radius:20px;background:var(--sb);border:1px solid var(--border);box-shadow:0 3px 12px rgba(0,0,0,.45);cursor:pointer;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;transition:opacity .15s}
 #mob-pill:active{opacity:.7}
 @media(max-width:767px){#mob-pill{display:block}}
@@ -419,7 +420,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 }
 @media(max-width:767px){#sb-tabs{display:none!important}}
 /* Landscape: re-apply sidebar tab overrides AFTER desktop min-width MQ so they win */
-@media(max-height:700px) and (orientation:landscape){
+@media(max-height:700px) and (orientation:landscape) and (pointer:coarse){
   body.sbt-grzyby #filters-panel,body.sbt-grzyby #season-bar{display:block!important}
   body.sbt-filtry #sw{display:block!important}
   body.sbt-filtry #ml{display:flex!important}
@@ -433,7 +434,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.10</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.11</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43194,13 +43195,13 @@ document.getElementById('toast').addEventListener('click',()=>{
   const ip=document.getElementById('ip');
   if(!btn||!sb||!ip)return;
   // Only large landscape phones (>767px CSS width); small phones have mob-nav
-  const isLargeLS=()=>window.innerWidth>window.innerHeight&&window.innerHeight<700;
+  const isLargeLS=()=>window.innerWidth>window.innerHeight&&window.innerHeight<700&&window.matchMedia('(pointer:coarse)').matches;
   let _sbOpen=false,_ipWasClosed=false;
   function _restoreIp(){if(_ipWasClosed){_ipWasClosed=false;ip.classList.add('open');}}
   function _update(){
     if(isLargeLS()){
       btn.style.display='flex';
-      btn.style.left=_sbOpen?'304px':'0';
+      btn.style.left=_sbOpen?'300px':'0';
       btn.style.transition='left .3s cubic-bezier(.4,0,.2,1)';
       btn.textContent=_sbOpen?'›':'‹';
       btn.setAttribute('aria-label',_sbOpen?'Ukryj listę':'Pokaż listę');
@@ -43279,7 +43280,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.10</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.11</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
