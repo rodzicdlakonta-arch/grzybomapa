@@ -428,7 +428,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.32</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.33</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -593,6 +593,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 <button id="ls-toggle" style="display:none" title="Pełna mapa">🗺️</button>
 <button id="mob-handle" aria-label="Pokaż listę">‹</button>
 
+<script src="BDL_TREE_SPECIES_INFO.js"></script>
 <script>
 const REGIONS={
   bw:{name:'Puszcza Białowieska',c:[52.70,23.85],r:.35},
@@ -53681,6 +53682,14 @@ document.getElementById('tgl-inat').onclick=()=>{
 
 let bdlActive=false,bdlPopup=null;
 const bdlStore=[]; // [{lat,lng,cd,age}] — persists across sessions for mushroom scoring
+// Pre-load static BDL data into bdlStore so tooltip/scanner/heatmap work offline
+if(typeof BDL_TREE_SPECIES_INFO!=='undefined'&&BDL_TREE_SPECIES_INFO.length){
+  const _gk=v=>Math.round(v*50)/50;
+  BDL_TREE_SPECIES_INFO.forEach(([lat,lng,cd,age])=>{
+    const key=`${_gk(lat)},${_gk(lng)}`;
+    if(!bdlStore.some(b=>b.k===key))bdlStore.push({k:key,lat,lng,cd,age});
+  });
+}
 document.getElementById('tgl-bdl').onclick=()=>{
   const t=document.getElementById('tgl-bdl'),on=!t.classList.contains('on');
   t.classList.toggle('on',on);
@@ -54359,7 +54368,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.32</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.33</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
