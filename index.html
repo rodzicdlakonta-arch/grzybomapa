@@ -428,7 +428,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.37</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.38</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43906,11 +43906,16 @@ const LANDUSE_STYLE={
   urban:   {color:'#888',fillColor:'#999',fillOpacity:.22,weight:1,dashArray:'2,3'},
 };
 // Only water/rivers built at startup; wetland/farmland/meadow built lazily on first toggle
+const _waterTypePL={lake:'jezioro',pond:'staw',reservoir:'zbiornik',canal:'kanał',river:'rzeka',water:'akwen',wetland:'mokradło'};
 LANDUSE.forEach(lu=>{
-  const tip=`${lu.n} — ${lu.desc||lu.t}`;
   if(lu.t==='river'){
     L.polyline(lu.p,LANDUSE_STYLE.river).bindTooltip(lu.n,{sticky:true,className:'ftip'}).addTo(waterBodyLayer);
   } else if(lu.t==='water'){
+    // Translate English type from desc ("lake — 147ha") to Polish
+    const dm=lu.desc?lu.desc.match(/^(\w+)\s*[—-]\s*(\d+)ha/):null;
+    const typePL=dm?(_waterTypePL[dm[1]]||dm[1]):'';
+    const area=dm?` · ${dm[2]} ha`:'';
+    const tip=typePL?`${lu.n} (${typePL}${area})`:lu.n;
     L.polygon(lu.p,LANDUSE_STYLE.water).bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(waterBodyLayer);
   }
 });
@@ -43935,7 +43940,7 @@ let ovPastureLayer=L.layerGroup(); // dynamic OSM pastures
 let ovTimer=null,showOv=false,showDynTerrain=false;
 
 // Add dynamic sub-layers so toggles control them too
-swampLayer.addLayer(ovWetLayer);       // dynamic OSM wetlands follow swamp toggle
+waterBodyLayer.addLayer(ovWetLayer);   // dynamic OSM wetlands always visible (like lakes)
 meadowLayer.addLayer(ovMeadowLayer);
 cropLayer.addLayer(ovCropLayer);
 pastureLayer.addLayer(ovPastureLayer);
@@ -43970,11 +43975,14 @@ function loadDetailTerrain(){
     fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qw)}`)
       .then(r=>r.json()).then(data=>{
         ovWetLayer.clearLayers();
+        const _wetPL={wetland:'Mokradło',marsh:'Bagno',bog:'Torfowisko',fen:'Torfowisko przejściowe',swamp:'Bagno',reedbed:'Szuwary',tidalflat:'Namulisko'};
         (data.elements||[]).forEach(el=>{
           if(!el.geometry)return;
-          const name=el.tags?.name||'Mokradło';
+          const wt=el.tags?.wetland||el.tags?.natural||'wetland';
+          const typeLbl=_wetPL[wt]||'Mokradło';
+          const tip=el.tags?.name?`${el.tags.name} (${typeLbl.toLowerCase()})`:typeLbl;
           L.polygon(el.geometry.map(p=>[p.lat,p.lon]),{color:'#2878a0',weight:.6,fillColor:'#1e6a92',fillOpacity:.28})
-           .bindTooltip(name,{sticky:true,className:'ftip'}).addTo(ovWetLayer);
+           .bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovWetLayer);
         });
       }).catch(()=>{});
     // Meadows & natural grasslands
@@ -43991,19 +43999,23 @@ function loadDetailTerrain(){
         });
       }).catch(()=>{});
     // Arable farmland — include crop type if OSM has it
-    const qc=`[out:json][timeout:15];way["landuse"="farmland"](${bb});out geom;`;
+    const qc=`[out:json][timeout:15];way["landuse"="farmland"](${bb});out tags geom;`;
     fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qc)}`)
       .then(r=>r.json()).then(data=>{
         ovCropLayer.clearLayers();
-        const cropPL={'wheat':'pszenica','rye':'żyto','corn':'kukurydza','rape':'rzepak',
-          'potato':'ziemniaki','sugar_beet':'burak cukrowy','barley':'jęczmień','oat':'owies',
-          'sunflower':'słonecznik','soy':'soja','vegetables':'warzywa'};
+        const cropPL={'wheat':'pszenica','rye':'żyto','corn':'kukurydza','maize':'kukurydza',
+          'rape':'rzepak','oilseed_rape':'rzepak','canola':'rzepak',
+          'potato':'ziemniaki','potatoes':'ziemniaki',
+          'sugar_beet':'burak cukrowy','beet':'burak','barley':'jęczmień','oat':'owies','oats':'owies',
+          'sunflower':'słonecznik','soy':'soja','soybean':'soja','vegetables':'warzywa',
+          'grass':'trawa','hay':'siano','hops':'chmiel','tobacco':'tytoń',
+          'triticale':'pszenżyto','spelt':'orkisz','millet':'proso'};
         (data.elements||[]).forEach(el=>{
           if(!el.geometry)return;
-          const crop=el.tags?.crop||el.tags?.produce||el.tags?.species||'';
-          const cropName=cropPL[crop]||crop;
+          const rawCrop=el.tags?.crop||el.tags?.['crop:pl']||el.tags?.produce||el.tags?.plant||el.tags?.species||'';
+          const cropName=cropPL[rawCrop.toLowerCase()]||rawCrop;
           const base=el.tags?.name||'Pole uprawne';
-          const tip=cropName?`${base} (${cropName})`:base;
+          const tip=cropName?`${base} · ${cropName}`:base;
           L.polygon(el.geometry.map(p=>[p.lat,p.lon]),{color:'#c4902a',weight:1.5,fillColor:'#d4a035',fillOpacity:.42})
            .bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovCropLayer);
         });
@@ -52136,11 +52148,14 @@ const wyrForests=[];  // built up from loadDetailTerrain for analyzePoint
   const qw=`[out:json][timeout:20];way["natural"="wetland"](52.90,17.10,53.35,17.80);out geom;`;
   fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qw)}`)
     .then(r=>r.json()).then(data=>{
+      const _wetPL2={wetland:'Mokradło',marsh:'Bagno',bog:'Torfowisko',fen:'Torfowisko przejściowe',swamp:'Bagno',reedbed:'Szuwary'};
       (data.elements||[]).forEach(el=>{
         if(!el.geometry)return;
-        const name=el.tags?.name||'Mokradło';
+        const wt=el.tags?.wetland||el.tags?.natural||'wetland';
+        const typeLbl=_wetPL2[wt]||'Mokradło';
+        const tip=el.tags?.name?`${el.tags.name} (${typeLbl.toLowerCase()})`:typeLbl;
         L.polygon(el.geometry.map(p=>[p.lat,p.lon]),{color:'#2878a0',weight:.6,fillColor:'#1e6a92',fillOpacity:.28})
-         .bindTooltip(name,{sticky:true,className:'ftip'}).addTo(ovWetLayer);
+         .bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovWetLayer);
       });
     }).catch(()=>{});
 
@@ -53785,7 +53800,16 @@ document.getElementById('tgl-meadow').onclick=()=>{
   const t=document.getElementById('tgl-meadow'),on=!t.classList.contains('on');
   t.classList.toggle('on',on);
   if(on){
-    if(!meadowBuilt){meadowBuilt=true;LANDUSE.forEach(lu=>{if(lu.t==='meadow'){const st=LANDUSE_STYLE[lu.t]||LANDUSE_STYLE.meadow;L.polygon(lu.p,st).bindTooltip(lu.n,{sticky:true,className:'ftip'}).addTo(meadowLayer);}});}
+    if(!meadowBuilt){
+      meadowBuilt=true;
+      const items=LANDUSE.filter(lu=>lu.t==='meadow');
+      let i=0;
+      (function chunk(){
+        const end=Math.min(i+300,items.length);
+        for(;i<end;i++){const lu=items[i];L.polygon(lu.p,LANDUSE_STYLE.meadow).bindTooltip(lu.n,{sticky:true,className:'ftip'}).addTo(meadowLayer);}
+        if(i<items.length)setTimeout(chunk,0);
+      })();
+    }
     meadowLayer.addTo(map);showDynTerrain=true;loadDetailTerrain();
   } else {map.removeLayer(meadowLayer);showDynTerrain=document.getElementById('tgl-swamp').classList.contains('on')||document.getElementById('tgl-crop').classList.contains('on');}
 };
@@ -54394,7 +54418,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.37</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.38</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
