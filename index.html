@@ -428,7 +428,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.27</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.28</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43023,29 +43023,45 @@ const _TreeGL=L.GridLayer.extend({createTile(coords){
   return t;
 }});
 const treeGridLayer=new _TreeGL({tileSize:256,updateWhenIdle:true,keepBuffer:0,pane:'treePins'}).addTo(map);
-// Hover tooltip — uses nearby WYR_TREES points for actual species composition
+// Named forest lookup (FORESTS entries with f.n but no f.c — exclude large scanner bboxes)
+const _namedF=FORESTS.filter(f=>f.n&&!f.c&&f.p.length>=3&&f.p.length<500);
+const _namedFBB=_namedF.map(f=>{let s=Infinity,w=Infinity,n=-Infinity,e=-Infinity;for(const[la,ln]of f.p){if(la<s)s=la;if(la>n)n=la;if(ln<w)w=ln;if(ln>e)e=ln;}return[s,w,n,e];});
+function _namedForestAt(lat,lng){for(let i=0;i<_namedF.length;i++){const[s,w,n,e]=_namedFBB[i];if(lat<s||lat>n||lng<w||lng>e)continue;if(_pip(lat,lng,_namedF[i].p))return _namedF[i].n;}return null;}
+// BDL stand codes → Polish species names
+const _BDL_SP={SO:'Sosna zwyczajna',MD:'Modrzew europejski',SW:'Świerk pospolity',BRZ:'Brzoza brodawkowata',DB:'Dąb szypułkowy',DBB:'Dąb bezszypułkowy',GB:'Grab pospolity',OL:'Olcha czarna',BK:'Buk pospolity',JS:'Jesion wyniosły',LP:'Lipa drobnolistna',AK:'Robinia akacjowa',OS:'Osika',WB:'Wierzba',TP:'Topola'};
+// Hover tooltip — PIP-exact + named forest + bdlStore + WYR_TREES fallback
 const _fHoverTip=L.tooltip({sticky:true,className:'ftip',opacity:.9});
 map.on('mousemove',e=>{
   if(!forestLayer._map){_fHoverTip.remove();return;}
-  const tp=_forestTypeAt(e.latlng.lat,e.latlng.lng);
-  if(!tp){_fHoverTip.remove();return;}
-  const lat=e.latlng.lat,lng=e.latlng.lng,R=0.02;
-  const counts={};
-  for(const[y,x,,name] of WYR_TREES){
-    if(y>lat-R&&y<lat+R&&x>lng-R&&x<lng+R)counts[name]=(counts[name]||0)+1;
-  }
-  const total=Object.values(counts).reduce((a,b)=>a+b,0);
-  let html;
-  if(total>=3){
-    const top=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const lat=e.latlng.lat,lng=e.latlng.lng;
+  if(!_forestTypeAt(lat,lng)){_fHoverTip.remove();return;}
+  const fname=_namedForestAt(lat,lng);
+  // 1. BDL stand data (most accurate, loaded when detailed layer is on)
+  const bdlR=0.008;
+  const bdlNear=bdlStore.filter(b=>b.lat>lat-bdlR&&b.lat<lat+bdlR&&b.lng>lng-bdlR&&b.lng<lng+bdlR);
+  if(bdlNear.length>0){
+    const bc={};bdlNear.forEach(b=>{const sp=_BDL_SP[b.cd]||b.cd;bc[sp]=(bc[sp]||0)+1;});
+    const bt=Object.values(bc).reduce((a,b)=>a+b,0);
+    const top=Object.entries(bc).sort((a,b)=>b[1]-a[1]).slice(0,3);
     const dom=top[0][0];
-    const label=top.length===1&&dom==='Sosna zwyczajna'?'Bór sosnowy':dom.includes('Sosna')?'Las iglasto-mieszany':'Las mieszany';
-    const sp=top.map(([n,c])=>n+' '+Math.round(c/total*100)+'%').join(' · ');
-    html='<b>'+label+'</b><br><small>'+sp+'</small>';
-  }else{
-    html='<b>Las</b>';
+    const lbl=fname||(dom.includes('Sosna')&&top.length===1?'Bór sosnowy':dom.includes('Sosna')?'Las iglasto-mieszany':'Las mieszany');
+    const sp=top.map(([n,c])=>n+' '+Math.round(c/bt*100)+'%').join(' · ');
+    _fHoverTip.setLatLng(e.latlng).setContent('<b>'+lbl+'</b><br><small>'+sp+'</small>').addTo(map);return;
   }
-  _fHoverTip.setLatLng(e.latlng).setContent(html).addTo(map);
+  // 2. WYR_TREES (use type→_FTN, not raw name field which can be a forest name)
+  const wc={},R=0.02;
+  for(const[y,x,type] of WYR_TREES){
+    if(y>lat-R&&y<lat+R&&x>lng-R&&x<lng+R){const sp=_FTN[type]||type;wc[sp]=(wc[sp]||0)+1;}
+  }
+  const wt=Object.values(wc).reduce((a,b)=>a+b,0);
+  if(wt>=3){
+    const top=Object.entries(wc).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    const dom=top[0][0];
+    const lbl=fname||(top.length===1&&dom==='Sosna zwyczajna'?'Bór sosnowy':dom.includes('Sosna')?'Las iglasto-mieszany':'Las mieszany');
+    const sp=top.map(([n,c])=>n+' '+Math.round(c/wt*100)+'%').join(' · ');
+    _fHoverTip.setLatLng(e.latlng).setContent('<b>'+lbl+'</b><br><small>'+sp+'</small>').addTo(map);return;
+  }
+  _fHoverTip.setLatLng(e.latlng).setContent('<b>'+(fname||'Las')+'</b>').addTo(map);
 });
 
 const protectedLayer=L.layerGroup();
@@ -53506,7 +53522,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.27</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.28</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
