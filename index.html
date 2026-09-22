@@ -428,7 +428,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.45</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.46</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -52581,7 +52581,7 @@ function _getScanOpts(m){
   const alkalineSoil=!!(_phM&&parseFloat(_phM[1])>6.5);
   const _elevM=m.elev&&m.elev.match(/(\d+)/);
   const mountainSpec=!!(_elevM&&parseInt(_elevM[1])>300)||/górsk|tatrzańsk|Tatry|Karpat|Beszczad|Sudety|subalpejsk|piętro regla/i.test(t);
-  return{openHab,wetHab,waterEdge,farmlandSpec,urbanSpec,coniferPref,broadleafPref,acidicSoil,alkalineSoil,mountainSpec};
+  return{openHab,wetHab,waterEdge,farmlandSpec,urbanSpec,coniferPref,broadleafPref,acidicSoil,alkalineSoil,mountainSpec,isF};
 }
 function getTerrainFeatures(drawnPoly){
   const pts=drawnPoly.map(p=>[p.lat,p.lng]);
@@ -52772,6 +52772,10 @@ async function _doAreaAnalysis(layer){
       else if(opts.openHab){if(h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur))hc++;}
       else{if(h.f.some(f=>!f.c||(opts.coniferPref&&!opts.broadleafPref?f.c==='312':opts.broadleafPref&&!opts.coniferPref?f.c==='311':true)))hc++;}
     });
+    if(opts.wetHab&&hc===0&&opts.isF&&nearL.some(l=>l.t==='water'||l.t==='river')){
+      habPts.forEach(h=>{if(h.f.some(f=>!f.c||(opts.coniferPref&&!opts.broadleafPref?f.c==='312':opts.broadleafPref&&!opts.coniferPref?f.c==='311':true)))hc++;});
+      hc=Math.round(hc*.6);
+    }
     const habFrac=habPts.length?hc/habPts.length:0;
     let bdlB=0;
     if(inAreaBDL.length&&!opts.openHab&&!opts.farmlandSpec){
@@ -53113,6 +53117,7 @@ function _doPointAnalysis(lat,lng,radiusM){
   const hasWetland=terrain.landuse.some(l=>l.t==='wetland');
   const hasMeadow=terrain.landuse.some(l=>l.t==='meadow');
   const hasFarmland=terrain.landuse.some(l=>l.t==='farmland');
+  const hasWater=terrain.landuse.some(l=>l.t==='water'||l.t==='river');
   // Habitat-sampling: same approach as genHeat
   const R2=111000,cosLat2=Math.cos(lat*Math.PI/180);
   const r2=Math.max(radiusM,200);
@@ -53151,6 +53156,10 @@ function _doPointAnalysis(lat,lng,radiusM){
       else if(opts.openHab){if(h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur))hc++;}
       else{if(h.f.some(f=>!f.c||(opts.coniferPref&&!opts.broadleafPref?f.c==='312':opts.broadleafPref&&!opts.coniferPref?f.c==='311':true)))hc++;}
     });
+    if(opts.wetHab&&hc===0&&opts.isF&&hasWater){
+      habPts2.forEach(h=>{if(h.f.some(f=>!f.c||(opts.coniferPref&&!opts.broadleafPref?f.c==='312':opts.broadleafPref&&!opts.coniferPref?f.c==='311':true)))hc++;});
+      hc=Math.round(hc*.6);
+    }
     const habFrac=habPts2.length?hc/habPts2.length:0;
     let bdlB=0;
     if(inAreaBDL2.length&&!opts.openHab&&!opts.farmlandSpec){
@@ -54453,7 +54462,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.45</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.46</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
