@@ -58,7 +58,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #ml::-webkit-scrollbar{width:5px}
 #ml::-webkit-scrollbar-thumb{background:rgba(160,148,136,.35);border-radius:3px}
 #ml::-webkit-scrollbar-thumb:hover{background:rgba(160,148,136,.6)}
-.mc{padding:11px 14px;border-radius:10px;background:var(--card);border-left:4px solid transparent;cursor:pointer;transition:all .15s;margin-bottom:5px;display:flex;align-items:center;gap:10px;user-select:none;line-height:1.4}
+.mc{padding:10px 12px 10px 12px;border-radius:10px;background:var(--card);border-left:4px solid transparent;cursor:pointer;transition:all .15s;margin-bottom:5px;display:flex;align-items:center;gap:10px;user-select:none}
 .mc:hover{transform:translateX(2px);box-shadow:0 4px 16px rgba(0,0,0,.4)}
 .mc.sel{background:var(--goldd);box-shadow:0 4px 16px rgba(0,0,0,.35)}
 .mc:has(.mico.edible){border-left-color:var(--acc-e)}
@@ -90,7 +90,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #mc.mc-col{transform:translateX(100%)}
 #mc-body{display:flex;flex-direction:column;gap:8px;overflow-y:auto;transition:opacity .15s ease}
 #mc.mc-col #mc-body{opacity:0;pointer-events:none}
-#mc-tab{position:absolute;left:-28px;top:16px;width:28px;height:48px;background:var(--sb);border:1px solid var(--border);border-right:none;border-radius:var(--r) 0 0 var(--r);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);user-select:none;transition:background .12s,color .12s}
+#mc-tab{position:absolute;left:-14px;top:16px;width:14px;height:42px;background:var(--sb);border:1px solid var(--border);border-right:none;border-radius:var(--r) 0 0 var(--r);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);user-select:none;transition:background .12s,color .12s}
 #mc-tab:hover{background:var(--card);color:var(--text)}
 #wx{position:absolute;bottom:28px;left:12px;z-index:800;background:var(--sb);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;min-width:140px;max-width:200px;font-size:12px;line-height:1.7;pointer-events:auto}
 #wx-hdr{cursor:grab;display:flex;justify-content:space-between;align-items:center;gap:6px;user-select:none;margin-bottom:3px}
@@ -201,7 +201,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .abar{height:4px;background:var(--bg);border-radius:2px;overflow:hidden}
 .abf{height:100%;border-radius:2px;transition:width .6s}
 .apct{font-size:10.5px;color:var(--muted);margin-top:3px;font-style:italic}
-#compass{position:absolute;bottom:52px;right:52px;z-index:800;width:44px;height:44px;pointer-events:auto;cursor:pointer;opacity:.7;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4));transition:transform .3s ease,opacity .15s;display:none}
+#compass{position:absolute;bottom:52px;right:52px;z-index:800;width:44px;height:44px;pointer-events:auto;cursor:pointer;opacity:.7;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4));transition:transform .3s ease,opacity .15s}
 #scan-r{display:none;align-items:center;gap:6px;margin-top:4px;font-size:11px;color:var(--muted);flex-wrap:wrap}
 #scan-r input[type=range]{width:76px;accent-color:#52b849;cursor:pointer}
 #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(200px);background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:9px 16px;font-size:12.5px;color:var(--text);z-index:9999;transition:transform .25s;pointer-events:none;white-space:nowrap}
@@ -227,7 +227,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 [data-theme="light"] .b-pr{background:rgba(28,100,172,.14);color:#1c64ac}
 [data-theme="light"] .b-i{background:rgba(80,90,80,.14);color:#4a5a4a}
 [data-theme="light"] .mc{box-shadow:0 2px 8px rgba(0,0,0,.07),0 0 0 1px rgba(0,0,0,.05)}
-[data-theme="light"] #map-loader{background:linear-gradient(rgba(0,0,0,.42),rgba(0,0,0,.42)),url('LoadingScreen.png') center/cover no-repeat}
+[data-theme="light"] #map-loader{background:linear-gradient(rgba(0,0,0,.42),rgba(0,0,0,.42)),url('LoadingScreen.png') 50% 44%/145% no-repeat}
 [data-theme="light"] .leaflet-bar a{background:var(--card)!important;color:var(--text)!important}
 [data-theme="light"] .leaflet-popup-content-wrapper{background:var(--card)!important;color:var(--text)!important}
 [data-theme="light"] .leaflet-control-attribution{background:rgba(240,234,216,.8)!important}
@@ -254,7 +254,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .hbox{background:rgba(125,60,185,.14);border:1px solid rgba(125,60,185,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#c39de8;line-height:1.55}
 .cpbox{background:rgba(201,120,30,.14);border:1px solid rgba(201,120,30,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#e8a040;line-height:1.55}
 .labox{background:rgba(180,140,30,.09);border:1px solid rgba(180,140,30,.28);border-radius:var(--r);padding:11px 13px;margin-bottom:0;font-size:12.5px;color:#b8962a;line-height:1.55}
-#map-loader{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.54),rgba(0,0,0,.54)),url('LoadingScreen.png') center/cover no-repeat;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:opacity .6s ease,visibility .6s ease}
+#map-loader{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.54),rgba(0,0,0,.54)),url('LoadingScreen.png') 50% 44%/145% no-repeat;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:opacity .6s ease,visibility .6s ease}
 #map-loader.done{opacity:0;visibility:hidden;pointer-events:none}
 .ml-mushrooms{display:flex;gap:6px;align-items:flex-end;margin-bottom:22px}
 .ml-mush{transform-origin:50% 100%;animation:mush-grow 2.4s ease-in-out infinite;line-height:1}
@@ -289,17 +289,15 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .tt-pasture{background:rgba(80,154,58,.2);border-color:rgba(80,154,58,.4);color:#82c96e}
 #mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--sb);border-top:1px solid var(--border);z-index:1300;padding-bottom:env(safe-area-inset-bottom)}
 @media(max-width:767px){
-  #sidebar{position:fixed;top:0;left:0;right:0;bottom:0;width:100%!important;min-width:0!important;height:auto!important;border-right:none;border-top:none;border-radius:0;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)!important;z-index:1200}
+  #sidebar{position:fixed;bottom:0;left:0;right:0;width:100%!important;min-width:0!important;height:80vh;border-right:none;border-top:1px solid var(--border);border-radius:16px 16px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)!important;z-index:1200}
   #sidebar.mob-open{transform:translateY(0)}
-  body.list-open #sidebar{top:96px}
   #sb-resize,#sb-tab{display:none!important}
-  #mw{padding-bottom:0}
+  #mw{padding-bottom:56px}
   #ap{left:0!important}
-  #ap.open{bottom:0}
-  #ip{right:0!important;width:100%;border-left:none;border-top:1px solid var(--border);border-radius:16px 16px 0 0;top:auto;bottom:0;height:100vh;transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1),height .22s ease!important;padding-top:28px}
-  #ip.open ~ #mob-pill{display:none!important}
-  #ip.open{transform:translateY(0)!important;pointer-events:auto}
-  #ip.ip-mini{height:72px!important;overflow:hidden;padding-top:8px!important}
+  #ap.open{bottom:56px}
+  #ip{right:0!important;width:100%;border-left:none;border-top:1px solid var(--border);border-radius:16px 16px 0 0;top:auto;bottom:0;height:90vh;transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1),height .22s ease!important}
+  #ip.open{transform:translateY(0);pointer-events:auto}
+  #ip.ip-mini{height:72px;overflow:hidden}
   #ip.ip-mini #pbody{pointer-events:none}
   #ip-handle{display:block;width:36px;height:4px;background:var(--border);border-radius:2px;margin:8px auto 4px;cursor:pointer;flex-shrink:0}
   .ip-min-btn{display:flex}
@@ -307,29 +305,19 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   #wx{bottom:84px;max-width:172px;font-size:11px}
   #wx-temp{font-size:16px}
   #wx-wind,#wx-moon{font-size:10px}
-  #compass{display:none!important}
-  #mc{max-height:calc(100vh - 80px - env(safe-area-inset-bottom));overflow:visible}
+  #compass{bottom:72px;right:10px}
+  #mc{max-height:calc(100vh - 80px - env(safe-area-inset-bottom));overflow:hidden}
   #mc-body{flex:1;min-height:0}
-  #mc.mc-col{transform:none!important;min-width:28px;overflow:visible!important}
-  #mc.mc-col #mc-tab{left:0}
-  #mc.mc-col #mc-body{display:none!important}
   .cp{min-height:0;overflow-y:auto}
   .cp.scroll{min-height:0;overflow-y:auto}
-  #ml{padding-top:8px;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
-  #pbody{padding-top:4px;padding-bottom:calc(80px + env(safe-area-inset-bottom))!important}
+  #ml{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+  #pbody{padding-bottom:100px!important}
   #ph-legend{bottom:128px}
   #hl{bottom:84px}
   #toast{bottom:78px}
   #sand-legend{bottom:128px!important}
   #podzol-legend{bottom:176px!important}
-  #mob-nav{display:none!important}
-  #mob-top{display:none!important}
-  #mob-chips{display:none!important}
-  body.list-open #mob-top{display:flex!important}
-  body.list-open #mob-chips{display:flex!important}
-  body.list-open .leaflet-top.leaflet-left{top:96px!important}
-  #zdbg{bottom:6px!important}
-  #logo{display:none!important}
+  #mob-nav{display:flex}
 }
 @media (max-width:767px) and (orientation:landscape){
   #sidebar{height:100vh;overflow:hidden;display:flex;flex-direction:column}
@@ -345,80 +333,37 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   .mob-ico{font-size:17px}
   #ap.open{bottom:0;right:52px}
 }
-/* Landscape layout — max-width:1366px excludes wide desktop/laptop screens; phones in LS are ~1040px CSS wide */
-@media (max-height:700px) and (orientation:landscape) and (max-width:1366px){
+/* Landscape layout — max-height:700px and max-width:1024px catches phones, excludes laptops */
+@media (max-height:700px) and (orientation:landscape) and (max-width:1024px){
   /* List-toggle button (large phones only, shown via JS) */
-  #ls-toggle{display:none!important}
-  #mob-handle{display:none;position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:1300;width:28px;height:48px;background:var(--sb);border:1px solid var(--border);border-left:none;border-radius:0 8px 8px 0;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:var(--muted);padding:0;box-shadow:2px 0 8px rgba(0,0,0,.3)}
+  #ls-toggle{position:fixed;bottom:16px;left:16px;z-index:1290;width:42px;height:42px;border-radius:10px;background:var(--sb);border:1px solid var(--border);font-size:19px;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35);padding:0}
   /* Hide desktop sidebar controls — not usable in landscape mobile */
   #sb-tab,#sb-resize{display:none!important}
-  /* Sidebar: always in DOM, slides in via transform so it animates with the mob-handle */
-  #sidebar{display:flex!important;position:fixed!important;left:0;top:0;height:100vh!important;width:300px;z-index:1201;transform:translateX(-320px);transition:transform .3s cubic-bezier(.4,0,.2,1)!important;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
-  #sidebar.mob-open{transform:translateX(0)!important}
+  /* Auto-hide desktop sidebar; overlay when mob-open */
+  #sidebar{display:none}
+  #sidebar.mob-open{display:flex!important;position:fixed!important;left:0;top:0;height:100vh!important;width:300px;z-index:1201;transform:none!important;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
   #mw{padding-left:0!important}
   /* Species list padding in landscape sidebar */
-  #ml{padding-top:8px;padding-bottom:72px}
+  #ml{padding-bottom:20px}
   /* Small phones override — restore full-width sidebar when mob-open */
   #sb-top{max-height:55vh;overflow-y:auto;flex-shrink:0}
   #ml{min-height:0;overflow-y:auto;flex:1}
   /* Scanner panel: full width, readable height */
   #ap{left:0!important}
   #ap.open{bottom:0;max-height:60vh}
-  /* Layers panel: position:fixed removes ancestor stacking context so overflow-y:scroll on mc-body works natively; padding-left:28px for mc-tab */
-  #mc{position:fixed!important;top:12px;right:0;height:calc(100vh - 24px);overflow:hidden;padding-left:28px}
+  /* Layers panel: overflow:hidden+padding-left:14px lets mc-tab sit inside mc's box (left:0) so scroll works AND arrow is visible */
+  #mc{height:calc(100vh - 24px);overflow:hidden;padding-left:14px}
   #mc-tab{left:0}
-  #mc-body{display:block!important;height:calc(100vh - 24px);overflow-y:scroll;touch-action:pan-y;padding-bottom:80px}
-  .cp{max-height:none;overflow-y:visible;padding:4px 0}
-  .cp.scroll{flex:none;max-height:none;overflow-y:visible;padding:4px 0}
-  /* Info panel best-spot button clearance */
-  #pbody{padding-bottom:calc(56px + env(safe-area-inset-bottom))!important}
+  #mc-body{flex:1;min-height:0}
+  .cp{max-height:35%;overflow-y:auto}
+  .cp.scroll{flex:1;min-height:80px;max-height:none;overflow-y:auto}
   /* Collapsed layers panel: keep mc at right:0, hide body, leave mc-tab visible */
   #mc.mc-col{transform:none!important}
   #mc.mc-col #mc-body{display:none!important}
-  #sb-tabs{display:flex!important}
-  body.sbt-filtry #sb-top{max-height:100vh!important;flex:1;padding-bottom:36px}
-  /* Hide compass in landscape too */
-  #compass{display:none!important}
 }
 .mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-size:11px;color:var(--muted);border:none;background:none;font-family:var(--f-body);transition:color .15s;user-select:none;padding:6px 0;overflow:visible}
 .mob-tab.active,.mob-tab:hover{color:var(--gold)}
 .mob-ico{font-size:20px;line-height:1;display:block}
-/* ── Mobile top bar + chips ── */
-#mob-top{display:none;position:fixed;top:0;left:0;right:0;height:52px;background:var(--sb);border-bottom:1px solid var(--border);z-index:1350;align-items:center;justify-content:space-between;padding:0 14px}
-#mob-logo{font-size:15px;font-weight:700;color:var(--gold)}
-#mob-logo span{font-size:13px;opacity:.85}
-#mob-srch{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);padding:4px;line-height:1}
-#mob-srch:hover{color:var(--text)}
-#mob-chips{display:none;position:fixed;top:52px;left:0;right:0;height:44px;background:var(--sb);border-bottom:1px solid var(--border);z-index:1350;align-items:center;padding:0 12px;gap:7px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
-#mob-chips::-webkit-scrollbar{display:none}
-.mchip{padding:5px 11px;border-radius:16px;border:1px solid var(--goldb,#a0845c55);background:transparent;color:var(--text);font-size:11.5px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;font-family:var(--f-body)}
-.mchip:hover{border-color:var(--gold);background:var(--goldd,rgba(180,130,60,.15))}
-.mchip.on{background:var(--gold);border-color:var(--gold);color:#1a1208;font-weight:600}
-.mchip-more{border-style:dashed}
-/* ── Mobile filter modal ── */
-#filter-modal{display:none;position:fixed;inset:0;z-index:1400;flex-direction:column;justify-content:flex-end}
-#filter-modal.open{display:flex}
-#filter-scrim{position:absolute;inset:0;background:rgba(0,0,0,.5)}
-#filter-sheet{position:relative;background:var(--sb);border-radius:16px 16px 0 0;max-height:75vh;overflow-y:auto;z-index:1;padding-bottom:env(safe-area-inset-bottom)}
-#filter-sheet-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;border-bottom:1px solid var(--border);font-weight:600;font-size:14px;flex-shrink:0;position:sticky;top:0;background:var(--sb);z-index:1}
-#filter-close{background:none;border:none;cursor:pointer;font-size:20px;color:var(--muted);padding:2px 8px;line-height:1}
-#filter-modal-body{padding:0 8px 16px}
-/* ── Mobile pill + landscape handle (hidden by default, shown by JS) ── */
-#mob-handle{display:none}
-#mob-pill{display:none;position:fixed;bottom:calc(16px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:1310;padding:10px 22px;border-radius:20px;background:var(--sb);border:1px solid var(--border);box-shadow:0 3px 12px rgba(0,0,0,.45);cursor:pointer;font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;transition:opacity .15s}
-#mob-pill:active{opacity:.7}
-@media(max-width:767px){#mob-pill{display:block}}
-/* ── Desktop sidebar tabs ── */
-#sb-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;padding:0 12px}
-.sb-tab{flex:1;background:none;border:none;border-bottom:2px solid transparent;padding:9px 0 8px;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .15s,border-color .15s;font-family:var(--f-body)}
-.sb-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
-.sb-tab:hover:not(.active){color:var(--text)}
-@media(min-width:768px){
-  body.sbt-filtry #sw,body.sbt-filtry #ml{display:none!important}
-  body.sbt-grzyby #filters-panel,body.sbt-grzyby #season-bar{display:none!important}
-  #ml-resize{display:none!important}
-}
-@media(max-width:767px){#sb-tabs{display:none!important}}
 </style>
 </head>
 <body>
@@ -428,13 +373,9 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.23</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.29.77</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
-  </div>
-  <div id="sb-tabs">
-    <button class="sb-tab active" data-tab="grzyby">Grzyby</button>
-    <button class="sb-tab" data-tab="filtry">Filtry</button>
   </div>
   <div id="sw">
     <input id="si" type="text" placeholder="Szukaj grzyba lub miejscowości…" autocomplete="off">
@@ -572,7 +513,6 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
     </div>
     <button class="fav-btn" id="pfav" title="Dodaj do ulubionych">☆</button>
     <button class="ip-min-btn" id="ip-min" title="Zwiń panel">⌄</button>
-    <span id="ip-sel-badge" style="display:none;font-size:11px;font-weight:700;color:var(--accent);margin-right:2px;align-self:center;letter-spacing:-.5px"></span>
     <button class="pcls" id="pcls">×</button>
   </div>
   <div style="padding:18px 18px 24px" id="pbody"></div>
@@ -591,7 +531,6 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 
 <div id="toast"></div>
 <button id="ls-toggle" style="display:none" title="Pełna mapa">🗺️</button>
-<button id="mob-handle" aria-label="Pokaż listę">‹</button>
 
 <script>
 const REGIONS={
@@ -32784,12 +32723,14 @@ function forestTooltip(f){
 const forestLayer=L.layerGroup().addTo(map);
 const bdlStandsLayer=L.layerGroup();
 FORESTS.forEach(f=>{
+  // Only draw CLC-coded polygons (detailed local data); skip large national-level rectangles
   if(!f.c)return;
   const fc={
     '311':{color:'#3a7a20',fillColor:'#4a8a2a'},
     '312':{color:'#1a5a10',fillColor:'#255015'},
     '313':{color:'#2d7a1b',fillColor:'#2d6a15'},
   }[f.c]||{color:'#2d7a1b',fillColor:'#2d6a15'};
+  // Stand outline only — controlled by BDL toggle
   L.polygon(f.p,{color:fc.color,weight:0.8,fillOpacity:0,interactive:false}).addTo(bdlStandsLayer);
   const poly=L.polygon(f.p,{...fc,weight:0,fillOpacity:.18});
   poly.bindTooltip('',{sticky:true,className:'ftip'});
@@ -41091,7 +41032,7 @@ map.on('moveend zoomend',_updateTreePins);
 // ─── Heatmap ─────────────────────────────────────────────
 let heatLayer=null,selectedMid=null,selectedMids=new Set(),_heatPts=[],_midHeatCache={};
 const _inatSpecCache={},_gbifCache={};
-const HEAT_GRAD={0.15:'#ffeb3b',0.45:'#ff6d00',0.72:'#e53935',1.0:'#ad1457'};
+const HEAT_GRAD={0.15:'#c6ff40',0.45:'#ffc200',0.72:'#ff5500',1.0:'#cc0033'};
 
 // Zoom-adaptive radius: large blobs when zoomed out, tighter when zoomed in
 // Geo-consistent radius: ~250m real-world blob size. pixels = 250m / (94234m/2^z) at lat≈53°.
@@ -41121,7 +41062,7 @@ async function fetchGBIF(latin){
   }catch{return(_gbifCache[latin]=[]);}
 }
 
-function _mkHeat(pts,z){const r=zoomHeatRadius(z);return L.heatLayer(pts,{radius:r,blur:Math.round(r*.5),max:.8,minOpacity:.38,maxZoom:18,gradient:HEAT_GRAD});}
+function _mkHeat(pts,z){const r=zoomHeatRadius(z);return L.heatLayer(pts,{radius:r,blur:Math.round(r*.5),max:.8,minOpacity:.22,maxZoom:18,gradient:HEAT_GRAD});}
 
 function _buildBaseHeat(mid){
   const m=MUSHROOMS[mid];
@@ -41270,7 +41211,6 @@ function clearHeat(){
 
 // Zoom debug label
 const _zdbg=document.createElement('div');
-_zdbg.id='zdbg';
 _zdbg.style.cssText='position:fixed;bottom:22px;right:6px;background:rgba(0,0,0,.28);color:rgba(255,255,255,.6);font:10px/1 monospace;padding:2px 5px;border-radius:2px;pointer-events:none;z-index:9999';
 document.getElementById('mw').appendChild(_zdbg);
 function _zdbgUpdate(){_zdbg.textContent='z'+map.getZoom();}
@@ -41369,7 +41309,6 @@ function showInfoPanel(mid){
   if(m.rare)badges.push(`<span class="b b-r">✦ Rzadki</span>`);
   if(m.protected)badges.push(`<span class="b b-pr">§ Chroniony</span>`);
   document.getElementById('pbadges').innerHTML=badges.join('');
-  const _sb=document.getElementById('ip-sel-badge');if(_sb){const _n=selectedMids.size>=2?selectedMids.size:0;_sb.textContent=_n?`${_n}×`:'';_sb.style.display=_n?'inline':'none';}
   const _nowMo=new Date().getMonth();
   const sbar=MONTHS.map((_,i)=>`<div class="sm${m.season.includes(i+1)?' on':''}${i===_nowMo?' cur':''}"></div>`).join('');
   let extra='';
@@ -41424,13 +41363,10 @@ function showInfoPanel(mid){
   }
   // lightbox close handled by _openLightbox setup (one-time, see below)
   const ipEl=document.getElementById('ip');
-  ipEl.scrollTop=0;
   ipEl.classList.add('open');ipEl.classList.remove('ip-mini');
-  setTimeout(()=>{ ipEl.scrollTop=0; },320);
-  ipEl.addEventListener('transitionend',()=>{ ipEl.scrollTop=0; },{once:true});
   // On mobile: close sidebar, keep Grzyby tab active so info panel feels part of that flow
   if(window.innerWidth<=767){
-    window._closeMobList?.();
+    document.getElementById('sidebar').classList.remove('mob-open');
     const tabList=document.getElementById('mob-list');
     if(tabList)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabList);});
   }
@@ -42239,8 +42175,12 @@ siEl.addEventListener('input',()=>{
   if(!q){srEl.style.display='none';return;}
   // On mobile: ensure list is visible while searching
   if(window.innerWidth<=767){
-    if(typeof window._openMobList==='function') window._openMobList();
-    else document.getElementById('sidebar')?.classList.add('mob-open');
+    const sb=document.getElementById('sidebar');
+    const tabList=document.getElementById('mob-list');
+    if(!sb.classList.contains('mob-open')){
+      sb.classList.add('mob-open');
+      if(tabList)document.querySelectorAll('.mob-tab').forEach(t=>{t.classList.toggle('active',t===tabList);});
+    }
   }
   // Dropdown: location search only (mushrooms already shown in filtered list)
   srEl.innerHTML=`<div class="si-item" style="color:var(--muted)">Szukam miejscowości…</div>`;
@@ -42458,7 +42398,6 @@ document.querySelectorAll('.fb[data-cat]').forEach(btn=>{
     if(cat==='all'){activeCats.clear();document.querySelectorAll('.fb[data-cat]').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
     else{document.querySelector('.fb[data-cat="all"]').classList.remove('on');activeCats.has(cat)?(activeCats.delete(cat),btn.classList.remove('on')):(activeCats.add(cat),btn.classList.add('on'));if(!activeCats.size)document.querySelector('.fb[data-cat="all"]').classList.add('on');}
     _updateFilterBadge();renderList();
-    if(typeof syncMobChips==='function')syncMobChips();
   };
 });
 // Season multi-select
@@ -42466,7 +42405,7 @@ document.querySelectorAll('.fb[data-season]').forEach(btn=>{
   btn.onclick=()=>{
     const s=btn.dataset.season;
     activeSeasons.has(s)?(activeSeasons.delete(s),btn.classList.remove('on')):(activeSeasons.add(s),btn.classList.add('on'));
-    _updateFilterBadge();renderList();if(typeof syncMobChips==='function')syncMobChips();
+    _updateFilterBadge();renderList();
   };
 });
 // Habitat multi-select
@@ -42474,7 +42413,7 @@ document.querySelectorAll('.fb[data-hab]').forEach(btn=>{
   btn.onclick=()=>{
     const h=btn.dataset.hab;
     activeHabs.has(h)?(activeHabs.delete(h),btn.classList.remove('on')):(activeHabs.add(h),btn.classList.add('on'));
-    _updateFilterBadge();renderList();if(typeof syncMobChips==='function')syncMobChips();
+    _updateFilterBadge();renderList();
   };
 });
 // Sort single-select — click active to deselect (back to default grouped view)
@@ -42483,7 +42422,7 @@ document.querySelectorAll('.fb[data-sort]').forEach(btn=>{
     const already=btn.classList.contains('on');
     document.querySelectorAll('.fb[data-sort]').forEach(b=>b.classList.remove('on'));
     if(already){activeSortBy='default';}else{btn.classList.add('on');activeSortBy=btn.dataset.sort;}
-    _updateFilterBadge();renderList();if(typeof syncMobChips==='function')syncMobChips();
+    _updateFilterBadge();renderList();
   };
 });
 // Single collapsible for all filters
@@ -42747,17 +42686,16 @@ document.querySelectorAll('.lb[data-base]').forEach(btn=>{
 
 document.getElementById('pcls').onclick=e=>{
   e.stopPropagation();
-  document.getElementById('ip')?.classList.remove('open','ip-mini');
   clearHeat();
-  if(!(window.innerWidth>window.innerHeight&&window.innerHeight<700&&window.innerWidth<=1366))document.getElementById('ml').scrollTop=0;
+  document.getElementById('ml').scrollTop=0;
   // Reset list/filter split to natural height (same as double-click the drag handle)
   const _sbt=document.getElementById('sb-top');
   if(_sbt){_sbt.style.height='';try{localStorage.removeItem('sb-top-h');}catch(_){}}
-  const _apOpen=document.getElementById('ap')?.classList.contains('open');
   document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));
-  if(!_apOpen)document.getElementById('mob-list').classList.add('active');
-  if(window.innerWidth<=767&&!_apOpen){
-    setTimeout(()=>{if(typeof window._openMobList==='function') window._openMobList(); else document.getElementById('sidebar')?.classList.add('mob-open');},80);
+  document.getElementById('mob-list').classList.add('active');
+  if(window.innerWidth<=767){
+    const sb=document.getElementById('sidebar');
+    setTimeout(()=>{sb.classList.add('mob-open');},80);
   }
 };
 document.getElementById('apcls').onclick=()=>{
@@ -42775,14 +42713,6 @@ function showToast(msg){
 }
 
 // ── GPS / locate button ───────────────────────────────────────────────────
-let _gpsLayer=null;
-function _setGpsLayer(ll,accuracy){
-  if(_gpsLayer)map.removeLayer(_gpsLayer);
-  _gpsLayer=L.layerGroup([
-    L.circle(ll,{radius:Math.max(accuracy/2,30),color:'#1976D2',fillColor:'#1976D2',fillOpacity:.10,weight:1}),
-    L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:'#1976D2',fillOpacity:1})
-  ]).addTo(map);
-}
 (()=>{
   const ctl=L.control({position:'topleft'});
   ctl.onAdd=()=>{
@@ -42794,7 +42724,7 @@ function _setGpsLayer(ll,accuracy){
     div.appendChild(a);
     L.DomEvent.on(div,'click',L.DomEvent.stopPropagation);
     L.DomEvent.on(div,'click',L.DomEvent.preventDefault);
-    let busy=false;
+    let gpsLayer=null,busy=false;
     div.onclick=()=>{
       if(busy||!navigator.geolocation){if(!navigator.geolocation)showToast('GPS niedostępny');return;}
       busy=true;
@@ -42803,7 +42733,11 @@ function _setGpsLayer(ll,accuracy){
         busy=false;a.textContent='📍';a.style.animation='';a.style.opacity='';
         _userGPS=[pos.coords.latitude,pos.coords.longitude];
         const ll=[pos.coords.latitude,pos.coords.longitude];
-        _setGpsLayer(ll,pos.coords.accuracy);
+        if(gpsLayer)map.removeLayer(gpsLayer);
+        gpsLayer=L.layerGroup([
+          L.circle(ll,{radius:pos.coords.accuracy/2,color:'#1976D2',fillColor:'#1976D2',fillOpacity:.10,weight:1}),
+          L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:'#1976D2',fillOpacity:1})
+        ]).addTo(map);
         map.flyTo(ll,14,{duration:1.5});
         fetchWeather(ll[0],ll[1]);
         showToast('Lokalizacja znaleziona');
@@ -42819,10 +42753,15 @@ function _setGpsLayer(ll,accuracy){
 
 // Auto-locate on load (silent — no toast, no error if denied)
 if(navigator.geolocation){
+  let _autoGpsLayer=null;
   navigator.geolocation.getCurrentPosition(pos=>{
     _userGPS=[pos.coords.latitude,pos.coords.longitude];
     const ll=[pos.coords.latitude,pos.coords.longitude];
-    _setGpsLayer(ll,pos.coords.accuracy);
+    if(_autoGpsLayer)map.removeLayer(_autoGpsLayer);
+    _autoGpsLayer=L.layerGroup([
+      L.circle(ll,{radius:Math.max(pos.coords.accuracy/2,30),color:'#1976D2',fillColor:'#1976D2',fillOpacity:.10,weight:1}),
+      L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:'#1976D2',fillOpacity:1})
+    ]).addTo(map);
     map.flyTo(ll,13,{duration:1.5});
     fetchWeather(ll[0],ll[1]);
   },()=>{},{timeout:8000,maximumAge:300000,enableHighAccuracy:false});
@@ -43135,20 +43074,16 @@ if(window.innerWidth<=767){
   // weather: start collapsed
   const wx=document.getElementById('wx'),btn=document.getElementById('wx-col');
   wx.classList.add('wx-col');btn.textContent='▼';
-  // re-fit map on orientation change
-  window.addEventListener('orientationchange',()=>setTimeout(()=>map.invalidateSize(),300));
-}
-// info panel minimize — registered unconditionally so it works after LS→portrait rotation
-(()=>{
+  // info panel minimize — onclick + touchend for mobile reliability
   const ip=document.getElementById('ip');
-  if(!ip)return;
   const _ipMini=()=>ip.classList.toggle('ip-mini');
   const ipMin=document.getElementById('ip-min');
   const ipHandle=document.getElementById('ip-handle');
-  ipMin?.addEventListener('click',e=>{e.stopPropagation();_ipMini();});
-  ipMin?.addEventListener('touchend',e=>{e.stopPropagation();e.preventDefault();_ipMini();});
-  ipHandle?.addEventListener('click',_ipMini);
-  ipHandle?.addEventListener('touchend',e=>{e.preventDefault();_ipMini();});
+  ipMin.addEventListener('click',e=>{e.stopPropagation();_ipMini();});
+  ipMin.addEventListener('touchend',e=>{e.stopPropagation();e.preventDefault();_ipMini();});
+  ipHandle.addEventListener('click',_ipMini);
+  ipHandle.addEventListener('touchend',e=>{e.preventDefault();_ipMini();});
+  // Swipe down on info panel to minimize
   let _ipSwipeY=null;
   ip.addEventListener('touchstart',e=>{
     if(ip.classList.contains('ip-mini'))return;
@@ -43161,7 +43096,11 @@ if(window.innerWidth<=767){
     _ipSwipeY=null;
   },{passive:true});
   ip.addEventListener('touchcancel',()=>{_ipSwipeY=null;},{passive:true});
-})();
+  // re-fit map on orientation change
+  window.addEventListener('orientationchange',()=>setTimeout(()=>map.invalidateSize(),300));
+  // move zoom debug label above nav bar
+  if(typeof _zdbg!=='undefined')_zdbg.style.bottom='66px';
+}
 
 
 // ── Compass: static north indicator (rotation removed) ───────────────────
@@ -43171,42 +43110,25 @@ document.getElementById('toast').addEventListener('click',()=>{
   document.getElementById('toast').classList.remove('show');
 });
 
-// ── Desktop sidebar tabs ──────────────────────────────────────────────────
-(()=>{
-  document.body.classList.add('sbt-grzyby');
-  document.querySelectorAll('.sb-tab').forEach(btn=>{
-    btn.onclick=()=>{
-      document.querySelectorAll('.sb-tab').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      const t=btn.dataset.tab;
-      document.body.classList.toggle('sbt-grzyby',t==='grzyby');
-      document.body.classList.toggle('sbt-filtry',t==='filtry');
-      if(t==='filtry'){const fb=document.getElementById('fbody-filters'),fa=document.getElementById('farr-filters');if(fb&&fb.classList.contains('col')){fb.classList.remove('col');if(fa)fa.style.transform='';}}
-    };
-  });
-})();
-
 // ── Landscape list-toggle (large phones only — small phones use mob-nav) ──
 (()=>{
-  const btn=document.getElementById('mob-handle');
+  const btn=document.getElementById('ls-toggle');
   const sb=document.getElementById('sidebar');
   const ip=document.getElementById('ip');
   if(!btn||!sb||!ip)return;
   // Only large landscape phones (>767px CSS width); small phones have mob-nav
-  const isLargeLS=()=>window.innerWidth>window.innerHeight&&window.innerHeight<700&&window.innerWidth<=1366;
+  const isLargeLS=()=>window.innerWidth>window.innerHeight&&window.innerWidth>767&&window.innerWidth<=1024;
   let _sbOpen=false,_ipWasClosed=false;
   function _restoreIp(){if(_ipWasClosed){_ipWasClosed=false;ip.classList.add('open');}}
   function _update(){
     if(isLargeLS()){
       btn.style.display='flex';
-      btn.style.left=_sbOpen?'320px':'0';
-      btn.style.transition='left .3s cubic-bezier(.4,0,.2,1)';
-      btn.textContent=_sbOpen?'‹':'›';
-      btn.setAttribute('aria-label',_sbOpen?'Ukryj listę':'Pokaż listę');
+      btn.textContent=_sbOpen?'🗺️':'📋';
+      btn.title=_sbOpen?'Ukryj listę':'Pokaż listę';
     }else{
       btn.style.display='none';
       if(_sbOpen){_sbOpen=false;sb.classList.remove('mob-open');}
-      _restoreIp();
+      _restoreIp(); // restore ip when leaving landscape
     }
   }
   btn.onclick=e=>{
@@ -43216,34 +43138,17 @@ document.getElementById('toast').addEventListener('click',()=>{
     if(!_sbOpen&&ip.classList.contains('open')){
       _ipWasClosed=true;ip.classList.remove('open');ip.classList.remove('ip-mini');
     } else if(_sbOpen){
-      _restoreIp();
+      _restoreIp(); // restore ip when opening list
     }
     _update();
     map.invalidateSize();
   };
   new MutationObserver(_update).observe(sb,{attributes:true,attributeFilter:['class']});
-  window.addEventListener('orientationchange',()=>{_sbOpen=false;sb.classList.remove('mob-open');_restoreIp();document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));setTimeout(()=>{_update();const ip=document.getElementById('ip');if(ip)ip.scrollTop=0;},350);});
+  window.addEventListener('orientationchange',()=>{_sbOpen=false;sb.classList.remove('mob-open');_restoreIp();document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));setTimeout(_update,350);});
   window.addEventListener('resize',_update);
+  // Called when scan panel opens so sidebar stays in sync
   window._closeSidebar=()=>{_sbOpen=false;sb.classList.remove('mob-open');_update();};
   _update();
-})();
-
-// ── Layers panel manual scroll (mc-body is inside #mw, Leaflet intercepts touch events) ──
-(()=>{
-  const mcb=document.getElementById('mc-body');
-  if(!mcb)return;
-  let _sy=0,_ss=0;
-  mcb.addEventListener('touchstart',e=>{
-    _sy=e.touches[0].clientY;
-    _ss=mcb.scrollTop;
-    e.stopPropagation();
-  },{passive:false});
-  mcb.addEventListener('touchmove',e=>{
-    const dy=_sy-e.touches[0].clientY;
-    mcb.scrollTop=_ss+dy;
-    e.stopPropagation();
-    e.preventDefault();
-  },{passive:false});
 })();
 
 // Sync mc-col with orientation on resize (fires after viewport dims update, unlike orientationchange)
@@ -43276,28 +43181,6 @@ document.getElementById('toast').addEventListener('click',()=>{
     <span class="mob-ico">🎛️</span>
     <span>Filtry</span>
   </button>
-</div>
-<div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.23</span></div>
-  <button id="mob-srch" aria-label="Szukaj">🔍</button>
-</div>
-<div id="mob-chips">
-  <button class="mchip on" data-mcat="all">Wszystkie</button>
-  <button class="mchip" data-mcat="edible">Jadalne</button>
-  <button class="mchip" data-mcat="dangerous">Trujące</button>
-  <button class="mchip" data-mcat="rare">Rzadkie</button>
-  <button class="mchip mchip-more" id="mob-more">🎛️ Filtry</button>
-</div>
-<button id="mob-pill" aria-label="Lista gatunków">📋 Lista</button>
-<div id="filter-modal">
-  <div id="filter-scrim"></div>
-  <div id="filter-sheet">
-    <div id="filter-sheet-head">
-      <span>Filtry i sortowanie</span>
-      <button id="filter-close">✕</button>
-    </div>
-    <div id="filter-modal-body"></div>
-  </div>
 </div>
 <script>
 (function(){
@@ -43336,125 +43219,6 @@ document.getElementById('toast').addEventListener('click',()=>{
     _mcToggle();
     setActive(document.getElementById('mc').classList.contains('mc-col')?tabMap:tabFilters);
   };
-})();
-
-// ── Mobile portrait list overlay + pill ───────────────────────────────────
-(()=>{
-  const pill=document.getElementById('mob-pill');
-  const sb=document.getElementById('sidebar');
-  if(!pill||!sb)return;
-
-  function _openMobList(){
-    sb.classList.add('mob-open');
-    document.body.classList.add('list-open');
-    pill.textContent='🗺️ Mapa';
-  }
-  function _closeMobList(){
-    sb.classList.remove('mob-open');
-    document.body.classList.remove('list-open');
-    pill.textContent='📋 Lista';
-    if(typeof syncMobChips==='function')syncMobChips();
-  }
-
-  window._openMobList=_openMobList;
-  window._closeMobList=_closeMobList;
-  window._closeSidebar=_closeMobList;
-
-  pill.onclick=()=>{
-    if(sb.classList.contains('mob-open')) _closeMobList();
-    else _openMobList();
-  };
-})();
-
-// ── Mobile filter modal ───────────────────────────────────────────────────
-(()=>{
-  const modal=document.getElementById('filter-modal');
-  const body=document.getElementById('filter-modal-body');
-  if(!modal||!body)return;
-  const sbTop=document.getElementById('sb-top');
-  function _teleportFilters(){
-    const fp=document.getElementById('filters-panel');
-    const sb=document.getElementById('season-bar');
-    if(!fp||!sb)return;
-    if(window.innerWidth<=767){
-      if(fp.parentElement!==body){body.appendChild(fp);body.appendChild(sb);}
-    } else {
-      if(sbTop&&fp.parentElement!==sbTop){sbTop.appendChild(fp);sbTop.appendChild(sb);}
-    }
-  }
-  _teleportFilters();
-  window.addEventListener('resize',_teleportFilters);
-  window.addEventListener('orientationchange',()=>setTimeout(_teleportFilters,200));
-  function openModal(){modal.classList.add('open');const fb=document.getElementById('fbody-filters'),fa=document.getElementById('farr-filters');if(fb&&fb.classList.contains('col')){fb.classList.remove('col');if(fa)fa.style.transform='';}}
-  function closeModal(){modal.classList.remove('open');}
-  document.getElementById('mob-more')?.addEventListener('click',openModal);
-  document.getElementById('filter-close')?.addEventListener('click',closeModal);
-  document.getElementById('filter-scrim')?.addEventListener('click',closeModal);
-})();
-
-// ── Mobile top chips + search ─────────────────────────────────────────────
-(()=>{
-  const parent=document.getElementById('mob-chips');
-  const moreBtn=document.getElementById('mob-more');
-  // Capture initial DOM order for stable tiebreaking
-  function syncMobChips(){
-    const noFilters=activeCats.size===0&&activeSeasons.size===0&&activeHabs.size===0&&activeSortBy==='default';
-    const allChip=parent.querySelector('.mchip[data-mcat="all"]');
-    if(allChip)allChip.classList.toggle('on',noFilters);
-    const staticCats=Array.from(parent.querySelectorAll('.mchip[data-mcat]:not([data-mcat="all"])'));
-    const staticCatKeys=new Set(staticCats.map(c=>c.dataset.mcat));
-    staticCats.forEach(c=>c.classList.toggle('on',activeCats.has(c.dataset.mcat)));
-    // Remove old dynamic chips
-    parent.querySelectorAll('.mchip-dyn').forEach(c=>c.remove());
-    function _dyn(lbl,sel){
-      const c=document.createElement('button');
-      c.className='mchip mchip-dyn on';c.textContent=lbl;
-      c.onclick=()=>{document.querySelector(sel)?.click();};
-      return c;
-    }
-    const dynChips=[];
-    // Extra activeCats not covered by static chips (hallucinogenic, fav, season…)
-    for(const cat of activeCats){
-      if(!staticCatKeys.has(cat)){
-        const lbl=document.querySelector(`.fb[data-cat="${cat}"]`)?.textContent||cat;
-        dynChips.push(_dyn(lbl,`.fb[data-cat="${cat}"]`));
-      }
-    }
-    for(const s of activeSeasons){
-      const lbl=document.querySelector(`.fb[data-season="${s}"]`)?.textContent||s;
-      dynChips.push(_dyn(lbl,`.fb[data-season="${s}"]`));
-    }
-    for(const h of activeHabs){
-      const lbl=document.querySelector(`.fb[data-hab="${h}"]`)?.textContent||h;
-      dynChips.push(_dyn(lbl,`.fb[data-hab="${h}"]`));
-    }
-    if(activeSortBy!=='default'){
-      const lbl=document.querySelector(`.fb[data-sort="${activeSortBy}"]`)?.textContent||activeSortBy;
-      dynChips.push(_dyn(lbl,`.fb[data-sort="${activeSortBy}"]`));
-    }
-    // Order: 🎛️Filtry (pinned first) → all → active static → dynamic → inactive static
-    const activeStatic=staticCats.filter(c=>c.classList.contains('on'));
-    const inactiveStatic=staticCats.filter(c=>!c.classList.contains('on'));
-    [allChip,...activeStatic,...dynChips,...inactiveStatic].forEach(c=>{if(c)parent.appendChild(c);});
-    parent.insertBefore(moreBtn,parent.firstChild); // pin 🎛️ to front
-  }
-  window.syncMobChips=syncMobChips;
-
-  document.querySelectorAll('.mchip[data-mcat]').forEach(chip=>{
-    chip.onclick=()=>{
-      const cat=chip.dataset.mcat;
-      document.querySelector(`.fb[data-cat="${cat}"]`)?.click();
-      syncMobChips();
-      if(window.innerWidth<=767)window._openMobList?.();
-    };
-  });
-
-  document.getElementById('mob-srch')?.addEventListener('click',()=>{
-    window._openMobList?.();
-    setTimeout(()=>document.getElementById('si')?.focus(),100);
-  });
-
-  syncMobChips();
 })();
 </script>
 </body>
