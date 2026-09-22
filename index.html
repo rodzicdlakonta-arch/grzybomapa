@@ -428,7 +428,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.38</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.39</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43975,13 +43975,16 @@ function loadDetailTerrain(){
     fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qw)}`)
       .then(r=>r.json()).then(data=>{
         ovWetLayer.clearLayers();
+        for(let i=_dynLanduse.length-1;i>=0;i--)if(_dynLanduse[i].t==='wetland')_dynLanduse.splice(i,1);
         const _wetPL={wetland:'Mokradło',marsh:'Bagno',bog:'Torfowisko',fen:'Torfowisko przejściowe',swamp:'Bagno',reedbed:'Szuwary',tidalflat:'Namulisko'};
         (data.elements||[]).forEach(el=>{
           if(!el.geometry)return;
+          const coords=el.geometry.map(p=>[p.lat,p.lon]);
+          _dynLanduse.push({t:'wetland',p:coords});
           const wt=el.tags?.wetland||el.tags?.natural||'wetland';
           const typeLbl=_wetPL[wt]||'Mokradło';
           const tip=el.tags?.name?`${el.tags.name} (${typeLbl.toLowerCase()})`:typeLbl;
-          L.polygon(el.geometry.map(p=>[p.lat,p.lon]),{color:'#2878a0',weight:.6,fillColor:'#1e6a92',fillOpacity:.28})
+          L.polygon(coords,{color:'#2878a0',weight:.6,fillColor:'#1e6a92',fillOpacity:.28})
            .bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovWetLayer);
         });
       }).catch(()=>{});
@@ -43990,11 +43993,14 @@ function loadDetailTerrain(){
     fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qm)}`)
       .then(r=>r.json()).then(data=>{
         ovMeadowLayer.clearLayers();
+        for(let i=_dynLanduse.length-1;i>=0;i--)if(_dynLanduse[i].t==='meadow')_dynLanduse.splice(i,1);
         (data.elements||[]).forEach(el=>{
           if(!el.geometry)return;
+          const coords=el.geometry.map(p=>[p.lat,p.lon]);
+          _dynLanduse.push({t:'meadow',p:coords});
           const t=el.tags?.landuse||el.tags?.natural||'meadow';
           const base=el.tags?.name||(t==='grassland'?'Murawa':t==='heath'?'Wrzosowisko':'Łąka');
-          L.polygon(el.geometry.map(p=>[p.lat,p.lon]),{color:'#4a9430',weight:1.5,fillColor:'#70b84a',fillOpacity:.42})
+          L.polygon(coords,{color:'#4a9430',weight:1.5,fillColor:'#70b84a',fillOpacity:.42})
            .bindTooltip(base,{sticky:true,className:'ftip'}).addTo(ovMeadowLayer);
         });
       }).catch(()=>{});
@@ -44003,6 +44009,7 @@ function loadDetailTerrain(){
     fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qc)}`)
       .then(r=>r.json()).then(data=>{
         ovCropLayer.clearLayers();
+        for(let i=_dynLanduse.length-1;i>=0;i--)if(_dynLanduse[i].t==='farmland')_dynLanduse.splice(i,1);
         const cropPL={'wheat':'pszenica','rye':'żyto','corn':'kukurydza','maize':'kukurydza',
           'rape':'rzepak','oilseed_rape':'rzepak','canola':'rzepak',
           'potato':'ziemniaki','potatoes':'ziemniaki',
@@ -44012,11 +44019,13 @@ function loadDetailTerrain(){
           'triticale':'pszenżyto','spelt':'orkisz','millet':'proso'};
         (data.elements||[]).forEach(el=>{
           if(!el.geometry)return;
+          const coords=el.geometry.map(p=>[p.lat,p.lon]);
+          _dynLanduse.push({t:'farmland',p:coords});
           const rawCrop=el.tags?.crop||el.tags?.['crop:pl']||el.tags?.produce||el.tags?.plant||el.tags?.species||'';
           const cropName=cropPL[rawCrop.toLowerCase()]||rawCrop;
           const base=el.tags?.name||'Pole uprawne';
           const tip=cropName?`${base} · ${cropName}`:base;
-          L.polygon(el.geometry.map(p=>[p.lat,p.lon]),{color:'#c4902a',weight:1.5,fillColor:'#d4a035',fillOpacity:.42})
+          L.polygon(coords,{color:'#c4902a',weight:1.5,fillColor:'#d4a035',fillOpacity:.42})
            .bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovCropLayer);
         });
       }).catch(()=>{});
@@ -44025,16 +44034,19 @@ function loadDetailTerrain(){
     fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qp)}`)
       .then(r=>r.json()).then(data=>{
         ovPastureLayer.clearLayers();
+        for(let i=_dynLanduse.length-1;i>=0;i--)if(_dynLanduse[i].t==='pasture')_dynLanduse.splice(i,1);
         const animalPL={'cattle':'bydło','horse':'konie','horses':'konie','sheep':'owce',
           'goat':'kozy','goats':'kozy','pig':'świnie','pigs':'świnie','poultry':'drób',
           'deer':'jelenie','alpaca':'alpaki'};
         (data.elements||[]).forEach(el=>{
           if(!el.geometry)return;
+          const coords=el.geometry.map(p=>[p.lat,p.lon]);
+          _dynLanduse.push({t:'pasture',p:coords});
           const animal=el.tags?.animal||el.tags?.livestock||el.tags?.['animal:grazing']||'';
           const animalName=animalPL[animal]||animal;
           const base=el.tags?.name||'Pastwisko';
           const tip=animalName?`${base} (${animalName})`:base;
-          L.polygon(el.geometry.map(p=>[p.lat,p.lon]),{color:'#5a9a3a',weight:1.5,fillColor:'#6aaa45',fillOpacity:.40})
+          L.polygon(coords,{color:'#5a9a3a',weight:1.5,fillColor:'#6aaa45',fillOpacity:.40})
            .bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovPastureLayer);
         });
       }).catch(()=>{});
@@ -52571,7 +52583,7 @@ function getTerrainFeatures(drawnPoly){
       const k=f.c||(f.p[0]?f.p[0][0]+','+f.p[0][1]:'?');
       if(!seenF.has(k)){seenF.add(k);forests.push(f);}
     });
-    LANDUSE.filter(lu=>lu.t!=='river'&&pipTest(pt,lu.p)).forEach(lu=>{
+    [...LANDUSE,..._dynLanduse].filter(lu=>lu.t!=='river'&&pipTest(pt,lu.p)).forEach(lu=>{
       if(!seenL.has(lu.t)){seenL.add(lu.t);landuse.push(lu);}
     });
   });
@@ -52716,7 +52728,7 @@ async function _doAreaAnalysis(layer){
   // Grid-scan whole area: deterministic coverage, same habitat logic as genHeat
   const s0=b.getSouth(),n0=b.getNorth(),w0=b.getWest(),e0=b.getEast();
   const nearF=FORESTS.filter(f=>{const c=polyCentroid(f.p);return c[0]>s0-.05&&c[0]<n0+.05&&c[1]>w0-.05&&c[1]<e0+.05;});
-  const nearL=LANDUSE.filter(l=>l.t!=='river'&&l.p.some(p=>p[0]>s0-.01&&p[0]<n0+.01&&p[1]>w0-.01&&p[1]<e0+.01));
+  const nearL=[...LANDUSE,..._dynLanduse].filter(l=>l.t!=='river'&&l.p.some(p=>p[0]>s0-.01&&p[0]<n0+.01&&p[1]>w0-.01&&p[1]<e0+.01));
   const nearU=URBAN_DATA.filter(u=>u.some(p=>p[0]>s0-.01&&p[0]<n0+.01&&p[1]>w0-.01&&p[1]<e0+.01));
   const GN=Math.max(10,Math.min(55,Math.round(Math.max(n0-s0,e0-w0)*1300)));
   const dlat=(n0-s0)/GN,dln=(e0-w0)/GN;
@@ -53087,7 +53099,7 @@ function _doPointAnalysis(lat,lng,radiusM){
   const dlat2=r2/R2,dlng2=r2/(R2*cosLat2);
   const pla0=lat-dlat2,pla1=lat+dlat2,pln0=lng-dlng2,pln1=lng+dlng2;
   const nearFP=FORESTS.filter(f=>{const c=polyCentroid(f.p);return c[0]>pla0-.05&&c[0]<pla1+.05&&c[1]>pln0-.05&&c[1]<pln1+.05;});
-  const nearLP=LANDUSE.filter(l=>l.t!=='river'&&l.p.some(p=>p[0]>pla0-.01&&p[0]<pla1+.01&&p[1]>pln0-.01&&p[1]<pln1+.01));
+  const nearLP=[...LANDUSE,..._dynLanduse].filter(l=>l.t!=='river'&&l.p.some(p=>p[0]>pla0-.01&&p[0]<pla1+.01&&p[1]>pln0-.01&&p[1]<pln1+.01));
   const nearUP=URBAN_DATA.filter(u=>u.some(p=>p[0]>pla0-.01&&p[0]<pla1+.01&&p[1]>pln0-.01&&p[1]<pln1+.01));
   const habPts2=[];
   if(radiusM>0){
@@ -53723,6 +53735,7 @@ document.getElementById('tgl-inat').onclick=()=>{
 let bdlActive=false,bdlPopup=null;
 const bdlStore=[]; // [{lat,lng,cd,age}] — persists across sessions for mushroom scoring
 const _bdlLive=new Set(); // keys already fetched live this session — prevents redundant API calls
+const _dynLanduse=[]; // dynamic Overpass terrain {t,p} — same structure as LANDUSE, fed to scanner/heatmap
 // Pre-load static BDL data into bdlStore so tooltip/scanner/heatmap work offline
 if(typeof BDL_TREE_SPECIES_INFO!=='undefined'&&BDL_TREE_SPECIES_INFO.length){
   const _gk=v=>Math.round(v*50)/50;
@@ -54418,7 +54431,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.38</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.39</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
