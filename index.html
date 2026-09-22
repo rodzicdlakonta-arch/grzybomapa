@@ -428,7 +428,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.25</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.26</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42979,31 +42979,51 @@ function _updateForestLayer(){
 map.on('moveend zoomend',_updateForestLayer);
 _updateForestLayer();
 
-// Spatial index for fast forest bbox lookup (0.1°×0.15° cells)
+// Spatial index: bucket forest polygons into 0.1°×0.15° cells
 const _FSI={};
 (()=>{const LAT=0.1,LNG=0.15;_fBboxes.forEach((bb,i)=>{if(!bb)return;const[s,w,n,e]=bb;for(let r=Math.floor(s/LAT);r<=Math.floor(n/LAT);r++)for(let c=Math.floor(w/LNG);c<=Math.floor(e/LNG);c++){const k=r+'_'+c;(_FSI[k]||(_FSI[k]=[])).push(i);}});})();
-function _forestTypeAt(lat,lng){const k=Math.floor(lat/.1)+'_'+Math.floor(lng/.15);const cands=_FSI[k];if(!cands)return null;for(const i of cands){const[s,w,n,e]=_fBboxes[i];if(lat>=s&&lat<=n&&lng>=w&&lng<=e)return FORESTS[i].c;}return null;}
-// Canvas tree grid layer — draws 🌲/🌳 per ~600m cell; no DOM markers
+// Ray-cast PIP and exact forest type lookup
+function _pip(lat,lng,pts){let inside=false;for(let i=0,j=pts.length-1;i<pts.length;j=i++){const[li,xi]=pts[i],[lj,xj]=pts[j];if((li>lat)!==(lj>lat)&&lng<(xj-xi)*(lat-li)/(lj-li)+xi)inside=!inside;}return inside;}
+function _forestTypeAt(lat,lng){const k=Math.floor(lat/.1)+'_'+Math.floor(lng/.15);const cands=_FSI[k];if(!cands)return null;for(const i of cands){const[s,w,n,e]=_fBboxes[i];if(lat<s||lat>n||lng<w||lng>e)continue;if(_pip(lat,lng,FORESTS[i].p))return FORESTS[i].c;}return null;}
+// Canvas tree grid layer — polygon-clipped; type-specific emoji
 map.createPane('treePins').style.zIndex=450;
 const _TreeGL=L.GridLayer.extend({createTile(coords){
   const t=document.createElement('canvas'),sz=this.getTileSize();
   t.width=sz.x;t.height=sz.y;
   if(map.getZoom()<12)return t;
   const ctx=t.getContext('2d');
-  ctx.font='12px serif';ctx.textAlign='center';ctx.textBaseline='middle';
-  const nw=map.unproject(coords.scaleBy(sz),coords.z);
-  const se=map.unproject(coords.scaleBy(sz).add(sz),coords.z);
-  const gLat=0.006,gLng=0.009;
-  for(let lat=Math.ceil(se.lat/gLat)*gLat;lat<=nw.lat+gLat;lat+=gLat)
-    for(let lng=Math.ceil(nw.lng/gLng)*gLng;lng<=se.lng+gLng;lng+=gLng){
-      const tp=_forestTypeAt(lat,lng);if(!tp)continue;
-      const pt=map.project([lat,lng],coords.z).subtract(coords.scaleBy(sz));
-      ctx.fillText(tp==='311'?'🌳':'🌲',Math.round(pt.x),Math.round(pt.y));
+  const nwPx=coords.scaleBy(sz);
+  const nw=map.unproject(nwPx,coords.z),se=map.unproject(nwPx.add(sz),coords.z);
+  const vs=se.lat,vn=nw.lat,vw=nw.lng,ve=se.lng;
+  function toPx(lat,lng){const p=map.project([lat,lng],coords.z);return[p.x-nwPx.x,p.y-nwPx.y];}
+  // Collect polygons by type using spatial index (deduped)
+  const byType={'311':[],'312':[],'313':[]};
+  const seen=new Set();
+  for(let r=Math.floor(vs/.1);r<=Math.floor(vn/.1);r++)
+    for(let c=Math.floor(vw/.15);c<=Math.floor(ve/.15);c++){
+      const cands=_FSI[r+'_'+c];if(!cands)continue;
+      cands.forEach(i=>{if(seen.has(i))return;seen.add(i);const[s,w,n,e]=_fBboxes[i];if(s>vn||n<vs||w>ve||e<vw)return;if(byType[FORESTS[i].c])byType[FORESTS[i].c].push(FORESTS[i].p);});
     }
+  // For each type: clip canvas to polygon shapes, then stamp emoji grid
+  ctx.font='12px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  const gLat=0.006,gLng=0.009;
+  [['311','🌳','🌳'],['312','🌲','🌲'],['313','🌲','🌳']].forEach(([type,eA,eB])=>{
+    const polys=byType[type];if(!polys.length)return;
+    ctx.save();
+    ctx.beginPath();
+    polys.forEach(pts=>{const[x0,y0]=toPx(pts[0][0],pts[0][1]);ctx.moveTo(x0,y0);for(let i=1;i<pts.length;i++){const[x,y]=toPx(pts[i][0],pts[i][1]);ctx.lineTo(x,y);}ctx.closePath();});
+    ctx.clip();
+    for(let lat=Math.ceil(vs/gLat)*gLat;lat<=vn+gLat;lat+=gLat)
+      for(let lng=Math.ceil(vw/gLng)*gLng;lng<=ve+gLng;lng+=gLng){
+        const[px,py]=toPx(lat,lng);
+        ctx.fillText((Math.round(lat/gLat)+Math.round(lng/gLng))%2?eA:eB,Math.round(px),Math.round(py));
+      }
+    ctx.restore();
+  });
   return t;
 }});
 const treeGridLayer=new _TreeGL({tileSize:256,updateWhenIdle:true,keepBuffer:0,pane:'treePins'}).addTo(map);
-// Hover tooltip for forest type via bbox lookup
+// Hover tooltip — exact PIP per polygon
 const _fHoverTip=L.tooltip({sticky:true,className:'ftip',opacity:.9});
 map.on('mousemove',e=>{
   if(!forestLayer._map){_fHoverTip.remove();return;}
@@ -53470,7 +53490,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.25</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.26</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
