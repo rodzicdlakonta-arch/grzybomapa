@@ -428,7 +428,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.40</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.41</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43586,7 +43586,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
   // Add points near farmland polygon edges (mushrooms grow at field margins, not inside tilled fields)
   function _farmlandEdgePts(reg,w,n){
     const near=lu=>{const c=polyCentroid(lu.p);return Math.abs(c[0]-reg.c[0])<reg.r*1.5&&Math.abs(c[1]-reg.c[1])<reg.r*2;};
-    const fls=LANDUSE.filter(lu=>lu.t==='farmland'&&near(lu));
+    const fls=[...LANDUSE,..._dynLanduse].filter(lu=>lu.t==='farmland'&&near(lu));
     for(let i=0;i<n;i++){
       if(!fls.length){pts.push([rng.gauss(reg.c[0],reg.r*.4),rng.gauss(reg.c[1],reg.r*.5),(w/100)*(.4+rng.next()*.6)]);continue;}
       const fl=fls[Math.floor(rng.next()*fls.length)];
@@ -43601,7 +43601,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
   // Add points near water body edges (150–250m buffer around random edge points)
   function _waterEdgePts(reg,w,n){
     const near=lu=>{const c=polyCentroid(lu.p);return Math.abs(c[0]-reg.c[0])<reg.r*1.5&&Math.abs(c[1]-reg.c[1])<reg.r*2;};
-    const wbs=LANDUSE.filter(lu=>(lu.t==='water'||lu.t==='river'||lu.t==='wetland')&&near(lu));
+    const wbs=[...LANDUSE,..._dynLanduse].filter(lu=>(lu.t==='water'||lu.t==='river'||lu.t==='wetland')&&near(lu));
     for(let i=0;i<n;i++){
       if(!wbs.length){pts.push([rng.gauss(reg.c[0],reg.r*.4),rng.gauss(reg.c[1],reg.r*.5),(w/100)*(.4+rng.next()*.6)]);continue;}
       const wb=wbs[Math.floor(rng.next()*wbs.length)];
@@ -43956,6 +43956,7 @@ function loadDetailTerrain(){
   fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qwater)}`)
     .then(r=>r.json()).then(data=>{
       ovDynWaterLayer.clearLayers();
+      for(let i=_dynLanduse.length-1;i>=0;i--)if(_dynLanduse[i].t==='water'||_dynLanduse[i].t==='river')_dynLanduse.splice(i,1);
       (data.elements||[]).forEach(el=>{
         if(!el.geometry)return;
         const coords=el.geometry.map(p=>[p.lat,p.lon]);
@@ -43963,10 +43964,12 @@ function loadDetailTerrain(){
         const nm=el.tags?.name||el.tags?.['name:pl']||'';
         const wway=el.tags?.waterway;
         if(wway==='river'||wway==='canal'){
+          _dynLanduse.push({t:'river',p:coords});
           const typePL=_waterTypePL[wway]||'rzeka';
           const tip=nm?`${nm} (${typePL})`:typePL;
           L.polyline(coords,LANDUSE_STYLE.river).bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovDynWaterLayer);
         } else {
+          _dynLanduse.push({t:'water',p:coords});
           const wt=el.tags?.water||el.tags?.landuse||'water';
           const typePL=_waterTypePL[wt]||'akwen';
           const tip=nm?`${nm} (${typePL})`:typePL;
@@ -53441,8 +53444,8 @@ function _drawDebugEdges(){
     });
   }
   if(o.waterEdge){
-    LANDUSE.filter(lu=>(lu.t==='water'||lu.t==='river'||lu.t==='wetland')&&inRange(lu)).forEach(lu=>{
-      if(lu.desc&&lu.desc.includes('river')&&lu.p.length>6){
+    [...LANDUSE,..._dynLanduse].filter(lu=>(lu.t==='water'||lu.t==='river'||lu.t==='wetland')&&inRange(lu)).forEach(lu=>{
+      if(lu.t==='river'){
         L.polyline(lu.p.slice(0,Math.ceil(lu.p.length/2)),{color:'#4af',weight:2,dashArray:'6,4',opacity:.85,smoothFactor:0}).addTo(_dbgEdgeLayer);
       } else {
         L.polygon(lu.p,{color:'#4af',fill:false,weight:2,dashArray:'6,4',opacity:.85,smoothFactor:0}).addTo(_dbgEdgeLayer);
@@ -53450,7 +53453,7 @@ function _drawDebugEdges(){
     });
   }
   if(o.farmlandSpec){
-    LANDUSE.filter(lu=>lu.t==='farmland'&&inRange(lu)).forEach(lu=>{
+    [...LANDUSE,..._dynLanduse].filter(lu=>lu.t==='farmland'&&inRange(lu)).forEach(lu=>{
       L.polygon(lu.p,{color:'#fa0',fill:false,weight:2,dashArray:'6,4',opacity:.85}).addTo(_dbgEdgeLayer);
     });
   }
@@ -54455,7 +54458,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.40</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.41</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
