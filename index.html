@@ -428,7 +428,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.39</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.40</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43937,21 +43937,45 @@ let ovWetLayer=L.layerGroup();     // dynamic OSM wetlands
 let ovMeadowLayer=L.layerGroup();  // dynamic OSM meadows/grasslands
 let ovCropLayer=L.layerGroup();    // dynamic OSM farmland/crops
 let ovPastureLayer=L.layerGroup(); // dynamic OSM pastures
+let ovDynWaterLayer=L.layerGroup(); // dynamic OSM water bodies (lakes, rivers)
 let ovTimer=null,showOv=false,showDynTerrain=false;
 
 // Add dynamic sub-layers so toggles control them too
-waterBodyLayer.addLayer(ovWetLayer);   // dynamic OSM wetlands always visible (like lakes)
+waterBodyLayer.addLayer(ovWetLayer);      // dynamic OSM wetlands always visible (like lakes)
+waterBodyLayer.addLayer(ovDynWaterLayer); // dynamic OSM lakes/rivers — fills gaps in static LANDUSE
 meadowLayer.addLayer(ovMeadowLayer);
 cropLayer.addLayer(ovCropLayer);
 pastureLayer.addLayer(ovPastureLayer);
 
 function loadDetailTerrain(){
-  if(!showOv&&!showDynTerrain)return;
   if(map.getZoom()<8)return;
   const b2=map.getBounds();
+  const bb=`${b2.getSouth()},${b2.getWest()},${b2.getNorth()},${b2.getEast()}`;
+  // Always fetch dynamic water bodies (lakes, ponds, reservoirs, rivers, canals) — fills gaps in static LANDUSE
+  const qwater=`[out:json][timeout:15];(way["natural"="water"](${bb});way["landuse"="reservoir"](${bb});way["waterway"="river"](${bb});way["waterway"="canal"](${bb}););out geom;`;
+  fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qwater)}`)
+    .then(r=>r.json()).then(data=>{
+      ovDynWaterLayer.clearLayers();
+      (data.elements||[]).forEach(el=>{
+        if(!el.geometry)return;
+        const coords=el.geometry.map(p=>[p.lat,p.lon]);
+        if(!coords.length)return;
+        const nm=el.tags?.name||el.tags?.['name:pl']||'';
+        const wway=el.tags?.waterway;
+        if(wway==='river'||wway==='canal'){
+          const typePL=_waterTypePL[wway]||'rzeka';
+          const tip=nm?`${nm} (${typePL})`:typePL;
+          L.polyline(coords,LANDUSE_STYLE.river).bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovDynWaterLayer);
+        } else {
+          const wt=el.tags?.water||el.tags?.landuse||'water';
+          const typePL=_waterTypePL[wt]||'akwen';
+          const tip=nm?`${nm} (${typePL})`:typePL;
+          L.polygon(coords,LANDUSE_STYLE.water).bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovDynWaterLayer);
+        }
+      });
+    }).catch(()=>{});
+  if(!showOv&&!showDynTerrain)return;
   if(b2.getNorth()-b2.getSouth()>1.6||b2.getEast()-b2.getWest()>2.4)return;
-  const b=map.getBounds();
-  const bb=`${b.getSouth().toFixed(4)},${b.getWest().toFixed(4)},${b.getNorth().toFixed(4)},${b.getEast().toFixed(4)}`;
   // Forests
   const qf=`[out:json][timeout:15];(way["landuse"="forest"](${bb});way["natural"="wood"](${bb}););out tags geom;`;
   fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qf)}`)
@@ -54431,7 +54455,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.39</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.40</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
