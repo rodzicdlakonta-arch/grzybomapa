@@ -139,8 +139,11 @@ avoid corrupting or silently losing sections of it:
 - After every real change: bump the version number in the logo subtitle
   (format `vX.Y.Z`), matching the pattern in `docs/memory/project_grzybomapa.md`'s
   version history.
-- Before committing, make a timestamped backup copy first, following the
-  existing pattern already in this folder (`index.backup-vX.Y.Z.html`).
+- Only make a backup (`index.backup-vX.Y.Z.html`) before large structural
+  changes: full UI redesigns, replacing entire data arrays (FORESTS, MUSHROOMS,
+  WYR_TREES), or any change that would be hard to undo via git. Skip backups for
+  routine patches, version bumps, and small additions. Keep at most 2 backup
+  files — delete the oldest if a third would be created.
 - Test the change by actually opening `index.html` in a browser preview
   before committing — do not assume a change works just because it "looks
   right" in the diff.
