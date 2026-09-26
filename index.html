@@ -254,11 +254,14 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .hbox{background:rgba(125,60,185,.14);border:1px solid rgba(125,60,185,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#c39de8;line-height:1.55}
 .cpbox{background:rgba(201,120,30,.14);border:1px solid rgba(201,120,30,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#e8a040;line-height:1.55}
 .labox{background:rgba(180,140,30,.09);border:1px solid rgba(180,140,30,.28);border-radius:var(--r);padding:11px 13px;margin-bottom:0;font-size:12.5px;color:#b8962a;line-height:1.55}
-.id-steps{padding-left:0;margin:6px 0 0;list-style:none;display:flex;flex-direction:column;gap:5px}
-.id-steps li{font-size:13px;color:var(--text);line-height:1.5;padding:5px 9px;background:rgba(255,255,255,.04);border-left:2px solid var(--border);border-radius:0 var(--r) var(--r) 0}
+.gps-acc-badge{font-size:10.5px;color:#FF8F00;background:rgba(0,0,0,.65);padding:2px 7px;border-radius:10px;white-space:nowrap;font-weight:600;pointer-events:none;display:inline-block;transform:translateX(-50%)}
+.id-steps{counter-reset:id-c;padding-left:0;margin:6px 0 0;list-style:none;display:flex;flex-direction:column;gap:5px}
+.id-steps li{counter-increment:id-c;font-size:13px;color:var(--text);line-height:1.5;padding:5px 7px;background:rgba(255,255,255,.04);border-left:2px solid var(--border);border-radius:0 var(--r) var(--r) 0;display:flex;align-items:flex-start;gap:7px}
+.id-steps li::before{content:counter(id-c);min-width:18px;height:18px;background:rgba(82,184,73,.2);color:var(--green);border-radius:50%;font-size:10px;font-weight:700;text-align:center;line-height:18px;flex-shrink:0;margin-top:1px}
 .la-item{background:rgba(180,100,20,.09);border-left:3px solid rgba(180,100,20,.45);padding:7px 10px;margin-bottom:5px;border-radius:0 var(--r) var(--r) 0;font-size:12.5px;color:var(--text);line-height:1.5}
 .la-item:last-child{margin-bottom:0}
 [data-theme="light"] .id-steps li{background:rgba(0,0,0,.03);border-color:var(--border)}
+[data-theme="light"] .id-steps li::before{background:rgba(52,150,50,.15);color:#2d8a2a}
 [data-theme="light"] .la-item{background:rgba(160,80,10,.08);border-color:rgba(160,80,10,.4)}
 #map-loader{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.54),rgba(0,0,0,.54)),url('LoadingScreen.png') center/cover no-repeat;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:opacity .6s ease,visibility .6s ease}
 #map-loader.done{opacity:0;visibility:hidden;pointer-events:none}
@@ -434,7 +437,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.49</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.50</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42061,7 +42064,7 @@ const MUSHROOMS={
     season:[6,7,8,9],terrain:['Lasy liściaste','Dąbrowy','Grądy'],
     soil:'Gleba żyzna, gliniasto-próchnicza',ph:'5.5–7.2',elev:'0–800 m',
     habitat:'Pod dębami i bukami w lasach liściastych na żyznych glebach.',
-    desc:'Kapelusz jasnobrązowy do szarego, suchy i popękany w gorące lato. Siateczka wyraźna. Rurki żółte.',
+    desc:'Kapelusz 8–25 cm, jasnobrązowy do szarego, suchy i SPĘKANY w centrum w gorące lato — cecha kluczowa. Siateczka wyraźna na całym trzonie. Rurki żółte — nie sinieje. Miąższ biały, smak łagodny. Najwcześniejszy z borowików — rośnie od czerwca.',
     edib:'Bardzo smaczny, najwcześniejszy z borowików. Zbiera się od czerwca.',
     weights:{sw:85,ro:80,lu:78,ja:75,ka:72,lm:65,so:70,bw:70,be:72,bi:68,op:65,st:68,ll:60,sd:65,sl:62,po:65,wy:42,nak:38,sep:45}
   },
@@ -42090,7 +42093,7 @@ const MUSHROOMS={
     season:[9,10,11],terrain:['Lasy iglaste','Bory bagienne'],
     soil:'Gleba torfowa, próchnicza, wilgotna',ph:'3.5–5.5',elev:'0–1400 m',
     habitat:'Na wilgotnej ściółce przy mchistych podmokłych terenach. Rośnie masowo.',
-    desc:'Mały 2–8 cm, żółtobrązowy, lejkowaty. Trzon wydrążony, żółty. Przeżywa mrozy.',
+    desc:'Kapelusz 2–8 cm, żółtobrązowy, lejkowaty z otworem — trzon przebija kapelusz na wylot. Żyłki (nie blaszki) żółte, rozwidlone, zbiegają po trzonie. Trzon WYDRĄŻONY w środku — kluczowa cecha. Rośnie masowo w skupiskach na mchach. Przeżywa mrozy do -8°C — zbieraj do listopada.',
     edib:'Smaczna, dobra do zup i sosów. Późna jesień.',
     weights:{bw:80,au:82,tu:85,no:75,dr:78,pi:75,ps:80,ku:72,dl:75,ch:78,ma:68,wi:70,su:72,be:80,bi:78,go:75,sd:82,se:80,po:75,wy:52,nak:48,sep:55}
   },
@@ -42099,7 +42102,7 @@ const MUSHROOMS={
     season:[7,8,9,10],terrain:['Bory sosnowe','Lasy iglaste z sosną'],
     soil:'Gleba piaszczysta, kwaśna',ph:'4.0–5.5',elev:'0–1400 m',
     habitat:'Pod sosnami, na obrzeżach borów i przy drogach leśnych.',
-    desc:'Podobny do maślaka, bez pierścienia. Trzon z żółtymi kroplami (ziarnistości). Kapelusz rudy.',
+    desc:'Kapelusz 4–10 cm, rudy do żółtobrązowego, ŚLUZOWATY — skórka łatwo się ściąga. Rurki bladożółte. Trzon bez pierścienia (odróżnia od maślaka zwyczajnego). U młodych przy porach BIAŁE MLECZNE KROPLE — ziarnistości dały nazwę. Wyłącznie pod sosnami.',
     edib:'Dobry po usunięciu skórki. Zbierać przed deszczem. Odróżnij od maślaka zwyczajnego brakiem pierścienia — trzon łzawi żółtymi kropelkami u młodych.',
     weights:{tu:88,no:85,dr:80,pi:82,au:78,ps:78,dl:80,ch:82,ku:72,ma:68,br:65,wk:60,ll:58,gr:68,lm:48,ka:45,sd:72,se:68,ta:65,be:70,po:72,bi:68,wy:88,nak:80,sep:85}
   },
@@ -42128,7 +42131,7 @@ const MUSHROOMS={
     season:[7,8,9,10],terrain:['Grądy','Lasy grabowe','Lasy liściaste'],
     soil:'Gleba gliniasta, żyzna, próchnicza',ph:'5.5–7.0',elev:'0–700 m',
     habitat:'Pod grabami i dębami w grądach. Rzadszy od koźlarza babki.',
-    desc:'Kapelusz szaro-ochrowy do brązowawego. Trzon z szarymi łuseczkami. Sinieje/różowieje po przekrojeniu.',
+    desc:'Kapelusz 5–15 cm, szaro-ochrowy do żółtawobrązowego, matowy, lekko filcowaty. Trzon biały ze szarymi łuseczkami — podobny do koźlarza babki, lecz trzon grubszy. Miąższ biały — po przekrojeniu różowieje lub lekko sinieje. Wyłącznie pod grabami w grądach.',
     edib:'Jadalny po gotowaniu. Intensywnie ciemnieje.',
     weights:{bw:70,kn:72,ka:75,lm:68,sw:78,ro:72,lu:75,ja:68,so:68,be:65,bi:60,op:62,st:65,sl:68,sd:60,se:58,wy:42,nak:38,sep:45}
   },
@@ -42147,7 +42150,7 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Bory świerkowe','Lasy górskie ze świerkiem'],
     soil:'Gleba kwaśna, próchnicza, ściółka świerkowa',ph:'3.8–5.2',elev:'200–1400 m',
     habitat:'Wyłącznie pod świerkami. Typowy grzyb górski i borealno-subarktyczny.',
-    desc:'Podobny do rydza, mleczko szybciej ciemnieje na winoczerwone. Intensywnie zielenieje.',
+    desc:'Kapelusz 5–12 cm, pomarańczowy, z niewyraźnymi strefami. Blaszki pomarańczowe, kruche. Mleczko pomarańczowe — test na serwetce: zmienia kolor na winoczerwony po 10–15 min (u rydza zostaje marchwiowoczerwony). Całość INTENSYWNIE ZIELENIEJE po uszkodzeniu. Wyłącznie pod świerkami.',
     edib:'Jadalny, nieco gorszy od rydza. Dobry do marynowania.',
     weights:{sd:88,se:82,ta:80,be:85,bi:80,go:78,po:82,bw:60,au:65,ps:70,su:68,wi:72,ku:65,ma:62,wy:25,nak:22,sep:28}
   },
@@ -42176,7 +42179,7 @@ const MUSHROOMS={
     season:[7,8,9,10],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane'],
     soil:'Gleba próchnicza, umiarkowanie wilgotna',ph:'4.5–6.5',elev:'0–1200 m',
     habitat:'Pospolita na ściółce leśnej, pniach i przy drogach. Rośnie grupami.',
-    desc:'Gruszkowata biała do kremowej, 2–6 cm, pokryta kolcami. Zbierać TYLKO gdy wewnątrz biała.',
+    desc:'Kształt gruszkowaty, 2–6 cm, biała, skórka pokryta kolcami lub brodawkami. KLUCZOWY TEST — zawsze przekroić: wnętrze białe jednorodne = jadalny. Szarawe lub oliwkowe = za stary. Zarys rosnącego grzyba w środku = jajko muchomora — WYRZUCIĆ! Rośnie na ziemi, nie na drewnie.',
     edib:'Jadalny tylko gdy wewnątrz biały. Smażyć w plastrach.',
     weights:{bw:72,au:70,kn:68,tu:65,no:62,ps:68,ku:65,ma:62,sw:70,ro:70,lu:68,ja:65,be:72,bi:70,po:68,sd:68,se:62,ta:55,ka:60,lm:58,ll:55,sl:62,op:60,st:60,so:65,br:58,gr:55,wy:70,nak:65,sep:68}
   },
@@ -42185,7 +42188,7 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Łąki','Pastwiska','Skraje lasów'],
     soil:'Gleba żyzna, nawożona',ph:'6.0–7.5',elev:'0–700 m',
     habitat:'Na łąkach, pastwiskach i parkach. Preferuje żyzne tereny otwarte.',
-    desc:'Ogromna biała kula, 20–80 cm. Zbierać gdy wewnątrz całkowicie biały.',
+    desc:'Ogromna biała kula do 80 cm, gładka skórka, bez trzonu (lub krótki). KLUCZOWY TEST — przepołowić nożem: wnętrze białe jednorodne jak twaróg = jadalny. Żółtawe, zielone lub marmurkowate = trujące, wyrzuć. Rośnie solo na łąkach i pastwiskach. Okazy mogą ważyć ponad 10 kg.',
     edib:'Doskonały smak. Pokroić w plastry i smażyć.',
     weights:{ka:78,lm:72,ku:65,wk:68,sw:72,lu:70,ja:65,ro:68,ll:60,br:58,gr:55,sl:58,op:65,st:65,so:62,bi:55,be:58,au:60,ma:62,wy:62,nak:58,sep:65}
   },
@@ -42269,7 +42272,7 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Stare lasy liściaste','Buczyny','Dębiny'],
     soil:'Na pniach żywych i martwych dębów, buków. Saprofit i słaby pasożyt.',ph:'Saprofit drewna',elev:'0–800 m',
     habitat:'Na pniach starych dębów i buków. Wymaga starodrzewia. Objęta ochroną gatunkową w Polsce.',
-    desc:'Biała kaskadowa masa kolców 1–5 cm. Wygląda jak "lwia grzywa" lub sopel lodu. Może ważyć kilka kg.',
+    desc:'Jednorodna biała kaskadowa masa miękkich kolców 1–5 cm, rosnąca wprost z pnia drzewa. Brak kapeluszy i trzonów — cały owocnik to "lwia grzywa" lub "sopel lodu". Kolce delikatne, nie twarde. Starsze okazy kremowożółtawe. Rozmiar 10–40 cm. Chroniony w Polsce — fotografować, nie zbierać.',
     edib:'Wybitny smak, przypomina krewetki. Ceniony w kuchni azjatyckiej. Zbieranie wymaga zezwolenia!',
     weights:{bw:60,kn:45,sw:55,ro:52,lu:48,bi:40,be:42,sd:38,se:35,po:38,wy:28,nak:25,sep:30}
   },
@@ -42278,7 +42281,7 @@ const MUSHROOMS={
     season:[9,10],terrain:['Stare dąbrowy','Lasy dębowe'],
     soil:'U podstawy starych dębów. Saprofit.',ph:'Saprofit drewna',elev:'0–700 m',
     habitat:'U podstawy starych dębów i buków. Ten sam okaz rośnie wiele lat. Rzadki.',
-    desc:'Skupisko małych nakładających się kapeluszy, kremowoszarych do brązowych. Może ważyć ponad 20 kg. "Maitake".',
+    desc:'Ogromne skupisko wachlarzowatych kapeluszy — każdy 5–10 cm, kremowoszary do szarobrązowego, wyrastający ze wspólnego korzenia u nasady dębu. Spód kremowy z drobnymi porkami. Krawędzie faliście ząbkowane. Wrasta rok po roku na tym samym dębie. Może ważyć ponad 20 kg.',
     edib:'Wyśmienity smak i aromat. Smażyć lub do zup.',
     weights:{bw:55,kn:48,ka:50,sw:58,ro:55,lu:52,ja:50,be:45,bi:42,sd:38,se:35,po:40,so:48,sl:42,wy:22,nak:18,sep:25}
   },
@@ -42287,7 +42290,7 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Bory sosnowe','Lasy iglaste z sosną'],
     soil:'U nasady sosen. Pasożyt korzeni.',ph:'Pasożyt',elev:'0–1200 m',
     habitat:'U podstawy sosen, często przy tej samej sosnce przez wiele lat.',
-    desc:'Przypomina kalafior — kędzierzawe płaty kremowobiałe. Może osiągać 40 cm i 5 kg.',
+    desc:'Skupisko kędzierzawych kremowobiałych płatów-falbań, 15–40 cm, wyrastające z jednego korzenia u nasady sosny. Płaty faliste, cienkie jak papier, miękkie. Brak odrębnych kapeluszy — wygląd niepowtarzalny. Żółknie z wiekiem. Zapach miodowogrzybowy. Rośnie rok po roku przy tej samej sosnce.',
     edib:'Doskonały! Kremowy smak, chrupiąca faktura. Smażyć lub grillować.',
     weights:{tu:72,no:70,dr:65,pi:68,au:62,ps:65,dl:68,ch:70,bw:60,ma:58,ku:55,sd:62,se:58,ta:55,be:60,bi:55,po:62,wy:72,nak:68,sep:70}
   },
@@ -42314,7 +42317,7 @@ const MUSHROOMS={
     season:[7,8,9],terrain:['Stare dąbrowy','Grądy'],
     soil:'Na korzeniach starych dębów. Saprofit.',ph:'Saprofit',elev:'0–700 m',
     habitat:'U korzeni martwych dębów. Rzadki, pod ochroną gatunkową w Polsce.',
-    desc:'Skupisko dziesiątek małych kapeluszy szarych do brązowych z rurkami po spodzie.',
+    desc:'Skupisko 20–200 małych kapeluszy 1–4 cm, szarych do brązowych, każdy na krótkim trzonku. Wszystkie trzonki zbiegają w jeden wspólny korzeń zakopany w ziemi. Spód biały z rurkowatymi porami. Każdy kapelusik z zagłębieniem w centrum. Ściśle chroniony w Polsce — obserwować, nie zbierać.',
     edib:'Jadalny, delikatny smak. Ze względu na ochronę — obserwować, nie zbierać.',
     weights:{sw:42,ro:40,lu:45,ja:38,bw:35,kn:32,ka:38,be:35,bi:30,sd:28,se:25,wy:18,nak:15,sep:20}
   },
@@ -42323,7 +42326,7 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Buczyny','Lasy liściaste','Grądy'],
     soil:'Gleba próchnośna, żyzna, umiarkowanie wilgotna',ph:'5.0–6.5',elev:'0–1200 m',
     habitat:'W buczynach i grądach. Rzadka. Rośnie samotnie lub w małych grupach.',
-    desc:'Koralowa biała do kremowej z różowawymi końcówkami gałązek. Może ważyć 1 kg.',
+    desc:'Gęste rozgałęzione koralisty 10–30 cm, białe do kremowożółtych. Końcówki gałązek RÓŻOWAWE do purpurowych — kluczowa cecha rozpoznawcza. Gałązki wielokrotnie rozgałęzione od grubej kremowej podstawy. Miąższ biały, twardy. Zapach owocowy. Rośnie w buczynach.',
     edib:'Jadalna gdy ugotowana. Blanszować, potem smażyć. Zbierać młode.',
     weights:{bw:58,sw:60,ro:55,lu:52,be:62,bi:58,go:55,sd:60,se:55,ta:50,po:55,ka:45,kn:50,wy:35,nak:30,sep:38}
   },
@@ -52560,7 +52563,7 @@ function showInfoPanel(mid){
     <div class="isec"><h4>Podłoże</h4><p>${m.soil}</p></div>
     <div class="isec"><h4>Środowisko</h4><div class="ttags">${m.terrain.map(t=>`<span class="tt">${t}</span>`).join('')}</div></div>
     <div class="isec"><h4>Siedlisko</h4><p>${m.habitat}</p></div>
-    <div class="isec"><h4>Identyfikacja — cechy rozpoznawcze</h4><ul class="id-steps">${(m.desc||'').split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄ])/).filter(s=>s.trim()).map(s=>`<li>${s.trim().replace(/\.$/,'')}</li>`).join('')}</ul></div>
+    <div class="isec"><h4>🔍 Jak rozpoznać?</h4><ul class="id-steps">${(m.desc||'').split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄ])/).filter(s=>s.trim()).map(s=>`<li>${s.trim().replace(/\.$/,'')}</li>`).join('')}</ul></div>
     ${m.edib?`<div class="isec"><h4>Wartość kulinarna</h4><p>${m.edib}</p></div>`:''}
     ${m.lookalikes?`<div class="isec"><h4>⚠ Gatunki podobne — nie pomyl!</h4>${(m.lookalikes).split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄGW])/).filter(s=>s.trim()).map(s=>`<div class="la-item">${s.trim().replace(/\.$/,'')}</div>`).join('')}</div>`:''}
     ${(()=>{const ld=MUSHROOM_LOCAL[mid];if(!ld)return '';return `<div class="isec" style="border-left:3px solid ${LOCAL_COLOR[ld.s]||'#888'};padding-left:8px;margin-top:4px"><h4 style="color:${LOCAL_COLOR[ld.s]||'#888'}">🗺 W regionie Krajna / Wyrzysk</h4><div style="font-weight:600;color:${LOCAL_COLOR[ld.s]};margin-bottom:4px">${LOCAL_LABEL[ld.s]}</div><p style="margin:0;font-size:12px">${ld.n}</p></div>`;})()}
@@ -54000,18 +54003,30 @@ function showToast(msg){
 let _gpsLayer=null,_gpsConeSvg=null,_gpsHeading=null;
 function _setGpsLayer(ll,accuracy){
   if(_gpsLayer)map.removeLayer(_gpsLayer);
+  const isLow=accuracy>100;
   const coneDiv=document.createElement('div');
-  coneDiv.style.cssText='width:52px;height:52px;transform-origin:center center;pointer-events:none;opacity:0;transition:opacity .3s';
+  coneDiv.style.cssText='width:120px;height:120px;transform-origin:center center;pointer-events:none;opacity:0;transition:opacity .3s';
   coneDiv.style.transform=`rotate(${_gpsHeading||0}deg)`;
-  coneDiv.innerHTML='<svg width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg"><polygon points="26,2 12,28 40,28" fill="rgba(25,118,210,0.28)" stroke="rgba(25,118,210,0.65)" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+  coneDiv.innerHTML='<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="gcone" cx="60" cy="60" r="60" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.6"/><stop offset="25%" stop-color="#1a73e8" stop-opacity="0.4"/><stop offset="100%" stop-color="#1a73e8" stop-opacity="0"/></radialGradient></defs><path d="M60,60 L30,8 A60,60 0 0,1 90,8 Z" fill="url(#gcone)"/></svg>';
   _gpsConeSvg=coneDiv;
   if(_gpsHeading!=null)coneDiv.style.opacity='1';
-  const coneIcon=L.divIcon({html:coneDiv,iconSize:[52,52],iconAnchor:[26,26],className:''});
-  _gpsLayer=L.layerGroup([
-    L.circle(ll,{radius:Math.max(accuracy/2,30),color:'#1976D2',fillColor:'#1976D2',fillOpacity:.10,weight:1}),
+  const coneIcon=L.divIcon({html:coneDiv,iconSize:[120,120],iconAnchor:[60,60],className:''});
+  const dotColor=isLow?'#FF8F00':'#1976D2';
+  const circOpts={radius:Math.max(accuracy/2,30),color:dotColor,fillColor:dotColor,fillOpacity:isLow?.07:.10,weight:1};
+  if(isLow)circOpts.dashArray='5 4';
+  const layers=[
+    L.circle(ll,circOpts),
     L.marker(ll,{icon:coneIcon,interactive:false,zIndexOffset:-50}),
-    L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:'#1976D2',fillOpacity:1})
-  ]).addTo(map);
+    L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:dotColor,fillOpacity:1})
+  ];
+  if(isLow){
+    const accDiv=document.createElement('div');
+    accDiv.className='gps-acc-badge';
+    accDiv.textContent=`Słaba dokładność · ±${Math.round(accuracy)} m`;
+    accDiv.style.marginTop='18px';
+    layers.push(L.marker(ll,{icon:L.divIcon({html:accDiv,iconSize:[0,0],iconAnchor:[0,0],className:''}),interactive:false,zIndexOffset:100}));
+  }
+  _gpsLayer=L.layerGroup(layers).addTo(map);
 }
 (function(){
   function _onHeading(h){
@@ -54047,7 +54062,7 @@ function _setGpsLayer(ll,accuracy){
         _setGpsLayer(ll,pos.coords.accuracy);
         map.flyTo(ll,14,{duration:1.5});
         fetchWeather(ll[0],ll[1]);
-        showToast('Lokalizacja znaleziona');
+        showToast(pos.coords.accuracy>100?`Lokalizacja znaleziona — słaba dokładność (±${Math.round(pos.coords.accuracy)} m)`:'Lokalizacja znaleziona');
       },()=>{
         busy=false;a.textContent='📍';a.style.animation='';a.style.opacity='';
         showToast('Nie można ustalić lokalizacji — sprawdź uprawnienia GPS');
@@ -54535,7 +54550,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.49</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.50</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
