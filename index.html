@@ -445,7 +445,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.60</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42052,9 +42052,10 @@ const MUSHROOMS={
     season:[6,7,8,9,10,11],terrain:['Lasy iglaste','Lasy mieszane','Lasy liściaste'],
     soil:'Gleba kwaśna, piaszczysto-gliniasta, dobrze zdrenowana',ph:'4.5–6.5',elev:'0–1500 m n.p.m.',
     habitat:'Pod świerkami, sosnami, dębami i bukami. Lubi lekki cień i wilgotny mech.',
-    desc:'Kapelusz brązowy 5–25 cm, wypukły. Trzon beczułkowaty z białą siateczką. Rurki białe→żółtozielone, nie sinieje po przekrojeniu. Miąższ biały, zapach orzechowy.',
+    desc:'Kapelusz 5–25 cm, brązowy do ciemnobrązowego, półkulisty — SUCHY i gładki w dotyku. TRZON BECZUŁKOWATY, białawy z WYRAŹNĄ BIAŁĄ SIATECZKĄ co najmniej w górnej połowie — kluczowa cecha identyfikacyjna. RURKI drobne, białe u młodych → żółtozielone u starszych — po przekrojeniu NIE SINIEJE. MIĄŻSZ biały, twardy, nie zmienia barwy na przekroju, smak i zapach orzechowo-mączysty. Rośnie pod świerkami, sosnami, dębami i bukami — od czerwca do listopada.',
     edib:'Doskonały smak. Jeden z najcenniejszych grzybów Polski. Suszy się, marynuje.',
     lookalikes:'Goryczak żółciowy (Tylopilus felleus) — identyczny wygląd, ale rurki różowawe a nie białe, i ekstremalnie gorzki smak. Borowik szatański (trujący) — czerwone pory, sinieje po przekrojeniu.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Boletus_edulis_Bull._Section.jpg/500px-Boletus_edulis_Bull._Section.jpg'],
     weights:{bw:90,au:85,kn:80,su:75,wi:80,no:70,dr:75,pi:75,ps:85,ma:80,br:65,tu:80,ch:75,ka:60,ku:78,lm:55,wk:60,dl:70,op:55,st:60,sd:75,se:70,sw:65,ll:45,ta:60,bi:80,be:78,go:72,ro:75,ja:80,lu:70,so:78,po:82,kb:70,sl:58,gr:60,wy:78,nak:72,sep:70}
   },
   borowik_sos:{q:4,
@@ -42091,9 +42092,10 @@ const MUSHROOMS={
     season:[6,7,8,9,10],terrain:['Lasy iglaste','Lasy liściaste','Lasy mieszane'],
     soil:'Gleba kwaśna do umiarkowanie kwaśnej, dobrze wilgotna',ph:'4.0–6.5',elev:'0–1800 m',
     habitat:'Pospolita. Pod bukami, dębami, sosnami i świerkami. Rośnie grupami.',
-    desc:'Jajkowożółta do pomarańczowej. Fałszywe blaszki, nie oddzielają się jak u lejkówki. Zapach owocowy. Miąższ biały.',
+    desc:'Kapelusz 3–15 cm, jajkowożółty do pomarańczowego — u młodych wypukły, u starszych lejkowato wklęsły z falistym podwiniętym brzegiem. Spód to FAŁSZYWE BLASZKI — rozwidlone, tępe ŻYŁKI (nie prawdziwe blaszki) zbiegające na trzon, tej samej barwy co kapelusz; NIE oddzielają się od miąższu jak prawdziwe blaszki. Trzon pełny, tego samego żółtego koloru, zwężający się ku dołowi — solidny, nie pusty. MIĄŻSZ biały wewnątrz, żółtawy przy skórce, ZAPACH OWOCOWY jak morele, smak łagodnie pieprzny. Rośnie zawsze z ziemi, nigdy na drewnie — kluczowy test odróżniający od trującej lejkówki oliwkowej.',
     edib:'Doskonały smak pieprzno-owocowy. Smażyć na maśle lub dusić ze śmietaną. Nie nadaje się dobrze do suszenia ani zamrażania — traci aromat; najlepsza świeża.',
     lookalikes:'Lejkówka oliwkowa (Omphalotus olearius) — TRUJĄCA. Ma prawdziwe blaszki (nie rozwidlone żyłki jak kurka), rośnie w kępach na drewnie lub korzeniach, pomarańczowy trzon, może słabo świecić w ciemności. Kurka rośnie zawsze z ziemi, nigdy na drewnie.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Cantharellus_cibarius_2.jpg/500px-Cantharellus_cibarius_2.jpg'],
     weights:{bw:85,au:80,kn:78,ps:85,ma:80,tu:82,no:75,dr:78,ku:80,ka:72,sw:78,ro:82,lu:75,ja:78,be:85,bi:82,go:80,ta:70,sd:80,se:78,po:80,so:75,dl:70,br:65,ch:72,pi:72,ll:60,wk:65,lm:58,sl:68,op:62,st:65,gr:60,su:72,wi:75,kb:68,wy:75,nak:68,sep:70}
   },
   kurka_zim:{q:2,
@@ -42148,8 +42150,9 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Bory sosnowe','Lasy mieszane z sosną'],
     soil:'Gleba piaszczysta, kwaśna, bory sosnowe',ph:'4.0–5.5',elev:'0–1200 m',
     habitat:'Pod sosnami zwyczajnymi. Rośnie rzędami. Najlepszy do marynowania.',
-    desc:'Kapelusz pomarańczowoczerwony z zielonkawymi plamami, 4–15 cm. Blaszki pomarańczowe. Mleczko pomarańczowe, nie gorzkieje. Zielenieje po uszkodzeniu.',
+    desc:'Kapelusz 4–15 cm, pomarańczowoczerwony z ciemnymi KONCENTRYCZNYMI STREFAMI, u dojrzałych lejkowato wklęsły — skórka śluzowata przy wilgotnej pogodzie. Blaszki gęste, pomarańczowożółtawe, kruche. TRZON pomarańczowy, charakterystycznie z ciemnymi JAMKOWATYMI WGŁĘBIENIAMI (jak małe dołeczki) — kluczowa cecha. MLECZKO ŻYWO MARCHWIOWOCZERWONE, obfite, nie gorzkieje — kroplę na białą serwetkę, powinna zostać marchwiowoczerwona. Po uszkodzeniu cały owocnik stopniowo ZIELENIEJE — cecha diagnostyczna. Wyłącznie pod sosnami na glebach piaszczystych.',
     edib:'Wyśmienity. Lekko cierpki posmak całkowicie znika podczas gotowania i marynowania. Marynowany rydz to tradycyjny przysmak. Mleczko marchwiowoczerwone to kluczowa cecha rozpoznawcza.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/2010-12-09_Lactarius_deliciosus_gills_60530.jpg/500px-2010-12-09_Lactarius_deliciosus_gills_60530.jpg'],
     lookalikes:'Mleczaj wełnianka (Lactarius torminosus) — TRUJĄCY. Biały kłujący sok zamiast marchwiowoczerwonego, kapelusz z wełnistą, strefowaną powierzchnią, rośnie wyłącznie pod brzozami. Mleczaj zmienny (L. semisanguifluus) — mleczko zmienia barwę na winnoczerwone po 15 minutach; pod sosnami na glebach wapiennych; jadalny, mniej wartościowy.',
     weights:{tu:90,no:88,dr:82,pi:85,au:75,ps:80,dl:82,ch:85,ku:72,ma:68,bw:65,br:68,wk:60,ll:55,gr:70,lm:48,ka:42,sd:75,ta:60,be:78,po:75,bi:70,sl:65,se:70,sw:60,wy:85,nak:78,sep:82}
   },
@@ -42167,9 +42170,10 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Łąki','Skraje lasów','Murawy'],
     soil:'Gleba żyzna, próchnicza',ph:'5.5–7.5',elev:'0–900 m',
     habitat:'Na skrajach lasów, łąkach i polanach. Przy ścieżkach i drogach.',
-    desc:'Kapelusz do 30 cm, brunatny w centrum z łuskami. Trzon smukły z ruchomym pierścieniem. Blaszki białe.',
+    desc:'Kapelusz 10–30 cm, bladobrązowy z płaskimi ciemnymi łuskami — środek ciemnobrązowy bez łusek, jak wbity guzik. MŁODE OWOCNIKI mają kształt PAŁECZKI DO BĘBNA — łatwy do zapamiętania wyróżnik terenowy. TRZON smukły z wyraźnym WĘŻOWYM WZORKIEM (ciemny zygzak na białym tle) i BULWIASTĄ podstawą — wzór jest stały. PIERŚCIEŃ duży, gruby, podwójnie obrzeżony, RUCHOMY — daje się przesuwać w górę i w dół trzonu. Blaszki wolne (nie przyrośnięte do trzonu), białe, gęste. Zapach i smak orzechowy — trzony łykowate i niejadalne, zbierać WYŁĄCZNIE kapelusze.',
     edib:'Doskonały. Smażony jak kotlet lub w panierce — używaj wyłącznie kapeluszy, trzony są łykowate i niesmaczne. Sporadycznie może wywołać mdłości u wrażliwych osób; wtedy unikać.',
     lookalikes:'Czubajnik czerwieniejący (Chlorophyllum rhacodes) — miąższ szybko czerwienieje po uszkodzeniu, trzon blady bez zygzakowatego wzoru; jadalny, mniej smaczny. Czubajka sutkowata (M. mastoidea) — mniejsza, z charakterystycznym środkowym garbkiem; jadalna. Zawsze sprawdź ruchomy pierścień i brak pochwy u podstawy.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/1_-_Macrolepiota_procera_%28St%C5%AFl%29.JPG/500px-1_-_Macrolepiota_procera_%28St%C5%AFl%29.JPG'],
     weights:{ka:78,lm:72,ku:68,sw:75,ro:75,lu:72,ja:70,bw:65,au:68,ma:65,ps:62,no:58,tu:55,ll:65,br:60,gr:58,sl:60,op:65,st:68,bi:60,be:62,po:65,sd:60,se:58,so:65,wy:72,nak:68,sep:70}
   },
   opienka:{q:3,
@@ -42205,8 +42209,10 @@ const MUSHROOMS={
     season:[7,8,9,10],terrain:['Łąki','Pastwiska','Ogrody'],
     soil:'Gleba żyzna, próchnicza, kompostowana',ph:'6.0–7.5',elev:'0–600 m',
     habitat:'Łąki i pastwiska — gdzie były zwierzęta. Przy kompostownikach.',
-    desc:'Kapelusz biały do kremowego 5–12 cm. Blaszki różowawe→brązowe→czekoladowe. Trzon z pierścieniem. Miąższ różowieje (nie żółknie!).',
+    desc:'Kapelusz 4–10 cm, BIAŁY do kremowego, jedwabisty z promieniście ułożonymi włókienkami — za młodu brzeg kosmkowaty i podwinięty. BLASZKI u młodych INTENSYWNIE RÓŻOWE (żywe różowe) — ciemnieją do CZEKOLADOWOBRĄZOWYCH z wiekiem; NIE żółkną nigdy. Trzon wysmukły z krótkim, NIETRWAŁYM PIERŚCIENIEM. MIĄŻSZ LEKKO RÓŻOWIEJE po przekrojeniu — KLUCZOWY TEST BEZPIECZEŃSTWA: jeśli żółknie lub ma zapach karbolowy/fenolowy = trująca pieczarka żółknąca (A. xanthodermus), wyrzucić. Zapach przyjemny, grzybowy — nie chemiczny. Rośnie od maja do października na łąkach i pastwiskach — tam gdzie pasły się zwierzęta.',
     edib:'Smaczna. Upewnij się że blaszki nie są żółte (A. xanthodermus).',
+    lookalikes:'Pieczarka żółknąca (Agaricus xanthodermus) — TRUJĄCA: miąższ i podstawa trzonu ŻÓŁKNĄ natychmiast po przekrojeniu, zapach fenolowy/karbidowy. Muchomor sromotnikowy (A. phalloides) — przy skrajach lasów: zawsze sprawdź brak pochwy (volvy) u podstawy i kolor blaszek (białe = Amanita). Pieczarka krwawa (A. xanthodermus) — sprawdź zżółcenie.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/2010-08-07_Agaricus_campestris_gills.jpg/500px-2010-08-07_Agaricus_campestris_gills.jpg'],
     weights:{ka:65,lm:60,lu:65,ro:60,sw:65,ja:58,ll:58,op:62,st:60,br:55,gr:52,sl:60,so:60,bi:50,be:52,po:55,ku:55,ma:55,bw:48,au:50,tu:45,no:42,wy:60,nak:55,sep:62}
   },
   boczniak:{q:3,
@@ -42241,9 +42247,10 @@ const MUSHROOMS={
     season:[4,5],terrain:['Łęgi','Lasy liściaste','Sady'],
     soil:'Gleba żyzna, wilgotna, wapienno-gliniasta',ph:'5.5–7.5',elev:'0–800 m',
     habitat:'Wiosenny grzyb. Pod drzewami owocowymi, przy strumieniach, w alejach.',
-    desc:'Owocnik jajkowaty lub stożkowaty, kapelusz siatkowato-jamkowany, brązowy. 5–15 cm. Trzon biały, pustakowy. UWAGA: nie mylić z piestrzenicą!',
+    desc:'GŁÓWKA 3–10 cm, jasnobeżowa do ochrowej lub szarowoczarniawej — NIEREGULARNA SIATKA KOMÓREK z chropowatymi żebrami. GŁÓWKA CAŁKOWICIE ZLANA Z TRZONEM — odróżnia od smardza półwolnego (u którego dolna część główki jest wolna). Trzon biały do kremowożółtawego, graniasty, otrębiasty na powierzchni. WNĘTRZE PUSTAKOWE przez całą długość — zawsze przekroić i sprawdzić przed spożyciem. Pojawia się kwiecień–maj w lasach liściastych, łęgach, sadach i przy strumieniach. NIGDY na surowo — gotować min. 10 minut, pierwszą wodę wylać.',
     edib:'Wyśmienity po ugotowaniu. Surowy zawiera trujące hydrazyny — bezwzględnie gotować.',
     lookalikes:'Piestrzenica kasztanowata (Gyromitra esculenta) — TRUJĄCA. Kapelusz mózgopodobnie pofałdowany, nie siatkowaty. Piestrzenica jest zazwyczaj bardziej siodłowata i ciemnobrązowa; smardz — wydłużony, symetryczny z regularną siatką komórek.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/2011-04-30_Morchella_esculenta.jpg/500px-2011-04-30_Morchella_esculenta.jpg'],
     weights:{ka:72,lm:68,sw:78,ro:75,lu:72,ja:68,ll:60,br:55,gr:52,sl:62,op:65,st:65,bw:60,au:55,so:65,bi:55,be:58,sd:62,wy:62,nak:58,sep:60}
   },
   zimowka:{q:2,
@@ -42282,6 +42289,7 @@ const MUSHROOMS={
     habitat:'Na pniach starych dębów i buków. Wymaga starodrzewia. Objęta ochroną gatunkową w Polsce.',
     desc:'Jednorodna biała kaskadowa masa miękkich kolców 1–5 cm, rosnąca wprost z pnia drzewa. Brak kapeluszy i trzonów — cały owocnik to "lwia grzywa" lub "sopel lodu". Kolce delikatne, nie twarde. Starsze okazy kremowożółtawe. Rozmiar 10–40 cm. Chroniony w Polsce — fotografować, nie zbierać.',
     edib:'Wybitny smak, przypomina krewetki. Ceniony w kuchni azjatyckiej. Zbieranie wymaga zezwolenia!',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/2006-11-03_Hericium_erinaceus_crop.jpg/500px-2006-11-03_Hericium_erinaceus_crop.jpg'],
     weights:{bw:60,kn:45,sw:55,ro:52,lu:48,bi:40,be:42,sd:38,se:35,po:38,wy:28,nak:25,sep:30}
   },
   grifola:{q:3,
@@ -42289,8 +42297,9 @@ const MUSHROOMS={
     season:[9,10],terrain:['Stare dąbrowy','Lasy dębowe'],
     soil:'U podstawy starych dębów. Saprofit.',ph:'Saprofit drewna',elev:'0–700 m',
     habitat:'U podstawy starych dębów i buków. Ten sam okaz rośnie wiele lat. Rzadki.',
-    desc:'Ogromne skupisko wachlarzowatych kapeluszy — każdy 5–10 cm, kremowoszary do szarobrązowego, wyrastający ze wspólnego korzenia u nasady dębu. Spód kremowy z drobnymi porkami. Krawędzie faliście ząbkowane. Wrasta rok po roku na tym samym dębie. Może ważyć ponad 20 kg.',
+    desc:'Ogromne skupisko wachlarzowatych kapeluszy — każdy 3–10 cm, kremowoszary do szarobrązowego, wyrastający ze wspólnego korzenia u nasady dębu. SPÓD kremowobiały z drobnymi okrągłymi porkami — po uciśnięciu NIE CZERNIEJE (odróżnia od trującego wachlarzowca olbrzymiego Meripilus giganteus). Krawędzie kapeluszy faliście ząbkowane, miąższ biały, elastyczny. Wrasta rok po roku na tym samym dębie lub przy jego korzeniach — sierpień–październik. Zbierać MŁODE okazy — stare łykowate i gorzkie. Może ważyć ponad 20 kg.',
     edib:'Wyśmienity smak i aromat. Smażyć lub do zup.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Autumn_mushrooms_1_Hen_of_the_woods_%28Grifola_frondosa%29_%284035115888%29.jpg/500px-Autumn_mushrooms_1_Hen_of_the_woods_%28Grifola_frondosa%29_%284035115888%29.jpg'],
     weights:{bw:55,kn:48,ka:50,sw:58,ro:55,lu:52,ja:50,be:45,bi:42,sd:38,se:35,po:40,so:48,sl:42,wy:22,nak:18,sep:25}
   },
   szmaciak:{q:3,
@@ -42316,8 +42325,9 @@ const MUSHROOMS={
     season:[6,7,8,9],terrain:['Lasy liściaste na wapieniu','Buczyny wapienne','Dąbrowy kserotermiczne'],
     soil:'Gleba wapienna, lekko zasadowa, dobrze zdrenowana',ph:'7.0–8.5',elev:'0–700 m',
     habitat:'Na glebach wapiennych pod dębami i bukami. Polska: Roztocze, Wyżyna Lubelska, Krakowsko-Częstochowska.',
-    desc:'Bulwa czarnawa, grudkowata, 3–10 cm, twarda. Wewnątrz beżowy z białymi żyłkami. Zapach intensywny.',
+    desc:'Bulwa 2–10 cm, zewnętrznie CZARNA z ostrymi PIRAMIDALNYMI BRODAWKAMI — powierzchnia jak czarna kolczasta skóra. WNĘTRZE cremowobiałe → beżowoszare z BIAŁYM UŻYŁKOWANIEM (marmurkowate) u dojrzałych — przekroić, by ocenić dojrzałość. Zapach ziemisto-grzybowy, mniej intensywny niż trufli czarnej (T. melanosporum) — "średniej jakości" wg Gerhardta. Rośnie PODZIEMNIE (0–30 cm głębokości) — szuka się psami trufflowymi od września do listopada. Wyłącznie na glebach wapiennych pod dębami, bukami i leszczynami. W Polsce: Roztocze, Wyżyna Lubelska, Wyżyna Krakowsko-Częstochowska.',
     edib:'Luksusowy przysmak. Zetrzeć na makaron lub jajecznicę. Częściowo chroniona.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Black.summer.truffle.arp_%28cropped%29.jpg/500px-Black.summer.truffle.arp_%28cropped%29.jpg'],
     weights:{ro:58,lu:62,ja:55,sw:50,sl:45,op:42,be:38,bi:35,so:50,ll:35,wy:12,nak:10,sep:15}
   },
   polyporus_umb:{q:2,
@@ -42700,9 +42710,10 @@ const MUSHROOMS={
     season:[4,5],terrain:['Lasy liściaste','Lasy mieszane','Łęgi'],
     soil:'Gleba wilgotna, żyzna, często na ściółce lub przy strumieniach',ph:'6.0–7.5',elev:'0–800 m',
     habitat:'W wilgotnych lasach liściastych, przy strumieniach i w łęgach. Pojawia się wczesną wiosną — jeden z pierwszych grzybów roku.',
-    desc:'Różni się od smardza jadalnego tym, że dolna połowa główki jest wolna (nie zlana z trzonem). Główka stożkowata, ciemnobrązowa, 2–5 cm, z regularną siatką żeberkowatych grzebieni. Trzon biały, dłuższy niż u smardza jadalnego. Całość 6–15 cm.',
+    desc:'Główka 2–4 cm, ciemnooliwkowobrązowa do czarniawej, stożkowata — siatka żeberkowatych grzebieni z regularnymi komórkami. DOLNA POŁOWA GŁÓWKI WOLNA, niezlana z trzonem — kluczowy wyróżnik od smardza jadalnego; sprawdzić lekko podnosząc kapelusz. Trzon biały do kremowego, wyraźnie dłuższy od główki, graniasty. WNĘTRZE PUSTAKOWE przez całą długość — przekroić przed spożyciem. Pojawia się marzec–kwiecień — często o 2–3 tygodnie wcześniej niż smardz jadalny. NIGDY na surowo — gotować min. 10 min i odlać wodę.',
     edib:'Jadalny po obróbce cieplnej. Jak wszystkie smardze — NIGDY na surowo. Surowe zawierają toksyczne substancje termolabilne (hemolizyny). Gotować 10 min, wodę wylać. Wyśmienity po blanszowaniu i usmażeniu z masłem.',
     lookalikes:'Smardz jadalny (M. esculenta) — główka całkowicie zlana z trzonem, bardziej kulista. Piestrzenica (G. esculenta) — TRUJĄCA; fałdowana jak mózg, nie siatkowata. Kielichowiec Morrisa — inny kształt.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/2026-04-04_Z5-3880E_Achim-Lammerts_Morchella-semilibera.jpg/500px-2026-04-04_Z5-3880E_Achim-Lammerts_Morchella-semilibera.jpg'],
     weights:{ka:70,sw:78,ro:75,lu:72,ja:68,ll:60,br:55,bw:62,au:58,be:68,bi:62,sd:65,so:65,op:65,st:68,sl:62,lm:60,wy:62,nak:58,sep:60}
   },
 
@@ -54686,7 +54697,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.60</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.0</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
