@@ -437,7 +437,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.52</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.53</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -54033,22 +54033,31 @@ function _setGpsLayer(ll,accuracy){
   }
   _gpsLayer=L.layerGroup(layers).addTo(map);
 }
-let _smoothHead=null,_orientStarted=false;
+let _smoothHead=null,_orientStarted=false,_lastAbsTs=0;
 // screen.orientation.angle uses 0/90/270; convert to signed (-90..90) to match window.orientation convention
 function _getScreenAngle(){if(typeof window.orientation!=='undefined')return+window.orientation;const a=screen.orientation?.angle||0;return a>180?a-360:a;}
-function _smoothH(raw){if(_smoothHead===null){_smoothHead=raw;return raw;}let d=raw-_smoothHead;if(d>180)d-=360;if(d<-180)d+=360;return _smoothHead=(_smoothHead+d*0.3+360)%360;}
+function _smoothH(raw){
+  if(_smoothHead===null){_smoothHead=raw;return raw;}
+  let d=raw-_smoothHead;if(d>180)d-=360;if(d<-180)d+=360;
+  // Jump guard: magnetometer spikes >90° are almost always interference — discard them
+  if(Math.abs(d)>90)return _smoothHead;
+  // EMA at 0.1: smooth like Google Maps (was 0.3 — too responsive/jumpy)
+  return _smoothHead=(_smoothHead+d*0.1+360)%360;
+}
 function _onHeading(raw){
-  // raw = compass bearing without screen-orientation correction; apply correction + EMA smoothing
   const h=_smoothH((raw-_getScreenAngle()+360)%360);
+  // Dead zone: skip DOM update for sub-2° changes — prevents visible micro-jitter
+  if(_gpsHeading!=null){let d=h-_gpsHeading;if(d>180)d-=360;if(d<-180)d+=360;if(Math.abs(d)<2)return;}
   _gpsHeading=h;
   if(_gpsConeSvg){_gpsConeSvg.style.transform=`rotate(${h}deg)`;_gpsConeSvg.style.opacity='1';}
 }
 function _startOrientation(){
   if(_orientStarted)return;_orientStarted=true;
-  window.addEventListener('deviceorientationabsolute',e=>{if(e.alpha!=null)_onHeading((360-e.alpha)%360);},true);
+  // _lastAbsTs: prevent double-processing when both deviceorientationabsolute AND deviceorientation fire (Android Chrome does both)
+  window.addEventListener('deviceorientationabsolute',e=>{if(e.alpha!=null){_lastAbsTs=Date.now();_onHeading((360-e.alpha)%360);}},true);
   window.addEventListener('deviceorientation',e=>{
     if(e.webkitCompassHeading!=null)_onHeading(e.webkitCompassHeading);
-    else if(e.absolute&&e.alpha!=null)_onHeading((360-e.alpha)%360);
+    else if(e.absolute&&e.alpha!=null&&Date.now()-_lastAbsTs>50)_onHeading((360-e.alpha)%360);
   },true);
 }
 // Non-iOS: start immediately. iOS 13+: DeviceOrientationEvent.requestPermission exists — wait for user gesture.
@@ -54568,7 +54577,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.52</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.53</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
