@@ -445,7 +445,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.7</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.8</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42586,7 +42586,7 @@ const MUSHROOMS={
     season:[5,6,7,8,9,10],terrain:['Łąki','Trawniki','Pastwiska','Skraje lasów'],
     soil:'Gleba żyzna, próchnicza, trawiasta',ph:'5.5–7.5',elev:'0–1200 m',
     habitat:'Na trawnikach, łąkach i pastwiskach. Rośnie w charakterystycznych "czarcich kręgach". Bardzo pospolity.',
-    desc:'Mały 2–6 cm, kapelusz kremowy do miodowego, z delikatnym garbkiem, lejkowaty lub płaski. Blaszki kremowobiałe, rzadkie. Trzon cienki, łykowaty i elastyczny (nie łamie się! — cecha kluczowa). Zapach migdałów lub anyżu.',
+    desc:'Kapelusz 2–6 cm, KREMOWY do miodowego, z delikatnym GARBKIEM w centrum, lejkowaty lub płaski — jak miniaturowy parasol z garbikiem. Blaszki kremowobiałe, RZADKIE (widać przestrzenie między nimi). Trzon cienki, ŁYKOWATY I ELASTYCZNY — można wygiąć bez złamania, nie kruszy się jak u grzybówek. ZAPACH MIGDAŁÓW LUB ANYŻU — charakterystyczny i przyjemny, wyczuwalny przy podniesieniu. Rośnie w CZARCICH KRĘGACH — pierścienie owocników na łące lub trawniku mogą liczyć kilka metrów średnicy i pojawiają się co roku w tym samym miejscu. Zbierać TYLKO KAPELUSZE — trzony niestrawne.',
     edib:'Doskonały! Intensywny smak, zwłaszcza po suszeniu. Używać TYLKO kapeluszy — trzony łykowate i niestrawne. Świetny do zup, sosów, jajecznicy. Jeden z najlepszych grzybów łąkowych Polski.',
     lookalikes:'Lejkówka biaława (Clitocybe dealbata) — TRUJĄCA (muscarine); blaszki zbiegające na trzon, brak elastycznego łykowatego trzonu, zapach mączysty nie migdałowy, kapelusz biały. Lejkówka wiosenna (C. rivulosa) — trująca, podobna barwa. Klucz: elastyczny, łykowaty, niełamiący się trzon = twardzioszek.',
     weights:{ka:75,lm:70,ku:68,br:65,gr:60,wk:58,sw:72,ro:70,lu:65,ja:62,ll:68,bi:58,be:62,sd:62,op:68,st:70,sl:65,so:60,bw:72,au:68,wy:75,nak:70,sep:72}
@@ -42821,7 +42821,7 @@ const MUSHROOMS={
     season:[7,8,9,10],terrain:['Bory iglaste','Świerczyny','Lasy mieszane z świerkiem'],
     soil:'Gleba kwaśna, piaszczysta lub próchnicza — mykoryza głównie ze świerkiem i sosną',ph:'4.0–5.5',elev:'0–1600 m',
     habitat:'Pod świerkami i sosnami, rzadziej bukami. Rośnie samotnie lub w małych grupach. Chroniony częściowo w Polsce — fotografować, nie zbierać masowo.',
-    desc:'Kapelusz 5–15 cm, brązowy do szarobrązowego, pokryty DUŻYMI CIEMNYMI ŁUSKAMI nachodzącymi na siebie (jak dachówki). Spód pokryty kolcami szarobrązowymi 3–6 mm. Trzon szarobrązowy, zwarty. Miąższ biały, twardawy. Smak nieco gorzki i korzenny.',
+    desc:'Kapelusz 5–20 cm, brązowy do szarobrązowego, pokryty DUŻYMI SZAROBRĄZOWYMI ŁUSKAMI nachodzącymi na siebie jak dachówki — wygląd "łuskowatego jeża". SPÓD POKRYTY KOLCAMI szarobrązowymi 3–8 mm — jak sarniak ma kolce pod spodem, ale CIEMNE I GRUBSZE niż u kolczaka. Trzon szarobrązowy, zwarty, krótki. MIĄŻSZ biały do lekko szarawego, twardawy. SMAK GORZKAWY i korzenny — szczególnie starsze okazy; blanszować przed gotowaniem. Rośnie samotnie lub parami pod ŚWIERKAMI, rzadziej sosnami i bukami, sierpień–październik. CHRONIONY CZĘŚCIOWO W POLSCE — fotografować w pierwszej kolejności.',
     edib:'Jadalny, ale gorzkawy — szczególnie starsze okazy. Przed gotowaniem blanszować i odlać wodę. Doskonały suszony. Chroniony w Polsce — nie zbierać bez potrzeby.',
     lookalikes:'Kolczak obłączasty (Hydnum repandum) — kremowy, gładki kapelusz bez łusek, blady trzon, smak łagodny. Sarniak szroksim (S. scabrosus) — bardzo gorzki, niejadalny. Duże ciemne łuski na kapeluszu i szare kolce pod spodem to znaki rozpoznawcze sarniaka.',
     weights:{bw:55,au:50,sw:72,ro:68,lu:62,be:60,bi:55,go:58,sd:58,se:52,ta:48,ps:50,ma:45,tu:65,no:68,pi:70,dr:62,ll:45,wy:52,nak:48,sep:50}
@@ -42832,7 +42832,7 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane','Buczyny'],
     soil:'Gleba próchnicza, wilgotna — mykoryza z bukiem, dębem, sosną',ph:'4.5–7.0',elev:'0–1200 m',
     habitat:'Pod różnymi drzewami liściastymi i iglastymi, szczególnie bukiem i sosną. Rośnie samotnie lub w małych grupach. Pospolity w całej Polsce.',
-    desc:'Kapelusz KREMOWY do łososioworóżowego, 4–12 cm, nieregularny, bez łusek. SPÓD POKRYTY KOLCAMI kremowobiałymi 3–6 mm — unikalna cecha. Trzon blady, zwarty. Zapach przyjemny, smak łagodny (ewentualnie nieco gorzkawy u starszych).',
+    desc:'Kapelusz 4–12 cm, KREMOWY do łososioworóżowego, NIEREGULARNY, falbankowaty — bez łusek, bez siateczki, bez nic. SPÓD POKRYTY KREMOWOBIAŁYMI KOLCAMI 3–6 mm — zamiast blaszek lub rurek, cienkie igiełki rosnące prostopadle jak brzusiate korale. To JEDYNA TAKA CECHA w Polsce: żaden jadowalny grzyb o takim wyglądzie nie ma kolców. Trzon blady, nieco nieregularny. SMAK ŁAGODNY do lekko gorzkawego u starszych. Jeden z bezpieczniejszych grzybów dla nowicjuszy: kremowe kolce pod kapeluszem są absolutnie unikatowe i nie do pomylenia z żadnym trującym.',
     edib:'Doskonały jadalny. BEZPIECZNY dla nowicjuszy: żaden trujący grzyb nie ma takich kremowych kolców pod kapeluszem. Nie mylić z Sarcodon (sarniak) — sarniak ma ciemnobrązowe łuski. Świetny w sosach i zupach.',
     lookalikes:'Sarniak dachówkowaty (Sarcodon imbricatus) — duże ciemne łuski na kapeluszu, szare kolce, gorzki smak. Kolczak rudawy (H. rufescens) — mniejszy, bardziej różowoczerwony; jadalny. Żaden trujący grzyb nie ma białych kolców pod kapeluszem.',
     weights:{bw:78,au:72,kn:70,sw:80,ro:78,lu:75,ja:72,be:80,bi:75,go:72,sd:75,se:70,po:75,so:72,ka:65,ps:62,ma:60,su:65,wi:68,wy:75,nak:70,sep:72}
@@ -42898,7 +42898,7 @@ const MUSHROOMS={
     season:[2,3,4,5],terrain:['Lasy iglaste','Świerczyny'],
     soil:'Wyłącznie na zakopanych lub leżących szyszkach świerkowych',ph:'Saprofit szyszek',elev:'0–1500 m',
     habitat:'Na szyszkach świerkowych — wyrastają z nich pojedynczo lub w małych grupkach. Pierwszy grzyb roku, pojawia się spośród śniegu.',
-    desc:'Mały 1–3 cm, kapelusz płaski, brązowawy do szarego, gładki. Blaszki białe, bardzo gęste. Trzon cienki, elastyczny (nie łamliwy), z białą "korzeniową" grzybniową nitką sięgającą do szyszki. Szyszka zawsze pod trzonem.',
+    desc:'Mały 1–3 cm, kapelusz PŁASKI, brązowawy do szarego, gładki bez żadnych łusek. Blaszki białe, bardzo gęste. Trzon cienki, elastyczny. KLUCZOWA CECHA: biała grzybniowa NITKA z podstawy trzonu sięga prosto do SZYSZKI — zawsze znajdź szyszkę (zazwyczaj zakopana pod ściółką). Wyrastają w lutym–maju, często SPOŚRÓD ŚNIEGU lub zaraz po jego stopnieniu, gdy inne grzyby jeszcze nie istnieją — ta fenologiczna cecha jest sama w sobie diagnostyczna. Zbierać małymi grupkami całe owocniki (kapelusz + trzon), potem poszukać zakopanych szyszek — nie mylić z grzybówkami (Mycena) które nie mają korzeniowej nitki i nie wyrastają ze szyszek.',
     edib:'Jadalny — cienki, gorzkawy smak (wymagają zblanszowania). Zbierać na zupę lub jako garniturek. Zbieranie wcześnie wiosną = rzadka przyjemność grzybiarza.',
     lookalikes:'Szyszkowiec sosnowy (S. tenacellus) — GORZKI; na szyszkach sosnowych; niejadalny. Grzybówki (Mycena spp.) — nie wyrastają ze szyszek, brak korzeniowej nitki. Biała nitka łącząca trzon z szyszką = pewna cecha szyszkowca.',
     weights:{sd:70,se:65,ta:68,be:75,bi:72,go:70,po:68,bw:55,au:60,su:65,wi:68,ps:62,ku:52,ma:55,kn:58,tu:62,no:58,dr:55,wy:48,nak:44,sep:52}
@@ -42920,7 +42920,7 @@ const MUSHROOMS={
     season:[9,10,11,12],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane','Ogrody'],
     soil:'Gleba próchnicza, często na kompoście lub ściółce',ph:'5.5–7.5',elev:'0–900 m',
     habitat:'W lasach liściastych i iglastych, w ogrodach przy kompostownikach. Jeden z ostatnich grzybów roku — rośnie późną jesienią, bywa pod pierwszym śniegiem.',
-    desc:'Kapelusz 5–15 cm, FIOŁKOWONIEBIESKI do niebieskawobrązowego (starsze bledną do brązowego). Blaszki jasnofiołkowe, gęste. Trzon fiołkowoniebieskawy. Zapach intensywny, owocowy lub parfimeryjny. Kolor fiołkowy jako cecha kluczowa.',
+    desc:'Kapelusz 5–15 cm, FIOŁKOWONIEBIESKI do niebieskawobrązowego — u młodych intensywnie fioletowy, starsze bledną do brązowego gubią odcień. BLASZKI JASNOFIOŁKOWE, gęste — kolor utrzymuje się dłużej niż w kapeluszu. TRZON fiołkowoniebieskawy. ZAPACH INTENSYWNY, owocowy lub parfumeryjny — jeden z bardziej aromatycznych grzybów Polski. KLUCZOWY TEST: brak pajęczynki (cortiny) między kapeluszem a trzonem — blewit jej nie ma; jeśli widzisz pajęczynkę, to jest zasłonak (Cortinarius), nie zbierać. Jeden z ostatnich grzybów roku — zbierać październik–grudzień, czasem pod pierwszym śniegiem.',
     edib:'Smaczny jadalny — dobry do sosów i smażenia. Zebrany po pierwszych przymrozkach może być nieco kwaśny. Nigdy na surowo — surowy powoduje dolegliwości żołądkowe. Gotować minimum 5 min.',
     lookalikes:'Lejkówka gołąbkowa (C. nebularis) — szara, bez fiołkowego zabarwienia, zapach mączysty. Zasłonak fiołkowy (C. violaceus) — CHRONIONY, rzadki, z pajęczynką. Zasłonak piękny (C. violaceus) — w lesie, z pajęczynką. Fiołkowe blaszki + owocowy zapach bez pajęczynki = blewit.',
     weights:{bw:72,au:68,kn:65,sw:75,ro:72,lu:68,ja:65,be:72,bi:68,sd:65,po:68,so:65,ka:68,ku:62,tu:58,no:55,ll:62,op:68,st:70,sl:65,wy:70,nak:65,sep:68}
@@ -42953,7 +42953,7 @@ const MUSHROOMS={
     season:[7,8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Buczyny','Dąbrowy'],
     soil:'Gleba żyzna, próchnicza, gliniasta',ph:'5.0–7.0',elev:'0–1000 m',
     habitat:'Pod bukami, dębami i grabami w lasach liściastych. Jeden z najpospolitszych grzybów leśnych Polski — pospolitszy niż borowik.',
-    desc:'Kapelusz fioletowosiny do szarozielonego, 6–15 cm, matowy, często wielobarwny (fiolet + zielony + szary). Blaszki BIAŁE, miękkie i GIĘTKIE (nie kruche jak u innych gołąbków) — cecha kluczowa. Trzon biały, zwarty. Nie wydziela mleczka. Zapach owocowy.',
+    desc:'Kapelusz 6–15 cm, FIOLETOWOSINY do szarozielonego — barwa WYJĄTKOWO ZMIENNA: fiolet, zielonkawy, szary, często z plamistym pomieszaniem odcieni na tym samym kapeluszu. Skórka matowa. Blaszki BIAŁE, GIĘTKIE — nie kruszą się ani nie rozłupują po przesunięciu palcem; to ABSOLUTNIE UNIKATOWA cecha wśród wszystkich polskich gołąbków (wszystkie inne mają kruche blaszki). TEST W TERENIE: muśnij krawędź blaszki palcem — jeśli zginają się bez pękania = chabrowy. Trzon biały, zwarty. Nie wydziela mleczka. Jeden z najpospolitszych grzybów leśnych Polski — pospolitszy niż borowik.',
     edib:'Doskonały smak — jeden z najsmaczniejszych grzybów leśnych. Bezpieczny do spożywania na surowo (jeden z nielicznych). Miękkie giętkie blaszki to unikalny test jadalności w tym rodzaju.',
     lookalikes:'Gołąbek wymiotny (R. emetica) — TRUJĄCY; czerwony kapelusz, ostre białe blaszki kruche, smak piekący. Inne gołąbki (Russula) — blaszki kruche i łamliwe. Giętkie blaszki u gołąbka = tylko R. cyanoxantha. Lekkie pęknięcie blaszki między palcami = test.',
     weights:{bw:72,au:68,sw:80,ro:78,lu:75,ja:72,be:82,bi:78,go:75,sd:78,se:72,ta:65,po:78,so:72,ka:70,kn:68,lm:65,ps:65,ma:60,su:68,wi:70,ll:62,br:58,wy:60,nak:55,sep:62}
@@ -42964,7 +42964,7 @@ const MUSHROOMS={
     season:[7,8,9],terrain:['Brzeziny','Lasy liściaste','Mokradła leśne'],
     soil:'Gleba mokra, torfowa lub podmokła, wyłącznie pod brzozami',ph:'4.5–6.5',elev:'0–900 m',
     habitat:'Wyłącznie pod brzozami na podmokłych, wilgotnych glebach, przy bagnach i torfowiskach. Niezawodny wskaźnik wilgotnego środowiska.',
-    desc:'Kapelusz JASKRAWOŻÓŁTY, cytrynowy do złocistego, 5–12 cm, gładki, matowy. Blaszki kremowobiałe, kruche. Trzon biały, zabarwia się szaro do czarnego przy uszkodzeniu i suszeniu — cecha diagnostyczna. Zapach łagodny.',
+    desc:'Kapelusz 5–12 cm, JASKRAWOŻÓŁTY do cytrynowego lub złocistego — jeden z kilku naprawdę intensywnie żółtych grzybów leśnych. Blaszki kremowobiałe, kruche jak u wszystkich gołąbków. Trzon biały, ale SZARZEJE LUB CZERNIEJE w miejscach uszkodzenia i przy suszeniu — cecha diagnostyczna (trzon łamany = natychmiast szarawy). WYŁĄCZNIE pod BRZOZAMI na MOKRYCH TORFOWISKOWYCH GLEBACH — ta podwójna wskazówka (żółty kolor + podmokła brzezina) czyni identyfikację pewną. Blaszki kruche, smak łagodny. Rośnie od lipca do września.',
     edib:'Dobry jadalny — smak łagodny, orzechowy. Jeden z bezpieczniejszych gołąbków do zbierania: jaskrawożółty + wyłącznie pod brzozą = bezpieczny test. Dobry w zupach i sosach.',
     lookalikes:'Inne żółte gołąbki (R. lutea) — pod różnymi drzewami, kapelusz słomkowożółty, blaszki żółte; jadalny. Gołąbek wymiotny żółty — smak pieczący. Test: jaskrawożółty + podmokła brzezina + szarowiejący trzon = R. claroflava.',
     weights:{bw:75,au:80,kb:82,kn:72,su:78,wi:80,ps:72,ma:75,tu:68,no:65,dr:62,pi:65,ku:65,br:68,wk:65,ll:60,wy:72,nak:68,sep:75}
@@ -54709,7 +54709,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.7</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.8</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
