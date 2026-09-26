@@ -1,11 +1,6 @@
 .DS_Store
 Thumbs.db
+private/
 .claude/
 AGENTS.md
-generate_bdl_data.js
-docs/memory/
-docs/superpowers/
-docs/PATHS.md
-mushroom_guide/
-data/
-docs/screenshots/
+.superpowers/
