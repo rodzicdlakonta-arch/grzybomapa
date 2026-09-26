@@ -279,6 +279,14 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .mphoto-wrap.loading{min-height:160px}
 .mphoto-wrap.loading::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--card) 25%,var(--border) 50%,var(--card) 75%);background-size:200% 100%;animation:shimmer 1.2s infinite}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.gal-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.45);color:#fff;border:none;cursor:pointer;z-index:3;padding:0;width:28px;height:44px;font-size:16px;line-height:44px;text-align:center;opacity:0;transition:opacity .18s;border-radius:4px;display:none}
+.mphoto-wrap:hover .gal-btn{opacity:1}
+@media(hover:none){.gal-btn{opacity:.7!important}}
+.gal-prev{left:4px}.gal-next{right:4px}
+.gal-counter{position:absolute;bottom:7px;right:8px;background:rgba(0,0,0,.55);color:#fff;font-size:10.5px;padding:2px 7px;border-radius:20px;pointer-events:none;display:none;z-index:3;letter-spacing:.03em}
+.mref{color:var(--green);cursor:pointer;text-decoration:underline;text-underline-offset:2px;font-weight:500}
+.mref:hover{opacity:.75}
+.mref-none{color:var(--muted)}
 .fgl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:8px 14px 3px;font-weight:600}
 .fgrow{display:flex;gap:5px;flex-wrap:wrap;padding:0 14px 6px}
 #filters-panel{display:flex;flex-direction:column;padding:0}
@@ -437,7 +445,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.57</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.58</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43165,6 +43173,49 @@ const MUSHROOMS={
   },
 };
 
+// ─── Cross-reference helpers ───────────────────────────────────────────────
+const _MUSH_BY_NAME=(()=>{
+  const m={};
+  Object.entries(MUSHROOMS).forEach(([mid,sp])=>{
+    if(sp.name)m[sp.name]=mid;
+    if(sp.latin)m[sp.latin]=mid;
+  });
+  return m;
+})();
+// Names sorted longest→shortest so longer matches win
+const _MUSH_NAMES_SORTED=Object.keys(_MUSH_BY_NAME).sort((a,b)=>b.length-a.length);
+
+function _linkRefs(text){
+  if(!text)return text;
+  // Replace known species names with clickable/muted spans
+  let out=text;
+  const done=new Set();
+  _MUSH_NAMES_SORTED.forEach(name=>{
+    if(done.has(name))return;
+    const idx=out.indexOf(name);
+    if(idx<0)return;
+    const mid=_MUSH_BY_NAME[name];
+    // avoid double-wrapping: skip if inside an existing span
+    const before=out.slice(0,idx);
+    if((before.match(/class="mref/g)||[]).length>(before.match(/<\/span>/g)||[]).length)return;
+    out=out.slice(0,idx)+`<span class="mref" data-mid="${mid}">${name}</span>`+out.slice(idx+name.length);
+    done.add(name);
+  });
+  return out;
+}
+
+function _wrapLA(item){
+  // Wrap species name at start of lookalike item; rest = everything after " — " or " ("
+  const d=item.indexOf(' — '),p=item.indexOf(' (');
+  const end=Math.min(d>=0?d:Infinity,p>=0?p:Infinity);
+  if(end===Infinity)return item;
+  const name=item.slice(0,end).trim();
+  const rest=item.slice(end);
+  const mid=_MUSH_BY_NAME[name];
+  if(mid)return`<span class="mref" data-mid="${mid}">${name}</span>${rest}`;
+  return`<span class="mref-none">${name}</span>${rest}`;
+}
+
 
 // ─── Mushroom SVG icons — 6 base shapes, per-species colors ───────────────
 const MUSH_ICON_CFG={
@@ -52550,7 +52601,7 @@ function showInfoPanel(mid){
   function _s5(v){return Math.round(v*5/4*2)/2;}
   const statsHtml=`<div class="isec">${m.q&&m.cat==='edible'?_statRow('Smak',_s5(m.q),5,()=>_forkPip(true),_forkHalf,()=>_forkPip(false)):''}${dVal?_statRow('Trudność ID',_s5(dVal),5,()=>_lensPip(true),_lensHalf,()=>_lensPip(false)):''}${combinedRare?_statRow('Rzadkość',combinedRare,5,()=>_rarePip(true),_rareHalf,()=>_rarePip(false)):''}</div>`;
   document.getElementById('pbody').innerHTML=`
-    <div class="mphoto-wrap loading" id="mphoto-wrap"><img id="mwiki-photo" class="mphoto" alt="${m.name}" onerror="this.parentElement.classList.remove('loading');this.style.display='none'" onload="this.classList.add('loaded');this.style.display='block';this.parentElement.classList.remove('loading')"></div>
+    <div class="mphoto-wrap loading" id="mphoto-wrap"><img id="mwiki-photo" class="mphoto" alt="${m.name}" onerror="this.parentElement.classList.remove('loading');this.style.display='none'" onload="this.classList.add('loaded');this.style.display='block';this.parentElement.classList.remove('loading')"><button class="gal-btn gal-prev" id="gal-prev">&#10094;</button><button class="gal-btn gal-next" id="gal-next">&#10095;</button><div class="gal-counter" id="gal-counter"></div></div>
     ${extra}${statsHtml}
     <div class="isec"><h4>Sezon owocnikowania</h4>
       <div class="sbar">${sbar}</div>
@@ -52567,18 +52618,46 @@ function showInfoPanel(mid){
     <div class="isec"><h4>Siedlisko</h4><p>${m.habitat}</p></div>
     <div class="isec"><h4>🔍 Jak rozpoznać?</h4><ul class="id-steps">${(m.desc||'').split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄ])/).filter(s=>s.trim()).map(s=>`<li>${s.trim().replace(/\.$/,'')}</li>`).join('')}</ul><p style="font-size:10.5px;color:var(--muted);margin:6px 0 0;line-height:1.4">⚠️ Nie używaj tej strony jako jedynego źródła do identyfikacji — zawsze konsultuj z ekspertem lub atlasem.</p></div>
     ${m.edib?`<div class="isec"><h4>Wartość kulinarna</h4><p>${m.edib}</p></div>`:''}
-    ${m.lookalikes?`<div class="isec"><h4>⚠ Gatunki podobne — nie pomyl!</h4>${(m.lookalikes).split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄGW])/).filter(s=>s.trim()).map(s=>`<div class="la-item">${s.trim().replace(/\.$/,'')}</div>`).join('')}</div>`:''}
+    ${m.lookalikes?`<div class="isec"><h4>⚠ Gatunki podobne — nie pomyl!</h4>${(m.lookalikes).split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄGW])/).filter(s=>s.trim()).map(s=>`<div class="la-item">${_wrapLA(s.trim().replace(/\.$/,''))}</div>`).join('')}</div>`:''}
     ${(()=>{const ld=MUSHROOM_LOCAL[mid];if(!ld)return '';return `<div class="isec" style="border-left:3px solid ${LOCAL_COLOR[ld.s]||'#888'};padding-left:8px;margin-top:4px"><h4 style="color:${LOCAL_COLOR[ld.s]||'#888'}">🗺 W regionie Krajna / Wyrzysk</h4><div style="font-weight:600;color:${LOCAL_COLOR[ld.s]};margin-bottom:4px">${LOCAL_LABEL[ld.s]}</div><p style="margin:0;font-size:12px">${ld.n}</p></div>`;})()}
     <div class="isec" style="padding-bottom:4px"><button id="pbest-btn" style="width:100%;padding:10px 14px;background:rgba(82,184,73,.13);color:var(--green);border:1px solid rgba(82,184,73,.3);border-radius:var(--r);cursor:pointer;font-size:13px;font-family:var(--f-body)">📍 Znajdź najlepsze miejsce na mapie</button></div>
   `;
   document.getElementById('pbest-btn').onclick=()=>_showBestSpot(mid);
-  if(m.wiki){
+  // Gallery setup
+  (()=>{
     const img=document.getElementById('mwiki-photo');
-    if(img){
-      loadWikiPhoto(m.wiki,img);
-      img.onclick=()=>{_openLightbox(img.src,`Źródło: Wikimedia Commons / ${m.wiki||'Wikipedia'}`);};
+    if(!img)return;
+    const extras=m.photos||[];
+    const total=(m.wiki?1:0)+extras.length;
+    let idx=0;
+    const ctr=document.getElementById('gal-counter');
+    const btnP=document.getElementById('gal-prev');
+    const btnN=document.getElementById('gal-next');
+    function _galShow(i){
+      idx=i;
+      img.classList.remove('loaded');img.style.display='none';
+      img.parentElement.classList.add('loading');
+      if(i===0&&m.wiki){
+        loadWikiPhoto(m.wiki,img);
+      }else{
+        const url=extras[i-(m.wiki?1:0)];
+        img.src=url;img.style.display='block';img.parentElement.classList.remove('loading');
+        img.classList.add('loaded');
+      }
+      if(total>1){ctr.textContent=`${i+1} / ${total}`;ctr.style.display='block';}
+      img.onclick=()=>{if(img.src)_openLightbox(img.src,`Źródło: Wikimedia Commons`);};
     }
-  }
+    if(total>1){
+      btnP.style.display='block';btnN.style.display='block';
+      btnP.onclick=(e)=>{e.stopPropagation();_galShow((idx-1+total)%total);};
+      btnN.onclick=(e)=>{e.stopPropagation();_galShow((idx+1)%total);};
+    }
+    _galShow(0);
+  })();
+  // Wire cross-reference clicks
+  document.getElementById('pbody').querySelectorAll('.mref').forEach(el=>{
+    el.onclick=()=>{const m2=el.dataset.mid;if(m2&&MUSHROOMS[m2])selectMushroom(m2);};
+  });
   // lightbox close handled by _openLightbox setup (one-time, see below)
   const ipEl=document.getElementById('ip');
   ipEl.scrollTop=0;
@@ -54604,7 +54683,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.57</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.58</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
