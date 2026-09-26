@@ -437,7 +437,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.50</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.51</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -54004,20 +54004,25 @@ let _gpsLayer=null,_gpsConeSvg=null,_gpsHeading=null;
 function _setGpsLayer(ll,accuracy){
   if(_gpsLayer)map.removeLayer(_gpsLayer);
   const isLow=accuracy>100;
-  const coneDiv=document.createElement('div');
-  coneDiv.style.cssText='width:120px;height:120px;transform-origin:center center;pointer-events:none;opacity:0;transition:opacity .3s';
-  coneDiv.style.transform=`rotate(${_gpsHeading||0}deg)`;
-  coneDiv.innerHTML='<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="gcone" cx="60" cy="60" r="60" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.6"/><stop offset="25%" stop-color="#1a73e8" stop-opacity="0.4"/><stop offset="100%" stop-color="#1a73e8" stop-opacity="0"/></radialGradient></defs><path d="M60,60 L30,8 A60,60 0 0,1 90,8 Z" fill="url(#gcone)"/></svg>';
-  _gpsConeSvg=coneDiv;
-  if(_gpsHeading!=null)coneDiv.style.opacity='1';
-  const coneIcon=L.divIcon({html:coneDiv,iconSize:[120,120],iconAnchor:[60,60],className:''});
   const dotColor=isLow?'#FF8F00':'#1976D2';
+  // Single composite marker: cone SVG first (behind), dot div second (in front via DOM order).
+  // Avoids the overlayPane(400) vs markerPane(600) z-index fight that put the cone on top of the dot.
+  const wrap=document.createElement('div');
+  wrap.style.cssText='width:120px;height:120px;position:relative;pointer-events:none';
+  const coneWrap=document.createElement('div');
+  coneWrap.style.cssText='position:absolute;top:0;left:0;width:120px;height:120px;transform-origin:60px 60px;opacity:0;transition:opacity .3s';
+  coneWrap.innerHTML=`<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="gcone" cx="60" cy="60" r="60" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="${dotColor}" stop-opacity="0.5"/><stop offset="60%" stop-color="${dotColor}" stop-opacity="0.2"/><stop offset="100%" stop-color="${dotColor}" stop-opacity="0"/></radialGradient></defs><path d="M60,60 L30,8 A60,60 0 0,1 90,8 Z" fill="url(#gcone)"/></svg>`;
+  if(_gpsHeading!=null){coneWrap.style.transform=`rotate(${_gpsHeading}deg)`;coneWrap.style.opacity='1';}
+  const dotEl=document.createElement('div');
+  dotEl.style.cssText=`position:absolute;width:16px;height:16px;border-radius:50%;background:${dotColor};border:2.5px solid #fff;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.4)`;
+  wrap.appendChild(coneWrap);
+  wrap.appendChild(dotEl);
+  _gpsConeSvg=coneWrap;
   const circOpts={radius:Math.max(accuracy/2,30),color:dotColor,fillColor:dotColor,fillOpacity:isLow?.07:.10,weight:1};
   if(isLow)circOpts.dashArray='5 4';
   const layers=[
     L.circle(ll,circOpts),
-    L.marker(ll,{icon:coneIcon,interactive:false,zIndexOffset:-50}),
-    L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:dotColor,fillOpacity:1})
+    L.marker(ll,{icon:L.divIcon({html:wrap,iconSize:[120,120],iconAnchor:[60,60],className:''}),interactive:false,zIndexOffset:100})
   ];
   if(isLow){
     const accDiv=document.createElement('div');
@@ -54550,7 +54555,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.50</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.51</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
