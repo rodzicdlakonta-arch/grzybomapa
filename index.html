@@ -53573,7 +53573,7 @@ siEl.addEventListener('input',()=>{
 
 function flyTo(lat,lng){map.flyTo([parseFloat(lat),parseFloat(lng)],12,{duration:1.4});closeSearch();}
 function closeSearch(){srEl.style.display='none';siEl.blur();siEl.value='';if(activeSearch){activeSearch='';renderList();}}
-document.addEventListener('click',e=>{if(!e.target.closest('#sw'))closeSearch();});
+document.addEventListener('click',e=>{if(!e.target.closest('#sw')&&!e.target.closest('.ai'))closeSearch();});
 
 // ─── F2 debug overlay ─────────────────────────────────────
 let _dbgMapLayer=null,_dbgEdgeLayer=null;
