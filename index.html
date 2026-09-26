@@ -445,7 +445,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.59</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.60</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42362,7 +42362,7 @@ const MUSHROOMS={
     season:[7,8,9,10],terrain:['Lasy iglaste','Lasy liściaste','Lasy mieszane'],
     soil:'Gleba kwaśna, piaszczysto-gliniasta',ph:'4.5–6.5',elev:'0–1100 m',
     habitat:'Pospolity we wszystkich typach lasów. Przy drogach leśnych.',
-    desc:'Kapelusz brązowy z białymi brodawkami, 5–12 cm. Blaszki BIAŁE. Pochwa przy podstawie.',
+    desc:'Kapelusz 5–12 cm, BRĄZOWY Z SZARYM LUB OLIWKOWYM ODCIENIEM, pokryty drobnymi białymi brodawkami (pozostałości osłonki ogólnej) — różni się od czerwonego koloru muchomora czerwonego. BLASZKI BIAŁE, wolne od trzonu. Przy podstawie trzonu POCHWA Z WYWINIĘTYM MANKIETEM ("SKARPETKA") — charakterystyczny kołnierz rozerwanych osłonek, często zagrzebany płytko w ziemi; wyjmuj grzyba razem z podstawą. ZAPACH SŁABY, lekko rzodkiewkowy lub nieprzyjemny. Zarodniki białe. Rośnie pod liściastymi i mieszanymi lasami, lipiec–październik.',
     danger:'SILNIE TRUJĄCY. Muscymol i kwas ibotenowy. Majaczenia, halucynacje, śpiączka. Wymaga hospitalizacji.',
     weights:{tu:65,no:60,au:62,bw:58,ps:62,ma:58,dl:60,ch:62,ku:55,dr:55,pi:58,sw:55,ro:52,lu:50,be:55,bi:52,sd:58,se:55,ka:48,lm:45,wy:65,nak:60,sep:62}
   },
@@ -42380,7 +42380,7 @@ const MUSHROOMS={
     season:[7,8,9,10],terrain:['Bory sosnowe','Lasy iglaste','Lasy mieszane'],
     soil:'Gleba kwaśna, piaszczysta',ph:'4.0–5.5',elev:'0–1200 m',
     habitat:'Pod sosnami i świerkami. Mylony z borowikiem szlachetnym.',
-    desc:'Wygląda jak borowik — brązowy kapelusz, siateczka. Rurki RÓŻOWAWE. Miąższ różowieje. Smak: piekielnie gorzki.',
+    desc:'Kapelusz 6–15 cm, JASNOBRĄZOWY do płowoochrowego, matowy, suchy — łudzące podobieństwo do borowika szlachetnego. RURKI BIAŁE U MŁODYCH OKAZÓW, u dojrzałych RÓŻOWAWE DO BRUDNORÓŻOWYCH — kluczowa różnica od borowika (u borowika rurki białe→żółte→oliwkowe, nigdy różowe). SIATECZKA NA TRZONIE wyraźna, ciemnobrązowa, wypukła. Miąższ biały, przy powietrzu lekko różowieje. SMAK ABSOLUTNIE PIEKIELNIE GORZKI — intensywna gorzkość pojawia się natychmiast i nie ustępuje; jeden kawałek niszczy cały garnek, gotowanie nie usuwa goryczy. Test smakowy: muśnij miąższ językiem — goryczak nie pozostawia wątpliwości. Rośnie pod sosnami i świerkami na kwaśnych glebach, lipiec–październik.',
     danger:'Niejadalny — ekstremalnie gorzki. Jeden kawałek psuje cały garnek. Sprawdź kolor rurek.',
     lookalikes:'Borowik szlachetny i inne borowikowate — u nich rurki białe do żółtych, miąższ biały i nie różowieje. Najszybszy test: muśnij miąższ językiem — goryczak natychmiast da wyczuwalną, intensywną gorzkość.',
     weights:{tu:70,no:68,au:65,bw:62,ps:65,dl:68,ch:70,ku:60,dr:62,pi:65,br:58,ma:60,sd:62,be:60,bi:55,po:55,wy:72,nak:68,sep:70}
@@ -42410,7 +42410,7 @@ const MUSHROOMS={
     season:[4,5],terrain:['Bory sosnowe','Lasy iglaste z piaskiem'],
     soil:'Gleba piaszczysta, kwaśna',ph:'4.0–5.5',elev:'0–1200 m',
     habitat:'Wiosenna, pod sosnami na piaszczystej glebie. Mylona ze smardzem.',
-    desc:'Kapelusz ciemnobrązowy, mocno sfałdowany (mózgopodobny), nie siatkowaty jak smardz. 5–10 cm.',
+    desc:'Kapelusz 5–10 cm, CIEMNOBRĄZOWY, MOCNO SFAŁDOWANY w nieregularne, mózgopodobne wały — fałdy nie tworzą siatki jak u smardza, lecz chaotycznie zachodzą na siebie. KLUCZOWE: miąższ NIECAŁKOWICIE PUSTY — przy przekroju widać częściowo wypełnione wnętrze (smardz jest całkowicie pusty i kruchy). Trzon kremowobiały, spłaszczony, często żebrowany. Wiosenny (marzec–maj), pojawia się przed pełnym rozwinięciem liści. Zawiera lotną toksynę gyromitrin — NIEBEZPIECZNA NAWET PO UGOTOWANIU (destylacja wodna nie usuwa MMH). Nieodróżnialna dla laika od smardza jadalneg0 — nie zbieraj bez 100% pewności.',
     danger:'TRUJĄCY na surowo — zawiera gyromitry. Może być przyrządzana tradycyjnie (patrz niżej), ale oficjalnie uważana za toksyczną w Polsce.',
     lookalikes:'Smardz jadalny (Morchella esculenta) — odróżnij wyraźnie: smardz ma regularne, sześciokątne, miodowe komórki; piestrzenica ma nieregularne, mózgopodobne, płatowate fałdy. Owocnik piestrzennicy jest zazwyczaj bardziej siodłowaty lub falisty, smardza — wydłużony i symetryczny.',
     weights:{tu:65,no:62,au:60,bw:58,dr:55,pi:60,ps:58,dl:62,ch:65,ku:52,ma:50,br:50,ll:48,wy:75,nak:70,sep:72}
@@ -42420,7 +42420,7 @@ const MUSHROOMS={
     season:[7,8,9,10],terrain:['Bory sosnowe','Lasy iglaste','Torfowiska'],
     soil:'Gleba kwaśna, torfowa, wilgotna',ph:'3.5–5.0',elev:'0–1200 m',
     habitat:'Pospolity pod sosnami i świerkami, przy torfowiskach.',
-    desc:'Kapelusz intensywnie czerwony, skórka łatwo się łupie, 5–12 cm. Blaszki białe. Smak: PIEKIELNIE ostry.',
+    desc:'Kapelusz 5–12 cm, INTENSYWNIE CZERWONY do jaskrawoczerwonawego. KLUCZOWE: SKÓRKA ŁATWO ŁUPIE SIĘ od krawędzi ku środkowi — odciągamy ją jak skórkę z pomidora, pod spodem miąższ białawy z lekko różawym odcieniem. Blaszki białe do kremowych, kruche (typowa cecha gołąbków). SMAK ABSOLUTNIE PIEKĄCY — kawałek przyłożony do języka piecze natychmiast i nie ustępuje; żaden jadalny gołąbek nie ma tak intensywnej ostrości. Test smakowy to podstawowa metoda identyfikacji gołąbków w terenie. Zarodniki białe do kremowych.',
     danger:'TRUJĄCY. Powoduje silne wymioty i biegunkę. Naturalny ostrzegawczy smak.',
     weights:{tu:70,no:68,au:65,bw:62,ps:65,dl:68,ma:60,br:55,su:62,wi:60,ku:58,be:55,bi:52,ta:50,go:52,sd:58,wy:68,nak:62,sep:65}
   },
@@ -42975,9 +42975,9 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Brzeziny','Lasy liściaste','Torfowiska','Mokradła leśne'],
     soil:'Gleba podmokła, torfowa lub kwaśna, wyłącznie pod brzozami',ph:'4.0–5.5',elev:'0–1200 m',
     habitat:'Wyłącznie pod brzozami na podmokłych glebach. Jeden z pospolitszych i najpiękniejszych zasłoniaków — czerwone opaski na trzonie niepowtarzalne.',
-    desc:'Kapelusz rdzawobrązowy, 5–12 cm. Trzon jasnobrązowy z 2–4 INTENSYWNIE POMARAŃCZOWOCZERWONYMI WEŁNISTYMI PASKAMI (opaski z rozerwanych pajęczynowych zasłonek) — cecha absolutnie unikalna w całym rodzaju. Blaszki rdzawe, brudnordzawe.',
-    danger:'TRUJĄCY — zawiera orellaninę (jak zasłonak ognistorudy) niszczącą nerki z 2–4-tygodniowym opóźnieniem. Brak odtrutki. Mimo wyróżniającego wyglądu notowane zatrucia. Cały rodzaj Cortinarius = nie zbierać.',
-    lookalikes:'Inne zasłoniaki — rdzawobrązowe, bez pasków. Koźlarze, podgrzybki — nie mają pas na trzonie. Czerwone opaskowe wzory na trzonie + brzoza = zasłonak kruszcowy. Unikalny wygląd, ale niebezpieczny.',
+    desc:'Kapelusz RDZAWOBRĄZOWY, 5–12 cm, suchy, higrofaniczny (wyraźnie ciemniejszy gdy mokry). ABSOLUTNIE UNIKALNA CECHA: trzon jasnobrązowy z 2–4 INTENSYWNIE POMARAŃCZOWOCZERWONYMI LUB RDZAWOCZERWONYMI WEŁNISTYMI OPASKAMI — pozostałości rozerwanych pajęczynowych zasłonek (kortyny); żaden inny zasłoniak w Polsce nie ma takich opasek. Blaszki ochrobrązowe do rdzawobrązowych, szeroko ustawione, przyrośnięte. Brak prawdziwego pierścienia — tylko ślad pajęczynowej kortyny u bardzo młodych okazów. Rośnie WYŁĄCZNIE POD BRZOZAMI na podmokłych, torfowych lub kwaśnych glebach — bez brzozy nie ma zasłoniaka kruszcowego. Sierpień–październik.',
+    danger:'TRUJĄCY — zawiera orellaninę niszczącą nerki z 2–4-tygodniowym opóźnieniem; przez cały ten czas brak objawów. Brak odtrutki. Mimo wyróżniającego wyglądu notowane zatrucia. Cały rodzaj Cortinarius = nie zbierać.',
+    lookalikes:'Inne zasłoniaki (Cortinarius spp.) — rdzawobrązowe, bez czerwonych opasek na trzonie. Koźlarze, podgrzybki — nie mają opasek na trzonie, rurkowate (nie blaszkowe). Czerwone wełniste opaski na trzonie + wyłącznie pod brzozą + podmokłe siedlisko = zasłonak kruszcowy — unikalny wygląd, ale śmiertelnie trujący.',
     weights:{bw:72,au:75,kb:78,kn:70,su:76,wi:78,ps:68,ma:70,tu:65,no:62,dr:60,pi:65,ku:62,br:68,wk:65,ll:58,wy:70,nak:65,sep:72}
   },
 
@@ -54686,7 +54686,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.59</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.60</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
