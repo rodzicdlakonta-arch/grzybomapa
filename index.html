@@ -437,7 +437,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.56</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.57</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43878,6 +43878,7 @@ function _showForestTip(ll){
 map.on('mousemove',e=>_showForestTip(e.latlng));
 if('ontouchstart' in window) map.on('click',e=>{
   if(bdlActive) return;
+  if(e.originalEvent?._bttHandled) return;
   _showForestTip(e.latlng);
   setTimeout(()=>_fHoverTip.remove(),2500);
   const lat=e.latlng.lat,lng=e.latlng.lng;
@@ -43901,6 +43902,7 @@ if('ontouchstart' in window){
     _btt.call(this,c,o);
     this.on('click',function(e){
       if(this._popup||!this._tooltip)return;
+      if(e.originalEvent) e.originalEvent._bttHandled=true;
       this._tooltip.setLatLng(e.latlng);
       this.openTooltip(e.latlng);
       const self=this;setTimeout(()=>self.closeTooltip(),2500);
@@ -52563,7 +52565,7 @@ function showInfoPanel(mid){
     <div class="isec"><h4>Podłoże</h4><p>${m.soil}</p></div>
     <div class="isec"><h4>Środowisko</h4><div class="ttags">${m.terrain.map(t=>`<span class="tt">${t}</span>`).join('')}</div></div>
     <div class="isec"><h4>Siedlisko</h4><p>${m.habitat}</p></div>
-    <div class="isec"><h4>🔍 Jak rozpoznać?</h4><ul class="id-steps">${(m.desc||'').split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄ])/).filter(s=>s.trim()).map(s=>`<li>${s.trim().replace(/\.$/,'')}</li>`).join('')}</ul></div>
+    <div class="isec"><h4>🔍 Jak rozpoznać?</h4><ul class="id-steps">${(m.desc||'').split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄ])/).filter(s=>s.trim()).map(s=>`<li>${s.trim().replace(/\.$/,'')}</li>`).join('')}</ul><p style="font-size:10.5px;color:var(--muted);margin:6px 0 0;line-height:1.4">⚠️ Nie używaj tej strony jako jedynego źródła do identyfikacji — zawsze konsultuj z ekspertem lub atlasem.</p></div>
     ${m.edib?`<div class="isec"><h4>Wartość kulinarna</h4><p>${m.edib}</p></div>`:''}
     ${m.lookalikes?`<div class="isec"><h4>⚠ Gatunki podobne — nie pomyl!</h4>${(m.lookalikes).split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄGW])/).filter(s=>s.trim()).map(s=>`<div class="la-item">${s.trim().replace(/\.$/,'')}</div>`).join('')}</div>`:''}
     ${(()=>{const ld=MUSHROOM_LOCAL[mid];if(!ld)return '';return `<div class="isec" style="border-left:3px solid ${LOCAL_COLOR[ld.s]||'#888'};padding-left:8px;margin-top:4px"><h4 style="color:${LOCAL_COLOR[ld.s]||'#888'}">🗺 W regionie Krajna / Wyrzysk</h4><div style="font-weight:600;color:${LOCAL_COLOR[ld.s]};margin-bottom:4px">${LOCAL_LABEL[ld.s]}</div><p style="margin:0;font-size:12px">${ld.n}</p></div>`;})()}
@@ -54602,7 +54604,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.56</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.57</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
