@@ -166,6 +166,10 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #photo-lb{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;overflow:hidden}
 #photo-lb img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,.6);cursor:zoom-in;transition:transform .2s ease;transform-origin:center center;user-select:none}
 #photo-lb.open{display:flex}
+#lb-prev,#lb-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);border:none;color:#fff;font-size:28px;width:52px;height:72px;cursor:pointer;z-index:10;border-radius:8px;display:none;align-items:center;justify-content:center;user-select:none;transition:background .15s}
+#lb-prev{left:16px}#lb-next{right:16px}
+#lb-prev:hover,#lb-next:hover{background:rgba(0,0,0,.8)}
+#photo-lb.lb-gallery #lb-prev,#photo-lb.lb-gallery #lb-next{display:flex}
 .mphoto{cursor:zoom-in!important}
 .pcls:hover{color:var(--text)}
 .pname{font-size:19px;font-weight:600;color:var(--text);line-height:1.2}
@@ -278,6 +282,10 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .mphoto-wrap{position:relative;margin-bottom:16px;border-radius:8px;overflow:hidden;background:var(--card);min-height:0}
 .mphoto-wrap.loading{min-height:160px}
 .mphoto-wrap.loading::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--card) 25%,var(--border) 50%,var(--card) 75%);background-size:200% 100%;animation:shimmer 1.2s infinite}
+.mphoto-wrap.photo-error{min-height:120px}
+.mphoto-wrap.photo-error::after{content:'Nie można załadować zdjęcia';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);letter-spacing:.02em;pointer-events:none}
+#photo-lb.lb-error #photo-lb-img{opacity:.15}
+#photo-lb.lb-error::before{content:'Nie można załadować zdjęcia';position:absolute;color:rgba(255,255,255,.5);font-size:13px;pointer-events:none;z-index:1}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .gal-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.45);color:#fff;border:none;cursor:pointer;z-index:3;padding:0;width:28px;height:44px;font-size:16px;line-height:44px;text-align:center;opacity:0;transition:opacity .18s;border-radius:4px;display:none}
 .mphoto-wrap:hover .gal-btn{opacity:1}
@@ -445,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.15</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.17</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -511,7 +519,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 </nav>
 <div id="sb-resize"></div>
 <div id="sb-tab" title="Pokaż/ukryj panel">◀</div>
-<div id="photo-lb"><img id="photo-lb-img" alt=""><div id="photo-lb-attr" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.5);white-space:nowrap;pointer-events:none"></div></div>
+<div id="photo-lb"><img id="photo-lb-img" alt=""><div id="photo-lb-attr" style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,.5);white-space:nowrap;pointer-events:none"></div><button id="lb-prev">&#10094;</button><button id="lb-next">&#10095;</button></div>
 <div id="mw">
   <div id="map-loader">
     <div class="ml-mushrooms"><span class="ml-mush">🍄</span><span class="ml-mush">🍄</span><span class="ml-mush">🍄</span></div>
@@ -42266,6 +42274,7 @@ const MUSHROOMS={
     desc:'Kapelusz 2–8 cm, POMARAŃCZOWOŻÓŁTY do miodowego lub brązowego, ŚLUZOWATY przy wilgotnej pogodzie, gładki, bez łusek. BLASZKI kremowobiałe, gęste, przyrośnięte do trzonu. TRZON BRĄZOWOCZARNY, AKSAMITNY (szczotkowy, gęsto filcowany) — od połowy w dół PRAWIE CZARNY z wyraźnym matowym velurowym owłosieniem; to jego najważniejsza cecha identyfikacyjna. Trzon u dołu łączący się ze wspólnym korzeniem kępki. Rośnie KĘPKAMI od późnej jesieni do marca — jedyny pospolity grzyb owocnikujący w środku zimy, znosi mróz. KLUCZOWE BEZPIECZEŃSTWO: hełmówka jadowita (G. marginata) rośnie w tych samych miejscach na drewnie — sprawdź trzon: czarny aksamitny = zimówka; jasnobrązowy jednolity z wyraźnym pierścieniem = hełmówka (ŚMIERTELNA). Test wysypu zarodników: na blaszkach zimówki biały, na hełmówce rdzawy.',
     edib:'Smaczna, dobra do zup. Sprzedawana jako "enoki". Gotować min. 5 minut.',
     lookalikes:'Hełmówka jadowita (Galerina marginata) — ŚMIERTELNA. Ten sam habitat na drewnie, podobna barwa. Odróżnij: zimówka ma trzon wyraźnie ciemnobrązowy z czarnym aksamitnym (szczotkowym) owłosieniem; hełmówka ma trzon jednobarwny brązowy z wyraźnym pierścieniem i rdzawobrązowym wysypem zarodników na blaszkach.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Flammulina_velutipes_2011_G1.jpg?width=500'],
     weights:{ka:70,lm:68,bw:72,au:65,ku:60,sw:65,ro:68,lu:65,ja:62,be:60,bi:58,sd:55,po:60,so:62,sl:60,op:58,br:55,gr:52,ps:58,ma:55,wy:68,nak:62,sep:65}
   },
   czernidlak:{q:3,
@@ -42275,6 +42284,7 @@ const MUSHROOMS={
     habitat:'Przy drogach, na trawnikach, przy kompostownikach.',
     desc:'Młody owocnik CYLINDRYCZNY JAK PAŁECZKA do bębna, 5–15 cm, BIAŁY z CZARNYM KONIUSZKIEM pokrytym ciemną łuską lub włóknami — jak zakryta przez skrzypek smyczka. BLASZKI u bardzo młodych białe → różowieją → CZERNIEJĄ stopniowo od dołu ku środkowi. SAMOTRAWI SIĘ od dołu ku górze w czarny ATRAMENTOWATY PŁYN — proces rozpoczyna się po kilku godzinach od zebrania lub pozostawienia; zbierać BEZWZGLĘDNIE TYLKO BIAŁE I KREMOWE młode owocniki bez śladu różowienia. Trzon biały, wydrążony, z pierścieniem ruchomym u dołu. Rośnie od maja do listopada przy drogach, na trawnikach, przy kompostownikach i nawożonych łąkach — w miejscach bogatych w azot. ZUŻYĆ w ciągu 1–2 godzin po zbiorze lub odrzucić.',
     edib:'Dobry smak, delikatny aromat. Używać natychmiast — w ciągu godzin od zbioru zaczyna się autotrawiać. Podsmażyć lub do jajecznicy.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Coprinellus_comatus_2011_G2.jpg?width=500'],
     weights:{ka:72,lm:68,lu:65,ro:60,sw:65,br:58,gr:55,sl:60,op:62,ll:62,so:58,bi:48,be:50,au:52,bw:50,tu:45,no:42,wy:58,nak:55,sep:60}
   },
   gaska_szara:{q:3,
@@ -42285,6 +42295,7 @@ const MUSHROOMS={
     desc:'Kapelusz 3–8 cm, SZAROCZARNY DO MYSIOSZAREGO, FIBRYLOSTY (włóknisto-promieniście rozdarty) — powierzchnia pokryta ciemnobrązowymi lub szarymi, włóknistymi łuseczkami zbiegającymi z centrum. BLASZKI białe do szarawobiałych, dość gęste, przyrośnięte do trzonu — nieprzerośnięte ostrymi do schodkowych. TRZON biały, włóknisty, bez pierścienia, cienki. ZAPACH ŁAGODNY MĄCZNY — kluczowe odróżnienie od trującego T. pardinum (brak ostrego zapachu). Rośnie masowo WYŁĄCZNIE POD SOSNAMI w borach sosnowych — nie pod innymi drzewami — od września do listopada. Tworzy CZARCIE KRĘGI — jeśli jeden znaleziony, szukaj w otoczeniu kilkumetrowego okręgu.',
     edib:'Jadalna po ugotowaniu, dobry smak. Nie mylić z gąską plamistą (T. pardinum) — sprawdź zawsze zapach (mączny = szara, brak ostrego/chemicznego) i wyłącznie bory sosnowe.',
     lookalikes:'Gąska siarkowa (T. sulphureum) — TRUJĄCA; odróżnij intensywnym nieprzyjemnym zapachem przypominającym karbid lub gaz (gąska szara pachnie łagodnie mąkowo), i siarkowożółtym miąższem (u gąski szarej biały). Gąska plamista (T. pardinum) — silnie trująca; większa, kapelusz pokryty ciemnoszarymi, koncentrycznymi łuskami, pod bukami na glebach wapiennych.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Tricholoma_terreum_2010_G1.jpg?width=500'],
     weights:{tu:85,no:82,dr:78,pi:80,au:75,ps:78,dl:80,ch:82,ku:72,ma:68,bw:70,br:65,wk:62,ll:58,gr:68,sw:60,lm:50,ka:45,sd:70,se:65,wy:82,nak:75,sep:78}
   },
   hericium:{q:4,
@@ -42361,6 +42372,7 @@ const MUSHROOMS={
     desc:'Kapelusz 5–15 cm, ZIELONKAWY do oliwkowoszarego lub żółtozielonego — kolor zmienny, może blaknie do niemal białego. BLASZKI BIAŁE, gęste, wolne od trzonu — nigdy różowe ani brązowe (kluczowy odróżnik od pieczarek). Trzon biały do zielonkawego, z WISZĄCYM BŁONIASTYM PIERŚCIENIEM — zwisającym jak spódniczka. Przy podstawie trzonu BIAŁA SKÓRKOWATA POCHWA (volva) — kieszonka zakryta ziemią, wyciągnąć grzyba z korzonkiem. Zapach ledwo wyczuwalny, lekko słodkawy na świeżo — brak ostrego zapachu. Zarodniki białe (biały wysyp). Wygląda często jak zielona pieczarka lub gołąbek.',
     danger:'ŚMIERTELNIE TRUJĄCY — odpowiada za ok. 30% śmiertelnych zatruć grzybami. Amanitin i falloidyna niszczą wątrobę i nerki. Objawy po 4–16 h (wymioty, biegunka), po czym POZORNA POPRAWA — w ciągu 3–7 dni całkowita niewydolność wątroby. Jeden kapelusz może zabić dorosłego. Brak antidotum. ZAWSZE sprawdź białą pochwę u nasady.',
     lookalikes:'Zielone gołąbki (Russula virescens) — BRAK pochwy u podstawy trzonu, trzon kruchy. Gąski zielone (Tricholoma) — brak pochwy i brak pierścienia jednocześnie. Pieczarki — blaszki od różowawych do brązowych, nie białe. Zawsze szukaj białej, skórkowatej pochwy u podstawy trzonu — definiuje wszystkie śmiertelne muchomory.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Amanita_phalloides_1.JPG?width=500'],
     weights:{ka:65,lm:60,sw:70,ro:68,lu:65,ja:62,be:60,bi:58,sd:55,po:60,so:60,sl:58,op:62,bw:55,kn:52,au:50,ku:55,ma:50,wy:52,nak:48,sep:50}
   },
   muszomor_jad:{
@@ -42388,6 +42400,7 @@ const MUSHROOMS={
     habitat:'Najczęściej pod brzozami i sosnami. Jeden z najpospolitszych trujących.',
     desc:'Kapelusz 5–20 cm, INTENSYWNIE CZERWONY do szkarłatnego, z nieregularnymi BIAŁYMI PLAMKAMI (resztki białej osłonki/veila) — u starszych plamki mogą zmyć się deszczem. BLASZKI BIAŁE, gęste, wolne od trzonu — ważny szczegół (białe, nie żółte). TRZON biały, gruby, z wyraźnym BŁONIASTYM PIERŚCIENIEM i bulwiastą POCHWĄ u nasady zakrytą w ziemi — zawsze wyciągnąć z ziemią i sprawdzić. Barwa kapelusza wyjątkowo charakterystyczna — jeden z najłatwiej rozpoznawalnych grzybów. Rośnie pod brzozami i sosnami, od sierpnia do października.',
     danger:'TRUJĄCY i HALUCYNOGENNY — muscymol i kwas ibotenowy powodują wzmożone ślinienie, drgawki, majaczenia, psychozę, śpiączkę. Używany rytualnie przez syberyjskich szamanów po specjalnej obróbce — w Polsce bez eksperckiej wiedzy bezwzględnie nie zbierać.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Amanita_muscaria_3_vliegenzwammen_op_rij.jpg?width=500'],
     weights:{tu:72,no:70,au:75,bw:72,ps:68,ma:68,dl:70,ch:72,ku:65,dr:65,pi:68,br:62,wk:60,ll:58,su:70,wi:72,sd:65,be:65,bi:60,ta:60,go:62,wy:72,nak:68,sep:70}
   },
   goryczak:{
@@ -42418,6 +42431,7 @@ const MUSHROOMS={
     desc:'Kapelusz 2–5 cm, MIODOWOŻÓŁTY do jasnobrązowego, z delikatnym garbkiem. Blaszki RDZAWOBRĄZOWE, gęste, przyrośnięte — u starszych z rdzawym pudrowatym osadem zarodników (to kluczowy wyróżnik!). PIERŚCIEŃ błoniasty brązowy na trzonie, niekiedy niewyraźny. Trzon cienki, brązowy, włóknisty — dolna część ciemniejsza, jedwabiście brązowa. Rośnie na drewnie (pniaki, korzenie, leżące kłody) — ZAWSZE ZWERYFIKOWAĆ HABITAT. Efektownie podobna do opieńki miodowej, zimówki i podpieńki zmiennej. Absolutny test: rdzawobrązowy osad zarodnikowy na blaszkach (wysyp zarodników rdzeń ochrowożółty do rdzawego = hełmówka; jasnobeżowy/kremowy = opieńka).',
     danger:'ŚMIERTELNIE TRUJĄCY — amatoksyny niszące wątrobę i nerki, identyczne z muchomorem sromotnikowym. Jedna z najczęstszych przyczyn śmiertelnych zatruć w Europie (mylona z zimówką, opieńką). Kluczowy test: rdzawobrązowy wysyp zarodników na blaszkach. Żaden błąd tu nie jest odwracalny.',
     lookalikes:'Opieńka miodowa — jadalna po blanszowaniu; rośnie w dużych skupiskach, wysyp zarodników kremowy. Zimówka aksamitnotrzonowa — trzon czarnoaksamitny (szczotkowy), brak pierścienia lub słabo widoczny, zimowa; hełmówka ma wyraźny brązowy pierścień.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Galerina_marginata_2010_G1.jpg?width=500'],
     weights:{bw:60,au:58,ka:55,sw:58,ro:55,lu:52,be:55,bi:50,sd:48,po:50,so:52,sl:48,op:45,ps:52,ma:50,wy:62,nak:58,sep:60}
   },
   piestrzenica:{
@@ -42489,6 +42503,7 @@ const MUSHROOMS={
     habitat:'Na pniach i konarach żywych dębów i wiązów, rzadziej topoli. Tworzy wielopiętrowe pomarańczowe półki.',
     desc:'Nakładające się na siebie PÓŁKI lub WACHLARZE 10–50 cm każdy, wyrastające z pnia jak wielopiętrowy palisander. Górna strona JASKRAWOPOMARAŃCZOWA do łososiowej — ŻÓŁTA u krawędzi młodych okazów; spód jasnopomarańczowy lub żółty z drobnymi okrągłymi PORAMI (nie blaszki). BRAK TRZONU — wyrasta bezpośrednio z kory. MIĄŻSZ BIAŁY do kremowożółtego, U MŁODYCH MIĘKKI JAK SER — przy naciśnięciu palca wgniata się; u starszych twardnieje i drewnieje. STARSZE OKAZY TRUJĄCE — zbierać wyłącznie jasnopomarańczowe młode brzegi. Kolor z wiekiem płowieje do kremowożółtego. Rośnie od czerwca do października na pniach żywych dębów, wiązów i kasztanowców.',
     edib:'Smaczny tylko MŁODY (miękka konsystencja jak ser). Starsze okazy twarde i mogą powodować dolegliwości. Smażyć lub grillować — przypomina w teksturze kurczaka (stąd "chicken of the woods"). Zbierać jasnopomarańczowe brzegi.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Laetiporus_sulphureus_2013_G1.jpg?width=500'],
     weights:{bw:72,au:68,ka:65,sw:70,ro:68,lu:65,ja:62,be:70,bi:65,sd:60,po:65,so:65,sl:62,op:68,st:65,ku:58,ma:60,lm:58,kn:60,ll:55,br:52,wy:68,nak:62,sep:65}
   },
   kurka_czarna:{q:4,
@@ -42534,6 +42549,7 @@ const MUSHROOMS={
     habitat:'Na pniach i gałęziach bzów czarnych (Sambucus nigra), olch i wiązów. Cały rok, szczególnie jesień–zima. Pospolity i łatwy do znalezienia.',
     desc:'3–12 cm, GALARETOWATY, elastyczny, kształt USZOWATO-FALISTY — wygięty jak ucho lub muszla. Barwa brązoworudy do szarobrązowego; górna powierzchnia DELIKATNIE ŻEBERKOWANA (naśladuje żyłkowanie ucha), dolna gładka, lśniąca. Rośnie WYŁĄCZNIE NA DREWNIE (głównie bez czarny, wiąz, olcha) — nigdy z ziemi. Grubieje i mięknie po deszczu, twardnieje i kurczy się w suszę (można zbierać nawet suche i nawodnić). Cały rok.',
     edib:'Jadalny. Smażyć, gotować, suszyć. Cenny w kuchni chińskiej jako "czarne grzyby" (mù ěr). Chrupki po przyrządzeniu. Dobry do zup azjatyckich i stir-fry.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Auricularia_auricula-judae_2009_G1.jpg?width=500'],
     weights:{bw:68,au:62,ka:65,sw:68,ro:65,lu:62,ja:60,be:60,bi:58,sd:55,po:60,so:60,sl:58,op:60,st:62,ku:55,ma:55,ll:58,br:55,gr:52,wy:62,nak:58,sep:60}
   },
   podpienka:{q:2,
@@ -42923,6 +42939,7 @@ const MUSHROOMS={
     desc:'Kapelusz 5–15 cm, FIOŁKOWONIEBIESKI do niebieskawobrązowego — u młodych intensywnie fioletowy, starsze bledną do brązowego gubią odcień. BLASZKI JASNOFIOŁKOWE, gęste — kolor utrzymuje się dłużej niż w kapeluszu. TRZON fiołkowoniebieskawy. ZAPACH INTENSYWNY, owocowy lub parfumeryjny — jeden z bardziej aromatycznych grzybów Polski. KLUCZOWY TEST: brak pajęczynki (cortiny) między kapeluszem a trzonem — blewit jej nie ma; jeśli widzisz pajęczynkę, to jest zasłonak (Cortinarius), nie zbierać. Jeden z ostatnich grzybów roku — zbierać październik–grudzień, czasem pod pierwszym śniegiem.',
     edib:'Smaczny jadalny — dobry do sosów i smażenia. Zebrany po pierwszych przymrozkach może być nieco kwaśny. Nigdy na surowo — surowy powoduje dolegliwości żołądkowe. Gotować minimum 5 min.',
     lookalikes:'Lejkówka gołąbkowa (C. nebularis) — szara, bez fiołkowego zabarwienia, zapach mączysty. Zasłonak fiołkowy (C. violaceus) — CHRONIONY, rzadki, z pajęczynką. Zasłonak piękny (C. violaceus) — w lesie, z pajęczynką. Fiołkowe blaszki + owocowy zapach bez pajęczynki = blewit.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Lepista_nuda_2010_G1.jpg?width=500'],
     weights:{bw:72,au:68,kn:65,sw:75,ro:72,lu:68,ja:65,be:72,bi:68,sd:65,po:68,so:65,ka:68,ku:62,tu:58,no:55,ll:62,op:68,st:70,sl:65,wy:70,nak:65,sep:68}
   },
 
@@ -43123,6 +43140,7 @@ const MUSHROOMS={
     edib:'Dobry po obraniu śluzowatej skórki kapelusza przed gotowaniem. Smażyć, dusić lub marynować. Skórka surowa może drażnić żołądek — zawsze obierać.',
     danger:'Surowa skórka kapelusza może wywoływać dolegliwości żołądkowe. Po obraniu i ugotowaniu bezpieczny i smaczny.',
     lookalikes:'Maślak ziarnisty (S. granulatus) — BEZ PIERŚCIENIA, jaśniejszy. Maślak pstry (S. variegatus) — ciemniejsze rurki, bez pierścienia. Maślak rdzawobrązowy (S. fluryi) — rzadszy, podobny. Śluzowaty kapelusz + wyraźny pierścień na trzonie + wyłącznie pod sosną = maślak zwyczajny.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Suillus_luteus_2011_G1.jpg?width=500'],
     weights:{tu:78,no:75,dr:72,pi:80,au:70,ps:75,dl:72,ch:78,bw:65,ku:62,ma:60,br:58,wk:55,ll:52,sd:72,se:68,be:62,po:62,bi:58,wy:76,nak:74,sep:76}
   },
 
@@ -52537,7 +52555,8 @@ async function loadWikiPhoto(wiki,imgEl){
     const r=await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(wiki)}`);
     const d=await r.json();
     if(d.thumbnail?.source){imgEl.src=d.thumbnail.source;imgEl.style.display='block';}
-  }catch{}
+    else{imgEl.parentElement.classList.remove('loading');imgEl.parentElement.classList.add('photo-error');}
+  }catch{imgEl.parentElement.classList.remove('loading');imgEl.parentElement.classList.add('photo-error');}
 }
 
 function _showBestSpot(mid){
@@ -52627,7 +52646,7 @@ function showInfoPanel(mid){
   function _s5(v){return Math.round(v*5/4*2)/2;}
   const statsHtml=`<div class="isec">${m.q&&m.cat==='edible'?_statRow('Smak',_s5(m.q),5,()=>_forkPip(true),_forkHalf,()=>_forkPip(false)):''}${dVal?_statRow('Trudność ID',_s5(dVal),5,()=>_lensPip(true),_lensHalf,()=>_lensPip(false)):''}${combinedRare?_statRow('Rzadkość',combinedRare,5,()=>_rarePip(true),_rareHalf,()=>_rarePip(false)):''}</div>`;
   document.getElementById('pbody').innerHTML=`
-    <div class="mphoto-wrap loading" id="mphoto-wrap"><img id="mwiki-photo" class="mphoto" alt="${m.name}" onerror="this.parentElement.classList.remove('loading');this.style.display='none'" onload="this.classList.add('loaded');this.style.display='block';this.parentElement.classList.remove('loading')"><button class="gal-btn gal-prev" id="gal-prev">&#10094;</button><button class="gal-btn gal-next" id="gal-next">&#10095;</button><div class="gal-counter" id="gal-counter"></div></div>
+    <div class="mphoto-wrap loading" id="mphoto-wrap"><img id="mwiki-photo" class="mphoto" alt="${m.name}" onerror="this.parentElement.classList.remove('loading');this.parentElement.classList.add('photo-error');this.style.display='none'" onload="this.classList.add('loaded');this.style.display='block';this.parentElement.classList.remove('loading');this.parentElement.classList.remove('photo-error')"><button class="gal-btn gal-prev" id="gal-prev">&#10094;</button><button class="gal-btn gal-next" id="gal-next">&#10095;</button><div class="gal-counter" id="gal-counter"></div></div>
     ${extra}${statsHtml}
     <div class="isec"><h4>Sezon owocnikowania</h4>
       <div class="sbar">${sbar}</div>
@@ -52656,22 +52675,26 @@ function showInfoPanel(mid){
     const extras=m.photos||[];
     const total=(m.wiki?1:0)+extras.length;
     let idx=0;
+    const _galSrcs=new Array(total).fill('');
+    extras.forEach((url,i)=>{_galSrcs[(m.wiki?1:0)+i]=url;});
     const ctr=document.getElementById('gal-counter');
     const btnP=document.getElementById('gal-prev');
     const btnN=document.getElementById('gal-next');
     function _galShow(i){
       idx=i;
       img.classList.remove('loaded');img.style.display='none';
+      img.parentElement.classList.remove('photo-error');
       img.parentElement.classList.add('loading');
       if(i===0&&m.wiki){
         loadWikiPhoto(m.wiki,img);
+        img.addEventListener('load',()=>{_galSrcs[0]=img.src;},{once:true});
       }else{
         const url=extras[i-(m.wiki?1:0)];
         img.src=url;img.style.display='block';img.parentElement.classList.remove('loading');
         img.classList.add('loaded');
       }
       if(total>1){ctr.textContent=`${i+1} / ${total}`;ctr.style.display='block';}
-      img.onclick=()=>{if(img.src)_openLightbox(img.src,`Źródło: Wikimedia Commons`);};
+      img.onclick=()=>{if(img.src)_openLightbox(_galSrcs.slice(),idx,'Źródło: Wikimedia Commons');};
     }
     if(total>1){
       btnP.style.display='block';btnN.style.display='block';
@@ -53573,7 +53596,7 @@ siEl.addEventListener('input',()=>{
 
 function flyTo(lat,lng){map.flyTo([parseFloat(lat),parseFloat(lng)],12,{duration:1.4});closeSearch();}
 function closeSearch(){srEl.style.display='none';siEl.blur();siEl.value='';if(activeSearch){activeSearch='';renderList();}}
-document.addEventListener('click',e=>{if(!e.target.closest('#sw')&&!e.target.closest('.ai'))closeSearch();});
+document.addEventListener('click',e=>{if(!e.target.closest('#sw')&&!e.target.closest('.ai')&&!e.target.closest('.mc'))closeSearch();});
 
 // ─── F2 debug overlay ─────────────────────────────────────
 let _dbgMapLayer=null,_dbgEdgeLayer=null;
@@ -54314,8 +54337,11 @@ renderList();
   const lb=document.getElementById('photo-lb');
   const img=document.getElementById('photo-lb-img');
   const attr=document.getElementById('photo-lb-attr');
+  const lbPrev=document.getElementById('lb-prev');
+  const lbNext=document.getElementById('lb-next');
   let scale=1,panX=0,panY=0;
   let dragging=false,didDrag=false,sx=0,sy=0,spx=0,spy=0;
+  let _lbSrcs=[],_lbIdx=0,_lbCaption='';
   function applyTransform(){
     if(scale<=1){img.style.transform='';panX=0;panY=0;}
     else img.style.transform=`translate(${panX.toFixed(1)}px,${panY.toFixed(1)}px) scale(${scale.toFixed(2)})`;
@@ -54326,10 +54352,26 @@ renderList();
     if(scale===1){panX=0;panY=0;}
     applyTransform();
   }
-  window._openLightbox=function(src,attribution){
-    img.src=src;
-    if(attr)attr.textContent=attribution||'';
+  function _lbShow(i){
+    _lbIdx=(i+_lbSrcs.length)%_lbSrcs.length;
+    lb.classList.remove('lb-error');
+    img.src=_lbSrcs[_lbIdx]||'';
+    setScale(1);
+  }
+  img.addEventListener('error',()=>lb.classList.add('lb-error'));
+  img.addEventListener('load',()=>lb.classList.remove('lb-error'));
+  if(lbPrev)lbPrev.onclick=e=>{e.stopPropagation();_lbShow(_lbIdx-1);};
+  if(lbNext)lbNext.onclick=e=>{e.stopPropagation();_lbShow(_lbIdx+1);};
+  window._openLightbox=function(srcs,idx,attribution){
+    // srcs: string (single) or array; idx: current index (optional)
+    if(typeof srcs==='string'){_lbSrcs=[srcs];_lbIdx=0;}
+    else{_lbSrcs=srcs;_lbIdx=idx||0;}
+    _lbCaption=attribution||'';
+    img.src=_lbSrcs[_lbIdx]||'';
+    if(attr)attr.textContent=_lbCaption;
     scale=1;panX=0;panY=0;applyTransform();
+    const multi=_lbSrcs.length>1;
+    lb.classList.toggle('lb-gallery',multi);
     lb.classList.add('open');
   };
   // Click to cycle zoom (only if not dragging)
@@ -54709,7 +54751,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.15</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.17</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
