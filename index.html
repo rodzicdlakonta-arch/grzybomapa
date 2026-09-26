@@ -254,6 +254,12 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 .hbox{background:rgba(125,60,185,.14);border:1px solid rgba(125,60,185,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#c39de8;line-height:1.55}
 .cpbox{background:rgba(201,120,30,.14);border:1px solid rgba(201,120,30,.3);border-radius:var(--r);padding:11px 13px;margin-bottom:14px;font-size:12.5px;color:#e8a040;line-height:1.55}
 .labox{background:rgba(180,140,30,.09);border:1px solid rgba(180,140,30,.28);border-radius:var(--r);padding:11px 13px;margin-bottom:0;font-size:12.5px;color:#b8962a;line-height:1.55}
+.id-steps{padding-left:0;margin:6px 0 0;list-style:none;display:flex;flex-direction:column;gap:5px}
+.id-steps li{font-size:13px;color:var(--text);line-height:1.5;padding:5px 9px;background:rgba(255,255,255,.04);border-left:2px solid var(--border);border-radius:0 var(--r) var(--r) 0}
+.la-item{background:rgba(180,100,20,.09);border-left:3px solid rgba(180,100,20,.45);padding:7px 10px;margin-bottom:5px;border-radius:0 var(--r) var(--r) 0;font-size:12.5px;color:var(--text);line-height:1.5}
+.la-item:last-child{margin-bottom:0}
+[data-theme="light"] .id-steps li{background:rgba(0,0,0,.03);border-color:var(--border)}
+[data-theme="light"] .la-item{background:rgba(160,80,10,.08);border-color:rgba(160,80,10,.4)}
 #map-loader{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.54),rgba(0,0,0,.54)),url('LoadingScreen.png') center/cover no-repeat;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:opacity .6s ease,visibility .6s ease}
 #map-loader.done{opacity:0;visibility:hidden;pointer-events:none}
 .ml-mushrooms{display:flex;gap:6px;align-items:flex-end;margin-bottom:22px}
@@ -428,7 +434,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.48</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.30.49</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43869,8 +43875,20 @@ function _showForestTip(ll){
 map.on('mousemove',e=>_showForestTip(e.latlng));
 if('ontouchstart' in window) map.on('click',e=>{
   if(bdlActive) return;
+  // Forest tooltip (existing logic)
   _showForestTip(e.latlng);
   setTimeout(()=>_fHoverTip.remove(),2500);
+  // Non-forest terrain tooltip — check _dynLanduse for point-in-polygon
+  const lat=e.latlng.lat,lng=e.latlng.lng;
+  const hit=_dynLanduse.find(lu=>{
+    if(!lu.p||lu.p.length<3)return false;
+    if(lu.t==='river')return false; // polylines, not polygons
+    return pipTest([lat,lng],lu.p);
+  });
+  if(hit&&hit.nm){
+    const _tt=L.tooltip({className:'ftip',opacity:.9}).setLatLng(e.latlng).setContent(hit.nm).addTo(map);
+    setTimeout(()=>_tt.remove(),2500);
+  }
 });
 
 // Mobile tap-to-show for bindTooltip layers (hover doesn't fire on touchscreens)
@@ -43975,15 +43993,15 @@ function loadDetailTerrain(){
         const nm=el.tags?.name||el.tags?.['name:pl']||'';
         const wway=el.tags?.waterway;
         if(wway==='river'||wway==='canal'){
-          _dynLanduse.push({t:'river',p:coords});
           const typePL=_waterTypePL[wway]||'rzeka';
           const tip=nm?`${nm} (${typePL})`:typePL;
+          _dynLanduse.push({t:'river',p:coords,nm:tip});
           L.polyline(coords,LANDUSE_STYLE.river).bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovDynWaterLayer);
         } else {
-          _dynLanduse.push({t:'water',p:coords});
           const wt=el.tags?.water||el.tags?.landuse||'water';
           const typePL=_waterTypePL[wt]||'akwen';
           const tip=nm?`${nm} (${typePL})`:typePL;
+          _dynLanduse.push({t:'water',p:coords,nm:tip});
           L.polygon(coords,LANDUSE_STYLE.water).bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovDynWaterLayer);
         }
       });
@@ -44018,10 +44036,10 @@ function loadDetailTerrain(){
         (data.elements||[]).forEach(el=>{
           if(!el.geometry)return;
           const coords=el.geometry.map(p=>[p.lat,p.lon]);
-          _dynLanduse.push({t:'wetland',p:coords});
           const wt=el.tags?.wetland||el.tags?.natural||'wetland';
           const typeLbl=_wetPL[wt]||'Mokradło';
           const tip=el.tags?.name?`${el.tags.name} (${typeLbl.toLowerCase()})`:typeLbl;
+          _dynLanduse.push({t:'wetland',p:coords,nm:tip});
           L.polygon(coords,{color:'#2878a0',weight:.6,fillColor:'#1e6a92',fillOpacity:.28})
            .bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovWetLayer);
         });
@@ -44035,9 +44053,9 @@ function loadDetailTerrain(){
         (data.elements||[]).forEach(el=>{
           if(!el.geometry)return;
           const coords=el.geometry.map(p=>[p.lat,p.lon]);
-          _dynLanduse.push({t:'meadow',p:coords});
           const t=el.tags?.landuse||el.tags?.natural||'meadow';
           const base=el.tags?.name||(t==='grassland'?'Murawa':t==='heath'?'Wrzosowisko':'Łąka');
+          _dynLanduse.push({t:'meadow',p:coords,nm:base});
           L.polygon(coords,{color:'#4a9430',weight:1.5,fillColor:'#70b84a',fillOpacity:.42})
            .bindTooltip(base,{sticky:true,className:'ftip'}).addTo(ovMeadowLayer);
         });
@@ -44058,11 +44076,11 @@ function loadDetailTerrain(){
         (data.elements||[]).forEach(el=>{
           if(!el.geometry)return;
           const coords=el.geometry.map(p=>[p.lat,p.lon]);
-          _dynLanduse.push({t:'farmland',p:coords});
           const rawCrop=el.tags?.crop||el.tags?.['crop:pl']||el.tags?.produce||el.tags?.plant||el.tags?.species||'';
           const cropName=cropPL[rawCrop.toLowerCase()]||rawCrop;
           const base=el.tags?.name||'Pole uprawne';
           const tip=cropName?`${base} · ${cropName}`:base;
+          _dynLanduse.push({t:'farmland',p:coords,nm:tip});
           L.polygon(coords,{color:'#c4902a',weight:1.5,fillColor:'#d4a035',fillOpacity:.42})
            .bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovCropLayer);
         });
@@ -44079,11 +44097,11 @@ function loadDetailTerrain(){
         (data.elements||[]).forEach(el=>{
           if(!el.geometry)return;
           const coords=el.geometry.map(p=>[p.lat,p.lon]);
-          _dynLanduse.push({t:'pasture',p:coords});
           const animal=el.tags?.animal||el.tags?.livestock||el.tags?.['animal:grazing']||'';
           const animalName=animalPL[animal]||animal;
           const base=el.tags?.name||'Pastwisko';
           const tip=animalName?`${base} (${animalName})`:base;
+          _dynLanduse.push({t:'pasture',p:coords,nm:tip});
           L.polygon(coords,{color:'#5a9a3a',weight:1.5,fillColor:'#6aaa45',fillOpacity:.40})
            .bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovPastureLayer);
         });
@@ -52542,9 +52560,9 @@ function showInfoPanel(mid){
     <div class="isec"><h4>Podłoże</h4><p>${m.soil}</p></div>
     <div class="isec"><h4>Środowisko</h4><div class="ttags">${m.terrain.map(t=>`<span class="tt">${t}</span>`).join('')}</div></div>
     <div class="isec"><h4>Siedlisko</h4><p>${m.habitat}</p></div>
-    <div class="isec"><h4>Identyfikacja</h4><p>${m.desc}</p></div>
+    <div class="isec"><h4>Identyfikacja — cechy rozpoznawcze</h4><ul class="id-steps">${(m.desc||'').split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄ])/).filter(s=>s.trim()).map(s=>`<li>${s.trim().replace(/\.$/,'')}</li>`).join('')}</ul></div>
     ${m.edib?`<div class="isec"><h4>Wartość kulinarna</h4><p>${m.edib}</p></div>`:''}
-    ${m.lookalikes?`<div class="isec"><h4>Gatunki podobne — uwaga!</h4><div class="labox">⚠ ${m.lookalikes}</div></div>`:''}
+    ${m.lookalikes?`<div class="isec"><h4>⚠ Gatunki podobne — nie pomyl!</h4>${(m.lookalikes).split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄGW])/).filter(s=>s.trim()).map(s=>`<div class="la-item">${s.trim().replace(/\.$/,'')}</div>`).join('')}</div>`:''}
     ${(()=>{const ld=MUSHROOM_LOCAL[mid];if(!ld)return '';return `<div class="isec" style="border-left:3px solid ${LOCAL_COLOR[ld.s]||'#888'};padding-left:8px;margin-top:4px"><h4 style="color:${LOCAL_COLOR[ld.s]||'#888'}">🗺 W regionie Krajna / Wyrzysk</h4><div style="font-weight:600;color:${LOCAL_COLOR[ld.s]};margin-bottom:4px">${LOCAL_LABEL[ld.s]}</div><p style="margin:0;font-size:12px">${ld.n}</p></div>`;})()}
     <div class="isec" style="padding-bottom:4px"><button id="pbest-btn" style="width:100%;padding:10px 14px;background:rgba(82,184,73,.13);color:var(--green);border:1px solid rgba(82,184,73,.3);border-radius:var(--r);cursor:pointer;font-size:13px;font-family:var(--f-body)">📍 Znajdź najlepsze miejsce na mapie</button></div>
   `;
@@ -53954,7 +53972,6 @@ document.getElementById('pcls').onclick=e=>{
   e.stopPropagation();
   document.getElementById('ip')?.classList.remove('open','ip-mini');
   clearHeat();
-  if(!(window.innerWidth>window.innerHeight&&window.innerHeight<700&&window.innerWidth<=1366))document.getElementById('ml').scrollTop=0;
   // Reset list/filter split to natural height (same as double-click the drag handle)
   const _sbt=document.getElementById('sb-top');
   if(_sbt){_sbt.style.height='';try{localStorage.removeItem('sb-top-h');}catch(_){}}
@@ -53980,14 +53997,33 @@ function showToast(msg){
 }
 
 // ── GPS / locate button ───────────────────────────────────────────────────
-let _gpsLayer=null;
+let _gpsLayer=null,_gpsConeSvg=null,_gpsHeading=null;
 function _setGpsLayer(ll,accuracy){
   if(_gpsLayer)map.removeLayer(_gpsLayer);
+  const coneDiv=document.createElement('div');
+  coneDiv.style.cssText='width:52px;height:52px;transform-origin:center center;pointer-events:none;opacity:0;transition:opacity .3s';
+  coneDiv.style.transform=`rotate(${_gpsHeading||0}deg)`;
+  coneDiv.innerHTML='<svg width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg"><polygon points="26,2 12,28 40,28" fill="rgba(25,118,210,0.28)" stroke="rgba(25,118,210,0.65)" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+  _gpsConeSvg=coneDiv;
+  if(_gpsHeading!=null)coneDiv.style.opacity='1';
+  const coneIcon=L.divIcon({html:coneDiv,iconSize:[52,52],iconAnchor:[26,26],className:''});
   _gpsLayer=L.layerGroup([
     L.circle(ll,{radius:Math.max(accuracy/2,30),color:'#1976D2',fillColor:'#1976D2',fillOpacity:.10,weight:1}),
+    L.marker(ll,{icon:coneIcon,interactive:false,zIndexOffset:-50}),
     L.circleMarker(ll,{radius:8,color:'#fff',weight:2,fillColor:'#1976D2',fillOpacity:1})
   ]).addTo(map);
 }
+(function(){
+  function _onHeading(h){
+    _gpsHeading=h;
+    if(_gpsConeSvg){_gpsConeSvg.style.transform=`rotate(${h}deg)`;_gpsConeSvg.style.opacity='1';}
+  }
+  window.addEventListener('deviceorientationabsolute',e=>{if(e.alpha!=null)_onHeading((360-e.alpha+360)%360);},true);
+  window.addEventListener('deviceorientation',e=>{
+    if(e.webkitCompassHeading!=null)_onHeading(e.webkitCompassHeading);
+    else if(e.absolute&&e.alpha!=null)_onHeading((360-e.alpha+360)%360);
+  },true);
+})();
 (()=>{
   const ctl=L.control({position:'topleft'});
   ctl.onAdd=()=>{
@@ -54499,7 +54535,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.48</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.30.49</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
