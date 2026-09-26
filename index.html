@@ -445,7 +445,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.1</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.2</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42181,9 +42181,10 @@ const MUSHROOMS={
     season:[9,10,11],terrain:['Lasy liściaste','Lasy mieszane'],
     soil:'Gleba wilgotna, próchnicza. Pasożyt na pniach drzew.',ph:'5.0–7.0',elev:'0–1000 m',
     habitat:'Na pniach drzew liściastych (buk, dąb, jesion), w grupach. Pasożyt i saprofit.',
-    desc:'Kapelusz miodowożółty 3–10 cm z brązowymi łuskami. Blaszki białawożółtawe. Trzon z pierścieniem. U podstawy drzew.',
+    desc:'Kapelusz o średnicy 4–10 cm, MIODOWOŻÓŁTY do żółtawobrązowego, z charakterystycznie RZADKIMI I DROBNYMI ciemnymi ŁUSECZKAMI — wyraźnie mniej łuskowaty i jaśniejszy niż opieńka ciemna. BLASZKI najczęściej BIAŁE do bladokremowych, drobno zbiegające przy trzonie. TRZON z PIERŚCIENIEM żółtawym od spodu, poniżej pierścienia podłużnie łuskowaty. Rośnie KĘPKOWATO od września do listopada na żywym i martwym drewnie liściastym i iglastym — kępy są duże i efektowne. KLUCZ BEZPIECZEŃSTWA: odróżnić od śmiertelnie trującej hełmówki jadowitej (G. marginata): opieńka ma pierścień, jasny wysyp zarodników, rośnie w ogromnych kępach; hełmówka — mała, brak wyraźnego pierścienia, rdzawy wysyp. SUROWE TRUJĄCE — termolabilne toksyny: SPARZYĆ WRZĄCĄ WODĄ, odlać wodę, następnie smażyć lub dusić. Łykowate trzony usunąć.',
     edib:'Jadalna TYLKO po blanszowaniu — gotować, wodę wylać, nie używać do gotowania! Surowa i niedogotowana powoduje zaburzenia żołądkowe.',
     lookalikes:'Hełmówka jadowita (Galerina marginata) — ŚMIERTELNA. Rośnie w tych samych miejscach na drewnie. Odróżnić: hełmówka ma rdzawobrązowy, pudrowy wysyp na blaszkach i rośnie zwykle pojedynczo lub w małych skupiskach; opieńka tworzy duże kolonie i ma białawy lub kremowy wysyp.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Armillaria_mellea_2012_G1.jpg/500px-Armillaria_mellea_2012_G1.jpg'],
     weights:{bw:85,au:80,kn:78,ka:72,lm:68,ku:75,sw:78,ro:80,lu:75,ja:78,be:82,bi:80,po:78,sd:72,se:68,so:75,sl:70,op:68,st:65,ps:70,ma:65,tu:60,no:58,ll:62,su:65,wi:68,wy:72,nak:68,sep:70}
   },
   purchawka:{q:2,
@@ -42191,8 +42192,9 @@ const MUSHROOMS={
     season:[7,8,9,10],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane'],
     soil:'Gleba próchnicza, umiarkowanie wilgotna',ph:'4.5–6.5',elev:'0–1200 m',
     habitat:'Pospolita na ściółce leśnej, pniach i przy drogach. Rośnie grupami.',
-    desc:'Kształt gruszkowaty, 2–6 cm, biała, skórka pokryta kolcami lub brodawkami. KLUCZOWY TEST — zawsze przekroić: wnętrze białe jednorodne = jadalny. Szarawe lub oliwkowe = za stary. Zarys rosnącego grzyba w środku = jajko muchomora — WYRZUCIĆ! Rośnie na ziemi, nie na drewnie.',
-    edib:'Jadalny tylko gdy wewnątrz biały. Smażyć w plastrach.',
+    desc:'Owocnik o wysokości 3–8 cm, GRUSZKOWATY, początkowo CZYSTO BIAŁY z charakterystycznymi białymi KOLCAMI I BRODAWKAMI na górnej części, które z wiekiem odpadają pozostawiając delikatny SIATKOWATY WZÓR na skórce. TEST JADALNOŚCI — bezwzględnie konieczny: przekroić owocnik na pół; JEDNOLICIE BIAŁY miąższ = JADALNY; SZARY, ZIELONKAWY lub CIEMNY miąższ = WYRZUCIĆ niezależnie od wyglądu zewnętrznego. UWAGA: nie mylić z nierozwiniętymi muchomorami — muchomory mają wewnątrz już widoczny zarys kapelusza i blaszek; purchawka ma wnętrze jednorodne jak twaróg. Rośnie od lipca do listopada w lasach i na łąkach. NIGDY na drewnie — to ważna cecha.',
+    edib:'Jadalny tylko gdy wewnątrz biały. Smażyć w plastrach lub panier.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Lycoperdon_perlatum_J1.jpg/500px-Lycoperdon_perlatum_J1.jpg'],
     weights:{bw:72,au:70,kn:68,tu:65,no:62,ps:68,ku:65,ma:62,sw:70,ro:70,lu:68,ja:65,be:72,bi:70,po:68,sd:68,se:62,ta:55,ka:60,lm:58,ll:55,sl:62,op:60,st:60,so:65,br:58,gr:55,wy:70,nak:65,sep:68}
   },
   purchawka_olb:{q:3,
@@ -42200,8 +42202,9 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Łąki','Pastwiska','Skraje lasów'],
     soil:'Gleba żyzna, nawożona',ph:'6.0–7.5',elev:'0–700 m',
     habitat:'Na łąkach, pastwiskach i parkach. Preferuje żyzne tereny otwarte.',
-    desc:'Ogromna biała kula do 80 cm, gładka skórka, bez trzonu (lub krótki). KLUCZOWY TEST — przepołowić nożem: wnętrze białe jednorodne jak twaróg = jadalny. Żółtawe, zielone lub marmurkowate = trujące, wyrzuć. Rośnie solo na łąkach i pastwiskach. Okazy mogą ważyć ponad 10 kg.',
-    edib:'Doskonały smak. Pokroić w plastry i smażyć.',
+    desc:'Owocnik o średnicy 15–50 cm, KULISTY lub lekko spłaszczony — NAJWIĘKSZY GRZYB EUROPEJSKI; rozmiar czyni go absolutnie niepowtarzalnym. SKÓRKA GŁADKA JAK PORCELANA, początkowo CZYSTO BIAŁA, z wiekiem żółknąca do brązowawej. TEST JADALNOŚCI: przekroić przez środek — BIAŁY, JEDNOLITY, ZWARTY MIĄŻSZ O KONSYSTENCJI TOFU = JADALNY; jakikolwiek ślad żółcenia, zieloności lub marmurkowatości = WYRZUCIĆ. Rośnie od lipca do października na łąkach, pastwiskach i w widnych lasach. Okazy mogą ważyć 5–10 kg. Nie można go pomylić z żadnym innym grzybem — samo pole widzenia i okrąg metrowy mówią wszystko. Przed przyrządzeniem USUNĄĆ ZEWNĘTRZNĄ SKÓRKĘ.',
+    edib:'Doskonały — kroić w plastry i smażyć lub paner. Można zamrażać.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Calvatia_gigantea_2.jpg/500px-Calvatia_gigantea_2.jpg'],
     weights:{ka:78,lm:72,ku:65,wk:68,sw:72,lu:70,ja:65,ro:68,ll:60,br:58,gr:55,sl:58,op:65,st:65,so:62,bi:55,be:58,au:60,ma:62,wy:62,nak:58,sep:65}
   },
   pieczarka:{q:3,
@@ -42220,8 +42223,9 @@ const MUSHROOMS={
     season:[10,11,12,1,2,3,4],terrain:['Lasy liściaste','Parki','Sady'],
     soil:'Na pniach drzew liściastych. Grzyb saprofit drewna.',ph:'Saprofit drewna',elev:'0–800 m',
     habitat:'Na pniach buka, dębu, wierzby, olchy. Jesień–zima–wiosna.',
-    desc:'Kapelusz ostrygowaty szarobrązowy do szaroniebieskiego, 5–20 cm. Blaszki białe, zbiegające na trzon.',
+    desc:'Kapelusz 5–20 cm, OSTRYGOWATY lub WACHLARZOWATY, barwy od SZAREJ DO STALOWOSZAREJ lub GOŁĘBIONIEBIESKIEJ — z wiekiem blaknący do beżowobrązowej. BLASZKI białe, gęste, zbiegające wzdłuż krótkiego bocznie osadzonego trzonu lub rosnące prawie bez trzonu. KLUCZOWA CECHA SEZONOWA: jedyny duży grzyb blaszkowaty owocnikujący ZIMĄ — rośnie od PAŹDZIERNIKA DO MARCA, przeżywa mróz, na śniegu. Rośnie wyłącznie na ŻYWYCH I MARTWYCH PNIACH DRZEW LIŚCIASTYCH — buk, topola, wierzba, olcha — w gęstych pozrastanych kępach; nigdy z ziemi. Miąższ biały, sprężysty, zwarty. Dzikie okazy zimowe smaczniejsze od hodowlanych (enoki kupione w sklepie to inna odmiana).',
     edib:'Doskonały smak. Smażyć, dusić, do makaronów.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Pleurotus_ostreatus_JPG1.jpg/500px-Pleurotus_ostreatus_JPG1.jpg'],
     weights:{bw:80,au:75,kn:72,ka:70,lm:68,sw:75,ro:78,lu:72,ja:70,be:78,bi:75,sd:70,se:65,po:72,so:70,sl:65,op:62,st:65,ps:68,ma:65,tu:58,no:55,ll:60,ku:65,su:68,wi:70,wy:55,nak:50,sep:58}
   },
   golabek:{q:3,
@@ -42229,8 +42233,9 @@ const MUSHROOMS={
     season:[7,8,9],terrain:['Lasy liściaste','Dąbrowy','Grądy','Buczyny'],
     soil:'Gleba żyzna, gliniasto-próchnicza',ph:'5.5–7.0',elev:'0–900 m',
     habitat:'Pod dębami i bukami, na żyznych glebach.',
-    desc:'Kapelusz zielonkawy do szaroniebieskiego, pęka w suche lato, 6–15 cm. Blaszki gęste białe. Trzon kruchy.',
-    edib:'Smaczny, delikatny orzechowy smak. Można jeść na surowo.',
+    desc:'Kapelusz do 12 cm, NIEBIESKOWOZIELONY lub ŻÓŁTAWOZIELONY, z charakterystyczną SKÓRKĄ PĘKAJĄCĄ W SUCHE POLETKA — wygląd krokodylej skóry lub obtartej farby, cecha natychmiastowo rozpoznawalna. BLASZKI CZYSTO BIAŁE do bladokremowych, z wiekiem brązowo plamiste — KRUCHE I ŁAMLIWE jak kreda (typowa cecha całego rodzaju Russula; błaszkę między palcami można złamać jak kredę). TRZON biały, twardy i suchy, masywny. Zapach łagodny, smak delikatnie orzechowy. Brak mleczka. JEDEN Z NIELICZNYCH GRZYBÓW JADALNYCH NA SUROWO — nie zawiera toksyn termolabilnych; bezpieczny i jadalny bez gotowania. Rośnie latem i jesienią pod dębami i w lasach świerkowych.',
+    edib:'Smaczny. Jadalny na surowo (jeden z bardzo niewielu grzybów). Orzechowy smak, delikatna konsystencja.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Russula_virescens_3.jpg/500px-Russula_virescens_3.jpg'],
     weights:{bw:72,ka:75,sw:80,ro:78,lu:72,ja:70,be:68,bi:65,sd:65,po:62,so:68,sl:68,op:70,st:72,ll:60,lm:62,kn:68,wy:55,nak:50,sep:52}
   },
   lakówka:{q:2,
@@ -42439,9 +42444,10 @@ const MUSHROOMS={
     season:[9,10,11],terrain:['Łąki','Pastwiska','Murawy trawiaste'],
     soil:'Gleba żyzna, wilgotna, nawożona obornikiem. Nie rozkłada obornika — rośnie przy nim.',ph:'5.5–7.0',elev:'0–800 m',
     habitat:'Na pastwiskach i łąkach, zwłaszcza po wypasie owiec i koni. Wilgotna, chłodna jesień. Pospolita w zachodniej i północnej Polsce.',
-    desc:'Kapelusz dzwonkowato-stożkowaty, brązowożółty do oliwkowego, 0.5–2 cm, ze spiczastym czubkiem. Blaszki szarobeżowe→fioletowoczarne. Trzon cienki, falisty. Zapach mączysty.',
+    desc:'KAPELUSZ 0,5–2 cm, DZWONKOWATO-STOŻKOWATY, ZAWSZE ze SPICZASTYM CZUBKIEM (umbo) — cecha niezmienna przez całe życie, kluczowa dla identyfikacji; nigdy się nie spłaszcza. KOLOR HIGROFANICZNY: wilgotny CZEKOLADOWOBRĄZOWY do oliwkowego z delikatnie prześwitującym brzegiem, wysychający nierównomiernie do żółtawobeżowego od brzegu. TRZON cienki (1–2 mm), falisty, bladożółtawy, bez pierścienia — przy wilgoci wodnisto prześwitujący. BLASZKI szarobeżowe, u dojrzałych FIOLETOWOCZARNE. KLUCZOWY TEST: przy uszkodzeniu lub u starszych okazów trzon i podstawa kapelusza INTENSYWNIE SINIEJE — bezpośredni dowód psylocybiny; kołpaczki (mylnicy) nie sinieja. Rośnie w rozproszeniu na nawożonych łąkach i pastwiskach owczych/końskich — NIGDY na oborniku ani w kępach.',
     danger:'SILNIE HALUCYNOGENNA — substancja kontrolowana. Psylocybina i psylocyna to substancje nielegalne w Polsce i UE. Zbiór i posiadanie podlega odpowiedzialności karnej. Mylona z jadalnymi gatunkami łąkowymi.',
-    lookalikes:'Kołpaczek blady (Panaeolus semiovatus) — na stercie obornika, większy, bez spiczastego czubka. Maślanka wiśniówka (Hypholoma sublateritium) — ceglastoczerwona, na pniakach. Stożkówka wiotka (Conocybe tenera) — na trawnikach, brak oleistości trzonu.',
+    lookalikes:'Kołpaczek blady (Panaeolus semiovatus) — na stercie obornika, większy, bez spiczastego czubka. Maślanka ceglasta (Hypholoma sublateritium) — ceglastoczerwona, na pniakach. Łąkówka sianokosia (Panaeolina foenisecii) — trawniki, brak siniowania, brak spiczastego czubka. Stożkówka wiotka (Conocybe tenera) — na trawnikach, brak oleistości trzonu.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Psilocybe_semilanceata_6022.jpg/500px-Psilocybe_semilanceata_6022.jpg'],
     weights:{ka:60,lm:55,ku:52,br:58,gr:55,wk:50,ll:48,sw:45,ro:42,lu:45,bi:38,be:40,sd:42,op:48,st:50,sl:45,tu:50,no:52,dr:48,pi:48,ch:55,ma:45,su:42,wy:55,nak:50,sep:58}
   },
   kolpaczek_ob:{
@@ -42449,9 +42455,10 @@ const MUSHROOMS={
     season:[5,6,7,8,9,10],terrain:['Oborniki','Kompostowniki','Nawożone łąki','Pastwiska','Trawniki miejskie'],
     soil:'Gleba bogata w azot, kompost, nawozy organiczne',ph:'5.5–7.5',elev:'0–600 m n.p.m.',
     habitat:'Na stertach obornika, kompostownikach, mocno nawożonych łąkach i trawnikach. Pospolity na terenach wiejskich przy hodowli bydła i koni. Jeden z częstszych psilocybinowych grzybów w Polsce.',
-    desc:'Kapelusz 2–6 cm, higrofaniczny (zmienia kolor przy wilgoci) — mokry: czekoladowobrązowy z ciemniejszą strefą przy brzegu; suchy: piaskowobeżowy. Kształt półkulisty do dzwonkowatego. Blaszki gęste, szare→czarne z pstrymi zarodnikami. Trzon smukły, 6–12 cm, szarobrązowy, delikatnie oszroniony.',
+    desc:'KAPELUSZ 2–6 cm, półkulisty do dzwonkowatego, silnie HIGROFANICZNY — wilgotny CZEKOLADOWOBRĄZOWY z WYRAŹNĄ CIEMNIEJSZĄ OBRĄCZKĄ przy brzegu (strefa barwna — cecha nazewnicza gatunku), wysychający do piaskowobeżowego od centrum ku brzegowi. SKÓRKA gładka do delikatnie pomarszczonej. BLASZKI gęste, przyrośnięte, u dojrzałych PSTROKATE — ciemnobrązowe zarodniki tworzą nieregularne plamy na szarawym tle (cecha całego rodzaju Panaeolus). TRZON smukły 6–12 cm, szarobrązowy, delikatnie OSZRONIONY górą — BEZ PIERŚCIENIA. Rośnie BEZPOŚREDNIO na stercie obornika lub silnie nawożonym kompoście miejskim — nie na czystej trawie. Obrączkowa strefa barwna przy brzegu jest diagnostyczna.',
     danger:'HALUCYNOGENNA — zawiera psylocybinę i psylocynę. Substancja kontrolowana w Polsce. Zbiór i posiadanie nielegalne. Mylona z niejadalnymi kołpaczkami (Panaeolus) niehalucynogennymi.',
     lookalikes:'Kołpaczek blady (P. semiovatus) — większy, bez strefy brzegowej, na stercie obornika. Kołpaczek mierzwiowy (P. papilionaceus) — mniejszy, bez psilocybiny. Purchaweczka (Lycoperdon) — przy odwróceniu brak blaszek.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Panaeolus_cinctulus_3.jpg/500px-Panaeolus_cinctulus_3.jpg'],
     weights:{ka:65,lm:60,ku:55,br:62,gr:58,wk:52,sd:55,op:50,wy:60,nak:55,sep:62,tu:52,no:55}
   },
   strzepiak_nbl:{
@@ -42459,9 +42466,10 @@ const MUSHROOMS={
     season:[5,6,7,8],terrain:['Parki','Trawniki','Zieleń miejska','Ogrody'],
     soil:'Gleba piaszczysto-gliniasta, często przy ścieżkach i utwardzonych nawierzchniach',ph:'5.0–7.0',elev:'0–500 m n.p.m.',
     habitat:'W lasach mieszanych, parkach miejskich i przydrożnej zieleni. Rośnie przy krawędnikach, ścieżkach, trawnikach. Pospolity we wschodniej Polsce i Niemczech, sporadyczny w zachodniej Polsce.',
-    desc:'Kapelusz 2–5 cm, beżowy do słomkowożółtawego, stożkowato-dzwonkowaty, promieniście pękający z wiekiem. KLUCZOWE: trzon i miąższ przy uszkodzeniu zielenieje — to bezpośredni dowód psylocybiny. Blaszki szarobrązowe. Zapach słodkawy.',
+    desc:'KAPELUSZ 2–5 cm, beżowy do słomkowożółtawego, stożkowato-dzwonkowaty, z wiekiem PROMIENIŚCIE PĘKAJĄCY i włókniście rozszczepiający się (typowe dla całego rodzaju Inocybe). KLUCZOWA CECHA IDENTYFIKACYJNA: TRZON i MIĄŻSZ przy nacięciu lub obtarciu wyraźnie ZIELENIEJE (turkusowy do trawiastozielonego) — żaden śmiertelnie trujący strzępiak tego nie robi; OCR przewodnika wprost stwierdza: "zielone zabarwienie trzonu wynika z obecności psylocybiny". BLASZKI szarobrązowe, gęste, przyrośnięte. TRZON cienki, włóknisty, BEZ PIERŚCIENIA, nierzadko z niebieskawoturkusowym odcieniem u nasady. ZAPACH słodkawy, delikatny — w odróżnieniu od cuchnących trujących krewniaków. Rośnie maj–sierpień w lasach mieszanych, parkach, ogrodach, przy ścieżkach na piaszczystych glebach. OSTRZEŻENIE: rodzaj Inocybe ma liczne śmiertelne gatunki z mukaryna — zielone barwienie to JEDYNA bezpieczna cecha odróżniająca; bez niego nie zbierać żadnego strzępiaka.',
     danger:'TRUJĄCY i HALUCYNOGENNY — psylocybina, efekty silne i nieprzewidywalne. UWAGA: łatwy do pomylenia ze śmiertelnie trującymi strzępiakami zawierającymi mukarynę. Zbiór niebezpieczny i nielegalny.',
     lookalikes:'Strzępiak ceglasty (Inosperma erubescens) — śmiertelny; miąższ czerwienieje (nie zielenieje). Włókniak plamisty (Inosperma maculatum) — śmiertelny; bez zielonego barwienia. Stożkówka wiotka (Conocybe tenera) — niejadalny; brak zieleni. Nigdy nie zbierać małych brązowych strzępiaków.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Inocybe_aeruginascens.jpg/500px-Inocybe_aeruginascens.jpg'],
     weights:{ka:50,lm:48,ku:45,br:52,gr:48,wk:42,sd:45,op:40,wy:52,nak:48,sep:50}
   },
   lejkowka:{
@@ -42469,8 +42477,8 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Ciepłe lasy liściaste','Dąbrowy'],
     soil:'Na korzeniach i podstawach drzew liściastych',ph:'Saprofit',elev:'0–800 m',
     habitat:'Skrajnie rzadka w Polsce — znane jedno stanowisko. Typowa dla basenu Morza Śródziemnego. Na korzeniach dębów i kasztanowców. Świeci w ciemności (bioluminescencja).',
-    desc:'Pomarańczowa, lejkowata 5–15 cm, rośnie w skupiskach. Blaszki pomarańczowe, zbiegające. Świeci w ciemności. Mylona z kurką.',
-    danger:'TRUJĄCY. Silne wymioty i biegunki. Kurka ma fałszywe blaszki, nie jest pomarańczowa na trzonie.',
+    desc:'Kapelusz 5–15 cm, INTENSYWNIE POMARAŃCZOWY do żółtopomarańczowego, lejkowaty, u starszych wklęsły. BLASZKI PRAWDZIWE, gęste, ostre, zbiegające na trzon (w odróżnieniu od kurki, która ma ŻYŁKI rozwidlone, tępe, tej samej barwy) — kluczowy test przy latarce: prawdziwe blaszki można zdrapać, żyłki nie. Rośnie WYŁĄCZNIE W KĘPACH NA DREWNIE lub korzeniach drzew — nigdy solo z ziemi jak kurka. Trzon pomarańczowy, pełny. W ciemności może lekko bioluminescencjonować. Skrajnie rzadka w Polsce (jedno znane stanowisko) — typowa dla Śródziemnomorza.',
+    danger:'TRUJĄCY — powoduje silne bóle brzucha, wymioty i biegunki. Prawdziwe ostre blaszki + kępy na drewnie + pomarańczowy trzon = lejkówka, nie kurka. Kurka zawsze z ziemi, zawsze solo lub rozrzucona, żyłki zamiast blaszek.',
     weights:{sd:55,se:50,sl:48,op:45,sw:45,ka:42,lm:40,ll:40,be:45,bi:40,ro:42,lu:40,so:40,wy:25,nak:20,sep:28}
   },
 
@@ -42515,7 +42523,7 @@ const MUSHROOMS={
     season:[7,8,9,10],terrain:['Lasy iglaste','Lasy z modrzewiem','Parki z modrzewiem','Aleje modrzewiowe'],
     soil:'Gleba kwaśna, mykoryza WYŁĄCZNIE z modrzewiem europejskim',ph:'4.0–6.0',elev:'0–1400 m',
     habitat:'WYŁĄCZNIE pod modrzewiem europejskim (Larix decidua). Przy alejach, parkach i lasach z modrzewiem.',
-    desc:'Kapelusz złotożółty do pomarańczowobrązowego, lśniący, 4–10 cm. Pierścień na trzonie, biały→żółtawy. Rurki żółte. Podobny do maślaka zwyczajnego ale żółtszy i bez fioletowawego pierścienia.',
+    desc:'Kapelusz 4–10 cm, ZŁOTOŻÓŁTY do pomarańczowobrązowego — LŚNIĄCY, ŚLUZOWATY (skórka łatwo się ściąga, zdjąć przed przyrządzeniem). Pierścień na trzonie BIAŁY → ŻÓŁTAWY, błoniasty, niepełny. Rurki żółte. WYŁĄCZNIE pod modrzewiem — brak modrzewia w pobliżu = to nie ten gatunek. Różni się od maślaka zwyczajnego: jest żółtszy, pierścień bez fioletowego odcienia, tylko pod modrzewiem.',
     edib:'Smaczny po usunięciu śluzowatej skórki. Marynować lub smażyć — do zup i sosów.',
     weights:{ka:60,lm:55,ku:62,bw:58,au:55,sw:65,ro:60,lu:60,ja:55,ll:62,op:58,st:60,sl:58,so:58,bi:50,be:52,sd:55,se:50,wy:68,nak:62,sep:65}
   },
@@ -42524,7 +42532,7 @@ const MUSHROOMS={
     season:[1,2,3,4,5,6,7,8,9,10,11,12],terrain:['Lasy liściaste','Parki','Aleje','Sady'],
     soil:'Na pniach i gałęziach bzów czarnych, wiązów, olch, wierzb — saprofit drewna',ph:'Saprofit drewna',elev:'0–700 m',
     habitat:'Na pniach i gałęziach bzów czarnych (Sambucus nigra), olch i wiązów. Cały rok, szczególnie jesień–zima. Pospolity i łatwy do znalezienia.',
-    desc:'Galaretowaty, elastyczny, uszowato-falisty, brązoworudy do szarobrązowego, 3–12 cm. Górna powierzchnia żeberkowana jak ucho. Dolna gładka, lśniąca. Grubieje i mięknie po deszczu, twardnieje i kurczy w suszę.',
+    desc:'3–12 cm, GALARETOWATY, elastyczny, kształt USZOWATO-FALISTY — wygięty jak ucho lub muszla. Barwa brązoworudy do szarobrązowego; górna powierzchnia DELIKATNIE ŻEBERKOWANA (naśladuje żyłkowanie ucha), dolna gładka, lśniąca. Rośnie WYŁĄCZNIE NA DREWNIE (głównie bez czarny, wiąz, olcha) — nigdy z ziemi. Grubieje i mięknie po deszczu, twardnieje i kurczy się w suszę (można zbierać nawet suche i nawodnić). Cały rok.',
     edib:'Jadalny. Smażyć, gotować, suszyć. Cenny w kuchni chińskiej jako "czarne grzyby" (mù ěr). Chrupki po przyrządzeniu. Dobry do zup azjatyckich i stir-fry.',
     weights:{bw:68,au:62,ka:65,sw:68,ro:65,lu:62,ja:60,be:60,bi:58,sd:55,po:60,so:60,sl:58,op:60,st:62,ku:55,ma:55,ll:58,br:55,gr:52,wy:62,nak:58,sep:60}
   },
@@ -42533,7 +42541,7 @@ const MUSHROOMS={
     season:[4,5,6,7,8,9,10,11],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane'],
     soil:'Na pniach, kłodach i korzeniach drzew liściastych i iglastych — saprofit drewna',ph:'Saprofit drewna',elev:'0–1000 m',
     habitat:'Na pniach buka, olchy, brzozy, świerka — gęstymi skupiskami. Pospolita i łatwa do zebrania.',
-    desc:'Kapelusz miodowożółty do brązowego (hygryfaniczny — jasny gdy sucho, ciemny gdy mokro z wyraźną wodną obwódką), 3–8 cm. Trzon z drobno łuskowatym pierścieniem, poniżej ciemnobrązowy. UWAGA: identyczny habitat z hełmówką jadowitą!',
+    desc:'Kapelusz 3–8 cm, HIGROFANICZNY: MOKRY ciemnobrązowy z wyraźną jasną obwódką przy brzegu; SUCHY miodowożółty — zmiana barwy jest cechą diagnostyczną. Trzon z WYRAŹNYM PIERŚCIENIEM, poniżej pierścienia pokryty drobnymi brązowymi łuskami (kluczowe!). Blaszki początkowo kremowe → ochrowobrązowe, wysyp zarodników ochrowożółty. Korzenny, lekko czosnkowy zapach. Rośnie gęstymi kępami na pniakach i martwym drewnie. UWAGA: identyczny habitat z hełmówką jadowitą — zawsze sprawdź łuskowaty trzon + ochrowożółty wysyp.',
     edib:'Smaczna i dobra jadalna. BEZWZGLĘDNIE sprawdź pierścień (podpieńka ma wyraźny brązowy) i kolor zarodników (kolor ochry na blaszce) oraz zapach (korzenny, lekko czosnkowy). Nie zbierać obok hełmówki bez pewnej identyfikacji.',
     weights:{bw:75,au:72,ka:70,sw:78,ro:75,lu:72,ja:68,be:75,bi:72,sd:68,po:72,so:70,sl:68,op:65,ps:68,ma:65,tu:65,no:62,ll:62,ku:68,br:60,wy:75,nak:70,sep:72}
   },
@@ -42644,9 +42652,10 @@ const MUSHROOMS={
     season:[9,10,11],terrain:['Lasy liściaste','Parki','Sady','Pniaki'],
     soil:'Saprofit na pniakach i u podstawy pni drzew liściastych i iglastych',ph:'Saprofit drewna',elev:'0–900 m',
     habitat:'Na pniakach buka, dębu, klonu, a także iglastych. Rośnie dużymi, efektownymi kępami. Jesień.',
-    desc:'Kapelusz złotordzawy do żółtopomarańczowego, 8–20 cm, bez łusek (ważna cecha!). Blaszki żółte, potem rdzawe. Pierścień na trzonie. Trzon włóknisty, żółtawy. Rośnie gęstymi kępami. Smak bardzo gorzki.',
+    desc:'KAPELUSZ 8–20 cm, ZŁOTORDZAWY do ŻÓŁTOPOMARAŃCZOWEGO, suchy — nagiego do delikatnie włókienkowego przy brzegu; znacznie większy i jaskrawszy niż opieńka. BLASZKI ścieśnione, szerokie, początkowo żółtawe, potem rdzawe do rdzawobrązowych, przyrośnięte. TRZON masywny, włóknisty, żółtawy, z wyraźnym PIERŚCIENIEM (żółtawy do rdzawego; u starszych może zanikać). SMAK WYJĄTKOWO GORZKI — absolutnie pewna negatywna cecha identyfikacyjna; samo dotknięcie do języka ujawnia intensywną gorycz, której jadalne kępotwórcze grzyby nie mają. WYSYP ZARODNIKÓW żółtobrązowy do rdzawobrązowego — różni się od kremowego wysypu opieńki. Rośnie w dużych, efektownych kępach na pniakach i przy pniach jesienią.',
     danger:'TRUJĄCY — zawiera gymnopilin (gorzka terpenoid). Powoduje zaburzenia żołądkowe, osłabienie, dezorientację. Halucynogenność europejskich okazów jest niepotwierdzona (ewentualnie śladowa). Nie zbierać.',
-    lookalikes:'Opieńka miodowa — jadalna; miodowożółty kapelusz z łuskami, wysyp zarodników kremowy. Podpieńka zmienna — jadalny; mniejszy, miodowy, trzon łuskowany poniżej pierścienia, ochrowyzysyp. Kołpaczek jest znacznie większy, złotordzawy i gorzki.',
+    lookalikes:'Opieńka miodowa (A. mellea) — jadalna; miodowożółty kapelusz z łuskami, wysyp zarodników kremowy, smak łagodny. Podpieńka zmienna (K. mutabilis) — jadalny; mniejszy, miodowy, trzon łuskowany poniżej pierścienia. Łysak wspaniały jest znacznie większy, złotordzawy i intensywnie gorzki.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Gymnopilus_junonius_1.jpg/500px-Gymnopilus_junonius_1.jpg'],
     weights:{bw:70,au:65,sw:68,ro:65,lu:62,be:65,bi:62,sd:60,po:62,so:60,ka:62,ll:55,br:52,gr:50,op:58,st:60,sl:55,wy:65,nak:60,sep:62}
   },
 
@@ -42688,9 +42697,10 @@ const MUSHROOMS={
     season:[4,5,6,7,8,9,10,11],terrain:['Łąki','Ogrody','Parki','Pobocza'],
     soil:'Gleba żyzna, kompostowa, przy pniach drzew liściastych',ph:'6.0–7.5',elev:'0–700 m',
     habitat:'Przy pniach drzew liściastych, na trawnikach, w parkach i poboczach. Rośnie kępami. Bardzo pospolity.',
-    desc:'Kapelusz szarobrązowy, dzwonkowaty do jajowatego, 4–10 cm, bez białych łusek. Z wiekiem autodestrukcja w czarną ciecz. Trzon biały, gładki. Odróżnić od czernidłaka kołpakowatego: brak cylindrycznej białej formy z brązowymi łuskami.',
+    desc:'KAPELUSZ 3–8 cm, SZAROBEŻOWY lub BRĄZOWOSZARY, jajowato-dzwonkowaty, PODŁUŻNIE POFAŁDOWANY — bez charakterystycznych białych łusek czernidłaka kołpakowatego. BLASZKI u młodych GĘSTE I SZARE, z wiekiem SAMOTRAWIĄCE SIĘ W CZARNY ATRAMENTOWATY PŁYN — kapelusz dosłownie "rozpuszcza się" od brzegów ku środkowi. TRZON biały, gładki. KRYTYCZNE OSTRZEŻENIE: zawiera KOPRYNĘ blokującą metabolizm alkoholu; spożycie grzyba, a następnie alkoholu (nawet po kilku dniach) wywołuje REAKCJĘ DISULFIRAMOPODOBNĄ — zaczerwienienie twarzy, kołatanie serca, mdłości, wymioty. Rośnie kępkami lub pojedynczo przy pniach drzew liściastych, na trawnikach i poboczach — maj do listopada. Teoretycznie jadalny bez alkoholu, lecz ze względu na ryzyko absolutnie niezalecany.',
     danger:'TRUJĄCY jeśli spożyty RAZEM Z ALKOHOLEM (nawet kilka godzin lub dni po zjedzeniu grzyba!). Koprina blokuje metabolizm alkoholu — efekt disulfiramowy: zaczerwienienie twarzy, kołatanie serca, wymioty, strach śmierci. Bez alkoholu jest warunkowo jadalny. Jedna z najczęstszych przyczyn zatruć grzybami w Polsce (alkohol spożywany po posiłku).',
     lookalikes:'Czernidłak kołpakowaty (C. comatus) — kapelusz BIAŁY CYLINDRYCZNY z brązowymi łuskami; warunkowo jadalny (bez alkoholu). Uszak bzowy — galaretowaty, uszowaty, brązoworudy, całkowicie inny kształt. Zawsze pamiętaj co jadłeś przed piciem alkoholu.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Coprinopsis_atramentaria_2013_G1.jpg/500px-Coprinopsis_atramentaria_2013_G1.jpg'],
     weights:{ka:75,lm:70,ku:68,br:62,gr:58,wk:54,sw:68,ro:65,lu:62,ll:68,op:72,st:74,sl:68,bi:58,be:62,sd:58,so:62,bw:55,au:52,wy:68,nak:63,sep:70}
   },
 
@@ -42744,7 +42754,7 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Buczyny','Grądy'],
     soil:'Na próchnicznej glebie wśród ściółki liściastej',ph:'5.5–7.0',elev:'0–800 m',
     habitat:'W lasach liściastych i mieszanych, pod bukami i grabami. Pospolita, ale rzadziej notowana niż pieczarka polna.',
-    desc:'Kapelusz biały, 5–12 cm, z delikatnymi łuskami. Blaszki różowe → czekoladowe. Trzon biały z pierścieniem. Miąższ uszkodzony NATYCHMIAST INTENSYWNIE CZERWIENIEJE jak krew — cecha diagnostyczna. Zapach przyjemny.',
+    desc:'KAPELUSZ 5–12 cm, biały do kremowego, lekko łuskowaty (delikatne brązowe łuseczki na białym tle). BLASZKI RÓŻOWE u młodych → CZEKOLADOWOBRĄZOWE przy dojrzałości — wysyp czekoladowobrązowy. MIĄŻSZ INTENSYWNIE CZERWIENIEJE po uszkodzeniu — efekt natychmiastowy i dramatyczny jak krew, szczególnie widoczny w górnej części TRZONU (przekrój). TEST JADALNOŚCI: CZERWIENIENIE (nie żółknięcie!) + czekoladowe blaszki + przyjemny grzybowy zapach (bez zapachu fenolowego/karbolowego) = jadalna pieczarka krwawiąca. TRZON biały z PIERŚCIENIEM. Zapach przyjemny, grzybowy — żadnego zapachu atramentu ani karbolu. Rośnie pod bukami i grabami w lasach liściastych.',
     edib:'Smaczna jadalna — jedna z lepszych pieczarek leśnych. Dramatyczne czerwienienie miąższu nie jest wadą — to oznaka jadalności tej konkretnej pieczarki.',
     lookalikes:'Pieczarka żółknąca — TRUJĄCA; żółknie (nie czerwienieje) u nasady, zapach atramentu. Pieczarka leśna — różowieje, nie czerwienieje intensywnie. Czubajka czerwieniejąca — również czerwienieje, ale parasol z ruchomym pierścieniem. Intensywne krwawe czerwienienie to cecha unikalna.',
     weights:{bw:68,au:62,sw:72,ro:70,lu:65,ja:62,be:72,bi:68,sd:65,po:68,so:65,ka:65,lm:60,op:65,st:68,sl:62,ll:58,kn:60,wy:60,nak:55,sep:62}
@@ -42755,7 +42765,7 @@ const MUSHROOMS={
     season:[9,10,11],terrain:['Lasy iglaste','Lasy mieszane','Lasy liściaste'],
     soil:'Pasożyt i saprofit na korzeniach i pniakach drzew (szczeg. iglastych)',ph:'Pasożyt/saprofit drewna',elev:'0–1400 m',
     habitat:'Pod sosnami i świerkami, na pniakach i przy korzeniach. Gatunek tworzący największy znany organizm na Ziemi (9 km² w Oregonie). Pospolita.',
-    desc:'Bardzo podobna do opieńki miodowej — kapelusz miodowożółty z ciemnymi łuskami (szczególnie licznymi w centrum), 4–12 cm. Blaszki białe, pierścień z brązową falbanką. Rośnie gęstymi kępami na i przy drzewach iglastych.',
+    desc:'KAPELUSZ 3–10 cm, CIELISTOBRĄZOWAWY, pokryty GĘSTYMI CIEMNYMI ŁUSECZKAMI ścierającymi się z wiekiem — bardziej łuskowaty i ciemniejszy niż opieńka miodowa. BLASZKI wkrótce CIELISTE, drobno zbiegające przy trzonie. TRZON z GRUBAWYM PIERŚCIENIEM z brązową falbanką; PONIŻEJ PIERŚCIENIA WYRAŹNIE ŁUSKOWATY — kluczowa cecha odróżniająca od niebezpiecznych mylników. Rośnie KĘPKOWATO od września do listopada na żywym i martwym drewnie iglastym i liściastym — szczególnie często w borach sosnowych i świerkowych. SUROWE DRAPIĄCE W GARDLE: po zjedzeniu surowego owocnika pojawia się od drapiącego do mydlanego posmaku. OBOWIĄZKOWO PARZYĆ: substancje trujące termolabilne — sparzyć, odlać wodę, następnie smażyć. Tworzący największy znany organizm na Ziemi (grzybnia 9 km² w Oregonie).',
     edib:'Jadalna — jak opieńka miodowa, po gotowaniu. Nigdy na surowo (gastrycznych). Niektóre osoby reagują GI nawet po ugotowaniu.',
     lookalikes:'Opieńka miodowa (A. mellea) — preferuje liściaste, łuski jasnobrązowe do żółtych, rzadsze. Prawie nieodróżnialne bez genotypowania — traktuj jak opieńkę miodową. Hełmówka jadowita (G. marginata) — ŚMIERTELNA; brak pierścienia lub słaba falbanka, blaszki ciemnieją od zarodu, rośnie na drewnie, mała.',
     weights:{tu:82,no:78,dr:75,pi:78,au:70,ps:75,dl:78,ch:80,bw:72,ku:68,ma:65,br:62,wk:60,ll:58,sd:68,se:62,be:70,po:72,bi:68,wy:80,nak:75,sep:78}
@@ -43096,9 +43106,10 @@ const MUSHROOMS={
     season:[10,11,12,1],terrain:['Parki','Ogrody','Zieleń miejska'],
     soil:'Na zrębkach drzewnych i mulczu — saprofit drewna liściastego',ph:'Saprofit drewna',elev:'0–500 m',
     habitat:'Na zrębkach i mulczu drzewnym w parkach, ogrodach i przy ścieżkach leśnych. Preferuje mulcz z drzew liściastych. Jesień–wczesna zima. Coraz częstsza w Polsce wraz z popularyzacją mulczowania.',
-    desc:'Kapelusz 2–5 cm, KARMELOWY do rdzawobrązowego, gładki, błyszczący, hygrofaniczny (blednie od zewnątrz przy suszeniu). Krawędź FALISTA i undulowana — cecha nazewnicza. Niebieskawy przy uszkodzeniu (psilocybina). Blaszki szarofioletowe, ciemniejące. Trzon 4–8 cm, włóknisty, kremowobiały do brązowego.',
+    desc:'KAPELUSZ 2–5 cm, karmelowy do rdzawobrązowego, gładki, błyszczący, silnie HIGROFANICZNY — wysycha blakąc od brzegu ku centrum, pozostawiając ciemną mokrą plamę w środku. KRAWĘDŹ KAPELUSZA WYRAŹNIE FALISTA i undulowana — cecha nieobecna u żadnego pospolitego mylnika na mulczu. KLUCZOWY TEST: MIĄŻSZ i TRZON przy nacięciu lub obtarciu intensywnie SINIEJE — jeden z najsilniejszych takich efektów wśród łysiczek. BLASZKI szarofioletowe do czekoladowobrązowych. TRZON 4–8 cm, włóknisty, kremowobiały do brązowego, bez pierścienia. Rośnie WYŁĄCZNIE na ZRĘBKACH i MULCZU DRZEWNYM w parkach i ogrodach — nigdy na trawie; zawiera znacznie wyższe stężenia psilocybiny niż łysiczka lancetowata. Owocnikuje wyjątkowo późno: październik–styczeń.',
     danger:'SILNIE HALUCYNOGENNA — jedna z najsilniejszych łysiczek, bogata w psilocybinę i psilocynę. W Polsce NIELEGALNA (posiadanie karalne). Grozi pomyleniem z jadalnymi grzybami na mulczu w parkach. Niebieskie przebarwienie przy uszkodzeniu to ostrzegawczy sygnał psilocybiny.',
-    lookalikes:'Łysiczka stożkowa (P. semilanceata) — spiczasta czapeczka, na trawie przy nawozie, NIE na mulczu. Hełmówka jadowita (G. marginata) — ŚMIERTELNA; brązowe zarodniki, pierścień, nie niebieskawy, kępki na pniakach. Łuskwiak nastroszony (P. squarrosa) — sterczące łuski, zapach czosnku. Falista krawędź + mulcz + niebieskie zabarwienie przy uszkodzeniu = łysiczka falista.',
+    lookalikes:'Łysiczka lancetowata (P. semilanceata) — spiczasta czapeczka, na trawie przy nawozie, NIE na mulczu. Hełmówka jadowita (G. marginata) — ŚMIERTELNA; brązowe zarodniki, pierścień, nie niebieskawy, kępki na pniakach. Łuskwiak nastroszony (P. squarrosa) — sterczące łuski, zapach czosnku. Falista krawędź + mulcz + niebieskie zabarwienie przy uszkodzeniu = łysiczka falista.',
+    photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Psilocybe_cyanescens_3.jpg/500px-Psilocybe_cyanescens_3.jpg'],
     weights:{bw:52,au:48,ka:60,lm:55,ku:58,br:52,sw:55,ro:50,lu:48,be:52,bi:45,sd:45,op:62,st:65,sl:55,so:52,wy:50,nak:48,sep:50}
   },
 
@@ -54697,7 +54708,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.1</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.2</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
