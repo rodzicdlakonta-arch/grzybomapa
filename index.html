@@ -445,7 +445,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.12</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.13</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42103,7 +42103,7 @@ const MUSHROOMS={
     season:[9,10,11],terrain:['Lasy iglaste','Bory bagienne'],
     soil:'Gleba torfowa, próchnicza, wilgotna',ph:'3.5–5.5',elev:'0–1400 m',
     habitat:'Na wilgotnej ściółce przy mchistych podmokłych terenach. Rośnie masowo.',
-    desc:'Kapelusz 2–8 cm, żółtobrązowy, lejkowaty z otworem — trzon przebija kapelusz na wylot. Żyłki (nie blaszki) żółte, rozwidlone, zbiegają po trzonie. Trzon WYDRĄŻONY w środku — kluczowa cecha. Rośnie masowo w skupiskach na mchach. Przeżywa mrozy do -8°C — zbieraj do listopada.',
+    desc:'Kapelusz 2–8 cm, ŻÓŁTOBRĄZOWY, wyraźnie LEJKOWATY Z OTWOREM na środku — trzon przebija kapelusz na wylot jak lejek. ŻYŁKI (nie blaszki!) żółte, rozwidlone, zbiegające po trzonie — falista sieć zamiast ostrych blaszek. Trzon WYDRĄŻONY w środku. Rośnie MASOWO w skupiskach na wilgotnych mchach przy podmokłych borach — setki owocników razem. ODPORNOŚĆ NA MRÓZ: przeżywa do -8°C, rozmraża po nocnym mrozie — zbierana do końca listopada, gdy inne grzyby dawno zniknęły. Smak łagodny, doskonała do zup i sosów — jeden z ostatnich grzybów polskiego roku.',
     edib:'Smaczna, dobra do zup i sosów. Późna jesień.',
     weights:{bw:80,au:82,tu:85,no:75,dr:78,pi:75,ps:80,ku:72,dl:75,ch:78,ma:68,wi:70,su:72,be:80,bi:78,go:75,sd:82,se:80,po:75,wy:52,nak:48,sep:55}
   },
@@ -42292,7 +42292,7 @@ const MUSHROOMS={
     season:[8,9,10],terrain:['Stare lasy liściaste','Buczyny','Dębiny'],
     soil:'Na pniach żywych i martwych dębów, buków. Saprofit i słaby pasożyt.',ph:'Saprofit drewna',elev:'0–800 m',
     habitat:'Na pniach starych dębów i buków. Wymaga starodrzewia. Objęta ochroną gatunkową w Polsce.',
-    desc:'Jednorodna biała kaskadowa masa miękkich kolców 1–5 cm, rosnąca wprost z pnia drzewa. Brak kapeluszy i trzonów — cały owocnik to "lwia grzywa" lub "sopel lodu". Kolce delikatne, nie twarde. Starsze okazy kremowożółtawe. Rozmiar 10–40 cm. Chroniony w Polsce — fotografować, nie zbierać.',
+    desc:'JEDNORODNA BIAŁA KASKADOWA MASA miękkich, zwisających kolców 1–5 cm rosnąca bezpośrednio z pnia drzewa — brak kapeluszy i trzonów, cały owocnik to "lwia grzywa" lub "sopel lodu". Kolce DELIKATNE, nietwarde, zwisające ku dołowi — absolutnie unikalna budowa wśród polskich grzybów. Starsze okazy KREMOWOŻÓŁTAWE do żółtawych. Rozmiar 10–40 cm. Rośnie na starych DĘBACH i BUKACH — wymaga starodrzewia co najmniej 150-letniego. ŚCIŚLE CHRONIONA W POLSCE — fotografować i zgłaszać do regionalnego inspektoratu ochrony przyrody; wybitny smak (przypomina krewetki), ceniona w kuchni azjatyckiej, ale zbieranie grozi mandatem.',
     edib:'Wybitny smak, przypomina krewetki. Ceniony w kuchni azjatyckiej. Zbieranie wymaga zezwolenia!',
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/2006-11-03_Hericium_erinaceus_crop.jpg/500px-2006-11-03_Hericium_erinaceus_crop.jpg'],
     weights:{bw:60,kn:45,sw:55,ro:52,lu:48,bi:40,be:42,sd:38,se:35,po:38,wy:28,nak:25,sep:30}
@@ -42865,7 +42865,7 @@ const MUSHROOMS={
     season:[9,10,11],terrain:['Lasy liściaste','Dąbrowy','Lasy mieszane'],
     soil:'Gleba żyzna, pod dębami i grabami',ph:'5.5–7.0',elev:'0–900 m',
     habitat:'Pod dębami, grabami i bukami w lasach liściastych. Pospolita na Niżu Polskim. Najłatwiejsza do rozpoznania po zapachu.',
-    desc:'Kapelusz żółtobrązowy do szarożółtego, 3–8 cm, z delikatnym garbkiem. Blaszki żółte, szerokie. Trzon żółty, włóknisty. Zapach — KLUCZOWY i niepowtarzalny: intensywny, duszący, karbidowo-gazowy lub siarkowy. Mylnie przypomina gąskę zielonkę kolorystyką.',
+    desc:'Kapelusz ŻÓŁTOBRĄZOWY DO SZAROŻÓŁTEGO, 3–8 cm, z delikatnym garbkiem — kolorystycznie zbliżona do gąski zielonki. BLASZKI ŻÓŁTE, szerokie. Trzon żółty, włóknisty. ZAPACH ABSOLUTNIE KLUCZOWY: intensywny, duszący ZAPACH KARBIDU lub GAZU ZIEMNEGO — nie do pomylenia z żadnym jadalnym grzybem, wyczuwalny z odległości. TRUJĄCA — silne zatrucia pokarmowe; mimo odpychającego zapachu notowane zatrucia przez osoby nieznające gatunku. Rośnie pod dębami i grabami w lasach liściastych, wrzesień–listopad.',
     danger:'TRUJĄCA — powoduje silne zatrucia pokarmowe. Odpychający zapach (karbid, gaz, siarka) jest ochroną — prawie niemożliwa do zjedzenia bez ostrzegawczego zapachu. Mimo to notowane zatrucia przez osoby nieznające gatunku.',
     lookalikes:'Gąska zielonka (T. equestre) — ŻÓŁTOZIELONA nie siarkowa żółć; zapach mączysty lub brak, NIGDY karbidowy. Grzyby z żółtymi blaszkami mogą być jadalne — sprawdź zawsze zapach. Karbidowy/gazowy zapach = wyrzuć natychmiast.',
     weights:{bw:60,au:58,ka:65,lm:60,sw:68,ro:65,lu:62,ja:60,be:65,bi:60,sd:55,po:62,so:60,sl:60,op:65,st:65,ll:58,kn:55,wy:60,nak:55,sep:60}
@@ -54709,7 +54709,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.12</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.13</span></div>
   <button id="mob-srch" aria-label="Szukaj">🔍</button>
 </div>
 <div id="mob-chips">
