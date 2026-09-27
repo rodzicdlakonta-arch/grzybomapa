@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.27</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.28</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43258,17 +43258,6 @@ const MUSHROOMS={
     weights:{tu:58,no:55,dr:52,pi:60,au:50,ps:55,dl:52,ch:58,bw:52,ku:50,ma:48,br:45,wk:42,ll:40,sd:55,se:52,be:50,po:50,bi:48,wy:60,nak:55,sep:60}
   },
 
-  lysiczka_lanc:{
-    name:'Łysiczka lancetowata',latin:'Psilocybe semilanceata',cat:'hallucinogenic',rare:false,wiki:'Psilocybe_semilanceata',
-    season:[9,10],terrain:['Łąki','Pastwiska','Trawniki'],
-    soil:'Gleba próchnicza, nawożona — rośnie między trawami w glebie wzbogaconej obornikiem',ph:'5.5–7.5',elev:'0–1500 m',
-    habitat:'Na nawożonych łąkach i pastwiskach, między trawami, przy ścieżkach. Najczęstszy psychoaktywny grzyb w Polsce i Europie — pojawia się masowo w październiku po deszczach.',
-    desc:'Kapelusz 5–15 mm (MAŁY!), STOŻKOWATY z wyraźnym OSTRYM KOLCEM na czubku — cecha diagnostyczna. Barwa HIGROFANICZNA: mokry = ciemnobrązowy z oliwkowym odcieniem; suchy = jasnobeżowy do kremowego. Skórka śliska, oddziela się od miąższu jak błonka. TRZON bladożółtawy, bardzo cienki (1–3 mm), elastyczny, falisty, 4–10 cm. Blaszki szarobrązowawe, gęste. SINIENIE: uszkodzony trzon zabarwia się NIEBIESKO — reakcja oksydacji psylocybiny.',
-    danger:'HALUCYNOGENNY — zawiera psylocybę i psylocynę. W Polsce posiadanie jest nielegalne (substancja kontrolowana). Wywołuje silne halucynacje wzrokowe, zaburzenia percepcji czasu, stany lękowe, psychozę. NIE ZBIERAĆ, NIE SPOŻYWAĆ.',
-    lookalikes:'Kołpaczek blady (P. semiovatus) — większy (3–8 cm), bez kolca na czubku, kremowobiały, bez sinienia, na stercie obornika. Kołpaczek obrączkowany (P. cinctulus) — HALUCYNOGENNY; bez kolca, obrączkowana strefa przy brzegu, na oborniku. Hełmówka jadowita (G. marginata) — ŚMIERTELNA; bez kolca, rośnie na drewnie. Kolec na czubku + sinienie + trawa nawożona = łysiczka lancetowata.',
-    weights:{ka:68,lm:62,ku:65,br:62,gr:55,wk:58,sd:60,op:55,wy:65,nak:68,sep:65,tu:52,no:55,ma:50,au:45,be:48,bi:44,bw:46,sw:52,ro:50}
-  },
-
   czarka_aust:{q:2,
     name:'Czarka austriacka',latin:'Sarcoscypha austriaca',cat:'edible',rare:true,wiki:'Sarcoscypha_austriaca',
     season:[2,3,4,5],terrain:['Lasy liściaste','Wąwozy','Olszyny'],
@@ -43478,7 +43467,6 @@ const MUSH_ICON_CFG={
   gaska_plam:   {s:'flat',c:'#707060',t:'#C0C0B0'},
   czubajka_sut: {s:'para',c:'#A07040',t:'#C8A870'},
   mleczaj_om:   {s:'flat',c:'#E0B8A0',t:'#F0D0C0'},
-  lysiczka_lanc:{s:'flat',c:'#C89050',t:'#E0C870'},
   czarka_aust:  {s:'flat',c:'#BB2222'},
   gaska_zolk:   {s:'flat',c:'#A0A090',t:'#D0D0C0'},
   kolpaczek_bl: {s:'flat',c:'#D8D0C0',t:'#F0ECE0'},
@@ -43667,7 +43655,6 @@ const MUSHROOM_LOCAL={
   gaska_plam:   {s:'v',n:'Bardzo rzadka — sporadycznie na glebach wapiennych. GROŹNA pomyłka z gąską szarą pod bukami i świerkami.'},
   czubajka_sut: {s:'f',n:'Skraje lasów liściastych i parki regionu. Mniej pospolita niż czubajka kania, ale regularnie spotykana.'},
   mleczaj_om:   {s:'p',n:'Pospolita pod brzozami w borach mieszanych Krainy. Bledszy i mniej wełnisty niż mleczaj wełnianka — oba pod brzozą, oba niejadalne.'},
-  lysiczka_lanc:{s:'r',n:'Na wilgotnych nawożonych łąkach i pastwiskach. Październik po deszczach — małe stożkowate czapeczki w trawie. Posiadanie nielegalne.'},
   czarka_aust:  {s:'v',n:'Bardzo rzadka — sporadycznie w wilgotnych wąwozach i przy ciekach leśnych. Wiosna luty–maj, spośród śniegu.'},
   gaska_zolk:   {s:'p',n:'Pospolita w lasach i parkach regionu od maja do listopada. Najbardziej zmienny z gąskowców — blaszki żółkną przy potarciu.'},
   kolpaczek_bl: {s:'f',n:'Na oborniku i pastwiskach regionu gdzie jest bydło lub konie. Tereny wiejskie Krainy — łatwo przeoczany.'},
@@ -43699,7 +43686,7 @@ const SPECIES_DIFF={
   lejkowka_gol:2,wilgotnica:2,wieruszka_zat:4,
   maslak_zw:2,mleczaj_wel:2,borowik_sz:2,lakowka:2,lejkowka_mgla:2,golabek_sin:3,kozlarz_pom:2,
   gaska_plam:3,czubajka_sut:2,mleczaj_om:3,
-  lysiczka_lanc:3,czarka_aust:1,gaska_zolk:3,kolpaczek_bl:3,
+  czarka_aust:1,gaska_zolk:3,kolpaczek_bl:3,
 };
 // General rarity in Poland: 1=very common, 2=common, 3=moderately common, 4=rare, 5=very rare/endangered
 const SPECIES_RARITY={
@@ -43734,7 +43721,7 @@ const SPECIES_RARITY={
   lysiczka:2,kolpaczek_ob:2,strzepiak_nbl:3,
   maslak_zw:1,mleczaj_wel:2,borowik_sz:4,lakowka:1,lejkowka_mgla:1,golabek_sin:2,kozlarz_pom:2,
   gaska_plam:4,czubajka_sut:2,mleczaj_om:3,
-  lysiczka_lanc:2,czarka_aust:4,gaska_zolk:1,kolpaczek_bl:3,
+  czarka_aust:4,gaska_zolk:1,kolpaczek_bl:3,
 };
 const LOCAL_COLOR={p:'#4a7a3a',f:'#8a7a20',r:'#aa5a20',v:'#aa2020',n:'#666'};
 
@@ -54869,7 +54856,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.27</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.28</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
