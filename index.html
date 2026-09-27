@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.1</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -44047,8 +44047,8 @@ const _fBboxes=FORESTS.map(f=>{
   for(const [la,ln] of f.p){if(la<s)s=la;if(la>n)n=la;if(ln<w)w=ln;if(ln>e)e=ln;}
   return[s,w,n,e];
 });
-const _fMain=new Array(FORESTS.length).fill(null);
-const _fDet=new Array(FORESTS.length).fill(null);
+const _fMain=[];
+const _fDet=[];
 const _DET_COLORS={'311':'#4a8a2a','312':'#255015','313':'#2d6a15'};
 // Spatial index: bucket forest polygons into 0.1°×0.15° cells (built before _updateForestLayer)
 const _FSI={};
@@ -44073,8 +44073,43 @@ function _updateForestLayer(){
   if(fOn)_visF.forEach(i=>{if(!inView.has(i)){forestLayer.removeLayer(_fMain[i]);_fMain[i]=null;_visF.delete(i);}});
   if(dOn)_visD.forEach(i=>{if(!inView.has(i)){bdlStandsLayer.removeLayer(_fDet[i]);_fDet[i]=null;_visD.delete(i);}});
 }
-map.on('moveend zoomend',_updateForestLayer);
+// ── Regional forest data loader ──────────────────────────────────────────
+// Loads pre-computed large-forest JSON files when viewport enters each region.
+// Files live next to index.html (same origin on GitHub Pages).
+const _loadedRegions=new Set();
+const _FOREST_REGIONS=[
+  {id:'w',s:51.4,w:15.8,n:53.7,e:16.7,f:'forests_wlkp_west.json'},
+  {id:'s',s:51.4,w:15.8,n:52.7,e:19.3,f:'forests_wlkp_south.json'},
+  {id:'e',s:51.4,w:17.9,n:53.7,e:19.3,f:'forests_wlkp_east.json'},
+];
+function _loadRegionForests(){
+  if(!forestLayer._map)return;
+  const b=map.getBounds(),LAT=0.1,LNG=0.15;
+  _FOREST_REGIONS.forEach(r=>{
+    if(_loadedRegions.has(r.id))return;
+    if(b.getSouth()>r.n||b.getNorth()<r.s||b.getWest()>r.e||b.getEast()<r.w)return;
+    _loadedRegions.add(r.id);
+    fetch(r.f).then(res=>res.json()).then(polys=>{
+      const start=FORESTS.length;
+      polys.forEach((f,idx)=>{
+        FORESTS.push(f);
+        const i=start+idx;
+        const lats=f.p.map(p=>p[0]),lngs=f.p.map(p=>p[1]);
+        const bb=[Math.min(...lats),Math.min(...lngs),Math.max(...lats),Math.max(...lngs)];
+        _fBboxes[i]=bb;
+        const[fs,fw,fn,fe]=bb;
+        for(let row=Math.floor(fs/LAT);row<=Math.floor(fn/LAT);row++)
+          for(let col=Math.floor(fw/LNG);col<=Math.floor(fe/LNG);col++){
+            const k=row+'_'+col;(_FSI[k]||(_FSI[k]=[])).push(i);
+          }
+      });
+      _updateForestLayer();
+    }).catch(()=>{_loadedRegions.delete(r.id);});
+  });
+}
+map.on('moveend zoomend',()=>{_updateForestLayer();_loadRegionForests();});
 _updateForestLayer();
+_loadRegionForests();
 // Ray-cast PIP and exact forest type lookup
 function _pip(lat,lng,pts){let inside=false;for(let i=0,j=pts.length-1;i<pts.length;j=i++){const[li,xi]=pts[i],[lj,xj]=pts[j];if((li>lat)!==(lj>lat)&&lng<(xj-xi)*(lat-li)/(lj-li)+xi)inside=!inside;}return inside;}
 function _forestTypeAt(lat,lng){const k=Math.floor(lat/.1)+'_'+Math.floor(lng/.15);const cands=_FSI[k];if(!cands)return null;for(const i of cands){const[s,w,n,e]=_fBboxes[i];if(lat<s||lat>n||lng<w||lng>e)continue;if(_pip(lat,lng,FORESTS[i].p))return FORESTS[i].c;}return null;}
@@ -44265,6 +44300,7 @@ let ovCropLayer=L.layerGroup();    // dynamic OSM farmland/crops
 let ovPastureLayer=L.layerGroup(); // dynamic OSM pastures
 let ovDynWaterLayer=L.layerGroup(); // dynamic OSM water bodies (lakes, rivers)
 let ovTimer=null,showOv=false,showDynTerrain=false;
+const _ovFetched=new Set(); // tracks 0.5° tile keys already fetched via Overpass
 
 // Add dynamic sub-layers so toggles control them too
 waterBodyLayer.addLayer(ovWetLayer);      // dynamic OSM wetlands always visible (like lakes)
@@ -44274,7 +44310,7 @@ cropLayer.addLayer(ovCropLayer);
 pastureLayer.addLayer(ovPastureLayer);
 
 function loadDetailTerrain(){
-  if(map.getZoom()<8)return;
+  if(map.getZoom()<7)return;
   const b2=map.getBounds();
   const bb=`${b2.getSouth()},${b2.getWest()},${b2.getNorth()},${b2.getEast()}`;
   // Always fetch dynamic water bodies (lakes, ponds, reservoirs, rivers, canals) — fills gaps in static LANDUSE
@@ -44303,24 +44339,31 @@ function loadDetailTerrain(){
         }
       });
     }).catch(()=>{});
-  // Forests: fetch whenever forest layer is on (not gated by BDL toggle) — covers all of Wielkopolskie
-  if(ovLayer._map&&b2.getNorth()-b2.getSouth()<=1.6&&b2.getEast()-b2.getWest()<=2.4){
-    const qf=`[out:json][timeout:15];(way["landuse"="forest"](${bb});way["natural"="wood"](${bb}););out tags geom;`;
-    fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qf)}`)
-      .then(r=>r.json()).then(data=>{
-        ovLayer.clearLayers();
-        (data.elements||[]).forEach(el=>{
-          if(!el.geometry)return;
-          const poly=el.geometry.map(p=>[p.lat,p.lon]);
-          const tags=el.tags||{};
-          const type=getTreeType(tags);
-          const name=getTreeDisplayName(tags);
-          const fc=TREE_COLORS[type]||'#3a7c20';
-          if(!wyrForests.some(f=>f.poly[0]&&f.poly[0][0]===poly[0][0]&&f.poly[0][1]===poly[0][1]))
-            wyrForests.push({type,name,poly});
-          L.polygon(poly,{color:fc,weight:.5,fillColor:fc,fillOpacity:.22,interactive:false}).addTo(ovLayer);
-        });
-      }).catch(()=>{});
+  // Dynamic Overpass forests — tile-cached, accumulating (no clearLayers)
+  if(ovLayer._map&&b2.getNorth()-b2.getSouth()<=2.5&&b2.getEast()-b2.getWest()<=3.5){
+    const CELL=0.5,cs=[];
+    for(let r=Math.floor(b2.getSouth()/CELL);r<=Math.floor(b2.getNorth()/CELL);r++)
+      for(let c=Math.floor(b2.getWest()/CELL);c<=Math.floor(b2.getEast()/CELL);c++){
+        const k=r+'_'+c;if(!_ovFetched.has(k))cs.push({r,c,k});
+      }
+    if(cs.length){
+      const fs=cs.reduce((m,x)=>Math.min(m,x.r*CELL),Infinity),fw=cs.reduce((m,x)=>Math.min(m,x.c*CELL),Infinity);
+      const fn=cs.reduce((m,x)=>Math.max(m,(x.r+1)*CELL),-Infinity),fe=cs.reduce((m,x)=>Math.max(m,(x.c+1)*CELL),-Infinity);
+      cs.forEach(x=>_ovFetched.add(x.k));
+      const qf=`[out:json][timeout:30];(way["landuse"="forest"](${fs},${fw},${fn},${fe});way["natural"="wood"](${fs},${fw},${fn},${fe}););out tags geom;`;
+      fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qf)}`)
+        .then(r=>r.json()).then(data=>{
+          (data.elements||[]).forEach(el=>{
+            if(!el.geometry)return;
+            const poly=el.geometry.map(p=>[p.lat,p.lon]);
+            const tags=el.tags||{};const type=getTreeType(tags);const name=getTreeDisplayName(tags);
+            const fc=TREE_COLORS[type]||'#3a7c20';
+            if(!wyrForests.some(f=>f.poly[0]&&f.poly[0][0]===poly[0][0]&&f.poly[0][1]===poly[0][1]))
+              wyrForests.push({type,name,poly});
+            L.polygon(poly,{color:fc,weight:.5,fillColor:fc,fillOpacity:.22,interactive:false}).addTo(ovLayer);
+          });
+        }).catch(()=>{cs.forEach(x=>_ovFetched.delete(x.k));});
+    }
   }
   if(!showOv&&!showDynTerrain)return;
   if(b2.getNorth()-b2.getSouth()>1.6||b2.getEast()-b2.getWest()>2.4)return;
@@ -54194,7 +54237,7 @@ map.on('click',function(e){
 document.getElementById('tgl-f').onclick=()=>{
   const t=document.getElementById('tgl-f'),on=!t.classList.contains('on');
   t.classList.toggle('on',on);
-  if(on){forestLayer.addTo(map);ovLayer.addTo(map);_updateForestLayer();treeGridLayer.addTo(map);loadDetailTerrain();}else{map.removeLayer(forestLayer);map.removeLayer(ovLayer);map.removeLayer(treeGridLayer);_fMain.fill(null);}
+  if(on){forestLayer.addTo(map);ovLayer.addTo(map);_updateForestLayer();_loadRegionForests();treeGridLayer.addTo(map);loadDetailTerrain();}else{map.removeLayer(forestLayer);map.removeLayer(ovLayer);map.removeLayer(treeGridLayer);}
 };
 
 document.getElementById('tgl-wet').onclick=()=>{
@@ -54950,7 +54993,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.0</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.1</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
