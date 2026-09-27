@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.3</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.5</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32706,12 +32706,15 @@ function _updateForestLayer(){
   const b=map.getBounds().pad(0.25);
   const vs=b.getSouth(),vw=b.getWest(),vn=b.getNorth(),ve=b.getEast();
   const fOn=forestLayer._map,dOn=bdlStandsLayer._map;
+  const zoom=map.getZoom();
+  // At low zoom skip tiny compartments (performance + visual clarity)
+  const minArea=zoom<=9?0.0005:zoom<=11?0.00002:0;
   // Find in-view indices via spatial index
   const inView=new Set();
   for(let r=Math.floor(vs/.1);r<=Math.floor(vn/.1);r++)
     for(let c=Math.floor(vw/.15);c<=Math.floor(ve/.15);c++){
       const cands=_FSI[r+'_'+c];if(!cands)continue;
-      cands.forEach(i=>{if(inView.has(i))return;const[fs,fw,fn,fe]=_fBboxes[i];if(fs<vn&&fn>vs&&fw<ve&&fe>vw)inView.add(i);});
+      cands.forEach(i=>{if(inView.has(i))return;const[fs,fw,fn,fe]=_fBboxes[i];if(fs<vn&&fn>vs&&fw<ve&&fe>vw){if(minArea&&(fn-fs)*(fe-fw)<minArea)return;inView.add(i);}});
     }
   // Add newly in-view
   if(fOn)inView.forEach(i=>{if(!_fMain[i]){_fMain[i]=L.polygon(FORESTS[i].p,{fillColor:'#4a8a2a',fillOpacity:.18,weight:0,interactive:false}).addTo(forestLayer);_visF.add(i);}});
@@ -32738,6 +32741,7 @@ function _loadRegionForests(){
       const start=FORESTS.length;
       polys.forEach((f,idx)=>{
         FORESTS.push(f);
+        if(!f.c)return; // name-only entry — skip render index, will appear in _namedF only
         const i=start+idx;
         const lats=f.p.map(p=>p[0]),lngs=f.p.map(p=>p[1]);
         const bb=[Math.min(...lats),Math.min(...lngs),Math.max(...lats),Math.max(...lngs)];
@@ -32749,6 +32753,7 @@ function _loadRegionForests(){
           }
       });
       _updateForestLayer();
+      _rebuildNamedF();
     }).catch(()=>{_loadedRegions.delete(r.id);});
   });
 }
@@ -32797,8 +32802,12 @@ const _TreeGL=L.GridLayer.extend({createTile(coords){
 }});
 const treeGridLayer=new _TreeGL({tileSize:256,updateWhenIdle:true,keepBuffer:0,pane:'treePins'}).addTo(map);
 // Named forest lookup (FORESTS entries with f.n but no f.c — exclude large scanner bboxes)
-const _namedF=FORESTS.filter(f=>f.n&&!f.c&&f.p.length>=3&&f.p.length<500);
-const _namedFBB=_namedF.map(f=>{let s=Infinity,w=Infinity,n=-Infinity,e=-Infinity;for(const[la,ln]of f.p){if(la<s)s=la;if(la>n)n=la;if(ln<w)w=ln;if(ln>e)e=ln;}return[s,w,n,e];});
+let _namedF=[];
+let _namedFBB=[];
+function _rebuildNamedF(){
+  _namedF=FORESTS.filter(f=>f.n&&f.p.length>=3);
+  _namedFBB=_namedF.map(f=>{let s=Infinity,w=Infinity,n=-Infinity,e=-Infinity;for(const[la,ln]of f.p){if(la<s)s=la;if(la>n)n=la;if(ln<w)w=ln;if(ln>e)e=ln;}return[s,w,n,e];});
+}
 function _namedForestAt(lat,lng){for(let i=0;i<_namedF.length;i++){const[s,w,n,e]=_namedFBB[i];if(lat<s||lat>n||lng<w||lng>e)continue;if(_pip(lat,lng,_namedF[i].p))return _namedF[i].n;}return null;}
 // PIP in live wyrForests (detailed OSM layer) — lazy bbox cache on each entry
 function _wyrForestAt(lat,lng){for(let i=0;i<wyrForests.length;i++){const f=wyrForests[i];if(!f._bb){let s=Infinity,n=-Infinity,w=Infinity,e=-Infinity;for(const[la,ln]of f.poly){if(la<s)s=la;if(la>n)n=la;if(ln<w)w=ln;if(ln>e)e=ln;}f._bb=[s,w,n,e];}const[s,w,n,e]=f._bb;if(lat<s||lat>n||lng<w||lng>e)continue;if(_pip(lat,lng,f.poly))return f;}return null;}
@@ -43638,7 +43647,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.3</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.5</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
