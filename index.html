@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.25</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.26</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42074,6 +42074,7 @@ const MUSHROOMS={
     desc:'Kapelusz 6–20 cm, CIEMNOCZEKOLADOWOBRĄZOWY do prawie czarnobrązowego — wyraźnie ciemniejszy niż borowik szlachetny; suchy, matowy, niekiedy lekko filcowaty. RURKI białe u młodych → żółtawe u starszych — NIE SINIEJE. TRZON jasnokremowy do brązowego, z BIAŁĄ SIATECZKĄ na całej długości (nie tylko u góry jak u borowika szlachetnego). MIĄŻSZ biały, pod skórką kapelusza RDZAWY do czerwonawobrązowego — przekrój ujawnia ten rdzawy podkap. Zapach orzechowy, smak łagodnie słodkawy. Rośnie WYŁĄCZNIE pod sosnami, w borach chrobotkowych i mszystych na piaszczystej glebie. Porównanie z borowik szlachetny: ciemniejszy kapelusz + siateczka na całym trzonie + rdzawy podkap.',
     edib:'Smaczny, bardzo podobny do borowika szlachetnego — doskonały świeżo, suszony i marynowany.',
     lookalikes:'Goryczak żółciowy (Tylopilus felleus) — identyczny wygląd: sprawdź rurki (różowawe = goryczak, nie zbierać); smak ekstremalnie gorzki. Borowik szlachetny — brązowy kapelusz (nie czekoladowy), siateczka tylko u góry trzonu; jadalny. Borowik ceglastopory — pory ceglastoczerwone, intensywnie sinieje; jadalny po długim gotowaniu.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Boletus_pinicola.JPG?width=500'],
     weights:{tu:90,no:88,dr:85,au:82,pi:82,ps:80,ku:78,bw:75,dl:78,ch:82,ma:72,wk:65,ll:55,gr:60,br:65,lm:50,ka:45,wy:88,nak:80,sep:82}
   },
   borowik_siat:{q:4,
@@ -42122,6 +42123,7 @@ const MUSHROOMS={
     habitat:'Pod sosnami, na obrzeżach borów i przy drogach leśnych.',
     desc:'Kapelusz 4–10 cm, RUDY DO ŻÓŁTOBRĄZOWEGO, ŚLUZOWATY — skórka łatwo się ściąga jak u innych maślaków. Rurki BLADOŻÓŁTE do żółtych. TRZON BEZ PIERŚCIENIA — kluczowy odróżnik od maślaka zwyczajnego (który MA pierścień). U ZUPEŁNIE MŁODYCH przy porach BIAŁE MLECZNE KROPLE — ziarnistości dały gatunkowi nazwę; u starszych krople znikają. Rośnie WYŁĄCZNIE POD SOSNAMI na kwaśnej, piaszczystej glebie — jak wszystkie maślaki. Skórkę zdejmować przed gotowaniem; smak dobry po obraniu, sierpień–listopad.',
     edib:'Dobry po usunięciu skórki. Zbierać przed deszczem. Odróżnij od maślaka zwyczajnego brakiem pierścienia — trzon łzawi żółtymi kropelkami u młodych.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2007-07-03_Suillus_granulatus_tubes.jpg?width=500'],
     weights:{tu:88,no:85,dr:80,pi:82,au:78,ps:78,dl:80,ch:82,ku:72,ma:68,br:65,wk:60,ll:58,gr:68,lm:48,ka:45,sd:72,se:68,ta:65,be:70,po:72,bi:68,wy:88,nak:80,sep:85}
   },
   kozlarz_cz:{q:2,
@@ -42142,6 +42144,7 @@ const MUSHROOMS={
     desc:'Kapelusz 4–15 cm, SZAROBRĄZOWY do ciemnobrązowego — suchy, matowy, lekko filcowaty. TRZON biały do jasnoszarego, pokryty SZARYMI DO CZARNYCH ŁUSECZKAMI (ostrzejsze i ciemniejsze u starszych) — cecha rodzaju Leccinum. RURKI białawe do kremowych, pory drobne, NIE SINIEJE (lub bardzo słabo). MIĄŻSZ biały — po przekrojeniu lekko różowieje lub szarzeje, a przy gotowaniu ciemnieje do szarofioletowego i czarnego. GĄBCZASTY, miękki; starsze okazy stają się śluzowate. Identyfikacja pewna tylko pod brzozą (Betula sp.) — koźlarz babka jest BEZWZGLĘDNIE ZALEŻNY od brzozy.',
     edib:'Jadalny, smak łagodny. Gotować lub smażyć — nie jeść surowego. Ciemnieje intensywnie przy gotowaniu — normalny objaw.',
     lookalikes:'Koźlarz czerwony (L. aurantiacum) — ceglastoczerwony kapelusz, wyłącznie pod osiką. Koźlarz grabowy (L. carpini) — żółtawoszary, pod grabami, intensywniej różowieje lub sinieje po przekrojeniu. Koźlarz babka identyfikuje się pewnie tylko pod brzozą.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2007-10-13_Leccinum_scabrum_(Bull.)_Gray_12300_crop.jpg?width=500'],
     weights:{bw:75,au:80,kn:72,kb:82,su:78,wi:80,ps:75,ma:78,ku:70,tu:68,no:65,wk:68,lm:58,ll:55,br:60,dl:62,pi:62,ch:65,gr:55,wy:75,nak:68,sep:72}
   },
   kozlarz_gr:{q:2,
@@ -42392,6 +42395,7 @@ const MUSHROOMS={
     habitat:'Pospolity we wszystkich typach lasów. Przy drogach leśnych.',
     desc:'Kapelusz 5–12 cm, BRĄZOWY Z SZARYM LUB OLIWKOWYM ODCIENIEM, pokryty drobnymi białymi brodawkami (pozostałości osłonki ogólnej) — różni się od czerwonego koloru muchomora czerwonego. BLASZKI BIAŁE, wolne od trzonu. Przy podstawie trzonu POCHWA Z WYWINIĘTYM MANKIETEM ("SKARPETKA") — charakterystyczny kołnierz rozerwanych osłonek, często zagrzebany płytko w ziemi; wyjmuj grzyba razem z podstawą. ZAPACH SŁABY, lekko rzodkiewkowy lub nieprzyjemny. Zarodniki białe. Rośnie pod liściastymi i mieszanymi lasami, lipiec–październik.',
     danger:'SILNIE TRUJĄCY. Muscymol i kwas ibotenowy. Majaczenia, halucynacje, śpiączka. Wymaga hospitalizacji.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Amanita_pantherina_(1).JPG?width=500'],
     weights:{tu:65,no:60,au:62,bw:58,ps:62,ma:58,dl:60,ch:62,ku:55,dr:55,pi:58,sw:55,ro:52,lu:50,be:55,bi:52,sd:58,se:55,ka:48,lm:45,wy:65,nak:60,sep:62}
   },
   muszomor_cz:{
@@ -42443,6 +42447,7 @@ const MUSHROOMS={
     desc:'Kapelusz 5–10 cm, CIEMNOBRĄZOWY, MOCNO SFAŁDOWANY w nieregularne, mózgopodobne wały — fałdy nie tworzą siatki jak u smardza, lecz chaotycznie zachodzą na siebie. KLUCZOWE: miąższ NIECAŁKOWICIE PUSTY — przy przekroju widać częściowo wypełnione wnętrze (smardz jest całkowicie pusty i kruchy). Trzon kremowobiały, spłaszczony, często żebrowany. Wiosenny (marzec–maj), pojawia się przed pełnym rozwinięciem liści. Zawiera lotną toksynę gyromitrin — NIEBEZPIECZNA NAWET PO UGOTOWANIU (destylacja wodna nie usuwa MMH). Nieodróżnialna dla laika od smardza jadalneg0 — nie zbieraj bez 100% pewności.',
     danger:'TRUJĄCY na surowo — zawiera gyromitry. Może być przyrządzana tradycyjnie (patrz niżej), ale oficjalnie uważana za toksyczną w Polsce.',
     lookalikes:'Smardz jadalny (Morchella esculenta) — odróżnij wyraźnie: smardz ma regularne, sześciokątne, miodowe komórki; piestrzenica ma nieregularne, mózgopodobne, płatowate fałdy. Owocnik piestrzennicy jest zazwyczaj bardziej siodłowaty lub falisty, smardza — wydłużony i symetryczny.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2007-04-02_Gyromitra_esculenta_cropped.jpg?width=500'],
     weights:{tu:65,no:62,au:60,bw:58,dr:55,pi:60,ps:58,dl:62,ch:65,ku:52,ma:50,br:50,ll:48,wy:75,nak:70,sep:72}
   },
   golabek_wym:{
@@ -42514,6 +42519,7 @@ const MUSHROOMS={
     habitat:'W grupach na ściółce w lasach liściastych, szczególnie pod bukami i dębami. Ciemnoszara barwa czyni ją niewidoczną na ciemnej ziemi — rośnie stadami.',
     desc:'LEJKOWATA DO RURKOWATEJ, 3–12 cm wysokości, CZARNOSZARA DO MATOWOCZARNEJ — barwa pogrzebowa, stąd "trąbka śmierci", choć zupełnie nieszkodliwa. BRAK KAPELUSZY I BLASZEK — cały owocnik to pusta tulejka lub trąba; wewnątrz pusta jak rura. Zewnętrzna powierzchnia DELIKATNIE ŻEBERKOWANA lub pomarszczona — na tych żeberkach tworzą się zarodniki. Miąższ cienki, sprężysty, szarawy. ZAPACH intensywnie DYMNO-KWIATOWY, słodkawy — jeden z najbardziej rozpoznawalnych zapachów grzybów; w suszeniu kilkukrotnie silniejszy. Rośnie w dużych grupach na ciemnej ściółce pod bukami i dębami — CIEMNA BARWA CZYNI JE PRAWIE NIEWIDOCZNYMI: jeden znaleziony = szukać dokładnie wszędzie wokół. Zbieraj od sierpnia do listopada.',
     edib:'Wyśmienita — jeden z najlepiej smakujących i najlepiej suszących się grzybów w Polsce. Intensywny smak dymu i trufli. Doskonała do sosów, zup, past i tart. W suszu kilka razy intensywniejsza.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2011-11-20_Craterellus_cornucopioides_(L.)_Pers_183522_cropped.jpg?width=500'],
     weights:{bw:72,au:68,sw:80,ro:78,lu:75,ja:72,be:82,bi:78,go:75,sd:78,se:72,ta:65,po:78,so:70,ka:65,kn:68,lm:62,ps:65,ma:60,su:68,wi:70,ll:60,br:55,wy:72,nak:68,sep:75}
   },
   krowiak:{
@@ -42523,6 +42529,7 @@ const MUSHROOMS={
     habitat:'Bardzo pospolity — jeden z najczęstszych leśnych grzybów. Pod brzozami i sosnami, na ściółce, przy pniach i korzeniach.',
     desc:'Kapelusz 5–15 cm, oliwkowobrązowy do ochrowobrązowego, matowy; BRZEG SILNIE PODWINIĘTY do środka — jak wygięta rondo kapelusza, charakterystyczna dla całego gatunku przez całe życie owocnika. BLASZKI ŻÓŁTAWOBRĄZOWE, gęste, zbiegające na trzon; przy potarciu palcem łatwo się ścierają i odchodzą (jak gąbka) — cecha unikatowa. MIĄŻSZ żółknie po uszkodzeniu. Smak kwaśnozaciągający, nieco cierpki. BARDZO POSPOLITY: jeden z najpospolitszych grzybów Polski w lasach, szczególnie pod brzozami i sosnami. ŚMIERTELNIE TRUJĄCY MIMO POSPOLITOŚCI — kumulatywna hemoliza; dawniej tradycyjnie jedzony, dziś wiadomo że niszczy krwinki czerwone; nigdy nie zbierać.',
     danger:'ŚMIERTELNIE TRUJĄCY — niewidoczna trucizna kumulacyjna. Dawniej tradycyjnie jedzony w Polsce i Rosji. Udowodniono od lat 70. że powoduje postępującą autoimmunologiczną hemolizę (niszczenie własnych erytrocytów). Śmierć po wieloletnim spożywaniu. Nigdy nie zbierać pod żadnym pozorem.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2009-10-31_Paxillus_involutus_(Batsch)_Fr_62959.jpg?width=500'],
     weights:{tu:90,no:88,dr:85,bw:82,au:80,pi:82,ps:84,ku:80,dl:80,ch:82,ma:74,br:70,wk:64,ll:60,su:74,wi:76,be:74,bi:70,sd:72,sw:65,ro:68,wy:87,nak:80,sep:84}
   },
   borowik_ceg:{q:3,
@@ -42573,6 +42580,7 @@ const MUSHROOMS={
     desc:'Kapelusz 4–12 cm, ŻÓŁTOZIELONAWY do oliwkowożółtego, z centralnym ciemniejszym garbkiem — SKÓRKA LEPKA: w terenie przykleja się piasek i igliwie (łatwy test). Blaszki ŻÓŁTE, gęste — nie białe jak u gąsek jadalnych. Trzon żółty. Zapach mączysty. Nie sinieje, nie mleczkuje. Wyłącznie pod sosnami na suchej piaszczystej glebie, jesień.',
     edib:'NIEWSKAZANA do spożycia — po serii śmiertelnych zatruć we Francji (2001–2003) wycofana ze sprzedaży. Powoduje rabdomiolizę (rozpad mięśni sercowych i szkieletowych). Komitet Naukowy UE ds. Żywności wydał ostrzeżenie w 2012 r. Nie zbierać.',
     lookalikes:'Gąska siarkowa (T. sulphureum) — TRUJĄCA; podobny żółtozielony kapelusz, ale cuchnący nieprzyjemnie (karbid/gaz) i miąższ siarkowożółty. Gąska szara (T. terreum) — szarobrązowy (nie żółtozielony) kapelusz, pod sosnami; jadalna.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2011-11-21_Tricholoma_flavovirens_(Pers.)_S._Lundell_183941.jpg?width=500'],
     weights:{tu:88,no:85,dr:82,pi:85,au:78,ps:80,dl:82,ch:85,ku:70,ma:68,bw:82,br:68,wk:64,ll:58,sw:52,wy:85,nak:78,sep:82}
   },
 
@@ -43153,6 +43161,7 @@ const MUSHROOMS={
     desc:'Kapelusz 5–12 cm, RÓŻOWAWY DO BLADORÓŻOWOBRĄZOWEGO, koncentrycznie strefowany. Krawędź WYRAŹNIE WEŁNISTO-KOSMATA — kłaczkowate włoski widoczne gołym okiem; rydz i inne jadalne mleczaje mają gładką krawędź. Skórka lekko mazista przy wilgoci. Blaszki bladokremowe. Trzon biały lub bladoróżowy. MLECZKO BIAŁE, SMAK WYJĄTKOWO OSTRY I PIEKĄCY — jak pieprz na języku (rydz ma łagodne lub żywiczne mleczko barwy marchwiowej). Rośnie WYŁĄCZNIE POD BRZOZAMI na kwaśnych glebach — brak brzozy w zasięgu = inny gatunek.',
     danger:'Niejadalny — zawiera żywice o ostrym smaku wywołujące mdłości, wymioty i biegunkę. W Polsce nie zaleca się spożycia nawet po obróbce. W tradycji wschodnioeuropejskiej bywa kiszony po wielokrotnym moczeniu z wymianą wody — ryzyko nie do zaakceptowania.',
     lookalikes:'Mleczaj omszony (L. pubescens) — mniejszy, bardziej blady, bez wyraźnej strefowości. Rydz (L. deliciosus) — JADALNY; pomarańczowe mleczko, pod sosnami, NIE pod brzozą. Mleczaj dębowy (L. quietus) — łagodny smak, pod dębami. Wełnista kosmata krawędź + białe ostre mleczko + wyłącznie pod brzozą = mleczaj wełnianka.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Birkenmilchling_alt.JPG?width=500'],
     weights:{tu:62,no:60,dr:58,pi:65,au:55,ps:60,dl:55,ch:62,bw:58,ku:55,ma:52,br:50,wk:48,ll:45,sd:60,se:55,be:52,po:52,bi:48,wy:62,nak:60,sep:62}
   },
 
@@ -43212,6 +43221,41 @@ const MUSHROOMS={
     danger:'Surowy niestrawny — obowiązkowo gotować. Miąższ czernieje — normalne. Nie mylić z trującymi gatunkami.',
     lookalikes:'Koźlarz czarny (L. scabrum) — JADALNY; szarobrązowy kapelusz bez pomarańczowych odcieni, pod brzozą. Koźlarz babka — brunatny, nie czernieje tak intensywnie. Koźlarz grabowy — pod grabem, mniejszy, ciemniejszy. Pomarańczowy kapelusz + czarne łuski na trzonie + czernienie miąższu pod brzozą = koźlarz pomarańczowożółty.',
     weights:{tu:65,no:62,dr:60,pi:68,au:55,ps:62,dl:58,ch:65,bw:60,ku:58,ma:55,br:52,wk:50,ll:48,sd:62,se:58,be:55,po:55,bi:52,wy:65,nak:62,sep:65}
+  },
+
+  gaska_plam:{
+    name:'Gąska plamista',latin:'Tricholoma pardinum',cat:'poisonous',rare:true,wiki:'Tricholoma_pardinum',
+    season:[8,9,10],terrain:['Lasy liściaste','Lasy iglaste','Buczyny','Lasy mieszane'],
+    soil:'Gleba wapienna lub zasadowa — mykoryza z bukami, dębami, świerkami i jodłami na glebach bogatych w wapień',ph:'6.5–8.0',elev:'0–1200 m',
+    habitat:'Pod bukami, dębami, świerkami i jodłami wyłącznie na glebach wapiennych. Rzadki w Polsce. Groźny — mylony z gąską szarą przez podobną barwę kapelusza.',
+    desc:'Kapelusz 4–10 cm, STALOWOSZARY do szarobrązowawego; skórka sucha, pokryta REGULARNIE I KONCENTRYCZNIE ROZMIESZCZONYMI ŁUSKAMI — wyraźna łuskowata struktura na całej powierzchni, kluczowy odróżnik od gąski szarej. BLASZKI BIAŁAWE, u młodych z PRZEJRZYSTYMI KROPLAMI na ostrzach. TRZON biały, zwarty, u szczytu wydzielający krople wody (trzon "płaczący"). MIĄŻSZ BIAŁY, niezmieniający barwy, zapach i smak MĄKI. Wyłącznie na glebach WAPIENNYCH — brak wapnia = brak tej gąski.',
+    danger:'SILNIE TRUJĄCA. Wywołuje ostre zaburzenia żołądkowe i jelitowe, kolkowate bóle brzucha, wymioty, biegunkę. Możliwe zatrucia śmiertelne. Pierwsze objawy po 0,5–3 godzinach.',
+    lookalikes:'Gąska szara (T. terreum) — znacznie mniejsza (3–7 cm), kapelusz bez wyraźnych koncentrycznych łusek, pod sosnami. Gąska siarkowa (T. sulphureum) — żółtawa, cuchnąca karbidu. Gąska ziemistoblaszkowa (T. scalpturatum) — cieńszy miąższ, bez zapachu mąki.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2008-11-26_Tricholoma_pardinum.jpg?width=500'],
+    weights:{tu:18,no:15,dr:12,pi:10,au:22,ps:18,dl:12,ch:15,bw:20,ku:18,ma:15,br:25,wk:18,ll:15,sd:12,se:15,be:25,po:22,bi:18,wy:12,nak:10,sep:12}
+  },
+
+  czubajka_sut:{q:3,
+    name:'Czubajka sutkowata',latin:'Macrolepiota mastoidea',cat:'edible',rare:false,wiki:'Macrolepiota_mastoidea',
+    season:[8,9,10],terrain:['Skraje lasów','Lasy liściaste','Parki','Zarośla'],
+    soil:'Gleba umiarkowana, próchnicza — rośnie na różnych podłożach, częściej na glebach zasobnych lub wapiennych',ph:'5.5–7.5',elev:'0–900 m',
+    habitat:'W lasach liściastych w miejscach widniejszych — obrzeżach, przy drogach leśnych, w zaroślach i parkach. Miejscami pospolita. Pod dębami, grabami, bukami.',
+    desc:'Kapelusz 8–12 cm, od jasno- do CIEMNOBRĄZOWEJ; ŚRODEK Z WYRAŹNYM STOŻKOWATYM GARBKIEM (sutkiem) — kluczowa cecha, stąd nazwa. Na brzegu skórka często GWIAŹDZIŚCIE PĘKA. Trzon walcowaty, wydłużony, w barwie kapelusza, z DELIKATNYM ZYGZAKOWATYM WZORKIEM (mniej wyraźnym niż u czubajki kani), u starszych pusty. Pierścień cienkoskórkowaty, lejkowato wzniesiony. Miąższ o mało wyczuwalnym zapachu, delikatnym lekko ORZECHOWYM I SŁODKIM SMAKU. Dojrzały kapelusz rozłożysty, płaski z utrzymującym się garbkiem w centrum.',
+    edib:'Jadalna, dobra — szczególnie smaczne kapelusze smażone w panierce jak czubajka kania. Trzon łykowaty — odrzucić.',
+    danger:'Jadalna. Sprawdź obecność ruchomego pierścienia i brak pochwy u nasady; nie mylić z dzwonkówką trującą.',
+    lookalikes:'Czubajka kania (M. procera) — większa (15–30 cm), trzon z wyraźnym wzorkiem wężowym. Czubajnik czerwieniejący (C. rhacodes) — miąższ czerwienieje po uszkodzeniu. Czubajka białotrzonowa (M. excoriata) — biały trzon bez wzorku, otwarte łąki. Sutkowaty garbek + słabszy wzór na trzonie = czubajka sutkowata.',
+    weights:{tu:58,no:55,dr:52,pi:60,au:50,ps:55,dl:52,ch:58,bw:50,ku:48,ma:45,br:42,wk:40,ll:38,sd:52,se:50,be:45,po:45,bi:42,wy:58,nak:52,sep:55}
+  },
+
+  mleczaj_om:{
+    name:'Mleczaj omszony',latin:'Lactarius pubescens',cat:'inedible',rare:false,wiki:'Lactarius_pubescens',
+    season:[8,9,10,11],terrain:['Brzeziny','Lasy liściaste','Lasy mieszane z brzozą','Torfowiska'],
+    soil:'Gleba kwaśna, wilgotna, piaszczysta lub torfowa — mykoryza wyłącznie z brzozą',ph:'4.0–5.5',elev:'0–1000 m',
+    habitat:'Pod brzozami w lasach, parkach i na torfowiskach, w wilgotnych miejscach. Mylony z mleczajem wełnianką — odróżnia się mniej intensywną wełnistością i bledszą barwą.',
+    desc:'Kapelusz 3–8 cm, BLADORÓŻOWAWY do bladocielistoróżowego — wyraźnie BLEDSZY niż mleczaj wełnianka; bez wyraźnej strefowości. KRAWĘDŹ KOSMATO-WEŁNISTA — brodato wystające wełniste włoski, mniej gęste niż u wełnianki. BLASZKI bladokremowe. TRZON białawy, z lekko cielistoróżowym odcieniem. MLECZKO BIAŁE, niezmiennie białe (nie zmienia barwy). SMAK OSTRY, piekący. Rośnie pod brzozami od sierpnia do listopada.',
+    danger:'Niejadalny — zawiera żywice o ostrym smaku wywołujące mdłości, wymioty i biegunkę nawet po obróbce termicznej.',
+    lookalikes:'Mleczaj wełnianka (L. torminosus) — NIEJADALNY; większy, wyraźnie strefowany kapelusz, intensywniejsze kłaczki na krawędzi. Rydz (L. deliciosus) — JADALNY; pomarańczowe mleczko, pod sosnami. Mleczaj pieprzowy (L. piperatus) — biały, bez wełnistości. Bledszy + mniej wyraźne kłaczki + pod brzozą = mleczaj omszony.',
+    weights:{tu:58,no:55,dr:52,pi:60,au:50,ps:55,dl:52,ch:58,bw:52,ku:50,ma:48,br:45,wk:42,ll:40,sd:55,se:52,be:50,po:50,bi:48,wy:60,nak:55,sep:60}
   },
 };
 
@@ -54752,7 +54796,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.25</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.26</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
