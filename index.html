@@ -43268,6 +43268,13 @@ const _MUSH_BY_NAME=(()=>{
   });
   return m;
 })();
+// Short/alternate name aliases so lookalike links resolve correctly
+_MUSH_BY_NAME['Rydz']=_MUSH_BY_NAME['Rydz / Szafraniak'];
+_MUSH_BY_NAME['Czubajnik czerwieniejący']=_MUSH_BY_NAME['Czubajka czerwieniejąca'];
+_MUSH_BY_NAME['Koźlarz czarny']=_MUSH_BY_NAME['Koźlarz babka'];
+_MUSH_BY_NAME['Opieńka']=_MUSH_BY_NAME['Opieńka miodowa'];
+_MUSH_BY_NAME['Piestrzenica']=_MUSH_BY_NAME['Piestrzenica kasztanowata'];
+_MUSH_BY_NAME['Goryczak']=_MUSH_BY_NAME['Goryczak żółciowy'];
 // Names sorted longest→shortest so longer matches win
 const _MUSH_NAMES_SORTED=Object.keys(_MUSH_BY_NAME).sort((a,b)=>b.length-a.length);
 
