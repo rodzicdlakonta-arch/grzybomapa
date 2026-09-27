@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.26</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.27</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43230,7 +43230,7 @@ const MUSHROOMS={
     habitat:'Pod bukami, dębami, świerkami i jodłami wyłącznie na glebach wapiennych. Rzadki w Polsce. Groźny — mylony z gąską szarą przez podobną barwę kapelusza.',
     desc:'Kapelusz 4–10 cm, STALOWOSZARY do szarobrązowawego; skórka sucha, pokryta REGULARNIE I KONCENTRYCZNIE ROZMIESZCZONYMI ŁUSKAMI — wyraźna łuskowata struktura na całej powierzchni, kluczowy odróżnik od gąski szarej. BLASZKI BIAŁAWE, u młodych z PRZEJRZYSTYMI KROPLAMI na ostrzach. TRZON biały, zwarty, u szczytu wydzielający krople wody (trzon "płaczący"). MIĄŻSZ BIAŁY, niezmieniający barwy, zapach i smak MĄKI. Wyłącznie na glebach WAPIENNYCH — brak wapnia = brak tej gąski.',
     danger:'SILNIE TRUJĄCA. Wywołuje ostre zaburzenia żołądkowe i jelitowe, kolkowate bóle brzucha, wymioty, biegunkę. Możliwe zatrucia śmiertelne. Pierwsze objawy po 0,5–3 godzinach.',
-    lookalikes:'Gąska szara (T. terreum) — znacznie mniejsza (3–7 cm), kapelusz bez wyraźnych koncentrycznych łusek, pod sosnami. Gąska siarkowa (T. sulphureum) — żółtawa, cuchnąca karbidu. Gąska ziemistoblaszkowa (T. scalpturatum) — cieńszy miąższ, bez zapachu mąki.',
+    lookalikes:'Gąska szara (T. terreum) — znacznie mniejsza (3–7 cm), kapelusz bez wyraźnych koncentrycznych łusek, pod sosnami. Gąska siarkowa (T. sulphureum) — żółtawa, cuchnąca karbidu. Gąska żółknąca (T. scalpturatum) — blaszki żółkną przy potarciu, cieńszy miąższ, bez zapachu mąki.',
     photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2008-11-26_Tricholoma_pardinum.jpg?width=500'],
     weights:{tu:18,no:15,dr:12,pi:10,au:22,ps:18,dl:12,ch:15,bw:20,ku:18,ma:15,br:25,wk:18,ll:15,sd:12,se:15,be:25,po:22,bi:18,wy:12,nak:10,sep:12}
   },
@@ -43257,6 +43257,51 @@ const MUSHROOMS={
     lookalikes:'Mleczaj wełnianka (L. torminosus) — NIEJADALNY; większy, wyraźnie strefowany kapelusz, intensywniejsze kłaczki na krawędzi. Rydz (L. deliciosus) — JADALNY; pomarańczowe mleczko, pod sosnami. Mleczaj pieprzowy (L. piperatus) — biały, bez wełnistości. Bledszy + mniej wyraźne kłaczki + pod brzozą = mleczaj omszony.',
     weights:{tu:58,no:55,dr:52,pi:60,au:50,ps:55,dl:52,ch:58,bw:52,ku:50,ma:48,br:45,wk:42,ll:40,sd:55,se:52,be:50,po:50,bi:48,wy:60,nak:55,sep:60}
   },
+
+  lysiczka_lanc:{
+    name:'Łysiczka lancetowata',latin:'Psilocybe semilanceata',cat:'hallucinogenic',rare:false,wiki:'Psilocybe_semilanceata',
+    season:[9,10],terrain:['Łąki','Pastwiska','Trawniki'],
+    soil:'Gleba próchnicza, nawożona — rośnie między trawami w glebie wzbogaconej obornikiem',ph:'5.5–7.5',elev:'0–1500 m',
+    habitat:'Na nawożonych łąkach i pastwiskach, między trawami, przy ścieżkach. Najczęstszy psychoaktywny grzyb w Polsce i Europie — pojawia się masowo w październiku po deszczach.',
+    desc:'Kapelusz 5–15 mm (MAŁY!), STOŻKOWATY z wyraźnym OSTRYM KOLCEM na czubku — cecha diagnostyczna. Barwa HIGROFANICZNA: mokry = ciemnobrązowy z oliwkowym odcieniem; suchy = jasnobeżowy do kremowego. Skórka śliska, oddziela się od miąższu jak błonka. TRZON bladożółtawy, bardzo cienki (1–3 mm), elastyczny, falisty, 4–10 cm. Blaszki szarobrązowawe, gęste. SINIENIE: uszkodzony trzon zabarwia się NIEBIESKO — reakcja oksydacji psylocybiny.',
+    danger:'HALUCYNOGENNY — zawiera psylocybę i psylocynę. W Polsce posiadanie jest nielegalne (substancja kontrolowana). Wywołuje silne halucynacje wzrokowe, zaburzenia percepcji czasu, stany lękowe, psychozę. NIE ZBIERAĆ, NIE SPOŻYWAĆ.',
+    lookalikes:'Kołpaczek blady (P. semiovatus) — większy (3–8 cm), bez kolca na czubku, kremowobiały, bez sinienia, na stercie obornika. Kołpaczek obrączkowany (P. cinctulus) — HALUCYNOGENNY; bez kolca, obrączkowana strefa przy brzegu, na oborniku. Hełmówka jadowita (G. marginata) — ŚMIERTELNA; bez kolca, rośnie na drewnie. Kolec na czubku + sinienie + trawa nawożona = łysiczka lancetowata.',
+    weights:{ka:68,lm:62,ku:65,br:62,gr:55,wk:58,sd:60,op:55,wy:65,nak:68,sep:65,tu:52,no:55,ma:50,au:45,be:48,bi:44,bw:46,sw:52,ro:50}
+  },
+
+  czarka_aust:{q:2,
+    name:'Czarka austriacka',latin:'Sarcoscypha austriaca',cat:'edible',rare:true,wiki:'Sarcoscypha_austriaca',
+    season:[2,3,4,5],terrain:['Lasy liściaste','Wąwozy','Olszyny'],
+    soil:'Na zagrzebanych lub leżących gałązkach drzewa liściastego — saprofit drewna',ph:'Saprofit drewna',elev:'0–1200 m',
+    habitat:'Na martwych gałązkach liściastych w wilgotnych lasach, wąwozach i przy strumieniach. Wczesna wiosna — pojawia się podczas topnienia śniegu. Bardzo rzadka — łatwo mylona z czarką szkarłatną.',
+    desc:'Kształt KUBKOWATY, 2–6 cm, z krótkim lub wydłużonym trzonkiem. Wnętrze CYNOBROWOCZERWONE do szkarłatnego — błyszczący, żywy kolor. Zewnętrzna strona JAŚNIEJSZA — biaława, różowawa lub żółtaworóżowa zależnie od wilgotności, delikatnie filcowato-włoskowata. Miąższ kruchy, woskowato-galaretowaty. Owocnikuje LUTY–MAJ — jeden z pierwszych grzybów roku, wyrasta spośród śniegu lub zaraz po roztopach. Nieodróżnialna od czarki szkarłatnej bez mikroskopu (włosy na zewnętrznej stronie skręcone spiralnie = czarka austriacka).',
+    edib:'Jadalna — smak łagodny, delikatny. Głównie dekoracyjna do sałatek i przybrań. Niemylna z żadnym trującym gatunkiem — czerwone kubki wiosną są unikalne.',
+    danger:'Jadalna. Nieodróżnialna od czarki szkarłatnej (S. coccinea) gołym okiem — obie jadalne, pomylenie nieszkodliwe.',
+    lookalikes:'Czarka szkarłatna (S. coccinea) — bliźniacza, praktycznie nieodróżnialna gołym okiem (obie jadalne). Niezapominajka (Aleuria aurantia) — POMARAŃCZOWA (nie czerwona), jesienią. Cynobrowoczerwone kubki + wiosna + leżące gałązki = czarka.',
+    weights:{bw:42,au:38,sw:36,ro:32,lu:30,be:38,bi:32,sd:36,wy:40,nak:42,sep:38,tu:28,no:26,ka:32,lm:30}
+  },
+
+  gaska_zolk:{
+    name:'Gąska żółknąca',latin:'Tricholoma scalpturatum',cat:'inedible',rare:false,wiki:'Tricholoma_scalpturatum',
+    season:[5,6,7,8,9,10,11],terrain:['Lasy liściaste','Lasy iglaste','Lasy mieszane','Parki','Ogrody','Łąki'],
+    soil:'Gleba różnorodna — mykoryza z dębem, bukiem, brzozą, sosną; jeden z najmniej wyspecjalizowanych gąskowców',ph:'5.0–7.5',elev:'0–1200 m',
+    habitat:'W lasach liściastych i iglastych, parkach, ogrodach i łąkach — bardzo pospolity i zmienny ekologicznie. Maj–listopad.',
+    desc:'Kapelusz 2–6 cm, JASNOSREBRZYSTO- do SZAROBRĄZOWEGO — płaski lub z małym ostrym garbkiem. Skórka sucha, z promieniowymi włókienkami lub delikatnie łuskowana. KLUCZOWE: blaszki BIAŁAWE, przy POTARCIU lub STARZENIU ŻÓŁKNĄ — stąd nazwa. TRZON biały do bladoszarego. Miąższ białawy, żółknący przy potarciu. Zapach zjełczało-mączny, łagodny. Gatunek bardzo zmienny — synonimy: T. argyraceum, T. argyraceum var. inocybeoides.',
+    danger:'Niejadalny — niezbyt smaczny; ryzyko pomylenia z trującymi gąskami. Kluczowy odróżnik: blaszki żółkną przy potarciu.',
+    lookalikes:'Gąska szara (T. terreum) — blaszki NIE żółkną; wyłącznie pod sosnami na piasku. Gąska plamista (T. pardinum) — TRUJĄCA; wyraźne koncentryczne łuski, grubszy miąższ, wyłącznie na glebach wapiennych. Gąska sosnowa (T. vaccinum) — rudopomarańczowa, rdzawe łuski. Blaszki żółkną przy potarciu = gąska żółknąca.',
+    weights:{bw:68,au:65,sw:62,ro:60,lu:58,be:65,bi:60,sd:62,wy:65,nak:68,sep:65,ka:72,lm:68,ku:65,br:62,wk:60,tu:58,no:60,ma:55,op:62,st:60,sl:55}
+  },
+
+  kolpaczek_bl:{
+    name:'Kołpaczek blady',latin:'Panaeolus semiovatus',cat:'inedible',rare:false,wiki:'Panaeolus_semiovatus',
+    season:[5,6,7,8,9,10],terrain:['Pastwiska','Oborniki','Nawożone łąki'],
+    soil:'Wyłącznie na oborniku lub stercie łajna — koprofit koński i krowi',ph:'Saprofit gnoju',elev:'0–1200 m',
+    habitat:'Bezpośrednio na stercie krowiego lub końskiego łajna, lub tuż obok. Tereny wiejskie, pastwiska, stajnie. Pospolity tam, gdzie jest bydło i konie.',
+    desc:'Kapelusz 2–8 cm, JAJOWATY do dzwonkowatego, KREMOWOBIAŁY do bladoszarego — nie ciemnieje. Skórka gładka, przy suszeniu lekko pomarszczona. BLASZKI gęste, u dojrzałych CZARNE od zarodników, pstrokate (jasne blaszki z czarnymi plamami zarodnikowymi — typowy Panaeolus). TRZON długi 6–15 cm, biały do bladoszarego, KRUCHY — bez trwałego pierścienia. Miąższ biały, bez szczególnego zapachu. Rośnie BEZPOŚREDNIO na stercie gnoju.',
+    danger:'Niejadalny — gorzki, bez wartości kulinarnych. NIE zawiera psylocybiny (w odróżnieniu od kołpaczka obrączkowanego). Koprofit — rośnie wyłącznie na gnoju.',
+    lookalikes:'Kołpaczek obrączkowany (P. cinctulus) — HALUCYNOGENNY; ciemniejszy, obrączkowana strefa przy brzegu, na oborniku. Kołpaczek mierzwiowy (P. papilionaceus) — mniejszy, ciemniejszy, bez białego koloru. Łysiczka lancetowata (P. semilanceata) — HALUCYNOGENNA; znacznie mniejsza, kolec na czubku, na trawie nie na gnoju. Kremowobiały + jajowaty + bezpośrednio na gnoju = kołpaczek blady.',
+    weights:{ka:62,lm:55,ku:52,br:58,gr:52,wk:48,sd:50,op:45,wy:55,nak:60,sep:58,tu:48,no:50,ma:44,su:46}
+  },
 };
 
 // ─── Cross-reference helpers ───────────────────────────────────────────────
@@ -43275,6 +43320,9 @@ _MUSH_BY_NAME['Koźlarz czarny']=_MUSH_BY_NAME['Koźlarz babka'];
 _MUSH_BY_NAME['Opieńka']=_MUSH_BY_NAME['Opieńka miodowa'];
 _MUSH_BY_NAME['Piestrzenica']=_MUSH_BY_NAME['Piestrzenica kasztanowata'];
 _MUSH_BY_NAME['Goryczak']=_MUSH_BY_NAME['Goryczak żółciowy'];
+_MUSH_BY_NAME['Gąska ziemistoblaszkowa']=_MUSH_BY_NAME['Gąska szara'];
+_MUSH_BY_NAME['Muchomor biały']=_MUSH_BY_NAME['Muchomor jadowity'];
+_MUSH_BY_NAME['Wieruszka jadowita']=_MUSH_BY_NAME['Hełmówka jadowita'];
 // Names sorted longest→shortest so longer matches win
 const _MUSH_NAMES_SORTED=Object.keys(_MUSH_BY_NAME).sort((a,b)=>b.length-a.length);
 
@@ -43427,6 +43475,13 @@ const MUSH_ICON_CFG={
   lejkowka_mgla:{s:'flat',c:'#909080',t:'#C8C8B8'},
   golabek_sin:  {s:'flat',c:'#7A1A1A',t:'#F0E8D8'},
   kozlarz_pom:  {s:'cap',c:'#E07030',t:'#B8A090'},
+  gaska_plam:   {s:'flat',c:'#707060',t:'#C0C0B0'},
+  czubajka_sut: {s:'para',c:'#A07040',t:'#C8A870'},
+  mleczaj_om:   {s:'flat',c:'#E0B8A0',t:'#F0D0C0'},
+  lysiczka_lanc:{s:'flat',c:'#C89050',t:'#E0C870'},
+  czarka_aust:  {s:'flat',c:'#BB2222'},
+  gaska_zolk:   {s:'flat',c:'#A0A090',t:'#D0D0C0'},
+  kolpaczek_bl: {s:'flat',c:'#D8D0C0',t:'#F0ECE0'},
 };
 
 function getMushSVG(mid){
@@ -43609,6 +43664,13 @@ const MUSHROOM_LOCAL={
   lejkowka_mgla:{s:'p',n:'Pospolita jesienią we wszystkich lasach regionu. Kręgi z szarych kapeluszów z intensywnym słodkawym zapachem — charakterystyczny widok późnej jesieni.'},
   golabek_sin:  {s:'p',n:'Pospolity w borach sosnowych i świerczynach Krainy. Śledziowy zapach owocnika absolutnie unikatowy — jedyna pewna cecha ID.'},
   kozlarz_pom:  {s:'p',n:'Pospolity w wrzosowiskach i borach mieszanych Krainy. Pomarańczowy kapelusz z czarnymi łuskami trzonu — efektowny i smaczny grzyb brzozowy.'},
+  gaska_plam:   {s:'v',n:'Bardzo rzadka — sporadycznie na glebach wapiennych. GROŹNA pomyłka z gąską szarą pod bukami i świerkami.'},
+  czubajka_sut: {s:'f',n:'Skraje lasów liściastych i parki regionu. Mniej pospolita niż czubajka kania, ale regularnie spotykana.'},
+  mleczaj_om:   {s:'p',n:'Pospolita pod brzozami w borach mieszanych Krainy. Bledszy i mniej wełnisty niż mleczaj wełnianka — oba pod brzozą, oba niejadalne.'},
+  lysiczka_lanc:{s:'r',n:'Na wilgotnych nawożonych łąkach i pastwiskach. Październik po deszczach — małe stożkowate czapeczki w trawie. Posiadanie nielegalne.'},
+  czarka_aust:  {s:'v',n:'Bardzo rzadka — sporadycznie w wilgotnych wąwozach i przy ciekach leśnych. Wiosna luty–maj, spośród śniegu.'},
+  gaska_zolk:   {s:'p',n:'Pospolita w lasach i parkach regionu od maja do listopada. Najbardziej zmienny z gąskowców — blaszki żółkną przy potarciu.'},
+  kolpaczek_bl: {s:'f',n:'Na oborniku i pastwiskach regionu gdzie jest bydło lub konie. Tereny wiejskie Krainy — łatwo przeoczany.'},
 };
 
 const LOCAL_LABEL={p:'Pospolity w regionie',f:'Częsty w regionie',r:'Rzadki w regionie',v:'Bardzo rzadki',n:'Nie występuje w regionie'};
@@ -43636,6 +43698,8 @@ const SPECIES_DIFF={
   tegoskór:2,luszczak:1,luskwiak:2,kosmaczek:3,grzybowka:2,
   lejkowka_gol:2,wilgotnica:2,wieruszka_zat:4,
   maslak_zw:2,mleczaj_wel:2,borowik_sz:2,lakowka:2,lejkowka_mgla:2,golabek_sin:3,kozlarz_pom:2,
+  gaska_plam:3,czubajka_sut:2,mleczaj_om:3,
+  lysiczka_lanc:3,czarka_aust:1,gaska_zolk:3,kolpaczek_bl:3,
 };
 // General rarity in Poland: 1=very common, 2=common, 3=moderately common, 4=rare, 5=very rare/endangered
 const SPECIES_RARITY={
@@ -43669,6 +43733,8 @@ const SPECIES_RARITY={
   huba:1,lejkowka_trut:3,gaska_siar:2,zasloniak_fio:4,
   lysiczka:2,kolpaczek_ob:2,strzepiak_nbl:3,
   maslak_zw:1,mleczaj_wel:2,borowik_sz:4,lakowka:1,lejkowka_mgla:1,golabek_sin:2,kozlarz_pom:2,
+  gaska_plam:4,czubajka_sut:2,mleczaj_om:3,
+  lysiczka_lanc:2,czarka_aust:4,gaska_zolk:1,kolpaczek_bl:3,
 };
 const LOCAL_COLOR={p:'#4a7a3a',f:'#8a7a20',r:'#aa5a20',v:'#aa2020',n:'#666'};
 
@@ -54803,7 +54869,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.26</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.27</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
