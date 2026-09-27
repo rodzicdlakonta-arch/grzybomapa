@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.29</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.30</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42460,7 +42460,7 @@ const MUSHROOMS={
     weights:{tu:70,no:68,au:65,bw:62,ps:65,dl:68,ma:60,br:55,su:62,wi:60,ku:58,be:55,bi:52,ta:50,go:52,sd:58,wy:68,nak:62,sep:65}
   },
   lysiczka:{
-    name:'Łysiczka lancetowata',latin:'Psilocybe semilanceata',cat:'poisonous',rare:false,wiki:'Psilocybe_semilanceata',hallucinogenic:true,
+    name:'Łysiczka lancetowata',latin:'Psilocybe semilanceata',cat:'hallucinogenic',rare:false,wiki:'Psilocybe_semilanceata',hallucinogenic:true,
     season:[9,10,11],terrain:['Łąki','Pastwiska','Murawy trawiaste'],
     soil:'Gleba żyzna, wilgotna, nawożona obornikiem. Nie rozkłada obornika — rośnie przy nim.',ph:'5.5–7.0',elev:'0–800 m',
     habitat:'Na pastwiskach i łąkach, zwłaszcza po wypasie owiec i koni. Wilgotna, chłodna jesień. Pospolita w zachodniej i północnej Polsce.',
@@ -42471,7 +42471,7 @@ const MUSHROOMS={
     weights:{ka:60,lm:55,ku:52,br:58,gr:55,wk:50,ll:48,sw:45,ro:42,lu:45,bi:38,be:40,sd:42,op:48,st:50,sl:45,tu:50,no:52,dr:48,pi:48,ch:55,ma:45,su:42,wy:55,nak:50,sep:58}
   },
   kolpaczek_ob:{
-    name:'Kołpaczek obrączkowany',latin:'Panaeolus cinctulus',cat:'poisonous',rare:false,wiki:'Panaeolus_cinctulus',hallucinogenic:true,
+    name:'Kołpaczek obrączkowany',latin:'Panaeolus cinctulus',cat:'hallucinogenic',rare:false,wiki:'Panaeolus_cinctulus',hallucinogenic:true,
     season:[5,6,7,8,9,10],terrain:['Oborniki','Kompostowniki','Nawożone łąki','Pastwiska','Trawniki miejskie'],
     soil:'Gleba bogata w azot, kompost, nawozy organiczne',ph:'5.5–7.5',elev:'0–600 m n.p.m.',
     habitat:'Na stertach obornika, kompostownikach, mocno nawożonych łąkach i trawnikach. Pospolity na terenach wiejskich przy hodowli bydła i koni. Jeden z częstszych psilocybinowych grzybów w Polsce.',
@@ -42482,12 +42482,12 @@ const MUSHROOMS={
     weights:{ka:65,lm:60,ku:55,br:62,gr:58,wk:52,sd:55,op:50,wy:60,nak:55,sep:62,tu:52,no:55}
   },
   strzepiak_nbl:{
-    name:'Strzępiak niebieskozielony',latin:'Inocybe aeruginascens',cat:'poisonous',rare:false,wiki:'Inocybe_aeruginascens',hallucinogenic:true,
+    name:'Strzępiak niebieskozielony',latin:'Inocybe aeruginascens',cat:'hallucinogenic',rare:false,wiki:'Inocybe_aeruginascens',hallucinogenic:true,
     season:[5,6,7,8],terrain:['Parki','Trawniki','Zieleń miejska','Ogrody'],
     soil:'Gleba piaszczysto-gliniasta, często przy ścieżkach i utwardzonych nawierzchniach',ph:'5.0–7.0',elev:'0–500 m n.p.m.',
     habitat:'W lasach mieszanych, parkach miejskich i przydrożnej zieleni. Rośnie przy krawędnikach, ścieżkach, trawnikach. Pospolity we wschodniej Polsce i Niemczech, sporadyczny w zachodniej Polsce.',
     desc:'KAPELUSZ 2–5 cm, beżowy do słomkowożółtawego, stożkowato-dzwonkowaty, z wiekiem PROMIENIŚCIE PĘKAJĄCY i włókniście rozszczepiający się (typowe dla całego rodzaju Inocybe). KLUCZOWA CECHA IDENTYFIKACYJNA: TRZON i MIĄŻSZ przy nacięciu lub obtarciu wyraźnie ZIELENIEJE (turkusowy do trawiastozielonego) — żaden śmiertelnie trujący strzępiak tego nie robi; OCR przewodnika wprost stwierdza: "zielone zabarwienie trzonu wynika z obecności psylocybiny". BLASZKI szarobrązowe, gęste, przyrośnięte. TRZON cienki, włóknisty, BEZ PIERŚCIENIA, nierzadko z niebieskawoturkusowym odcieniem u nasady. ZAPACH słodkawy, delikatny — w odróżnieniu od cuchnących trujących krewniaków. Rośnie maj–sierpień w lasach mieszanych, parkach, ogrodach, przy ścieżkach na piaszczystych glebach. OSTRZEŻENIE: rodzaj Inocybe ma liczne śmiertelne gatunki z mukaryna — zielone barwienie to JEDYNA bezpieczna cecha odróżniająca; bez niego nie zbierać żadnego strzępiaka.',
-    danger:'TRUJĄCY i HALUCYNOGENNY — psylocybina, efekty silne i nieprzewidywalne. UWAGA: łatwy do pomylenia ze śmiertelnie trującymi strzępiakami zawierającymi mukarynę. Zbiór niebezpieczny i nielegalny.',
+    danger:'HALUCYNOGENNY — psylocybina, efekty silne i nieprzewidywalne. UWAGA: łatwy do pomylenia ze ŚMIERTELNIE TRUJĄCYMI strzępiakami zawierającymi mukarynę (Inosperma erubescens). Zbiór niebezpieczny i nielegalny w Polsce.',
     lookalikes:'Strzępiak ceglasty (Inosperma erubescens) — śmiertelny; miąższ czerwienieje (nie zielenieje). Włókniak plamisty (Inosperma maculatum) — śmiertelny; bez zielonego barwienia. Stożkówka wiotka (Conocybe tenera) — niejadalny; brak zieleni. Nigdy nie zbierać małych brązowych strzępiaków.',
     photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Inocybe_aeruginascens_(Netherlands)_2.jpg?width=500','https://commons.wikimedia.org/wiki/Special:FilePath/Inocybe_aeruginascens_(Netherlands)_3.jpg?width=500'],
     weights:{ka:50,lm:48,ku:45,br:52,gr:48,wk:42,sd:45,op:40,wy:52,nak:48,sep:50}
@@ -43129,7 +43129,7 @@ const MUSHROOMS={
   },
 
   lysiczka_fal:{
-    name:'Łysiczka falista',latin:'Psilocybe cyanescens',cat:'poisonous',rare:false,wiki:'Psilocybe_cyanescens',hallucinogenic:true,
+    name:'Łysiczka falista',latin:'Psilocybe cyanescens',cat:'hallucinogenic',rare:false,wiki:'Psilocybe_cyanescens',hallucinogenic:true,
     season:[10,11,12,1],terrain:['Parki','Ogrody','Zieleń miejska'],
     soil:'Na zrębkach drzewnych i mulczu — saprofit drewna liściastego',ph:'Saprofit drewna',elev:'0–500 m',
     habitat:'Na zrębkach i mulczu drzewnym w parkach, ogrodach i przy ścieżkach leśnych. Preferuje mulcz z drzew liściastych. Jesień–wczesna zima. Coraz częstsza w Polsce wraz z popularyzacją mulczowania.',
@@ -52667,6 +52667,7 @@ function catBadge(m){
   if(m.cat==='deadly')b=`<span class="b b-d">☠ Śmiertelnie trujący</span>`;
   else if(m.cat==='poisonous')b=`<span class="b b-p">⚠ Trujący</span>`;
   else if(m.cat==='inedible')b=`<span class="b b-i">Niejadalny</span>`;
+  else if(m.cat==='hallucinogenic')b='';
   else b=`<span class="b b-e">Jadalny</span>`;
   if(m.hallucinogenic)b+=` <span class="b b-h">🍄 Halucynogenny</span>`;
   if(m.canprepare)b+=` <span class="b b-cp">⚗ Można przyrządzić</span>`;
@@ -53112,7 +53113,7 @@ function analyzeArea(layer){
 function showAreaPanel(results,terrain){
   const terrainHTML=buildTerrainHTML(terrain);
   const max=results[0]?.score||1;
-  const cc=m=>m.cat==='deadly'?'#c0392b':m.cat==='poisonous'?'#e07060':m.cat==='inedible'?'#7f8c8d':m.rare?'var(--gold)':'var(--green)';
+  const cc=m=>m.cat==='deadly'?'#c0392b':m.cat==='poisonous'?'#e07060':m.cat==='hallucinogenic'?'var(--acc-h)':m.cat==='inedible'?'#7f8c8d':m.rare?'var(--gold)':'var(--green)';
   const PAGE=15;
   const ar=document.getElementById('ar');
   let shown=PAGE,activeFilter='all';
@@ -54874,7 +54875,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.29</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.30</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
