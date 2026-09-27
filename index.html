@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.33</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.34</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42084,6 +42084,7 @@ const MUSHROOMS={
     habitat:'Pod dębami i bukami w lasach liściastych na żyznych glebach.',
     desc:'Kapelusz 8–25 cm, JASNOBRĄZOWY do szarobeżowego lub ochrowobrązowego — wyraźnie JAŚNIEJSZY od borowika sosnowego i borowika szlachetnego; w gorące suche lato SKÓRKA KAPELUSZA WIDOCZNIE SPĘKA w centrum jak wyschniięta ziemia — cecha kluczowa i natychmiastowo rozpoznawalna. SIATECZKA wyraźna na CAŁYM TRZONIE, kremowa do jasnobrązowej. RURKI żółte do żółtozielonych — NIE SINIEJE. MIĄŻSZ biały, twardy, nie zmienia barwy, smak łagodny orzechowy. Rośnie wyłącznie pod DĘBAMI I BUKAMI w lasach liściastych na żyznych glebach — NAJWCZEŚNIEJSZY z polskich borowików: owocnikuje od CZERWCA, gdy borowik szlachetny jeszcze nie wyrósł. Pod koniec sezonu często robaczywy — zbierać małe.',
     edib:'Wyśmienity — smak identyczny z borowikiem szlachetnym, dostępny już od czerwca. Doskonały świeżo smażony z masłem, suszony (aromat intensywnieje) i marynowany. Suszy się i przechowuje równie dobrze jak borowik szlachetny.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2012-08-26 Boletus reticulatus Schaeff 254757.jpg?width=500'],
     weights:{sw:85,ro:80,lu:78,ja:75,ka:72,lm:65,so:70,bw:70,be:72,bi:68,op:65,st:68,ll:60,sd:65,sl:62,po:65,wy:42,nak:38,sep:45}
   },
   podgrzybek:{q:3,
@@ -42114,6 +42115,7 @@ const MUSHROOMS={
     habitat:'Na wilgotnej ściółce przy mchistych podmokłych terenach. Rośnie masowo.',
     desc:'Kapelusz 2–8 cm, ŻÓŁTOBRĄZOWY, wyraźnie LEJKOWATY Z OTWOREM na środku — trzon przebija kapelusz na wylot jak lejek. ŻYŁKI (nie blaszki!) żółte, rozwidlone, zbiegające po trzonie — falista sieć zamiast ostrych blaszek. Trzon WYDRĄŻONY w środku. Rośnie MASOWO w skupiskach na wilgotnych mchach przy podmokłych borach — setki owocników razem. ODPORNOŚĆ NA MRÓZ: przeżywa do -8°C, rozmraża po nocnym mrozie — zbierana do końca listopada, gdy inne grzyby dawno zniknęły. Smak łagodny, doskonała do zup i sosów — jeden z ostatnich grzybów polskiego roku.',
     edib:'Smaczna, dobra do zup i sosów. Późna jesień.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/(Craterellus tubaeformis 4) - Flickr - Tero Karppinen.jpg?width=500'],
     weights:{bw:80,au:82,tu:85,no:75,dr:78,pi:75,ps:80,ku:72,dl:75,ch:78,ma:68,wi:70,su:72,be:80,bi:78,go:75,sd:82,se:80,po:75,wy:52,nak:48,sep:55}
   },
   maslak_ziarn:{q:2,
@@ -42176,6 +42178,7 @@ const MUSHROOMS={
     desc:'Kapelusz 5–12 cm, POMARAŃCZOWY do ceglastego, z NIEWYRAŹNYMI lub słabo widocznymi strefami — mniej wyraziste niż u rydza. Blaszki pomarańczowe, gęste, kruche. MLECZKO POMARAŃCZOWE jak u rydza — KLUCZOWY TEST RÓŻNICUJĄCY: kropla mleczka na białą serwetkę u rydza zostaje MARCHWIOWOCZERWONA przez 10+ minut; u smerekowca ZMIENIA SIĘ NA WINOCZERWONE po 10–15 minutach — obserwować zmieniającą się barwę. CAŁOŚĆ INTENSYWNIE ZIELENIEJE po uszkodzeniu — charakterystyczny i niepowtarzalny kolor. WYŁĄCZNIE POD ŚWIERKAMI — w borach świerkowych i lasach górskich (Karpaty, Sudety, Tatry); rydz rośnie wyłącznie pod sosnami. Sezon sierpień–październik.',
     edib:'Jadalny — nieco gorszy od rydza, ale marynowany wyborny. Blanszować, odlać wodę i marynować w occie z kminkiem lub liściem laurowym. Można też smażyć na maśle z cebulą. Zielenieje intensywnie przy gotowaniu — normalne i nieszkodliwe, nie wpływa na smak.',
     lookalikes:'Rydz (Lactarius deliciosus) — prawie identyczny, ale wyłącznie POD SOSNAMI; mleczko marchwiowoczerwone przez 10+ min (u smerekowca zmienia się na winoczerwone po ok. 15 min). Mleczaj rudy (Lactarius rufus) — wydziela BIAŁE mleczko o piekącym smaku; brak pomarańczowego zabarwienia. ZASADA: pod świerkiem = smerekowiec; pod sosną = rydz; oba jadalne; białe mleczko = nie rydz, ostrożnie.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2011-07-31 Lactarius deterrimus 3.jpg?width=500'],
     weights:{sd:88,se:82,ta:80,be:85,bi:80,go:78,po:82,bw:60,au:65,ps:70,su:68,wi:72,ku:65,ma:62,wy:25,nak:22,sep:28}
   },
   czubajka:{q:4,
@@ -42261,6 +42264,7 @@ const MUSHROOMS={
     habitat:'Wilgotne lasy liściaste i mieszane, szczególnie buczyny.',
     desc:'Kapelusz 2–6 cm, INTENSYWNIE FIOLETOWY do liliowego — HIGROFANICZNY: przy wilgotnej pogodzie żywy fiolet, w suche dni płowieje do różowawobrązowego (blada = trudna do ID). BLASZKI grube, odstające, CIEMNOFIOLETOWE, rzadkie jak na tak mały grzybek — u starszych z białawym nalotem zarodników. TRZON smukły, włóknisto-skręcony, fioletowy lub liliowawy, twardy. Miąższ bez wyraźnego smaku i zapachu, fioletowobiały. Rośnie masowo od lata do późnej jesieni pod bukami i grabami, w wilgotnych lasach liściastych i mieszanych. JEDEN Z NIEWIELU GRZYBÓW O CZYSTYM FIOLETOWYM KOLORZE — cecha rozpoznawcza bardzo wyrazista, gdy wilgotny; przy braku wilgoci sprawdzić spód kapelusza (blaszki zawsze grubsze i mniej gęste niż u zasłonaków).',
     edib:'Jadalna, łagodny smak. Zbierać w wiązkach — mała, więc potrzeba dużo. Łatwa identyfikacja po grubych fioletowych blaszkach.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2011-10-03 Laccaria amethystea crop.jpg?width=500'],
     weights:{bw:80,au:75,kn:72,sw:78,ro:75,lu:72,be:80,bi:78,go:75,sd:75,se:72,ta:65,po:72,so:70,ka:65,ps:68,ma:62,su:68,wi:72,wy:62,nak:58,sep:65}
   },
   smardz:{q:4,
@@ -42334,6 +42338,7 @@ const MUSHROOMS={
     habitat:'U podstawy sosen, często przy tej samej sosnce przez wiele lat.',
     desc:'OGROMNE SKUPISKO KĘDZIERZAWYCH PŁATÓW 15–40 cm wyrastające z grubego korzenia zakopanegou nasady SOSNY. Płaty kremowobiałe do ŻÓŁTAWYCH (żółknie z wiekiem), FALISTE JAK FRĘDZEL — cienkie jak papier, miękkie, elastyczne. BRAK ODRĘBNYCH KAPELUSZY I BLASZEK — wygląd niepowtarzalny, jak krótka biała sukienka lub kalafior na korzeniu. Miąższ biały, kruchy, przyjemny. Zapach miodowogrzybowy, przyjemny. Rośnie ROK PO ROKU PRZY TEJ SAMEJ SOSNCE — pasożyt korzeni; jeśli znajdziesz stanowisko, wracaj co roku. Zbierać WYŁĄCZNIE BIAŁE i kremowe okazy — żółknące są stare i twarde. Sierpień–październik, pod sosnami na piaszczystych glebach.',
     edib:'Doskonały — kremowy, lekko orzechowy smak. Gotować lub smażyć na maśle krótko; kędzierzawe płaty chrupią po obróbce. Do sosów, past i zup. NIE JEŚĆ NA SUROWO — gotować lub smażyć minimum kilka minut.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2025-08-29 D500-0564 Achim Lammerts Krause Glucke (Sparassis crispa).jpg?width=500'],
     weights:{tu:72,no:70,dr:65,pi:68,au:62,ps:65,dl:68,ch:70,bw:60,ma:58,ku:55,sd:62,se:58,ta:55,be:60,bi:55,po:62,wy:72,nak:68,sep:70}
   },
   rozites:{q:3,
@@ -42343,6 +42348,7 @@ const MUSHROOMS={
     habitat:'Pod świerkami i sosnami. Typowa dla borów górskich i subborealnych.',
     desc:'Kapelusz 5–12 cm, OCHROWOŻÓŁTY do beżowobrązowego, POMARSZCZONY (fałdowany od centrum) — powierzchnia szorstka, wyglądająca jakby nakładano ją na wzburzoną wodę, cecha bardzo charakterystyczna. BLASZKI gliniasto-brązowawe, gęste, przyrośnięte. TRZON biały do kremowożółtawego z WYRAŹNYM BŁONIASTYM PIERŚCIENIEM — trwałym, nie efemerycznym jak u zasłonaków; u Cortinarius caperatus pierścień jest biały i solidny, co jest wyjątkiem w tym rodzaju. Wysyp zarodników RDZAWOBRĄZOWY — można sprawdzić pod kapeluszem starszego okazu. ZAPACH przyjemny, lekko owocowy. Rośnie pod świerkami i sosnami w borach górskich i subborealnych — typowy grzyb Bieszczad, Tatr i Karpat.',
     edib:'Smaczny jadalny, ceniony w Europie Wschodniej — jeden z nielicznych pewnie jadalnych Cortinarius. Zbierany masowo w Bieszczadach. Zawsze sprawdzić pierścień i pomarszczony kapelusz.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2010-09-04 Cortinarius caperatus (Per.- Fr.) Fr 102560.jpg?width=500'],
     weights:{sd:80,se:78,ta:75,be:82,bi:80,go:78,po:78,bw:65,au:70,su:72,wi:75,ps:68,ku:62,ma:60,kn:68,wy:45,nak:40,sep:48}
   },
   trufla:{q:4,
@@ -42362,6 +42368,7 @@ const MUSHROOMS={
     habitat:'U korzeni martwych dębów. Rzadki, pod ochroną gatunkową w Polsce.',
     desc:'Skupisko 20–200 MAŁYCH KAPELUSZY 1–4 cm każdy, szarych do brązowych, z ZAGŁĘBIENIEM W CENTRUM (mały lejek). Każdy na KRÓTKIM TRZONKU — wszystkie trzonki zbiegają się w jeden WSPÓLNY GRUBY KORZEŃ zakopany głębiej w glebie. Spód każdego kapeluska BIAŁY z drobnymi okrągłymi PORAMI (nie blaszki). Całość jak miniaturowy zagajnik grzybków wyrastający ze wspólnej podstawy — niepowtarzalny wygląd. Kolor szarobrązowy do kremowego. Miąższ biały, twardy. Rośnie od lipca do września u korzeni martwych dębów. ŚCIŚLE CHRONIONY W POLSCE — fotografować i obserwować, nie zbierać.',
     edib:'Jadalny, delikatny smak. Ze względu na ochronę — obserwować, nie zbierać.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/20210627Polyporus umbellatus2.jpg?width=500'],
     weights:{sw:42,ro:40,lu:45,ja:38,bw:35,kn:32,ka:38,be:35,bi:30,sd:28,se:25,wy:18,nak:15,sep:20}
   },
   ramaria:{q:2,
@@ -42371,6 +42378,7 @@ const MUSHROOMS={
     habitat:'W buczynach i grądach. Rzadka. Rośnie samotnie lub w małych grupach.',
     desc:'KORALA KSZTAŁT — gęste koralowate rozgałęzienia 10–30 cm wyrastające ze wspólnej grubej kremowobiałej podstawy. GAŁĄZKI białe do kremowożółtych, wielokrotnie rozwidlone. KOŃCÓWKI GAŁĄZEK RÓŻOWAWE DO PURPUROWYCH — kluczowa cecha gatunkowa; żadna inna koralówka białokremowa nie ma purpurowych końcówek. Miąższ biały, twardy i kruchy, smak łagodny. Zapach owocowy lub bez. Rośnie samotnie lub w małych grupach W BUCZYNACH i grądach od sierpnia do października. Zbierać WYŁĄCZNIE MŁODE okazy — stare łykowate i gorzkie. OSTRZEŻENIE: wiele Ramaria jest trujących lub wątpliwych — identyfikować tylko po purpurowych końcówkach.',
     edib:'Jadalna TYLKO MŁODA. Obowiązkowo blanszować 3–5 min i wylać wodę — końcówki gałązek mogą powodować zaburzenia trawienne. Potem smażyć na maśle lub dodać do zupy. Zbierać jasne, twarde okazy; ciemnienie i gorycz to znak starości.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2010-09-17 Ramaria botrytis crop.jpg?width=500'],
     weights:{bw:58,sw:60,ro:55,lu:52,be:62,bi:58,go:55,sd:60,se:55,ta:50,po:55,ka:45,kn:50,wy:35,nak:30,sep:38}
   },
   muszomor_sr:{
@@ -42391,6 +42399,7 @@ const MUSHROOMS={
     habitat:'Pod świerkami i sosnami. Bardziej typowy dla lasów iglastych.',
     desc:'CAŁY BIAŁY — kapelusz 5–10 cm, trzon, blaszki, pierścień i pochwa wszystkie czysto białe. Kapelusz gładki, jedwabisty, stożkowato-półkulisty u młodych, potem rozkładający się. BLASZKI BIAŁE, wolne od trzonu, gęste. TRZON z BIAŁYM BŁONIASTYM PIERŚCIENIEM i wyraźną BIAŁĄ POCHWĄ u nasady (wyciągnąć razem z ziemią). ZAPACH u świeżych okazów mdławo-słodkawy lub ledwo wyczuwalny, u dojrzałych lekko nieprzyjemny — brak ostrego odoru. Typowy dla lasów iglastych, pojawia się latem.',
     danger:'ŚMIERTELNIE TRUJĄCY — te same amatoksyny co muchomor sromotnikowy. Jeden kapelusz może zabić człowieka. Objawy po 6–24 h, pozorna poprawa, śmierć po kilku dniach. Brak antidotum. KAŻDA BIAŁA AMANITA Z POCHWĄ = ŚMIERTELNA.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Amanita virosa-03.jpg?width=500'],
     weights:{bw:60,au:65,tu:58,no:55,dr:52,ps:60,ma:55,su:58,wi:62,sd:55,se:50,ta:52,be:55,bi:50,po:55,ku:58,pi:52,wy:65,nak:60,sep:62}
   },
   muszomor_plam:{
@@ -42423,6 +42432,7 @@ const MUSHROOMS={
     desc:'Kapelusz 6–15 cm, JASNOBRĄZOWY do płowoochrowego, matowy, suchy — łudzące podobieństwo do borowika szlachetnego. RURKI BIAŁE U MŁODYCH OKAZÓW, u dojrzałych RÓŻOWAWE DO BRUDNORÓŻOWYCH — kluczowa różnica od borowika (u borowika rurki białe→żółte→oliwkowe, nigdy różowe). SIATECZKA NA TRZONIE wyraźna, ciemnobrązowa, wypukła. Miąższ biały, przy powietrzu lekko różowieje. SMAK ABSOLUTNIE PIEKIELNIE GORZKI — intensywna gorzkość pojawia się natychmiast i nie ustępuje; jeden kawałek niszczy cały garnek, gotowanie nie usuwa goryczy. Test smakowy: muśnij miąższ językiem — goryczak nie pozostawia wątpliwości. Rośnie pod sosnami i świerkami na kwaśnych glebach, lipiec–październik.',
     danger:'Niejadalny — ekstremalnie gorzki. Jeden kawałek psuje cały garnek. Sprawdź kolor rurek.',
     lookalikes:'Borowik szlachetny i inne borowikowate — u nich rurki białe do żółtych, miąższ biały i nie różowieje. Najszybszy test: muśnij miąższ językiem — goryczak natychmiast da wyczuwalną, intensywną gorzkość.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2012-06-09 Tylopilus felleus (Bull.) P. Karst 226777.jpg?width=500'],
     weights:{tu:70,no:68,au:65,bw:62,ps:65,dl:68,ch:70,ku:60,dr:62,pi:65,br:58,ma:60,sd:62,be:60,bi:55,po:55,wy:72,nak:68,sep:70}
   },
   zasloniak:{
@@ -42433,6 +42443,7 @@ const MUSHROOMS={
     desc:'Kapelusz 3–9 cm, BRĄZNAWOCZERWONY do rudocynamonowego lub intensywnie pomarańczowoczerwony — suchy, matowy, niekiedy lekko jedwabisty. BRAK PIERŚCIENIA — u bardzo młodych okazów ślad pajęczynowej kortyny (cienkie włókna między kapeluszem a trzonem), znikający szybko. Blaszki ochrowocynamonowe, rzadkie, dość szerokie. Trzon brąznawoczerwony, cylindryczny, pełny. Zapach bez cech szczególnych lub lekko rzepakowy. Wygląda jak pospolity, niewinny brązowy grzyb leśny — brak cech ostrzegawczych.',
     danger:'ŚMIERTELNIE TRUJĄCY — orellanina niszczy nerki z 2–4-tygodniowym opóźnieniem; przez cały ten czas praktycznie brak objawów (co najwyżej zmęczenie, pragnienie). Do momentu diagnozy uszkodzenie jest często nieodwracalne. Brak skutecznego antidotum. Całkowity zakaz zbierania jakiegokolwiek Cortinarius bez eksperckiej wiedzy mykologicznej.',
     lookalikes:'Inne zasłoniaki i brązowe grzyby leśne. Cały rodzaj Cortinarius jest podejrzany — żaden gatunek zasłoniaka nie jest zalecany do zbierania bez eksperckiej wiedzy. Zasłoniak rudy wygląda jak wiele niewinnych brązowych grzybów pod dębami.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2013-10-16 Cortinarius orellanus 1a.jpg?width=500'],
     weights:{ka:55,sw:52,ro:50,lu:55,ja:48,be:45,bi:42,sd:40,bw:50,kn:45,lm:48,ll:42,wy:38,nak:35,sep:42}
   },
   helmowka:{
@@ -42465,6 +42476,7 @@ const MUSHROOMS={
     desc:'Kapelusz 5–12 cm, INTENSYWNIE CZERWONY do jaskrawoczerwonawego. KLUCZOWE: SKÓRKA ŁATWO ŁUPIE SIĘ od krawędzi ku środkowi — odciągamy ją jak skórkę z pomidora, pod spodem miąższ białawy z lekko różawym odcieniem. Blaszki białe do kremowych, kruche (typowa cecha gołąbków). SMAK ABSOLUTNIE PIEKĄCY — kawałek przyłożony do języka piecze natychmiast i nie ustępuje; żaden jadalny gołąbek nie ma tak intensywnej ostrości. Test smakowy to podstawowa metoda identyfikacji gołąbków w terenie. Zarodniki białe do kremowych.',
     danger:'TRUJĄCY. Powoduje silne wymioty i biegunkę. Naturalny ostrzegawczy smak.',
     lookalikes:'Rydz (Lactarius deliciosus) — po uszkodzeniu wydziela POMARAŃCZOWE MLECZKO (wymiotny nie ma mleczka). Gołąbek siniejący (Russula cyanoxantha) — blaszki giętkie i elastyczne jak u żadnego innego gołąbka; kapelusz szarozielonkawy lub fioletowy. Jadalne czerwone gołąbki — TEST TERENOWY: kosztuj ułamek blaszki (wypluj natychmiast!); piekący jak pieprz = trujący; smak łagodny lub lekko ostry = prawdopodobnie jadalny.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2009-09-19 Russula emetica Fr 76146.jpg?width=500'],
     weights:{tu:70,no:68,au:65,bw:62,ps:65,dl:68,ma:60,br:55,su:62,wi:60,ku:58,be:55,bi:52,ta:50,go:52,sd:58,wy:68,nak:62,sep:65}
   },
   lysiczka:{
@@ -42548,6 +42560,7 @@ const MUSHROOMS={
     habitat:'Pod dębami, sosnami i świerkami w lasach mieszanych. Pospolity, choć rzadko zbierany ze strachu przed siniowaniem.',
     desc:'Kapelusz CIEMNOBRĄZOWY DO CZEKOLADOWEGO, matowy, 5–20 cm. PORY CEGLASTOCZERWONE do pomarańczowych — kolor porów już z odległości odróżnia od borowika szlachetnego (białe) i borowika szatańskiego (czerwone + ohydny zapach). INTENSYWNIE SINIEJE natychmiast po każdym dotknięciu — silniej niż podgrzybek brunatny. Trzon brązowy z CZERWONĄ SIATECZKĄ. OBOWIĄZUJE GOTOWANIE min. 15–20 minut: surowy zawiera termolabilne toksyny powodujące silne dolegliwości; po ugotowaniu smak wyśmienity, podobny do borowika. Rośnie pod dębami, sosnami i świerkami.',
     edib:'Jadalny i BARDZO SMACZNY — ale TYLKO po ugotowaniu minimum 15–20 minut. Surowy i niedogotowany zawiera termolabilne toksyny. Po ugotowaniu smak wyśmienity, podobny do borowika. Siniowanie znika całkowicie po obróbce.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2012-07-12 Boletus erythropus 2 crop.jpg?width=500'],
     weights:{bw:78,au:75,tu:80,no:78,dr:75,pi:78,ps:76,ku:72,dl:74,ch:78,ma:70,br:66,wk:62,ll:56,su:68,wi:72,be:72,bi:68,po:70,sd:72,se:68,sw:65,wy:80,nak:74,sep:78}
   },
   maslak_mod:{q:3,
@@ -42557,6 +42570,7 @@ const MUSHROOMS={
     habitat:'WYŁĄCZNIE pod modrzewiem europejskim (Larix decidua). Przy alejach, parkach i lasach z modrzewiem.',
     desc:'Kapelusz 4–10 cm, ZŁOTOŻÓŁTY do pomarańczowobrązowego — LŚNIĄCY, ŚLUZOWATY (skórka łatwo się ściąga, zdjąć przed przyrządzeniem). Pierścień na trzonie BIAŁY → ŻÓŁTAWY, błoniasty, niepełny. Rurki żółte. WYŁĄCZNIE pod modrzewiem — brak modrzewia w pobliżu = to nie ten gatunek. Różni się od maślaka zwyczajnego: jest żółtszy, pierścień bez fioletowego odcienia, tylko pod modrzewiem.',
     edib:'Smaczny po usunięciu śluzowatej skórki. Marynować lub smażyć — do zup i sosów.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2010-09-19 Suillus grevillei (Klotzsch) Singer 125164.jpg?width=500'],
     weights:{ka:60,lm:55,ku:62,bw:58,au:55,sw:65,ro:60,lu:60,ja:55,ll:62,op:58,st:60,sl:58,so:58,bi:50,be:52,sd:55,se:50,wy:68,nak:62,sep:65}
   },
   uszak:{q:2,
@@ -42576,6 +42590,7 @@ const MUSHROOMS={
     habitat:'Na pniach buka, olchy, brzozy, świerka — gęstymi skupiskami. Pospolita i łatwa do zebrania.',
     desc:'Kapelusz 3–8 cm, HIGROFANICZNY: MOKRY ciemnobrązowy z wyraźną jasną obwódką przy brzegu; SUCHY miodowożółty — zmiana barwy jest cechą diagnostyczną. Trzon z WYRAŹNYM PIERŚCIENIEM, poniżej pierścienia pokryty drobnymi brązowymi łuskami (kluczowe!). Blaszki początkowo kremowe → ochrowobrązowe, wysyp zarodników ochrowożółty. Korzenny, lekko czosnkowy zapach. Rośnie gęstymi kępami na pniakach i martwym drewnie. UWAGA: identyczny habitat z hełmówką jadowitą — zawsze sprawdź łuskowaty trzon + ochrowożółty wysyp.',
     edib:'Smaczna i dobra jadalna. BEZWZGLĘDNIE sprawdź pierścień (podpieńka ma wyraźny brązowy) i kolor zarodników (kolor ochry na blaszce) oraz zapach (korzenny, lekko czosnkowy). Nie zbierać obok hełmówki bez pewnej identyfikacji.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Stockschwaemmchen-Huete.jpg?width=500'],
     weights:{bw:75,au:72,ka:70,sw:78,ro:75,lu:72,ja:68,be:75,bi:72,sd:68,po:72,so:70,sl:68,op:65,ps:68,ma:65,tu:65,no:62,ll:62,ku:68,br:60,wy:75,nak:70,sep:72}
   },
 
@@ -42601,6 +42616,7 @@ const MUSHROOMS={
     desc:'Kapelusz OLIWKOWOŻÓŁTY do brązowawego, matowy i ZAMSZOWY w dotyku — powierzchnia delikatnie welurowa, 4–12 cm. RURKI ŻÓŁTE Z ZĘBATYMI PORAMI — pory mają nieregularne, postrzępione krawędzie, odróżnik od podgrzybka brunatnego (okrągłe pory). Po uszkodzeniu SŁABO NIEBIESIEJĄ — reakcja znacznie słabsza niż u podgrzybka brunatnego lub złotawego. Trzon żółtawy, z niewyraźną siateczką lub rdzawymi plamkami wzdłuż. Miąższ żółtawy, kwaśnawy, łagodny. Pospolity pod sosnami, dębami i brzozami od czerwca do października.',
     edib:'Jadalny, smak łagodny i kwaśnawy. Nieco gorszy od podgrzybka brunatnego, ale pospolity i chętnie zbierany. Dobry do mieszanek grzybowych i zup.',
     lookalikes:'Podgrzybek brunatny (X. badius) — ciemniejszy kasztanowy kapelusz, intensywniej sinieje. Goryczak żółciowy — rurki różowawe, piekielnie gorzki. Podgrzybek złotawy (X. chrysenteron) — kapelusz pęka czerwonawo pod skórką; jadalny.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2012-06-15 Xerocomus subtomentosus (L.) Fr 228138 crop.jpg?width=500'],
     weights:{bw:80,au:75,tu:78,no:75,dr:72,pi:75,ps:76,ku:68,dl:72,ch:76,ma:68,br:65,ll:58,su:65,wi:68,be:70,bi:68,po:72,sw:62,wy:80,nak:75,sep:78}
   },
 
@@ -42612,6 +42628,7 @@ const MUSHROOMS={
     desc:'Kapelusz 6–15 cm, BRĄZOWOCZERWONY do pomarańczowobrązowego — barwa ciepła, suchy, matowy, bez stref. Blaszki KREMOWE do beżowych, gęste, kruche jak u wszystkich mleczajów. MLECZKO BIAŁE, BARDZO OBFITE — dosłownie tryska przy każdym dotknięciu — nie zmienia koloru. KLUCZOWA CECHA: INTENSYWNY ZAPACH ŚLEDZIA LUB RYBY — wyczuwalny z odległości, absolutnie unikatowy wśród mleczajów; znika całkowicie po ugotowaniu zostawiając orzechowy smak. Trzon tej samej barwy co kapelusz, twardy. Rośnie samotnie lub małymi grupkami pod DĘBAMI, BUKAMI i LIPAMI w lasach liściastych na żyznych glebach, lipiec–wrzesień.',
     edib:'Bardzo smaczny — jeden z lepszych mleczajów. Rybny zapach znika całkowicie podczas gotowania. Doskonały smażony, duszony, marynowany. Smak orzechowo-śmietankowy po przyrządzeniu.',
     lookalikes:'Rydz (L. deliciosus) — mleczko marchwiowoczerwone, kapelusz pomarańczowy strefowany. Mleczaj wełnianka (L. torminosus) — TRUJĄCY; biały ostry sok, kapelusz z kłaczkami, rośnie pod brzozami. Rybny zapach mleczka jest prawie unikalny dla mleczaja obrzękłego.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/AD2009Sep06 Lactarius Volemus 01.jpg?width=500'],
     weights:{bw:62,sw:80,ro:78,lu:72,ja:68,be:75,bi:70,sd:68,po:72,so:68,ka:72,lm:68,op:70,st:72,sl:68,kn:62,ll:58,wy:48,nak:42,sep:50}
   },
 
@@ -42645,6 +42662,7 @@ const MUSHROOMS={
     desc:'DWA STADIA ŻYCIA — zupełnie inny wygląd. STADIUM JAJKA (do 6 cm): białe lub szarobiałe galaretowate jajko w ziemi lub ściółce; przy przekroju TRÓJWARSTWOWE z wyraźnym zarysem przyszłego grzyba wewnątrz (biała galareta, zielonkawa warstwa i obrys kształtu) — odróżnia od trujących tęgoskórów (jednobarwne ciemne wnętrze). STADIUM DOJRZAŁE (10–25 cm): wyrasta w ciągu 2–4 godzin, trzon BIAŁY CYLINDRYCZNY jak komin, porowaty i kruchy; GŁÓWKA pokryta ZIELONOCZARNĄ MAZISTĄ GLEBĄ (gleba) zawierającą zarodniki. ZAPACH gnijącej padliny — wabi muchy i śliniki, które rozsiewają zarodniki i znikają w ciągu jednego dnia. Kształt falliczny to ewolucyjne rozwiązanie skuteczne od milionów lat. Rośnie od maja do października w lasach i ogrodach.',
     edib:'Jaja (stadia jajka) jadalne i nawet smaczne — delikatny galaretowaty smak. Dojrzałe okazy ze względu na smród nienadające się do spożycia. Jedna z wielkich ciekawostek mykologicznych.',
     lookalikes:'Tęgoskór pospolity (Scleroderma citrinum) — twardy, czarny w środku, trujący; jajko sromotnika ma wewnątrz trójwarstwową strukturę i zarysy owocnika. Purchawki — jednorodne białe wnętrze, brak struktury wewnętrznej.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2004-12-18 Phallus impudicus crop.jpg?width=500'],
     weights:{bw:72,au:68,ka:75,lm:70,ku:65,sw:78,ro:75,lu:70,ja:68,ll:68,op:72,st:75,sl:70,br:62,gr:60,bi:62,be:68,sd:65,so:68,wy:70,nak:65,sep:68}
   },
 
@@ -42667,6 +42685,7 @@ const MUSHROOMS={
     desc:'DWIE FAZY — zupełnie różny wygląd. MŁODY (do 4 cm): okrągła ziemnobrązowa kulka zakopana w ściółce, jak mała purchawka. DOJRZAŁY: zewnętrzna warstwa gwałtownie rozgwiazda się w 5–9 RAMION skierowanych ku ziemi, unosząc centralną szarą purchawkę (endoperydium) — wygląd absolutnie unikatowy, jak gwiazdka otoczona promienistymi łukami. Na szczycie purchawki OTWÓR (ostiolum) przez który chmura zarodników ulatuje przy każdym dotknięciu lub podmuchu wiatru. RÓŻNICA OD PURCHAWKI: przekrój purchawki jednorodny biały; gwiazdosza wewnątrz ciemny i zarodnikowaty. Rośnie przez cały sezon a ramiona widoczne nawet po zimie.',
     danger:'Niejadalny — gorzka, papierowata konsystencja bez smaku. Nietrujący. Fotografować lub zbierać jako okaz botaniczny.',
     lookalikes:'Inne gwiazdosze (G. triplex — z kołnierzem; G. sessile — siedzący) — podobne, wszystkie niejadalne. Żaden nie jest niebezpieczny. Młode stadium myli się z purchawkami — przekrój purchawki biały i jednorodny, gwiazdosza niejednolity.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2007-10-13 Geastrum fimbriatum.jpg?width=500'],
     weights:{bw:62,au:58,sw:65,ro:62,lu:58,be:62,bi:58,sd:60,po:60,so:58,ka:58,tu:55,no:52,br:52,gr:50,pi:55,ps:56,wy:60,nak:55,sep:58}
   },
 
@@ -42678,6 +42697,7 @@ const MUSHROOMS={
     desc:'POMARAŃCZOWOCZERWONE PAŁECZKI 2–8 cm wyrastające pionowo z ziemi — same w sobie wyglądają jak miniaturowe rakiety startujące ze ściółki. Część nasienna (główka) ziarnista i wyraźnie ciemniejsza od trzonu. KLUCZOWE: pod każdą maczugą zakopana MUMIA OWADA (larwa lub poczwarka motyla) z której grzyb wyrasta jako pasożyt — podnieść ostrożnie i odsłonić mumię, widoczna jako żółtawobrązowa larwa. To jeden z kilkuset gatunków entomopfagicznych Cordyceps, bliski krewniak "grzyba-zombie" z tropikalnych dżungli. CHRONIONY W POLSCE — fotografować, nie zbierać. Rośnie od lipca do października, najczęściej w śródleśnych łąkach.',
     edib:'Formalnie jadalny. Chroniony w Polsce — nie zbierać, fotografować. Ceniony w tradycyjnej medycynie chińskiej jako adaptogen.',
     lookalikes:'Berłówka bulawkowata (Clavariadelphus pistillaris) — duże żółtawe maczugi wyrastające z ziemi; niejadalna. Inne maczużniki (Cordyceps spp.) — na różnych owadach, podobne. Pomarańczowy kolor i wyrastanie z owada są kluczowe.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2008-12-14 Cordyceps militaris 3107128906.jpg?width=500'],
     weights:{bw:48,au:45,sw:52,ro:50,lu:48,be:52,bi:48,sd:45,po:50,so:48,ka:42,tu:38,no:36,br:40,gr:38,ll:38,wy:38,nak:34,sep:40}
   },
 
@@ -42701,6 +42721,7 @@ const MUSHROOMS={
     desc:'Cały BIAŁY od kapelusza przez trzon do podstawy — 5–10 cm kapelusz GŁADKI, jedwabisty, półkulisty u młodych, rozłożony u starszych. BLASZKI BIAŁE, gęste, wolne od trzonu. TRZON biały z BŁONIASTYM PIERŚCIENIEM i charakterystyczną BIAŁĄ POCHWĄ U NASADY (volva) — kieszonkowata skórkowata pochwa zachodząca na trzon: wyciągnąć grzyba razem z ziemią, żeby ją zobaczyć. Zapach słodkawy, trochę nieprzyjemny mdławy u dojrzałych. ŻADNA cecha wzrokowa, zapachowa ani dotykowa nie ostrzega przed śmiertelną truciznością — wygląda niegroźnie.',
     danger:'ŚMIERTELNIE TRUJĄCY — amatoksyny (amanitin, falloidyna) niszczą wątrobę i nerki. Jeden kapelusz może zabić człowieka. Objawy pojawiają się po 6–24 godz. (kolki, wymioty, biegunka), po czym następuje pozorna poprawa — i ostateczna niewydolność wątroby po 3–7 dniach. Brak skutecznej odtrutki poza przeszczepem wątroby.',
     lookalikes:'Purchawki jadalne — nie mają pochwy, wewnątrz białe i jednorodne (brak kształtu grzyba w środku). Pieczarki — blaszki różowawe do czekoladowych, brak pochwy. Czernidłak kołpakowaty — blaszki ciemnieją. ZAWSZE sprawdź białą pochwę u nasady — to znak śmierci.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Amanita verna (destroying angel mushroom).jpg?width=500'],
     weights:{ka:58,sw:62,ro:60,lu:58,ja:55,be:58,bi:55,sd:52,po:58,so:55,op:60,st:62,sl:58,lm:52,bw:50,kn:48,ll:45,wy:55,nak:50,sep:52}
   },
 
@@ -42712,6 +42733,7 @@ const MUSHROOMS={
     desc:'Kapelusz 3–8 cm, BIAŁY DO KREMOWEGO — u młodych stożkowaty i jedwabisty, z wiekiem PROMIENIŚCIE WŁÓKNIŚCIE ROZSZCZEPIAJĄCY SIĘ. BLASZKI początkowo BIAŁE, z wiekiem różowieją do CEGLASTOCZERWONAWYCH — różowienie blaszek jest diagnostyczne (odróżnia od białych zasłoniaków). TRZON CZERWIENIEJE lub różowieje przy uszkodzeniu — cecha nazewnicza "ceglasty". Trzon biały, włóknisty, bez pierścienia. Zapach nieco słodkawy, niecharakterystyczny. Rośnie pod lipami, grabami i bukami, często w parkach i alejach lipowych wiosną i latem — środowisko miejskie i podmiejskie.',
     danger:'ŚMIERTELNIE TRUJĄCY — muscarina w skrajnie wysokich stężeniach (jedna z najwyższych koncentracji muscyliny w rodzaju Inocybe). Objawy po 15–30 min: ślinienie, łzawienie, bóle brzucha, skurcze, bradykardia. Bez atropiny dożylnie śmierć w kilka godzin. Jeden z najniebezpieczniejszych grzybów parkowych — pospolity i z pozoru niewinny.',
     lookalikes:'Pieczarki (Agaricus spp.) — blaszki brązowieją od różowych; nigdy białe/różowe. Czubajki — parasol, ruchomy pierścień, blaszki białe. Cały rodzaj Inocybe (strzepiaki) zawiera liczne trujące gatunki — nie zbierać żadnego.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2008-11-05 Inocybe erubescens A. Blytt 50957.jpg?width=500'],
     weights:{ka:68,lm:62,ll:65,br:60,gr:58,wk:55,sw:62,ro:60,lu:58,op:62,st:65,sl:60,bi:55,be:58,sd:52,so:58,bw:50,au:48,wy:58,nak:53,sep:55}
   },
 
@@ -42723,6 +42745,7 @@ const MUSHROOMS={
     desc:'Kapelusz BIAŁY DO KREMOWEGO, 5–12 cm — z pozoru identyczna z pieczarką polną. KLUCZOWY TEST: zeskrob lub naciśnij NASADĘ TRZONU (nie kapelusz!) — pieczarka żółknąca natychmiast INTENSYWNIE ŻÓŁKNIE jak cytryna; kapelusz może żółknąć u wielu pieczarek, jedynie nasada trzonu jest miarodajna. ZAPACH FENOLOWY/KARBIDOWY — ostry, chemiczny, nieprzyjemny; jadalne pieczarki mają przyjemny grzybowy zapach. BLASZKI RÓŻOWE u młodych → czekoladowe; pierścień obecny. TRUJĄCA — silne dolegliwości żołądkowe; jedna z najczęstszych przyczyn zatruć pieczarką w Polsce.',
     danger:'TRUJĄCA — powoduje silne bóle żołądka, wymioty, biegunkę. Jedna z najczęstszych przyczyn zatruć w Polsce. Test: żółknięcie u nasady trzonu + zapach atramentu = 100% pewność. Nie mylić z żółknięciem kapeluszy pieczarek po nacisku.',
     lookalikes:'Pieczarka polna (A. campestris) — RÓŻOWIEJE (nie żółknie) po uszkodzeniu, przyjemny zapach grzybowy. Pieczarka leśna (A. sylvaticus) — intensywnie różowieje. Zawsze sprawdź podstawę trzonu, nie kapelusz.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2010-11-13 Agaricus xanthodermus Genev 120348 crop.jpg?width=500'],
     weights:{ka:72,lm:68,ku:64,br:60,gr:58,wk:54,sw:68,ro:65,lu:62,ja:60,ll:62,op:68,st:70,sl:62,bi:54,be:58,sd:58,so:60,bw:52,au:50,wy:68,nak:63,sep:70}
   },
 
@@ -42746,6 +42769,7 @@ const MUSHROOMS={
     desc:'Kapelusz RUDOBRĄZOWY DO POMARAŃCZOWOBRĄZOWEGO, stożkowy lub dzwonkowaty, 3–8 cm — wygląda jak pospolity, niegroźny brązowy grzyb leśny: brak żadnej ostrzegawczej cechy wizualnej. BLASZKI OCHROWORUDE DO RDZAWYCH, gęste. TRZON rudobrązowy, BRAK PIERŚCIENIA — u zupełnie młodych widoczne ślady PAJĘCZYNKI (cortiny). ORELLANINA NISZCZY NERKI Z OPÓŹNIENIEM 2–4 TYGODNI: przez ten czas objawy niespecyficzne (zmęczenie, pragnienie, ból lędźwi), diagnoza zapada gdy nerki są już ciężko uszkodzone. Brak antidotum — często konieczna dializa lub przeszczep. Pod sosnami i świerkami na kwaśnych glebach, sierpień–październik.',
     danger:'ŚMIERTELNIE TRUJĄCY — orellanina niszczy nerki z opóźnieniem 2–4 tygodni. Przez cały ten czas brak objawów zatrucia lub tylko niespecyficzne zmęczenie. Do momentu diagnozy uszkodzenie jest często nieodwracalne. Brak antidotum. Cały rodzaj Cortinarius = nie zbierać nigdy.',
     lookalikes:'Zasłonak rudy (C. orellanus) — pod dębami, ciemniejszy brąz. Liczne brązowe grzyby leśne — kolpaczki, pajęczaki, różne zasłoniaki. Żaden z rodzaju Cortinarius (zasłoniaki) nie jest bezpieczny do zbierania bez eksperta.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2006-07-12 Cortinarius rubellus 1.jpg?width=500'],
     weights:{tu:75,no:72,dr:68,pi:70,au:65,ps:70,dl:70,ch:72,bw:65,ma:62,ku:60,sd:62,se:60,ta:58,be:62,bi:58,po:62,wy:80,nak:75,sep:78}
   },
 
@@ -42769,6 +42793,7 @@ const MUSHROOMS={
     desc:'Owocnik 10–30 cm, JĘZYKOWATY DO WACHLARZOWATEGO, mięsisty i ciężki — wyrasta bezpośrednio z dolnej części żywego lub martwego dębu. Górna strona KRWISTOCZERWONA DO BRUNATNOWIŚNIOWEJ; spód RÓŻOWAWY z wyjątkowo DROBNYMI ODDZIELNYMI RURECZKAMI (nie zrośnięte jak u zwykłych porów). MIĄŻSZ KRWISTOCZERWONY DO RÓŻOWAWEGO — przy przekroju natychmiast wydziela CZERWONAWOCZERWONY SOK jak krew lub surowe mięso (stąd "wątróbka"). Smak kwaśny od kwasów organicznych (taninowy) — kwaśność znika po namoczeniu lub gotowaniu. ZEWNĘTRZNY WYGLĄD mięsisty i krwisty jest absolutnie unikatowy — żaden inny grzyb go nie imituje. Rośnie od sierpnia do października na dębach i kasztanowcach.',
     edib:'Jadalna — najlepsza młoda (mniej kwaśna). Marynowana lub grillowana zachowuje unikalną fakturę. Kwaśny smak neutralizuje namaczanie lub gotowanie z cebulą.',
     lookalikes:'Żadnej realnej pomyłki — czerwona wątrobowata faktura, kurczące ciało na dębie i wycieki soku są całkowicie unikalne. Czerwony kolor może odstraszać — to naturalna pigmentacja.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2008-08-08 Fistulina hepatica crop.jpg?width=500'],
     weights:{bw:55,ka:58,sw:65,ro:62,lu:60,ja:58,be:55,bi:50,sd:48,po:55,so:58,sl:55,op:62,st:65,ll:52,lm:55,kn:50,wy:45,nak:40,sep:48}
   },
 
@@ -42814,6 +42839,7 @@ const MUSHROOMS={
     desc:'Kapelusz 8–20 cm, BIAŁY DO KREMOWEGO, suchy, u starszych LEJKOWATY, bez stref (odróżnia od rydza). Blaszki WYJĄTKOWO GĘSTE I WĄSKIE (gęstsze niż u większości mleczajów), białe, zbiegające na trzon. Mleczko BIAŁE, OBFITE, NIE ZMIENIA KOLORU — SMAK ABSOLUTNIE PIEKĄCY jak pieprz cayenne, natychmiastowy i nie ustępujący. TRZON biały, masywny, twardy jak u gołąbka. BRAK ZAPACHU lub bardzo słaby. Miąższ biały, twardy, zwarty. Test smakowy (muśnij ułamek mleczka językiem) to kluczowy test terenowy — identyczna piekącość jak mleczaj wełnianka, ale bez kłaczkowatego kapelusza.',
     danger:'Niejadalny na surowo — piekące mleczko wywołuje podrażnienie. W tradycji polskiej i wschodnioeuropejskiej kiszony po wielokrotnym moczeniu z wymianą wody — metoda ryzykowna, nie zalecana. Unikaj.',
     lookalikes:'Mleczaj wełnianka (L. torminosus) — TRUJĄCY; kapelusz z kłaczkami, różowawy, pod brzozami. Rydz (L. deliciosus) — mleczko marchwiowoczerwone, kapelusz pomarańczowy. Mleczaj obrzękły (L. volemus) — brązowy, pachnie rybą. Bardzo gęste białe blaszki + biały piekący sok = mleczaj pieprzowy.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2011-07-09 Lactarius piperatus (L.) Pers 157554.jpg?width=500'],
     weights:{bw:68,au:62,sw:72,ro:70,lu:68,ja:65,be:75,bi:70,sd:65,po:68,so:65,ka:65,lm:62,op:68,st:70,sl:65,kn:60,ll:58,wy:52,nak:48,sep:55}
   },
 
@@ -42836,6 +42862,7 @@ const MUSHROOMS={
     desc:'KOPYTOWATA DO PÓŁKOLISTEJ, 10–50 cm, twardość DREWNIANA — nie da się zgiąć ani złamać palcami. Górna powierzchnia SZARA DO SZAROBRĄZOWEJ z wyraźnymi KONCENTRYCZNYMI STREFAMI — każda strefa to rok; starsze hubki liczą dziesiątki lat. SPÓD BIAŁY Z BARDZO DROBNYMI PORAMI — artyści ryją w nim ilustracje (agarikarstwo). WNĘTRZE RDZAWOBRĄZOWE I FILCOWATE — ta tkanka historycznie służyła jako hubka do rozniecania ognia (tleje nie gasnąc) i do wyrobu kapeluszy myśliwskich. Rośnie na żywych i martwych BUKACH i BRZOZACH, rzadziej olchach i osikach — pasożyt i saprofit jednocześnie, latami na tym samym drzewie.',
     danger:'Niejadalny — twarda, drewnista konsystencja. Historycznie kluczowa jako hubka do rozpalania ognia (tlące się wnętrze), materiał do wyrobu kapeluszy i sztuki, dziś w medycynie trad. Chroniony w części parków narodowych.',
     lookalikes:'Żagwica listkowata (Grifola frondosa) — miękka, liściasta, na podstawie dębu. Czyrenie (Phellinus spp.) — inne formy. Inne hubki (Trametes versicolor = wrośniak różnobarwny) — cienkie, kolorowe, półokrągłe warstwy. Kopytowaty kształt z twardą szarą skórkę = hubka pospolita.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/20200823 Stiftswald Sankt Arnual 06.jpg?width=500'],
     weights:{bw:82,au:80,kn:75,sw:70,ro:68,lu:65,be:75,bi:70,sd:65,po:68,so:68,sl:65,op:62,ka:68,ku:65,ps:72,ma:68,tu:62,no:60,br:62,ll:60,wy:72,nak:68,sep:75}
   },
 
@@ -42858,6 +42885,7 @@ const MUSHROOMS={
     desc:'Kapelusz 5–20 cm, brązowy do szarobrązowego, pokryty DUŻYMI SZAROBRĄZOWYMI ŁUSKAMI nachodzącymi na siebie jak dachówki — wygląd "łuskowatego jeża". SPÓD POKRYTY KOLCAMI szarobrązowymi 3–8 mm — jak sarniak ma kolce pod spodem, ale CIEMNE I GRUBSZE niż u kolczaka. Trzon szarobrązowy, zwarty, krótki. MIĄŻSZ biały do lekko szarawego, twardawy. SMAK GORZKAWY i korzenny — szczególnie starsze okazy; blanszować przed gotowaniem. Rośnie samotnie lub parami pod ŚWIERKAMI, rzadziej sosnami i bukami, sierpień–październik. CHRONIONY CZĘŚCIOWO W POLSCE — fotografować w pierwszej kolejności.',
     edib:'Jadalny, ale gorzkawy — szczególnie starsze okazy. Przed gotowaniem blanszować i odlać wodę. Doskonały suszony. Chroniony w Polsce — nie zbierać bez potrzeby.',
     lookalikes:'Kolczak obłączasty (Hydnum repandum) — kremowy, gładki kapelusz bez łusek, blady trzon, smak łagodny. Sarniak szorstki (S. scabrosus) — bardzo gorzki, niejadalny. Duże ciemne łuski na kapeluszu i szare kolce pod spodem to znaki rozpoznawcze sarniaka.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2007-09-11 Sarcodon imbricatus 1.jpg?width=500'],
     weights:{bw:55,au:50,sw:72,ro:68,lu:62,be:60,bi:55,go:58,sd:58,se:52,ta:48,ps:50,ma:45,tu:65,no:68,pi:70,dr:62,ll:45,wy:52,nak:48,sep:50}
   },
 
@@ -42869,6 +42897,7 @@ const MUSHROOMS={
     desc:'Kapelusz 4–12 cm, KREMOWY do łososioworóżowego, NIEREGULARNY, falbankowaty — bez łusek, bez siateczki, bez nic. SPÓD POKRYTY KREMOWOBIAŁYMI KOLCAMI 3–6 mm — zamiast blaszek lub rurek, cienkie igiełki rosnące prostopadle jak brzusiate korale. To JEDYNA TAKA CECHA w Polsce: żaden jadowalny grzyb o takim wyglądzie nie ma kolców. Trzon blady, nieco nieregularny. SMAK ŁAGODNY do lekko gorzkawego u starszych. Jeden z bezpieczniejszych grzybów dla nowicjuszy: kremowe kolce pod kapeluszem są absolutnie unikatowe i nie do pomylenia z żadnym trującym.',
     edib:'Doskonały jadalny. BEZPIECZNY dla nowicjuszy: żaden trujący grzyb nie ma takich kremowych kolców pod kapeluszem. Nie mylić z Sarcodon (sarniak) — sarniak ma ciemnobrązowe łuski. Świetny w sosach i zupach.',
     lookalikes:'Sarniak dachówkowaty (Sarcodon imbricatus) — duże ciemne łuski na kapeluszu, szare kolce, gorzki smak. Kolczak rudawy (H. rufescens) — mniejszy, bardziej różowoczerwony; jadalny. Żaden trujący grzyb nie ma białych kolców pod kapeluszem.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2012-08-29 Hydnum repandum L 256175 crop.jpg?width=500'],
     weights:{bw:78,au:72,kn:70,sw:80,ro:78,lu:75,ja:72,be:80,bi:75,go:72,sd:75,se:70,po:75,so:72,ka:65,ps:62,ma:60,su:65,wi:68,wy:75,nak:70,sep:72}
   },
 
@@ -42880,6 +42909,7 @@ const MUSHROOMS={
     desc:'Kapelusz ŻÓŁTOBRĄZOWY DO RDZAWOBRĄZOWEGO, 5–12 cm, MATOWY I SUCHY — bez śluzu, odróżnik od maślaka zwyczajnego i kropelistego (oba lepkie). RURKI ŻÓŁTOOLIWKOWE, słabo niebiesieją po uszkodzeniu. TRZON BEZ PIERŚCIENIA, żółtawy, masywny — kombinacja matowy kapelusz + brak pierścienia + bory sosnowe czyni identyfikację pewną. Miąższ żółtawy, lekko niebieskawy przy uszkodzeniu. Rośnie WYŁĄCZNIE POD SOSNAMI na kwaśnej, piaszczystej glebie — gatunek ściśle borowy, dominujący w polskich borach Niżu, sierpień–listopad. Skórkę zdejmować przed gotowaniem jak u wszystkich maślaków.',
     edib:'Jadalny — smak mierny. Skórkę zdejmować (jak z innych maślaków). U niektórych osób powoduje dolegliwości żołądkowe nawet po ugotowaniu — spożywać w małych ilościach.',
     lookalikes:'Maślak zwyczajny (S. luteus) — Z pierścieniem i śluzowatym kapeluszem; smaczniejszy. Maślak ziarnisty (S. granulatus) — mleczna wydzielina z porów u młodych, bez pierścienia. Goryczak (T. felleus) — rurki różowawe, GORZKI. Brak pierścienia + matowy kapelusz + bory sosnowe = maślak pstry.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2011-11-12 Suillus variegatus crop.jpg?width=500'],
     weights:{tu:90,no:88,dr:85,pi:86,au:80,ps:82,dl:82,ch:86,bw:72,ku:70,ma:68,br:65,wk:62,ll:60,sd:75,se:70,be:65,po:65,bi:60,wy:90,nak:84,sep:88}
   },
 
@@ -42891,6 +42921,7 @@ const MUSHROOMS={
     desc:'Kapelusz 2–5 cm, BIAŁY DO SZAROBIAŁEGO, płaski do wklęsłego, matowy — niepozorny, łatwy do przeoczenia na trawniku. BLASZKI BIAŁE, ZBIEGAJĄCE NA TRZON (lejkówkowe) — kluczowy odróżnik od twardzioszka, który ma blaszki wolne. ZAPACH MĄCZYSTY, słodkawy — nie migdałowy jak u twardzioszka. TRZON biały, sprężysty. ZAWIERA MUSKARYNĘ: objawy po 15–30 min — ślinienie, łzawienie, zwolnienie tętna; bez atropiny śmiertelne. Rośnie NA TRAWNIKACH I ŁĄKACH w tych samych czarcich kręgach co twardzioszek — TEST: blaszki twardzioszka wolne (nie zbiegają), łykowaty elastyczny trzon, zapach migdałów.',
     danger:'ŚMIERTELNIE TRUJĄCY — muscarina. Objawy po 15–30 min: ślinienie, łzawienie, zwolnienie serca, skurcze. Bez leczenia atropiną śmierć w kilka godzin. Łatwo pomylić z twardzioszkiem lub czernidłakiem kołpakowatym na trawniku.',
     lookalikes:'Twardzioszek przydrożny (M. oreades) — JADALNY; blaszki wolne (nie zbiegające!), trzon łykowaty, zapach migdałów, nie mączysty. Lejkówka gołąbkowa (C. nebularis) — duża, szara, zapach mączysty, warunkowo jadalna. Zbiegające blaszki + mączysty zapach + trawnik = lejkówka biaława.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Clitocybe dealbata 1.jpg?width=500'],
     weights:{ka:75,lm:70,ku:68,br:62,gr:58,wk:55,sw:70,ro:68,lu:65,ll:68,op:72,st:74,sl:66,bi:55,be:58,sd:58,so:60,bw:52,au:50,wy:70,nak:65,sep:72}
   },
 
@@ -42902,6 +42933,7 @@ const MUSHROOMS={
     desc:'Kapelusz ŻÓŁTOBRĄZOWY DO SZAROŻÓŁTEGO, 3–8 cm, z delikatnym garbkiem — kolorystycznie zbliżona do gąski zielonki. BLASZKI ŻÓŁTE, szerokie. Trzon żółty, włóknisty. ZAPACH ABSOLUTNIE KLUCZOWY: intensywny, duszący ZAPACH KARBIDU lub GAZU ZIEMNEGO — nie do pomylenia z żadnym jadalnym grzybem, wyczuwalny z odległości. TRUJĄCA — silne zatrucia pokarmowe; mimo odpychającego zapachu notowane zatrucia przez osoby nieznające gatunku. Rośnie pod dębami i grabami w lasach liściastych, wrzesień–listopad.',
     danger:'TRUJĄCA — powoduje silne zatrucia pokarmowe. Odpychający zapach (karbid, gaz, siarka) jest ochroną — prawie niemożliwa do zjedzenia bez ostrzegawczego zapachu. Mimo to notowane zatrucia przez osoby nieznające gatunku.',
     lookalikes:'Gąska zielonka (T. equestre) — ŻÓŁTOZIELONA nie siarkowa żółć; zapach mączysty lub brak, NIGDY karbidowy. Grzyby z żółtymi blaszkami mogą być jadalne — sprawdź zawsze zapach. Karbidowy/gazowy zapach = wyrzuć natychmiast.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2010-09-17 Tricholoma sulphureum 2.jpg?width=500'],
     weights:{bw:60,au:58,ka:65,lm:60,sw:68,ro:65,lu:62,ja:60,be:65,bi:60,sd:55,po:62,so:60,sl:60,op:65,st:65,ll:58,kn:55,wy:60,nak:55,sep:60}
   },
 
@@ -42913,6 +42945,7 @@ const MUSHROOMS={
     desc:'Kapelusz 6–15 cm, INTENSYWNIE GŁĘBOKOFIOŁKOWY do niemal czarnego — jeden z najciemniejszych i najpiękniejszych grzybów Europy; cały owocnik utrzymany w tej barwie. BLASZKI FIOLETOWE, z wiekiem brązowiejące; KRUCHE jak u wszystkich zasłoniaków. TRZON gruby, bulwiasty u dołu, fioletowy. PAJĘCZYNKA (cortina) fioletowa — pająkowata siatka między kapeluszem a trzonem, charakterystyczna dla całego rodzaju Cortinarius. MIĄŻSZ fioletowy. ZAPACH cedrowy lub słabo owocowy. Rośnie samotnie lub w małych grupach pod sosnami i bukami na kwaśnych glebach — rzadki na terenie całej Europy. ŚCIŚLE CHRONIONY W POLSCE — fotografować, nie zbierać.',
     danger:'Formalnie jadalny, ale całkowicie niewskazany do zbioru: chroniony, rzadki, i należy do rodzaju Cortinarius który ma śmiertelnie trujące gatunki. Fotografować, nie zbierać.',
     lookalikes:'Blewit leśny (Lepista nuda) — jadalny, bardziej niebieskawy/fioletowy, cieńszy trzon, bez pajęczynki, nie chroniony. Cały rodzaj Cortinarius — nie zbierać żadnego bez eksperta. Intensywny głęboki fiolet na wszystkich częściach owocnika jest unikalny.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2008-08-22 Cortinarius violaceus (L.) Gray 18241 crop.jpg?width=500'],
     weights:{bw:55,au:52,sw:60,ro:55,lu:52,be:58,bi:55,sd:58,se:52,ta:50,go:52,po:55,ku:45,ps:50,ma:48,tu:50,no:48,dr:45,wy:50,nak:45,sep:52}
   },
 
@@ -42924,6 +42957,7 @@ const MUSHROOMS={
     desc:'Kapelusz 4–8 cm, RDZAWOBRĄZOWY do brązowooliwkowego, matowy, z DELIKATNYMI STREFAMI (koncentryczne kręgi) — bardziej widoczne przy brzegu. Blaszki kremowe do płowobrązowych, gęste, kruche. MLECZKO BIAŁE, łagodne w smaku (nie piekące — kluczowy odróżnik od mleczaja pieprzowego). ZAPACH INTENSYWNIE OWADZI (pluskwy, biedronki, hemocyjanina chrząszczy) — absolutnie charakterystyczny, wyczuwalny natychmiast przy podniesieniu owocnika; nie mylić z żadnym innym. Trzon tej samej barwy co kapelusz. Rośnie WYŁĄCZNIE pod dębami — niezawodny wskaźnik mykoryzy z dębem; masowo od lipca do października w dąbrowach i grądach.',
     danger:'Niejadalny — brak wartości smakowej, zbyt gorzkawy po ugotowaniu. Nietrujący. Interesujący jako wskaźnik botaniczny.',
     lookalikes:'Inne mleczaje pod dębami: mleczaj obrzękły (L. volemus) — BRĄZOWY kapelusz z rybim zapachem soku; jadalny. Mleczaj kasztanowaty (L. subdulcis) — pod bukami, łagodniejszy zapach. Zapach pluskwy + dąb = mleczaj dębowy.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2007-07-09 Lactarius quietus 2.jpg?width=500'],
     weights:{bw:62,ka:72,sw:75,ro:72,lu:68,ja:65,be:70,bi:65,sd:62,po:68,so:65,sl:62,op:68,st:70,ll:60,lm:62,kn:58,wy:55,nak:50,sep:58}
   },
 
@@ -42935,6 +42969,7 @@ const MUSHROOMS={
     desc:'Mały 1–3 cm, kapelusz PŁASKI, brązowawy do szarego, gładki bez żadnych łusek. Blaszki białe, bardzo gęste. Trzon cienki, elastyczny. KLUCZOWA CECHA: biała grzybniowa NITKA z podstawy trzonu sięga prosto do SZYSZKI — zawsze znajdź szyszkę (zazwyczaj zakopana pod ściółką). Wyrastają w lutym–maju, często SPOŚRÓD ŚNIEGU lub zaraz po jego stopnieniu, gdy inne grzyby jeszcze nie istnieją — ta fenologiczna cecha jest sama w sobie diagnostyczna. Zbierać małymi grupkami całe owocniki (kapelusz + trzon), potem poszukać zakopanych szyszek — nie mylić z grzybówkami (Mycena) które nie mają korzeniowej nitki i nie wyrastają ze szyszek.',
     edib:'Jadalny — cienki, gorzkawy smak (wymagają zblanszowania). Zbierać na zupę lub jako garniturek. Zbieranie wcześnie wiosną = rzadka przyjemność grzybiarza.',
     lookalikes:'Szyszkowiec sosnowy (S. tenacellus) — GORZKI; na szyszkach sosnowych; niejadalny. Grzybówki (Mycena spp.) — nie wyrastają ze szyszek, brak korzeniowej nitki. Biała nitka łącząca trzon z szyszką = pewna cecha szyszkowca.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2010-03-30 Strobilurus esculentus.jpg?width=500'],
     weights:{sd:70,se:65,ta:68,be:75,bi:72,go:70,po:68,bw:55,au:60,su:65,wi:68,ps:62,ku:52,ma:55,kn:58,tu:62,no:58,dr:55,wy:48,nak:44,sep:52}
   },
 
@@ -42946,6 +42981,7 @@ const MUSHROOMS={
     desc:'ŻÓŁTOORANŻOWA DO ZŁOCISTOŻÓŁTEJ GALARETOWATA MASA 2–10 cm, nieregularnie fałdowana i mózgowata — jeden z niewielu jaskrawożółtych grzybów leśnych w Polsce. Na martwych gałązkach dębu i leszczyny, często na poziomie twarzy. HIGROFANICZNY w skrajnym stopniu: po wysuszeniu kurczy się do MAŁEGO WOSKOWATEGO KRĄŻKA niemal niewidocznego; po deszczu odrasta do pełnego rozmiaru — ten sam owocnik może "odrodzić się" kilkakrotnie. Pasożyt wewnętrznych grzybów (Peniophora) w martwym drewnie — rośnie od późnej jesieni do wiosny, preferuje chłód i wilgoć. Kilkumetrowe poszukiwanie na gałęziach w wilgotny dzień zaowocuje widowiskowymi znaleziskami.',
     edib:'Formalnie jadalny — brak smaku, galaretowata konsystencja. Nie zbierać ze względów kulinarnych. Fascynujący jako zjawisko przyrodnicze — używany w kuchni azjatyckiej (spokrewniony z Tremella fuciformis).',
     lookalikes:'Trzęsak mózgowaty (T. encephala) — biały do kremowego, na drewnie iglastym. Uszak bzowy (A. auricula-judae) — brązowy, uszowaty, jadalny. Nasięźrzał (Calocera viscosa) — żółtopomarańczowe paluszki na drewnie iglastym. Żółta galaretowata masa na liściastych gałązkach = trzęsak pomarańczowy.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2009-05-02 Tremella mesenterica Peniophora limitata.jpg?width=500'],
     weights:{bw:72,au:68,kn:65,sw:68,ro:65,lu:62,be:72,bi:68,sd:62,po:65,so:62,ka:60,ku:58,tu:55,no:52,br:55,gr:52,op:62,st:60,ll:58,wy:65,nak:60,sep:65}
   },
 
@@ -42980,6 +43016,7 @@ const MUSHROOMS={
     desc:'Kapelusz PŁOWY DO BRĄZOWOOLIWKOWEGO, 4–10 cm, wyraźnie LEPKI I ŚLUZOWATY — szczególnie przy wilgoci. RURKI ŻÓŁTOOLIWKOWE Z LABIRYNTOWYMI PORAMI — pory mają wielokątne, wycinane kształty jak labirynt, a nie okrągłe otwory; absolutnie unikatowa cecha wśród polskich maślaków. TRZON BEZ PIERŚCIENIA, płowy, zwykle z graniastymi żeberkami przy podstawie. Miąższ żółtawy, LEKKO NIEBIESKAJĄCY po uszkodzeniu. Rośnie WYŁĄCZNIE POD SOSNAMI ZWYCZAJNYMI na piaszczystej, kwaśnej glebie — jeden z dominujących gatunków sosnowych borów Niżu. Test terenowy: labiryntowe pory + kleisty kapelusz bez pierścienia = kropelisty.',
     edib:'Jadalny — skórkę zdejmować przed gotowaniem (jak u innych maślaków). Smak mierny, gąbczasty miąższ. Dobry do mieszanek i zup. U niektórych osób powoduje lekkie dolegliwości żołądkowe.',
     lookalikes:'Maślak zwyczajny (S. luteus) — Z pierścieniem, rurki okrągłe. Maślak pstry (S. variegatus) — matowy kapelusz, brak kleistości, rurki grubsze. Maślak ziarnisty (S. granulatus) — białe krople na porach młodych. Labiryntowe rurki bez pierścienia = kropelisty.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/1431. Suillus bovinus 070913.jpg?width=500'],
     weights:{tu:90,no:88,dr:85,pi:86,au:78,ps:82,dl:82,ch:86,bw:72,ku:68,ma:65,br:62,wk:60,ll:58,sd:72,se:65,wy:92,nak:86,sep:90}
   },
 
@@ -42991,6 +43028,7 @@ const MUSHROOMS={
     desc:'Kapelusz 6–15 cm, FIOLETOWOSINY do szarozielonego — barwa WYJĄTKOWO ZMIENNA: fiolet, zielonkawy, szary, często z plamistym pomieszaniem odcieni na tym samym kapeluszu. Skórka matowa. Blaszki BIAŁE, GIĘTKIE — nie kruszą się ani nie rozłupują po przesunięciu palcem; to ABSOLUTNIE UNIKATOWA cecha wśród wszystkich polskich gołąbków (wszystkie inne mają kruche blaszki). TEST W TERENIE: muśnij krawędź blaszki palcem — jeśli zginają się bez pękania = chabrowy. Trzon biały, zwarty. Nie wydziela mleczka. Jeden z najpospolitszych grzybów leśnych Polski — pospolitszy niż borowik.',
     edib:'Doskonały smak — jeden z najsmaczniejszych grzybów leśnych. Bezpieczny do spożywania na surowo (jeden z nielicznych). Miękkie giętkie blaszki to unikalny test jadalności w tym rodzaju.',
     lookalikes:'Gołąbek wymiotny (R. emetica) — TRUJĄCY; czerwony kapelusz, ostre białe blaszki kruche, smak piekący. Inne gołąbki (Russula) — blaszki kruche i łamliwe. Giętkie blaszki u gołąbka = tylko R. cyanoxantha. Lekkie pęknięcie blaszki między palcami = test.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/0 Russula cyanoxantha 1.jpg?width=500'],
     weights:{bw:72,au:68,sw:80,ro:78,lu:75,ja:72,be:82,bi:78,go:75,sd:78,se:72,ta:65,po:78,so:72,ka:70,kn:68,lm:65,ps:65,ma:60,su:68,wi:70,ll:62,br:58,wy:60,nak:55,sep:62}
   },
 
@@ -43002,6 +43040,7 @@ const MUSHROOMS={
     desc:'Kapelusz 5–12 cm, JASKRAWOŻÓŁTY do cytrynowego lub złocistego — jeden z kilku naprawdę intensywnie żółtych grzybów leśnych. Blaszki kremowobiałe, kruche jak u wszystkich gołąbków. Trzon biały, ale SZARZEJE LUB CZERNIEJE w miejscach uszkodzenia i przy suszeniu — cecha diagnostyczna (trzon łamany = natychmiast szarawy). WYŁĄCZNIE pod BRZOZAMI na MOKRYCH TORFOWISKOWYCH GLEBACH — ta podwójna wskazówka (żółty kolor + podmokła brzezina) czyni identyfikację pewną. Blaszki kruche, smak łagodny. Rośnie od lipca do września.',
     edib:'Dobry jadalny — smak łagodny, orzechowy. Jeden z bezpieczniejszych gołąbków do zbierania: jaskrawożółty + wyłącznie pod brzozą = bezpieczny test. Dobry w zupach i sosach.',
     lookalikes:'Inne żółte gołąbki (R. lutea) — pod różnymi drzewami, kapelusz słomkowożółty, blaszki żółte; jadalny. Gołąbek wymiotny żółty — smak pieczący. Test: jaskrawożółty + podmokła brzezina + szarowiejący trzon = R. claroflava.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2010-08-11 Russula claroflava Grove. ss. Melz, & Zv., J. Schff 98988.jpg?width=500'],
     weights:{bw:75,au:80,kb:82,kn:72,su:78,wi:80,ps:72,ma:75,tu:68,no:65,dr:62,pi:65,ku:65,br:68,wk:65,ll:60,wy:72,nak:68,sep:75}
   },
 
@@ -43013,6 +43052,7 @@ const MUSHROOMS={
     desc:'Owocnik WACHLARZOWATY DO NERKOWATEGO, kremowożółty lub brązowawy, 10–60 cm — jeden z największych polskich kapeluszowych grzybów drzewnych. Górna strona z CIEMNOBRĄZOWYMI KONCENTRYCZNYMI ŁUSKAMI w środku kapelusza. SPÓD BIAŁY Z DUŻYMI KANCIASTYMI PORAMI — wielokątne otwory wyraźnie widoczne gołym okiem. Miąższ biały, KORKOWATY I TWARDY — niejadalny mimo że formalnie nietrujący. Wyrasta na pniach WIERZB, TOPÓL i buków — w parkach, alejach i lasach liściastych, wiosna–jesień. Łatwy do zapamiętania: ogromny kapelusz z łuskami + wierzba/topola = łuszczak.',
     danger:'Niejadalny przez twardą, korkowatą konsystencję — choć formalnie nietrujący. Bardzo młode egzemplarze bywają jadalne, starsze mają skórzastą fakturę. Ważna poznawczo kotwica do nauki polypores.',
     lookalikes:'Żagwica listkowata (Grifola frondosa) — miękka, liściasta, bez łusek. Brak jadalnospożywczych pomyłek. Łuski na górze + kanciate pory na spodzie + wierzba/topola = łuszczak.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2011-04-24 Polyporus squamosus (Huds.) Fr 142840.jpg?width=500'],
     weights:{bw:68,au:62,ka:75,lm:68,ku:65,sw:70,ro:68,lu:65,ja:62,ll:65,op:68,st:70,sl:65,br:58,gr:55,wk:58,bi:55,be:58,sd:55,so:62,wy:62,nak:58,sep:60}
   },
 
@@ -43024,6 +43064,7 @@ const MUSHROOMS={
     desc:'Kapelusz ŻÓŁTAWY DO ŻÓŁTOBRĄZOWEGO pokryty GĘSTYMI STERCZĄCYMI RDZAWOBRĄZOWYMI ŁUSKAMI — łuski nie przylegają lecz sterczą w górę, co absolutnie odróżnia od opieńki (ta ma przylegające małe łuski). BLASZKI ŻÓŁTAWE, ciemniejące do rdzawobrązowych z wiekiem. TRZON Z PIERŚCIENIEM, a PONIŻEJ PIERŚCIENIA JESZCZE GĘŚCIEJ ŁUSKOWATY — u opieńki trzon poniżej pierścienia jest gładki lub łykowaty. ZAPACH CZOSNKOWY LUB RZEPAKOWY — ostry, odpychający; nie do pomylenia z przyjemnym zapachem opieńki. TRUJĄCY — silne dolegliwości żołądkowe i jelitowe mimo odpychającego zapachu notowane zatrucia. Rośnie kępami u podstaw pni dębów, klonów i świerków, wrzesień–listopad.',
     danger:'TRUJĄCY — powoduje silne dolegliwości żołądkowe. Jeden z najczęstszych powodów pomyłki z opieńką miodową. Odpychający czosno-rzepakowy zapach powinien ostrzec.',
     lookalikes:'Opieńka miodowa (Armillaria mellea) — JADALNA; łuski na kapeluszu małe/rzadkie, jasnobrązowe, nie sterczące; zapach grzybowy przyjemny. Podpieńka zmienna (K. mutabilis) — mniejsza, bez łusek na wierzchniej stronie kapelusza. Sterczące łuski + zapach czosnku = łuskwiak, nie opieńka.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/-2019-10-23 Pholiota squarrosa, Pond plantation, Trimingham (5).jpg?width=500'],
     weights:{bw:68,au:62,ka:65,sw:68,ro:65,lu:62,ja:60,be:68,bi:62,sd:58,po:62,so:62,sl:58,op:62,st:65,ku:60,ma:58,ll:58,br:55,wy:65,nak:60,sep:62}
   },
 
@@ -43035,6 +43076,7 @@ const MUSHROOMS={
     desc:'Kapelusz RDZAWOBRĄZOWY, 5–12 cm, suchy, higrofaniczny (wyraźnie ciemniejszy gdy mokry). ABSOLUTNIE UNIKALNA CECHA: trzon jasnobrązowy z 2–4 INTENSYWNIE POMARAŃCZOWOCZERWONYMI LUB RDZAWOCZERWONYMI WEŁNISTYMI OPASKAMI — pozostałości rozerwanych pajęczynowych zasłonek (kortyny); żaden inny zasłoniak w Polsce nie ma takich opasek. Blaszki ochrobrązowe do rdzawobrązowych, szeroko ustawione, przyrośnięte. Brak prawdziwego pierścienia — tylko ślad pajęczynowej kortyny u bardzo młodych okazów. Rośnie WYŁĄCZNIE POD BRZOZAMI na podmokłych, torfowych lub kwaśnych glebach — bez brzozy nie ma zasłoniaka kruszcowego. Sierpień–październik.',
     danger:'TRUJĄCY — zawiera orellaninę niszczącą nerki z 2–4-tygodniowym opóźnieniem; przez cały ten czas brak objawów. Brak odtrutki. Mimo wyróżniającego wyglądu notowane zatrucia. Cały rodzaj Cortinarius = nie zbierać.',
     lookalikes:'Inne zasłoniaki (Cortinarius spp.) — rdzawobrązowe, bez czerwonych opasek na trzonie. Koźlarze, podgrzybki — nie mają opasek na trzonie, rurkowate (nie blaszkowe). Czerwone wełniste opaski na trzonie + wyłącznie pod brzozą + podmokłe siedlisko = zasłonak kruszcowy — unikalny wygląd, ale śmiertelnie trujący.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2009-09-11 Cortinarius armillatus (Alb. & Schwein.) Fr 56586.jpg?width=500'],
     weights:{bw:72,au:75,kb:78,kn:70,su:76,wi:78,ps:68,ma:70,tu:65,no:62,dr:60,pi:65,ku:62,br:68,wk:65,ll:58,wy:70,nak:65,sep:72}
   },
 
@@ -43046,6 +43088,7 @@ const MUSHROOMS={
     desc:'Kapelusz 4–10 cm, kremowy do jasnobrązowego, LEPKI, matowy z podwiniętym brzegiem — wygląd "zwyczajny" jak pieczarka, co jest szczególnie niebezpieczne. Blaszki BRUDNORÓŻOWE do ochry — u młodych z BIAŁYMI ŁEZKAMI (kroplami cieczy) na krawędziach; łezki to cecha diagnostyczna. ZAPACH RZODKWI lub chrzanu — wyczuwalny po roztarciu miąższu, smak łagodny (nie ostry jak u wielu trujących). Trzon białawy, z drobnymi włóknami. Rośnie przy drzewach liściastych i iglastych, parki i lasy.',
     danger:'TRUJĄCY — powoduje silne zatrucia pokarmowe: wymioty, biegunka, bóle brzucha. Kosmaczki są dość częstą przyczyną zatruć ze względu na pospolitość i "niewinny" wygląd jak pieczarka.',
     lookalikes:'Pieczarki (Agaricus spp.) — JADALNE; blaszki różowiejące do czekoladowych, nigdy ochrowożółte, zapach grzybowy nie rzodkwi. Opieńka — rośnie na drewnie, inne blaszki. Test: zapach rzodkwi/chrzanu + ochrowożółte blaszki = kosmaczek.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2012-10-16 Hebeloma crustuliniforme (Bull.) Quél 272561 crop.jpg?width=500'],
     weights:{bw:70,au:65,ka:72,sw:68,ro:65,lu:62,be:68,bi:62,sd:60,po:62,so:60,sl:62,op:68,st:70,ll:62,lm:65,br:58,gr:55,ku:62,tu:55,no:52,wy:68,nak:63,sep:68}
   },
 
@@ -43068,6 +43111,7 @@ const MUSHROOMS={
     desc:'Główka STOŻKOWATA DO CYLINDRYCZNEJ, CIEMNOBRĄZOWA do czarnobrązowej, 4–10 cm — wyraźnie ciemniejsza niż smardz jadalny; pionowe żeberka tworzą regularną siateczkę. Owocnik CAŁKOWICIE PUSTY W ŚRODKU — przekroić przed spożyciem. TRZON biały, gruby, z graniastym zarysem. Rośnie w LASACH IGLASTYCH, sadach, przy rumieniach po pożarach — nieco wcześniej niż smardz jadalny. NIGDY NA SUROWO: jak wszystkie smardze zawiera termolabilne hemolizyny — gotować minimum 10 minut i odlać wodę. Ciemna stożkowata głowa + iglasty las = smardz stożkowaty.',
     edib:'Jadalny jak smardz jadalny — WYŁĄCZNIE po gotowaniu. Surowy zawiera toksyczne substancje termolabilne (hemolizyny). Jeden z wybitnych jadalnych wiosennych grzybów. Ciemnobrązowa stożkowata głowa wyróżnia go od smardza jadalnego.',
     lookalikes:'Smardz jadalny (M. esculenta) — JADALNY; głowa kulista/jajowata, jaśniejsza. Smardz półwolny (M. semilibera) — dolna połowa głowy wolna od trzonu. Piestrzenica (G. esculenta) — TRUJĄCA; głowa mózgowata, zafałdowana, nie siatkowata. Ciemna stożkowata siatka = smardz stożkowaty.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2009-11-21 Morchella elata group 314203.jpg?width=500'],
     weights:{sd:75,se:70,ta:68,be:72,bi:70,go:68,po:68,bw:62,sw:70,ro:68,lu:65,ja:62,ka:58,ll:55,op:62,st:65,au:55,br:52,wy:62,nak:58,sep:60}
   },
 
@@ -43079,6 +43123,7 @@ const MUSHROOMS={
     desc:'Kapelusz RÓŻOWAWY DO RDZAWOCZERWONEGO lub fioletowoczerwonawego, 5–12 cm; SKÓRKA "NIEDOCIĄGNIĘTA" — nie pokrywa całego kapeluszu, przy krawędzi widoczny biały miąższ (cecha absolutnie unikalna wśród gołąbków). BLASZKI BIAŁE, kruche jak u wszystkich Russula. SMAK ŁAGODNY, orzechowy — jeden z niewielu grzybów bezpiecznych do spróbowania na surowo. Zapach owocowy lub neutralny. Test: zjedz kawałek blaszki — łagodny smak + przetarta skórka = pewna identyfikacja. Rośnie pod bukami i dębami w lasach liściastych, lipiec–październik.',
     edib:'Doskonały smak — jeden z najlepszych gołąbków i jeden z najlepszych grzybów do jedzenia na surowo (bezpieczny). Czysty orzechowy smak, ideał do sałatek i tart.',
     lookalikes:'Gołąbek wymiotny (R. emetica) — TRUJĄCY; intensywnie szkarłatny kapelusz (nie różowawy), smak PIEKĄCY; skórka bez białawego miąższu przy krawędzi. Test: spróbuj kawałek blaszki — gołąbek jagodowy = łagodny smak, wymiotny = pieczący. Przetarta/niedociągnięta skórka jest unikalną cechą.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2006-07-23 Russula vesca crop.jpg?width=500'],
     weights:{bw:68,ka:72,sw:78,ro:75,lu:72,ja:68,be:78,bi:75,go:72,sd:72,se:68,ta:62,po:72,so:68,ll:60,kn:62,lm:62,op:65,st:68,sl:62,wy:58,nak:53,sep:60}
   },
 
@@ -43090,6 +43135,7 @@ const MUSHROOMS={
     desc:'Kapelusz SZARY DO SZAROBRĄZOWEGO, 10–30 cm, mięsisty, płaski do lekko lejkowatego, z wyraźnie PODWINIĘTYM BRZEGIEM. BLASZKI BIAŁAWE, gęste, ZBIEGAJĄCE NA TRZON. Trzon gruby, bladoszary. ZAPACH INTENSYWNY, MĄCZYSTY do parfumeryjnego — charakterystyczny i często odpychający; odróżnik od blewita (owocowy zapach) i opieńki (grzybowy). NIEJADALNA — dolegliwości żołądkowe u większości osób. Rośnie w lasach i parkach, tworzy wielometrowe CZARCIE KRĘGI — jeden z największych polskich grzybów, okazy do 30 cm, wrzesień–listopad.',
     danger:'Niejadalny — powoduje dolegliwości żołądkowe u większości osób. Warunkowo jadalna w niektórych tradycjach (Niemcy, Czechy) po długiej obróbce, ale zbyt ryzykowna dla przeciętnego zbieracza. Unikać.',
     lookalikes:'Blewit leśny (L. nuda) — JADALNY; fiołkowoniebieski kolor, owocowy zapach. Lejkówka biaława (C. dealbata) — ŚMIERTELNA; mała (2–5 cm), biała, na trawniku. Lejkówka gołąbkowa jest największa, szara, w lesie, mączysty zapach.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2008-11-22 Clitocybe nebularis.jpg?width=500'],
     weights:{bw:72,au:68,ka:70,sw:72,ro:70,lu:68,be:72,bi:68,sd:65,po:68,so:65,ka:65,ku:60,tu:60,no:58,ll:62,op:68,st:70,sl:62,wy:68,nak:63,sep:70}
   },
 
@@ -43112,6 +43158,7 @@ const MUSHROOMS={
     desc:'Kapelusz 2–5 cm, INTENSYWNIE SZKARŁATNY do czerwonopomidorowego, BŁYSZCZĄCY I LEPKI przy wilgoci — "wilgotnica" od tej lepkości. Blaszki pomarańczowoczerwone, grube i rzadkie. Trzon CZERWONY do pomarańczowego, pusty w środku, kruchy. Miąższ cienki, czerwony. Na łące jesienią jest absolutnie niemożliwa do przeoczenia — szkarłatna plama na zielonym tle. WSKAŹNIK EKOLOGICZNY: obecność wilgotnic (Hygrocybe spp.) potwierdza, że łąka jest STARA i NIENARUSZANA przez nawozy i intensywne rolnictwo przez co najmniej kilkadziesiąt lat — jej znikanie sygnalizuje degradację ekosystemu. W Anglii łąki z wilgotnicami mają status ochrony porównywalny z dżunglami tropikalnymi.',
     danger:'Formalnie niejadalny — brak wartości kulinarnych, zbyt mała. Ważny wskaźnik ekologiczny: obecność wilgotnic na łące oznacza, że jest to stary, nienaruszony biotop o dużej wartości przyrodniczej. W wielu krajach objęta ochroną.',
     lookalikes:'Czarka szkarłatna (S. coccinea) — kubkowata, na gałęziach wczesną wiosną. Inne wilgotnice (Hygrocybe spp.) — wiele kolorowych gatunków na łąkach; żadna nie jest niebezpieczna. Intensywny czerwony kolor + lepkość + stara łąka jesienią = wilgotnica.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2010-10-02 Hygrocybe coccinea 1 55652.jpg?width=500'],
     weights:{ka:60,lm:55,ku:52,br:50,gr:48,wk:48,sw:58,ro:55,lu:52,ja:50,ll:55,bi:45,be:50,sd:50,op:55,st:58,sl:52,so:50,bw:48,au:45,wy:58,nak:53,sep:55}
   },
 
@@ -43123,6 +43170,7 @@ const MUSHROOMS={
     desc:'Kapelusz 8–15 cm, bladobrązowy do szarooliwkowego — powierzchnia JEDWABIŚCIE LŚNIĄCA (jak naprężona skóra), charakterystyczny połysk jest cechą diagnostyczną. Miąższ GRUBY, biały. KLUCZOWE: blaszki początkowo ŻÓŁTAWE (jasne cytrynowożółte u młodych), potem łososioworóżowe — ZATOKOWATO WYCIĘTE przy trzonie, nie zbiegają. Trzon biały do żółtawoochrowego, masywny. Zapach i smak mączny, przyjemny — MYLĄCY, bo pieczarki też pachną mąką. Jedwabisty połysk + żółtawe blaszki + las liściasty = wieruszka zatokowata.',
     danger:'SILNIE TRUJĄCA — powoduje długotrwałe zaburzenia jelitowe z wymiotami i biegunką, trwające dni lub tygodnie. W ciężkich przypadkach może doprowadzić do zgonu. Substancja czynna nieznana. Jedna z najczęstszych przyczyn ciężkich zatruć w Polsce.',
     lookalikes:'Dzwonkówka wiosenna (E. clypeatum) — wiosenna, pod głogami i różami; blaszki białe→różowe (nie żółte); przez niektórych spożywana ale ryzykowna. Gąska szara (T. terreum) — mniejsza, sosnowy bór. Gąsówka łąkowa (L. saeva) — fiołkowy trzon, na łące, nie w lesie. Żółtawe blaszki + las liściasty + mączny zapach = wieruszka zatokowata — nie zbierać.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2005-09-25 Entoloma sinuatum cropped.jpg?width=500'],
     weights:{bw:65,au:60,sw:75,ro:72,lu:70,ja:68,be:78,bi:72,go:70,sd:72,se:68,ta:60,po:70,so:65,ka:68,kn:62,lm:60,op:68,st:70,sl:62,ll:58,wy:68,nak:63,sep:70}
   },
 
@@ -43182,6 +43230,7 @@ const MUSHROOMS={
     desc:'Kapelusz 10–30 cm, BIAŁAWY do szarobrązowego lub ochrowego — kapelusz SAM jest niegroźnie wyglądający. RURKI JASKRAWOCZERWONE do krwistoczerwonych — najintensywniejszy czerwony spód spośród wszystkich polskich grzybów; po ugnieceniu siniejące. TRZON BECZUŁKOWATY (szerszy w środku niż u dołu), żółty do karminowoczerwonego z wyraźną czerwoną SIATKĄ. ZAPACH: u młodych słodkawy owocowy; u starszych INTENSYWNY JAK PADLINA (rozkład) — ten zapach jest ostatecznym sygnałem alarmowym. Miąższ biały, po przekrojeniu intensywnie i szybko SINIEJE. Rzadki w Polsce, prawie wyłącznie na podłożu wapiennym pod bukami i dębami. Jaskrawoczerwone rurki + beczułkowaty trzon z czerwoną siatką = borowik szatański.',
     danger:'SILNIE TRUJĄCY — wywołuje gwałtowne długotrwałe zaburzenia żołądkowo-jelitowe z silnymi wymiotami. Nawet mała ilość surowego owocnika powoduje ciężkie zatrucie. Gotowanie nie inaktywuje w pełni toksyn. Sinienie + smród u starszych okazów to podwójny sygnał alarmowy.',
     lookalikes:'Borowik ceglastopory (B. erythropus) — TRUJĄCY surowy; czerwone rurki, intensywne niebiesienie, ale BEZ smrodu padliny. Borowik szlachetny — brązowy kapelusz, żółte rurki, brak czerwieni w trzonie. Borowik żółtopory (B. calopus) — gorzki smak, żółte rurki. Biały kapelusz + jaskrawoczerwone rurki + smród u starszych okazów = borowik szatański.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2008-10-19 Boletus satanas Lenz 223261.jpg?width=500'],
     weights:{tu:15,no:12,dr:10,pi:8,au:18,ps:15,dl:10,ch:12,bw:18,ku:15,ma:12,br:20,wk:15,ll:12,sd:10,se:12,be:20,po:18,bi:15,wy:10,nak:8,sep:10}
   },
 
@@ -43194,6 +43243,7 @@ const MUSHROOMS={
     edib:'Jadalny, małej wartości kulinarnej — cienki i mały. Najlepszy jako aromatyczny dodatek do sosów i zup. Zbierać w ilościach; sam w sobie zbyt mały.',
     danger:'Małej wartości kulinarnej. Przy silnym wyblakaniu może mylić z innymi gatunkami.',
     lookalikes:'Łakówka okazała (L. proxima) — większa, chropowata skórka, w wilgotnych miejscach. Łakówka dwubarwna (L. bicolor) — fioletowy trzon. Gwoździak (Mycena) — przyrośnięte blaszki, cieńszy trzon, inne proporcje. Cielistoróżowe rzadkie szerokie blaszki + blaknięcie przy suszy = łakówka jesienna.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/20221012 Laccaria laccata 01.jpg?width=500'],
     weights:{tu:70,no:68,dr:65,pi:72,au:62,ps:68,dl:65,ch:70,bw:60,ku:58,ma:55,br:52,wk:50,ll:48,sd:65,se:62,be:58,po:58,bi:55,wy:70,nak:68,sep:70}
   },
 
@@ -43217,6 +43267,7 @@ const MUSHROOMS={
     edib:'Jadalny po gotowaniu — smak łagodny, przyjemny. Wymagają krótkiego blanszowania. Zapach śledzia znika po ugotowaniu.',
     danger:'Nie zbierać bez rozpoznania zapachu — tylko śledziowy zapach jest pewną cechą. Liczne podobne czerwone gołąbki są niejadalne lub trujące.',
     lookalikes:'Gołąbek błotny (R. paludosa) — podobna barwa, ale MIĄŻSZ i TRZON pomarańczowoczerwone, bez śledziowego zapachu. Gołąbek wymiotny (R. emetica) — TRUJĄCY; trzon biały czysty, ostry smak. Wiele innych czerwonych Russula. Śledziowy/krabowy zapach jest absolutnie unikatowy w rodzaju — bez niego nie zbierać.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2011-11-08 Russula xerampelina (Schaeff.) Fr 180998 mod.jpg?width=500'],
     weights:{tu:65,no:62,dr:60,pi:55,au:70,ps:65,dl:60,ch:62,bw:68,ku:65,ma:62,br:70,wk:65,ll:62,sd:58,se:60,be:70,po:68,bi:65,wy:60,nak:55,sep:58}
   },
 
@@ -43229,6 +43280,7 @@ const MUSHROOMS={
     edib:'Dobry jadalny. Musi być dobrze ugotowany — surowy niestrawny. Miąższ intensywnie czernieje po przekrojeniu i gotowaniu — normalne zjawisko, nie oznacza psucia.',
     danger:'Surowy niestrawny — obowiązkowo gotować. Miąższ czernieje — normalne. Nie mylić z trującymi gatunkami.',
     lookalikes:'Koźlarz czarny (L. scabrum) — JADALNY; szarobrązowy kapelusz bez pomarańczowych odcieni, pod brzozą. Koźlarz babka — brunatny, nie czernieje tak intensywnie. Koźlarz grabowy — pod grabem, mniejszy, ciemniejszy. Pomarańczowy kapelusz + czarne łuski na trzonie + czernienie miąższu pod brzozą = koźlarz pomarańczowożółty.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2006-09-02 Leccinum versipelle.jpg?width=500'],
     weights:{tu:65,no:62,dr:60,pi:68,au:55,ps:62,dl:58,ch:65,bw:60,ku:58,ma:55,br:52,wk:50,ll:48,sd:62,se:58,be:55,po:55,bi:52,wy:65,nak:62,sep:65}
   },
 
@@ -43253,6 +43305,7 @@ const MUSHROOMS={
     edib:'Jadalna, dobra — szczególnie smaczne kapelusze smażone w panierce jak czubajka kania. Trzon łykowaty — odrzucić.',
     danger:'Jadalna. Sprawdź obecność ruchomego pierścienia i brak pochwy u nasady; nie mylić z dzwonkówką trującą.',
     lookalikes:'Czubajka kania (M. procera) — większa (15–30 cm), trzon z wyraźnym wzorkiem wężowym. Czubajnik czerwieniejący (C. rhacodes) — miąższ czerwienieje po uszkodzeniu. Czubajka białotrzonowa (M. excoriata) — biały trzon bez wzorku, otwarte łąki. Sutkowaty garbek + słabszy wzór na trzonie = czubajka sutkowata.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2009-02-01 Macrolepiota mastoidea (Fr.) Singer 35418.jpg?width=500'],
     weights:{tu:58,no:55,dr:52,pi:60,au:50,ps:55,dl:52,ch:58,bw:50,ku:48,ma:45,br:42,wk:40,ll:38,sd:52,se:50,be:45,po:45,bi:42,wy:58,nak:52,sep:55}
   },
 
@@ -43276,6 +43329,7 @@ const MUSHROOMS={
     edib:'Jadalna — smak łagodny, delikatny. Głównie dekoracyjna do sałatek i przybrań. Niemylna z żadnym trującym gatunkiem — czerwone kubki wiosną są unikalne.',
     danger:'Jadalna. Nieodróżnialna od czarki szkarłatnej (S. coccinea) gołym okiem — obie jadalne, pomylenie nieszkodliwe.',
     lookalikes:'Czarka szkarłatna (S. coccinea) — bliźniacza, praktycznie nieodróżnialna gołym okiem (obie jadalne). Niezapominajka (Aleuria aurantia) — POMARAŃCZOWA (nie czerwona), jesienią. Cynobrowoczerwone kubki + wiosna + leżące gałązki = czarka.',
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2010-03-20 Sarcoscypha coccinea (Gray) Boud 92717.jpg?width=500'],
     weights:{bw:42,au:38,sw:36,ro:32,lu:30,be:38,bi:32,sd:36,wy:40,nak:42,sep:38,tu:28,no:26,ka:32,lm:30}
   },
 
@@ -43719,6 +43773,7 @@ const SPECIES_DIFF={
   gaska_plam:3,czubajka_sut:2,mleczaj_om:3,
   czarka_aust:1,gaska_zolk:3,kolpaczek_bl:3,
   gaska_maj:2,
+  lakówka:2,
 };
 // General rarity in Poland: 1=very common, 2=common, 3=moderately common, 4=rare, 5=very rare/endangered
 const SPECIES_RARITY={
@@ -43755,6 +43810,7 @@ const SPECIES_RARITY={
   gaska_plam:4,czubajka_sut:2,mleczaj_om:3,
   czarka_aust:4,gaska_zolk:1,kolpaczek_bl:3,
   gaska_maj:2,
+  lakówka:3,
 };
 const LOCAL_COLOR={p:'#4a7a3a',f:'#8a7a20',r:'#aa5a20',v:'#aa2020',n:'#666'};
 
@@ -54890,7 +54946,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.33</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.34</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
