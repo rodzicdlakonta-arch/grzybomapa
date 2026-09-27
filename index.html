@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.32</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.33</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42153,7 +42153,7 @@ const MUSHROOMS={
     soil:'Gleba gliniasta, żyzna, próchnicza',ph:'5.5–7.0',elev:'0–700 m',
     habitat:'Pod grabami i dębami w grądach. Rzadszy od koźlarza babki.',
     desc:'Kapelusz 5–15 cm, SZAROOCHRONY do żółtawobrązowego lub brunatnooliwkowego, MATOWY, lekko filcowaty — suchy w dotyku. TRZON biały z SZARYMI DO CZARNYCH ŁUSECZKAMI na całej długości (jak u wszystkich koźlarzy — cecha całego rodzaju Leccinum), trzon grubszy i bardziej beczułkowaty niż u koźlarza babki. RURKI białawe do kremowych, pory drobne, NIE SINIEJE. MIĄŻSZ biały — po przekrojeniu RÓŻOWIEJE lub lekko szarzeje, a przy gotowaniu ciemnieje do ciemnobrązowego lub czarnego. Identyfikacja pewna tylko pod GRABEM lub dębem w lasach liściastych (grąd); podobny do koźlarza babki ale ten jest związany wyłącznie z brzozą.',
-    edib:'Jadalny po gotowaniu. Intensywnie ciemnieje.',
+    edib:'Jadalny po ugotowaniu. Ciemnieje intensywnie do czarnego podczas gotowania i smażenia — normalne, nieszkodliwe. Doskonały do sosów ciemnych, bigosu i mieszanek suszonych z borowikiem.',
     photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Leccinum_carpini.JPG?width=500'],
     weights:{bw:70,kn:72,ka:75,lm:68,sw:78,ro:72,lu:75,ja:68,so:68,be:65,bi:60,op:62,st:65,sl:68,sd:60,se:58,wy:42,nak:38,sep:45}
   },
@@ -42174,7 +42174,8 @@ const MUSHROOMS={
     soil:'Gleba kwaśna, próchnicza, ściółka świerkowa',ph:'3.8–5.2',elev:'200–1400 m',
     habitat:'Wyłącznie pod świerkami. Typowy grzyb górski i borealno-subarktyczny.',
     desc:'Kapelusz 5–12 cm, POMARAŃCZOWY do ceglastego, z NIEWYRAŹNYMI lub słabo widocznymi strefami — mniej wyraziste niż u rydza. Blaszki pomarańczowe, gęste, kruche. MLECZKO POMARAŃCZOWE jak u rydza — KLUCZOWY TEST RÓŻNICUJĄCY: kropla mleczka na białą serwetkę u rydza zostaje MARCHWIOWOCZERWONA przez 10+ minut; u smerekowca ZMIENIA SIĘ NA WINOCZERWONE po 10–15 minutach — obserwować zmieniającą się barwę. CAŁOŚĆ INTENSYWNIE ZIELENIEJE po uszkodzeniu — charakterystyczny i niepowtarzalny kolor. WYŁĄCZNIE POD ŚWIERKAMI — w borach świerkowych i lasach górskich (Karpaty, Sudety, Tatry); rydz rośnie wyłącznie pod sosnami. Sezon sierpień–październik.',
-    edib:'Jadalny, nieco gorszy od rydza. Dobry do marynowania.',
+    edib:'Jadalny — nieco gorszy od rydza, ale marynowany wyborny. Blanszować, odlać wodę i marynować w occie z kminkiem lub liściem laurowym. Można też smażyć na maśle z cebulą. Zielenieje intensywnie przy gotowaniu — normalne i nieszkodliwe, nie wpływa na smak.',
+    lookalikes:'Rydz (Lactarius deliciosus) — prawie identyczny, ale wyłącznie POD SOSNAMI; mleczko marchwiowoczerwone przez 10+ min (u smerekowca zmienia się na winoczerwone po ok. 15 min). Mleczaj rudy (Lactarius rufus) — wydziela BIAŁE mleczko o piekącym smaku; brak pomarańczowego zabarwienia. ZASADA: pod świerkiem = smerekowiec; pod sosną = rydz; oba jadalne; białe mleczko = nie rydz, ostrożnie.',
     weights:{sd:88,se:82,ta:80,be:85,bi:80,go:78,po:82,bw:60,au:65,ps:70,su:68,wi:72,ku:65,ma:62,wy:25,nak:22,sep:28}
   },
   czubajka:{q:4,
@@ -42205,7 +42206,8 @@ const MUSHROOMS={
     soil:'Gleba próchnicza, umiarkowanie wilgotna',ph:'4.5–6.5',elev:'0–1200 m',
     habitat:'Pospolita na ściółce leśnej, pniach i przy drogach. Rośnie grupami.',
     desc:'Owocnik o wysokości 3–8 cm, GRUSZKOWATY, początkowo CZYSTO BIAŁY z charakterystycznymi białymi KOLCAMI I BRODAWKAMI na górnej części, które z wiekiem odpadają pozostawiając delikatny SIATKOWATY WZÓR na skórce. TEST JADALNOŚCI — bezwzględnie konieczny: przekroić owocnik na pół; JEDNOLICIE BIAŁY miąższ = JADALNY; SZARY, ZIELONKAWY lub CIEMNY miąższ = WYRZUCIĆ niezależnie od wyglądu zewnętrznego. UWAGA: nie mylić z nierozwiniętymi muchomorami — muchomory mają wewnątrz już widoczny zarys kapelusza i blaszek; purchawka ma wnętrze jednorodne jak twaróg. Rośnie od lipca do listopada w lasach i na łąkach. NIGDY na drewnie — to ważna cecha.',
-    edib:'Jadalny tylko gdy wewnątrz biały. Smażyć w plastrach lub panier.',
+    edib:'Jadalny WYŁĄCZNIE gdy wnętrze jednolicie białe — kroić każdy okaz na pół przed zjedzeniem. Smażyć w plastrach na maśle lub panierować. Suszyć i dodawać do zup.',
+    lookalikes:'Tęgoskór pospolity (Scleroderma citrinum) — TRUJĄCY; twardy jak kamień, wnętrze CIEMNOFIOLETOWE do czarnego, nigdy białe. Młode jaja muchomorów — ŚMIERTELNIE TRUJĄCE; zawsze przekroić: jajko muchomora ma wewnątrz zarys kapeluszu i blaszek jak zarodek; purchawka ma wnętrze jednorodne jak twaróg. REGUŁA: przekrój każdą znalezioną purchawkę — jednolita biel = jadalny; jakikolwiek odcień = wyrzuć.',
     photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Lycoperdon_perlatum_95340.jpg?width=500'],
     weights:{bw:72,au:70,kn:68,tu:65,no:62,ps:68,ku:65,ma:62,sw:70,ro:70,lu:68,ja:65,be:72,bi:70,po:68,sd:68,se:62,ta:55,ka:60,lm:58,ll:55,sl:62,op:60,st:60,so:65,br:58,gr:55,wy:70,nak:65,sep:68}
   },
@@ -42215,7 +42217,8 @@ const MUSHROOMS={
     soil:'Gleba żyzna, nawożona',ph:'6.0–7.5',elev:'0–700 m',
     habitat:'Na łąkach, pastwiskach i parkach. Preferuje żyzne tereny otwarte.',
     desc:'Owocnik o średnicy 15–50 cm, KULISTY lub lekko spłaszczony — NAJWIĘKSZY GRZYB EUROPEJSKI; rozmiar czyni go absolutnie niepowtarzalnym. SKÓRKA GŁADKA JAK PORCELANA, początkowo CZYSTO BIAŁA, z wiekiem żółknąca do brązowawej. TEST JADALNOŚCI: przekroić przez środek — BIAŁY, JEDNOLITY, ZWARTY MIĄŻSZ O KONSYSTENCJI TOFU = JADALNY; jakikolwiek ślad żółcenia, zieloności lub marmurkowatości = WYRZUCIĆ. Rośnie od lipca do października na łąkach, pastwiskach i w widnych lasach. Okazy mogą ważyć 5–10 kg. Nie można go pomylić z żadnym innym grzybem — samo pole widzenia i okrąg metrowy mówią wszystko. Przed przyrządzeniem USUNĄĆ ZEWNĘTRZNĄ SKÓRKĘ.',
-    edib:'Doskonały — kroić w plastry i smażyć lub paner. Można zamrażać.',
+    edib:'Doskonały — kroić w grube plastry i smażyć na maśle (jak kotlet), panierować lub grillować. Świeży miąższ delikatny i orzechowy. Zamrażać plastry, suszyć lub dodawać do zup. KLUCZOWE: zbierać tylko okazy z jednolicie białym wnętrzem po przekrojeniu — żółknący lub marmurkowaty wyrzucić.',
+    lookalikes:'Jaja muchomorów (przy małych okazach) — zawsze przekroić: jajko muchomora ma wewnątrz zarys kapeluszu i blaszek; purchawka olbrzymia ma wnętrze jednorodne. Tęgoskór pospolity — znacznie mniejszy, twardy, fioletowoczarny w środku. W pełni wyrośnięta purchawka (25–50 cm) jest absolutnie niepowtarzalna w Polsce — rozmiar wyklucza pomyłki.',
     photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Calvatia_gigantea.jpg?width=500'],
     weights:{ka:78,lm:72,ku:65,wk:68,sw:72,lu:70,ja:65,ro:68,ll:60,br:58,gr:55,sl:58,op:65,st:65,so:62,bi:55,be:58,au:60,ma:62,wy:62,nak:58,sep:65}
   },
@@ -42236,7 +42239,8 @@ const MUSHROOMS={
     soil:'Na pniach drzew liściastych. Grzyb saprofit drewna.',ph:'Saprofit drewna',elev:'0–800 m',
     habitat:'Na pniach buka, dębu, wierzby, olchy. Jesień–zima–wiosna.',
     desc:'Kapelusz 5–20 cm, OSTRYGOWATY lub WACHLARZOWATY, barwy od SZAREJ DO STALOWOSZAREJ lub GOŁĘBIONIEBIESKIEJ — z wiekiem blaknący do beżowobrązowej. BLASZKI białe, gęste, zbiegające wzdłuż krótkiego bocznie osadzonego trzonu lub rosnące prawie bez trzonu. KLUCZOWA CECHA SEZONOWA: jedyny duży grzyb blaszkowaty owocnikujący ZIMĄ — rośnie od PAŹDZIERNIKA DO MARCA, przeżywa mróz, na śniegu. Rośnie wyłącznie na ŻYWYCH I MARTWYCH PNIACH DRZEW LIŚCIASTYCH — buk, topola, wierzba, olcha — w gęstych pozrastanych kępach; nigdy z ziemi. Miąższ biały, sprężysty, zwarty. Dzikie okazy zimowe smaczniejsze od hodowlanych (enoki kupione w sklepie to inna odmiana).',
-    edib:'Doskonały smak. Smażyć, dusić, do makaronów.',
+    edib:'Doskonały smak i aromat. Młode owocniki najsmaczniejsze — smażyć na maśle z czosnkiem lub panierować grube plastry. Do makaronów, risotto, sosów i jajecznicy. Stare okazy mogą być łykowate; suszyć lub marynować na zimę.',
+    lookalikes:'Łychawka odstająca (Pleurocybella porrigens) — TRUJĄCA; drobna (2–5 cm), czysto biała, bez trzonu, tylko na martwym drewnie iglastym. Boczniak pokryty (Crepidotus mollis) — mały (1–5 cm), brązowy z brązowymi blaszkami, bez wyraźnego trzonu; rośnie na drewnie liściastym. Boczniak ostrygowaty jest praktycznie niepowtarzalny zimą: jedyny duży, szary, blaszkowaty grzyb rosnący w kępach na pniach od października do marca.',
     photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Pleurotus_ostreatus_JPG6.jpg?width=500'],
     weights:{bw:80,au:75,kn:72,ka:70,lm:68,sw:75,ro:78,lu:72,ja:70,be:78,bi:75,sd:70,se:65,po:72,so:70,sl:65,op:62,st:65,ps:68,ma:65,tu:58,no:55,ll:60,ku:65,su:68,wi:70,wy:55,nak:50,sep:58}
   },
@@ -42287,7 +42291,8 @@ const MUSHROOMS={
     soil:'Gleba żyzna, nawożona, kompostowa',ph:'6.0–7.5',elev:'0–600 m',
     habitat:'Przy drogach, na trawnikach, przy kompostownikach.',
     desc:'Młody owocnik CYLINDRYCZNY JAK PAŁECZKA do bębna, 5–15 cm, BIAŁY z CZARNYM KONIUSZKIEM pokrytym ciemną łuską lub włóknami — jak zakryta przez skrzypek smyczka. BLASZKI u bardzo młodych białe → różowieją → CZERNIEJĄ stopniowo od dołu ku środkowi. SAMOTRAWI SIĘ od dołu ku górze w czarny ATRAMENTOWATY PŁYN — proces rozpoczyna się po kilku godzinach od zebrania lub pozostawienia; zbierać BEZWZGLĘDNIE TYLKO BIAŁE I KREMOWE młode owocniki bez śladu różowienia. Trzon biały, wydrążony, z pierścieniem ruchomym u dołu. Rośnie od maja do listopada przy drogach, na trawnikach, przy kompostownikach i nawożonych łąkach — w miejscach bogatych w azot. ZUŻYĆ w ciągu 1–2 godzin po zbiorze lub odrzucić.',
-    edib:'Dobry smak, delikatny aromat. Używać natychmiast — w ciągu godzin od zbioru zaczyna się autotrawiać. Podsmażyć lub do jajecznicy.',
+    edib:'Delikatny, jajeczny smak. ZBIERAĆ TYLKO BIAŁE okazy i ZUŻYĆ w ciągu 1–2 godzin lub natychmiast smażyć. Na patelni z masłem i czosnkiem lub do jajecznicy. Nie nadaje się do suszenia ani marynowania — autotrawi się błyskawicznie po zbiorze.',
+    lookalikes:'Czernidłak atramentowy (Coprinopsis atramentaria) — TRUJĄCY przy spożyciu alkoholu (coprine, efekt disulfiramowy); mniejszy, szary z graniastym szarym kapeluszem, bez białej barwy i czarnego koniuszka; rośnie w kępach przy pniach. Kołpakowaty jest łatwy do ID: duży biały cylindryczny owocnik z czarnym koniuszkiem — kombinacja niezmienna i jednoznaczna.',
     photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Coprinus_comatus_G4.JPG?width=500'],
     weights:{ka:72,lm:68,lu:65,ro:60,sw:65,br:58,gr:55,sl:60,op:62,ll:62,so:58,bi:48,be:50,au:52,bw:50,tu:45,no:42,wy:58,nak:55,sep:60}
   },
@@ -42318,7 +42323,7 @@ const MUSHROOMS={
     soil:'U podstawy starych dębów. Saprofit.',ph:'Saprofit drewna',elev:'0–700 m',
     habitat:'U podstawy starych dębów i buków. Ten sam okaz rośnie wiele lat. Rzadki.',
     desc:'Ogromne skupisko wachlarzowatych kapeluszy — każdy 3–10 cm, kremowoszary do szarobrązowego, wyrastający ze wspólnego korzenia u nasady dębu. SPÓD kremowobiały z drobnymi okrągłymi porkami — po uciśnięciu NIE CZERNIEJE (odróżnia od trującego wachlarzowca olbrzymiego Meripilus giganteus). Krawędzie kapeluszy faliście ząbkowane, miąższ biały, elastyczny. Wrasta rok po roku na tym samym dębie lub przy jego korzeniach — sierpień–październik. Zbierać MŁODE okazy — stare łykowate i gorzkie. Może ważyć ponad 20 kg.',
-    edib:'Wyśmienity smak i aromat. Smażyć lub do zup.',
+    edib:'Wyśmienity smak i głęboki leśny aromat. Zbierać młode okazy — stare łykowate. Smażyć delikatne paski na maśle, dusić do risotto lub gotować do zup. Suszone dają intensywny bulion.',
     photos:['https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Autumn_mushrooms_1_Hen_of_the_woods_%28Grifola_frondosa%29_%284035115888%29.jpg/500px-Autumn_mushrooms_1_Hen_of_the_woods_%28Grifola_frondosa%29_%284035115888%29.jpg'],
     weights:{bw:55,kn:48,ka:50,sw:58,ro:55,lu:52,ja:50,be:45,bi:42,sd:38,se:35,po:40,so:48,sl:42,wy:22,nak:18,sep:25}
   },
@@ -42328,7 +42333,7 @@ const MUSHROOMS={
     soil:'U nasady sosen. Pasożyt korzeni.',ph:'Pasożyt',elev:'0–1200 m',
     habitat:'U podstawy sosen, często przy tej samej sosnce przez wiele lat.',
     desc:'OGROMNE SKUPISKO KĘDZIERZAWYCH PŁATÓW 15–40 cm wyrastające z grubego korzenia zakopanegou nasady SOSNY. Płaty kremowobiałe do ŻÓŁTAWYCH (żółknie z wiekiem), FALISTE JAK FRĘDZEL — cienkie jak papier, miękkie, elastyczne. BRAK ODRĘBNYCH KAPELUSZY I BLASZEK — wygląd niepowtarzalny, jak krótka biała sukienka lub kalafior na korzeniu. Miąższ biały, kruchy, przyjemny. Zapach miodowogrzybowy, przyjemny. Rośnie ROK PO ROKU PRZY TEJ SAMEJ SOSNCE — pasożyt korzeni; jeśli znajdziesz stanowisko, wracaj co roku. Zbierać WYŁĄCZNIE BIAŁE i kremowe okazy — żółknące są stare i twarde. Sierpień–październik, pod sosnami na piaszczystych glebach.',
-    edib:'Doskonały! Kremowy smak, chrupiąca faktura. Smażyć lub grillować.',
+    edib:'Doskonały — kremowy, lekko orzechowy smak. Gotować lub smażyć na maśle krótko; kędzierzawe płaty chrupią po obróbce. Do sosów, past i zup. NIE JEŚĆ NA SUROWO — gotować lub smażyć minimum kilka minut.',
     weights:{tu:72,no:70,dr:65,pi:68,au:62,ps:65,dl:68,ch:70,bw:60,ma:58,ku:55,sd:62,se:58,ta:55,be:60,bi:55,po:62,wy:72,nak:68,sep:70}
   },
   rozites:{q:3,
@@ -42395,6 +42400,7 @@ const MUSHROOMS={
     habitat:'Pospolity we wszystkich typach lasów. Przy drogach leśnych.',
     desc:'Kapelusz 5–12 cm, BRĄZOWY Z SZARYM LUB OLIWKOWYM ODCIENIEM, pokryty drobnymi białymi brodawkami (pozostałości osłonki ogólnej) — różni się od czerwonego koloru muchomora czerwonego. BLASZKI BIAŁE, wolne od trzonu. Przy podstawie trzonu POCHWA Z WYWINIĘTYM MANKIETEM ("SKARPETKA") — charakterystyczny kołnierz rozerwanych osłonek, często zagrzebany płytko w ziemi; wyjmuj grzyba razem z podstawą. ZAPACH SŁABY, lekko rzodkiewkowy lub nieprzyjemny. Zarodniki białe. Rośnie pod liściastymi i mieszanymi lasami, lipiec–październik.',
     danger:'SILNIE TRUJĄCY. Muscymol i kwas ibotenowy. Majaczenia, halucynacje, śpiączka. Wymaga hospitalizacji.',
+    lookalikes:'Muchomor twardawy (Amanita spissa) — szarobrązowy, podobny, ale pierścień prążkowany od góry, bulwa masywna z podwójnym kołnierzem; rzadko mylony. Muchomor czerwieniejący (Amanita rubescens) — różowawy odcień kapelusza, kluczowy test: miąższ po przekrojeniu RÓŻOWIEJE po kilku minutach — u plamisty zawsze biały, nigdy nie różowieje. Odróżniaj po "skarpetce" u nasady: wałek między trzonem a bulwą to cecha praktycznie unikalna dla plamisty.',
     photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Amanita_pantherina_(1).JPG?width=500','https://commons.wikimedia.org/wiki/Special:FilePath/Amanita_pantherina_(2).JPG?width=500'],
     weights:{tu:65,no:60,au:62,bw:58,ps:62,ma:58,dl:60,ch:62,ku:55,dr:55,pi:58,sw:55,ro:52,lu:50,be:55,bi:52,sd:58,se:55,ka:48,lm:45,wy:65,nak:60,sep:62}
   },
@@ -42405,6 +42411,7 @@ const MUSHROOMS={
     habitat:'Najczęściej pod brzozami i sosnami. Jeden z najpospolitszych trujących.',
     desc:'Kapelusz 5–20 cm, INTENSYWNIE CZERWONY do szkarłatnego, z nieregularnymi BIAŁYMI PLAMKAMI (resztki białej osłonki/veila) — u starszych plamki mogą zmyć się deszczem. BLASZKI BIAŁE, gęste, wolne od trzonu — ważny szczegół (białe, nie żółte). TRZON biały, gruby, z wyraźnym BŁONIASTYM PIERŚCIENIEM i bulwiastą POCHWĄ u nasady zakrytą w ziemi — zawsze wyciągnąć z ziemią i sprawdzić. Barwa kapelusza wyjątkowo charakterystyczna — jeden z najłatwiej rozpoznawalnych grzybów. Rośnie pod brzozami i sosnami, od sierpnia do października.',
     danger:'TRUJĄCY i HALUCYNOGENNY — muscymol i kwas ibotenowy powodują wzmożone ślinienie, drgawki, majaczenia, psychozę, śpiączkę. Używany rytualnie przez syberyjskich szamanów po specjalnej obróbce — w Polsce bez eksperckiej wiedzy bezwzględnie nie zbierać.',
+    lookalikes:'Muchomor cesarski (Amanita caesarea) — jadalna rarytasowa; kapelusz GŁADKI bez białych brodawek, blaszki i trzon ŻÓŁTE — przy czerwonym kapeluszu z białymi plamkami to on. Bardzo młode owocniki zamknięte w białej osłonce: zawsze przekroić — muscaria ma pod skórką pomarańczowożółtą linię tuż przy kapeluszu. Albinosowe okazy (białe, bez czerwieni): sprawdzić osłonę, pierścień i bulwę — brak pochwy wykluczy białe gatunki jadalne.',
     photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Amanita_muscaria_3_vliegenzwammen_op_rij.jpg?width=500','https://commons.wikimedia.org/wiki/Special:FilePath/2_young_amanita_muscaria.jpg?width=500'],
     weights:{tu:72,no:70,au:75,bw:72,ps:68,ma:68,dl:70,ch:72,ku:65,dr:65,pi:68,br:62,wk:60,ll:58,su:70,wi:72,sd:65,be:65,bi:60,ta:60,go:62,wy:72,nak:68,sep:70}
   },
@@ -42457,6 +42464,7 @@ const MUSHROOMS={
     habitat:'Pospolity pod sosnami i świerkami, przy torfowiskach.',
     desc:'Kapelusz 5–12 cm, INTENSYWNIE CZERWONY do jaskrawoczerwonawego. KLUCZOWE: SKÓRKA ŁATWO ŁUPIE SIĘ od krawędzi ku środkowi — odciągamy ją jak skórkę z pomidora, pod spodem miąższ białawy z lekko różawym odcieniem. Blaszki białe do kremowych, kruche (typowa cecha gołąbków). SMAK ABSOLUTNIE PIEKĄCY — kawałek przyłożony do języka piecze natychmiast i nie ustępuje; żaden jadalny gołąbek nie ma tak intensywnej ostrości. Test smakowy to podstawowa metoda identyfikacji gołąbków w terenie. Zarodniki białe do kremowych.',
     danger:'TRUJĄCY. Powoduje silne wymioty i biegunkę. Naturalny ostrzegawczy smak.',
+    lookalikes:'Rydz (Lactarius deliciosus) — po uszkodzeniu wydziela POMARAŃCZOWE MLECZKO (wymiotny nie ma mleczka). Gołąbek siniejący (Russula cyanoxantha) — blaszki giętkie i elastyczne jak u żadnego innego gołąbka; kapelusz szarozielonkawy lub fioletowy. Jadalne czerwone gołąbki — TEST TERENOWY: kosztuj ułamek blaszki (wypluj natychmiast!); piekący jak pieprz = trujący; smak łagodny lub lekko ostry = prawdopodobnie jadalny.',
     weights:{tu:70,no:68,au:65,bw:62,ps:65,dl:68,ma:60,br:55,su:62,wi:60,ku:58,be:55,bi:52,ta:50,go:52,sd:58,wy:68,nak:62,sep:65}
   },
   lysiczka:{
@@ -42529,6 +42537,7 @@ const MUSHROOMS={
     habitat:'Bardzo pospolity — jeden z najczęstszych leśnych grzybów. Pod brzozami i sosnami, na ściółce, przy pniach i korzeniach.',
     desc:'Kapelusz 5–15 cm, oliwkowobrązowy do ochrowobrązowego, matowy; BRZEG SILNIE PODWINIĘTY do środka — jak wygięta rondo kapelusza, charakterystyczna dla całego gatunku przez całe życie owocnika. BLASZKI ŻÓŁTAWOBRĄZOWE, gęste, zbiegające na trzon; przy potarciu palcem łatwo się ścierają i odchodzą (jak gąbka) — cecha unikatowa. MIĄŻSZ żółknie po uszkodzeniu. Smak kwaśnozaciągający, nieco cierpki. BARDZO POSPOLITY: jeden z najpospolitszych grzybów Polski w lasach, szczególnie pod brzozami i sosnami. ŚMIERTELNIE TRUJĄCY MIMO POSPOLITOŚCI — kumulatywna hemoliza; dawniej tradycyjnie jedzony, dziś wiadomo że niszczy krwinki czerwone; nigdy nie zbierać.',
     danger:'ŚMIERTELNIE TRUJĄCY — niewidoczna trucizna kumulacyjna. Dawniej tradycyjnie jedzony w Polsce i Rosji. Udowodniono od lat 70. że powoduje postępującą autoimmunologiczną hemolizę (niszczenie własnych erytrocytów). Śmierć po wieloletnim spożywaniu. Nigdy nie zbierać pod żadnym pozorem.',
+    lookalikes:'Lejkówka mglistozielonkawa (Lepista nebularis) — szary kapelusz, blaszki kremowe, brak podwiniętej krawędzi, anyżowy zapach. Gąsówka fioletowa (Lepista nuda) — fioletowy odcień kapelusza i blaszek. Krowiak olszowy (Paxillus rubicundulus) — bardzo podobny, równie trujący; pod olszą, skórka wcześnie pęka promieniście. CECHA KLUCZOWA: krawędź kapelusza silnie podwinięta do środka nawet u starych okazów i blaszki brązowieją od dotyku palcem — kombinacja nie do pomylenia.',
     photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2009-10-31_Paxillus_involutus_(Batsch)_Fr_62959.jpg?width=500'],
     weights:{tu:90,no:88,dr:85,bw:82,au:80,pi:82,ps:84,ku:80,dl:80,ch:82,ma:74,br:70,wk:64,ll:60,su:74,wi:76,be:74,bi:70,sd:72,sw:65,ro:68,wy:87,nak:80,sep:84}
   },
@@ -54881,7 +54890,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.32</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.33</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
