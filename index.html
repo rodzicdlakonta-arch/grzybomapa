@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.38</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.0</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43746,6 +43746,8 @@ const MUSHROOM_LOCAL={
 };
 
 const LOCAL_LABEL={p:'Pospolity w regionie',f:'Częsty w regionie',r:'Rzadki w regionie',v:'Bardzo rzadki',n:'Nie występuje w regionie'};
+// Returns true when map center is within the Krajna/Wyrzysk home region (where MUSHROOM_LOCAL data applies)
+function _inHomeRegion(){const c=map.getCenter();return c.lat>=52.7&&c.lat<=54.0&&c.lng>=16.4&&c.lng<=18.6;}
 
 // ID difficulty 1=unmistakable, 2=easy with key features, 3=needs care, 4=expert only
 const SPECIES_DIFF={
@@ -43817,7 +43819,7 @@ const LOCAL_COLOR={p:'#4a7a3a',f:'#8a7a20',r:'#aa5a20',v:'#aa2020',n:'#666'};
 
 function localBadge(mid){
   const d=MUSHROOM_LOCAL[mid];
-  if(!d)return '';
+  if(!d||!_inHomeRegion())return '';
   return `<span class="b" style="background:${LOCAL_COLOR[d.s]}22;color:${LOCAL_COLOR[d.s]};border:1px solid ${LOCAL_COLOR[d.s]}44">${LOCAL_LABEL[d.s]}</span>`;
 }
 
@@ -44048,30 +44050,31 @@ const _fBboxes=FORESTS.map(f=>{
 const _fMain=new Array(FORESTS.length).fill(null);
 const _fDet=new Array(FORESTS.length).fill(null);
 const _DET_COLORS={'311':'#4a8a2a','312':'#255015','313':'#2d6a15'};
+// Spatial index: bucket forest polygons into 0.1°×0.15° cells (built before _updateForestLayer)
+const _FSI={};
+(()=>{const LAT=0.1,LNG=0.15;_fBboxes.forEach((bb,i)=>{if(!bb)return;const[s,w,n,e]=bb;for(let r=Math.floor(s/LAT);r<=Math.floor(n/LAT);r++)for(let c=Math.floor(w/LNG);c<=Math.floor(e/LNG);c++){const k=r+'_'+c;(_FSI[k]||(_FSI[k]=[])).push(i);}});})();
+// Track currently rendered polygon indices to efficiently remove out-of-view ones
+const _visF=new Set(),_visD=new Set();
 function _updateForestLayer(){
   const b=map.getBounds().pad(0.25);
   const vs=b.getSouth(),vw=b.getWest(),vn=b.getNorth(),ve=b.getEast();
   const fOn=forestLayer._map,dOn=bdlStandsLayer._map;
-  FORESTS.forEach((f,i)=>{
-    const bb=_fBboxes[i];if(!bb)return;
-    const[fs,fw,fn,fe]=bb;
-    const inView=fs<vn&&fn>vs&&fw<ve&&fe>vw;
-    if(fOn){
-      if(inView&&!_fMain[i]){_fMain[i]=L.polygon(f.p,{fillColor:'#4a8a2a',fillOpacity:.18,weight:0,interactive:false}).addTo(forestLayer);}
-      else if(!inView&&_fMain[i]){forestLayer.removeLayer(_fMain[i]);_fMain[i]=null;}
+  // Find in-view indices via spatial index
+  const inView=new Set();
+  for(let r=Math.floor(vs/.1);r<=Math.floor(vn/.1);r++)
+    for(let c=Math.floor(vw/.15);c<=Math.floor(ve/.15);c++){
+      const cands=_FSI[r+'_'+c];if(!cands)continue;
+      cands.forEach(i=>{if(inView.has(i))return;const[fs,fw,fn,fe]=_fBboxes[i];if(fs<vn&&fn>vs&&fw<ve&&fe>vw)inView.add(i);});
     }
-    if(dOn){
-      if(inView&&!_fDet[i]){const fc=_DET_COLORS[f.c]||'#2d6a15';_fDet[i]=L.polygon(f.p,{color:fc,weight:.5,fillColor:fc,fillOpacity:.22,interactive:false}).addTo(bdlStandsLayer);}
-      else if(!inView&&_fDet[i]){bdlStandsLayer.removeLayer(_fDet[i]);_fDet[i]=null;}
-    }
-  });
+  // Add newly in-view
+  if(fOn)inView.forEach(i=>{if(!_fMain[i]){_fMain[i]=L.polygon(FORESTS[i].p,{fillColor:'#4a8a2a',fillOpacity:.18,weight:0,interactive:false}).addTo(forestLayer);_visF.add(i);}});
+  if(dOn)inView.forEach(i=>{if(!_fDet[i]){const fc=_DET_COLORS[FORESTS[i].c]||'#2d6a15';_fDet[i]=L.polygon(FORESTS[i].p,{color:fc,weight:.5,fillColor:fc,fillOpacity:.22,interactive:false}).addTo(bdlStandsLayer);_visD.add(i);}});
+  // Remove no-longer-visible (only iterate rendered set, not all FORESTS)
+  if(fOn)_visF.forEach(i=>{if(!inView.has(i)){forestLayer.removeLayer(_fMain[i]);_fMain[i]=null;_visF.delete(i);}});
+  if(dOn)_visD.forEach(i=>{if(!inView.has(i)){bdlStandsLayer.removeLayer(_fDet[i]);_fDet[i]=null;_visD.delete(i);}});
 }
 map.on('moveend zoomend',_updateForestLayer);
 _updateForestLayer();
-
-// Spatial index: bucket forest polygons into 0.1°×0.15° cells
-const _FSI={};
-(()=>{const LAT=0.1,LNG=0.15;_fBboxes.forEach((bb,i)=>{if(!bb)return;const[s,w,n,e]=bb;for(let r=Math.floor(s/LAT);r<=Math.floor(n/LAT);r++)for(let c=Math.floor(w/LNG);c<=Math.floor(e/LNG);c++){const k=r+'_'+c;(_FSI[k]||(_FSI[k]=[])).push(i);}});})();
 // Ray-cast PIP and exact forest type lookup
 function _pip(lat,lng,pts){let inside=false;for(let i=0,j=pts.length-1;i<pts.length;j=i++){const[li,xi]=pts[i],[lj,xj]=pts[j];if((li>lat)!==(lj>lat)&&lng<(xj-xi)*(lat-li)/(lj-li)+xi)inside=!inside;}return inside;}
 function _forestTypeAt(lat,lng){const k=Math.floor(lat/.1)+'_'+Math.floor(lng/.15);const cands=_FSI[k];if(!cands)return null;for(const i of cands){const[s,w,n,e]=_fBboxes[i];if(lat<s||lat>n||lng<w||lng>e)continue;if(_pip(lat,lng,FORESTS[i].p))return FORESTS[i].c;}return null;}
@@ -44255,7 +44258,7 @@ const soilPhLayer=L.tileLayer.wms('https://maps.isric.org/mapserv?map=/map/phh2o
 });
 
 // Overpass detail terrain at zoom>=8
-let ovLayer=L.layerGroup();
+let ovLayer=L.layerGroup().addTo(map); // starts on map; forest toggle adds/removes it
 let ovWetLayer=L.layerGroup();     // dynamic OSM wetlands
 let ovMeadowLayer=L.layerGroup();  // dynamic OSM meadows/grasslands
 let ovCropLayer=L.layerGroup();    // dynamic OSM farmland/crops
@@ -44300,25 +44303,27 @@ function loadDetailTerrain(){
         }
       });
     }).catch(()=>{});
+  // Forests: fetch whenever forest layer is on (not gated by BDL toggle) — covers all of Wielkopolskie
+  if(ovLayer._map&&b2.getNorth()-b2.getSouth()<=1.6&&b2.getEast()-b2.getWest()<=2.4){
+    const qf=`[out:json][timeout:15];(way["landuse"="forest"](${bb});way["natural"="wood"](${bb}););out tags geom;`;
+    fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qf)}`)
+      .then(r=>r.json()).then(data=>{
+        ovLayer.clearLayers();
+        (data.elements||[]).forEach(el=>{
+          if(!el.geometry)return;
+          const poly=el.geometry.map(p=>[p.lat,p.lon]);
+          const tags=el.tags||{};
+          const type=getTreeType(tags);
+          const name=getTreeDisplayName(tags);
+          const fc=TREE_COLORS[type]||'#3a7c20';
+          if(!wyrForests.some(f=>f.poly[0]&&f.poly[0][0]===poly[0][0]&&f.poly[0][1]===poly[0][1]))
+            wyrForests.push({type,name,poly});
+          L.polygon(poly,{color:fc,weight:.5,fillColor:fc,fillOpacity:.22,interactive:false}).addTo(ovLayer);
+        });
+      }).catch(()=>{});
+  }
   if(!showOv&&!showDynTerrain)return;
   if(b2.getNorth()-b2.getSouth()>1.6||b2.getEast()-b2.getWest()>2.4)return;
-  // Forests
-  const qf=`[out:json][timeout:15];(way["landuse"="forest"](${bb});way["natural"="wood"](${bb}););out tags geom;`;
-  fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qf)}`)
-    .then(r=>r.json()).then(data=>{
-      ovLayer.clearLayers();
-      (data.elements||[]).forEach(el=>{
-        if(!el.geometry)return;
-        const poly=el.geometry.map(p=>[p.lat,p.lon]);
-        const tags=el.tags||{};
-        const type=getTreeType(tags);
-        const name=getTreeDisplayName(tags);
-        const fc=TREE_COLORS[type]||'#3a7c20';
-        if(!wyrForests.some(f=>f.poly[0]&&f.poly[0][0]===poly[0][0]&&f.poly[0][1]===poly[0][1]))
-          wyrForests.push({type,name,poly});
-        L.polygon(poly,{color:fc,weight:.5,fillColor:fc,fillOpacity:.22,interactive:false}).addTo(ovLayer);
-      });
-    }).catch(()=>{});
   // Wetlands + meadows/farmland (farmland loads at zoom 9+, wetlands at 11+)
   if(map.getZoom()>=9){
     const qw=`[out:json][timeout:15];(way["natural"="wetland"](${bb});way["natural"="marsh"](${bb}););out geom;`;
@@ -52697,7 +52702,7 @@ function selectMushroom(mid,e){
     _heatPts=[...freshBase,...inatPts,...gbifPts];_midHeatCache[curMid]=_heatPts.slice();
     if(heatLayer)map.removeLayer(heatLayer);
     heatLayer=_mkHeat(_heatPts,map.getZoom()).addTo(map);
-    const cert=calcCertainty(inatPts.length,gbifPts.length,!!(MUSHROOM_LOCAL[curMid]&&MUSHROOM_LOCAL[curMid].s!=='n'));
+    const cert=calcCertainty(inatPts.length,gbifPts.length,!!(MUSHROOM_LOCAL[curMid]&&MUSHROOM_LOCAL[curMid].s!=='n'&&_inHomeRegion()));
     certEl.textContent=`Pewność danych: ${cert}%`;
     certEl.style.color=cert>70?'#7abf5a':cert>45?'#c9a84c':'#e07060';
   });
@@ -52834,7 +52839,7 @@ function showInfoPanel(mid){
   favBtn.onclick=()=>{if(favs.has(mid))favs.delete(mid);else favs.add(mid);_saveFavs();favBtn.textContent=favs.has(mid)?'★':'☆';favBtn.classList.toggle('on',favs.has(mid));renderList();};
   const dVal=SPECIES_DIFF[mid];
   const genRare=SPECIES_RARITY[mid];
-  const locD=MUSHROOM_LOCAL[mid];
+  const locD=_inHomeRegion()?MUSHROOM_LOCAL[mid]:null;
   const locRare=locD?{p:1,f:2,r:4,v:5,n:0}[locD.s]||0:0;
   const rareVals=[genRare,locRare].filter(Boolean);
   const combinedRare=rareVals.length?Math.round(rareVals.reduce((a,b)=>a+b,0)/rareVals.length*2)/2:0;
@@ -52859,7 +52864,7 @@ function showInfoPanel(mid){
     <div class="isec"><h4>🔍 Jak rozpoznać?</h4><ul class="id-steps">${(m.desc||'').split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄ])/).filter(s=>s.trim()).map(s=>`<li>${s.trim().replace(/\.$/,'')}</li>`).join('')}</ul><p style="font-size:10.5px;color:var(--muted);margin:6px 0 0;line-height:1.4">⚠️ Nie używaj tej strony jako jedynego źródła do identyfikacji — zawsze konsultuj z ekspertem lub atlasem.</p></div>
     ${m.edib?`<div class="isec"><h4>Wartość kulinarna</h4><p>${m.edib}</p></div>`:''}
     ${m.lookalikes?`<div class="isec"><h4>⚠ Gatunki podobne — nie pomyl!</h4>${(m.lookalikes).split(/\.\s+(?=[A-ZŁŚŹŻÓĆĄGW])/).filter(s=>s.trim()).map(s=>`<div class="la-item">${_wrapLA(s.trim().replace(/\.$/,''))}</div>`).join('')}</div>`:''}
-    ${(()=>{const ld=MUSHROOM_LOCAL[mid];if(!ld)return '';return `<div class="isec" style="border-left:3px solid ${LOCAL_COLOR[ld.s]||'#888'};padding-left:8px;margin-top:4px"><h4 style="color:${LOCAL_COLOR[ld.s]||'#888'}">🗺 W regionie Krajna / Wyrzysk</h4><div style="font-weight:600;color:${LOCAL_COLOR[ld.s]};margin-bottom:4px">${LOCAL_LABEL[ld.s]}</div><p style="margin:0;font-size:12px">${ld.n}</p></div>`;})()}
+    ${(()=>{const ld=MUSHROOM_LOCAL[mid];if(!ld)return '';if(!_inHomeRegion())return `<div class="isec" style="border-left:3px solid #888;padding-left:8px;margin-top:4px;opacity:.5"><h4 style="color:#888">🗺 Dane lokalne: region Krajna/Wyrzysk</h4><p style="margin:0;font-size:11px">Przesuń mapę na ten region aby zobaczyć lokalne informacje.</p></div>`;return `<div class="isec" style="border-left:3px solid ${LOCAL_COLOR[ld.s]||'#888'};padding-left:8px;margin-top:4px"><h4 style="color:${LOCAL_COLOR[ld.s]||'#888'}">🗺 W regionie Krajna / Wyrzysk</h4><div style="font-weight:600;color:${LOCAL_COLOR[ld.s]};margin-bottom:4px">${LOCAL_LABEL[ld.s]}</div><p style="margin:0;font-size:12px">${ld.n}</p></div>`;})()}
     <div class="isec" style="padding-bottom:4px"><button id="pbest-btn" style="width:100%;padding:10px 14px;background:rgba(82,184,73,.13);color:var(--green);border:1px solid rgba(82,184,73,.3);border-radius:var(--r);cursor:pointer;font-size:13px;font-family:var(--f-body)">📍 Znajdź najlepsze miejsce na mapie</button></div>
   `;
   document.getElementById('pbest-btn').onclick=()=>_showBestSpot(mid);
@@ -53508,7 +53513,7 @@ function _doPointAnalysis(lat,lng,radiusM){
   const results=Object.entries(MUSHROOMS).map(([mid,m])=>{
     if(!m.season.includes(month))return null;
     const ld=MUSHROOM_LOCAL[mid];
-    if(ld&&ld.s==='n')return null;
+    if(ld&&ld.s==='n'&&_inHomeRegion())return null;
     let rscore=0,rw=0;
     for(const[rid,prox]of Object.entries(rscores)){rscore+=(m.weights[rid]||0)*prox;rw+=prox;}
     const regional=rw>0?rscore/rw:0;
@@ -53962,7 +53967,7 @@ function renderList(){
   if(activeSortBy==='name-az'){entries.sort(([,a],[,b])=>a.name.localeCompare(b.name,'pl'));html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');}
   else if(activeSortBy==='name-za'){entries.sort(([,a],[,b])=>b.name.localeCompare(a.name,'pl'));html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');}
   else if(activeSortBy==='rarity-common'||activeSortBy==='rarity-rare'){
-    const _rs=mid=>{const g=SPECIES_RARITY[mid]||0,ld=MUSHROOM_LOCAL[mid],l=ld?({p:1,f:2,r:4,v:5,n:0}[ld.s]||0):0,v=[g,l].filter(Boolean);return v.length?v.reduce((a,b)=>a+b,0)/v.length:3;};
+    const _rs=mid=>{const g=SPECIES_RARITY[mid]||0,ld=_inHomeRegion()?MUSHROOM_LOCAL[mid]:null,l=ld?({p:1,f:2,r:4,v:5,n:0}[ld.s]||0):0,v=[g,l].filter(Boolean);return v.length?v.reduce((a,b)=>a+b,0)/v.length:3;};
     const dir=activeSortBy==='rarity-common'?1:-1;
     entries.sort(([am],[bm])=>dir*(_rs(am)-_rs(bm))||MUSHROOMS[am].name.localeCompare(MUSHROOMS[bm].name,'pl'));
     html=entries.map(([mid,m])=>_mkMushCard(mid,m)).join('');
@@ -54145,8 +54150,8 @@ document.getElementById('tgl-bdl').onclick=()=>{
   const t=document.getElementById('tgl-bdl'),on=!t.classList.contains('on');
   t.classList.toggle('on',on);
   bdlActive=on;
-  if(!on){map.closePopup();bdlPopup=null;map.removeLayer(bdlStandsLayer);map.removeLayer(ovLayer);showOv=false;_fDet.fill(null);}
-  else{bdlStandsLayer.addTo(map);ovLayer.addTo(map);showOv=true;_updateForestLayer();loadDetailTerrain();showMsg('Szczegółowe lasy: kliknij na las aby zobaczyć skład drzewostanu');}
+  if(!on){map.closePopup();bdlPopup=null;map.removeLayer(bdlStandsLayer);showOv=false;_fDet.fill(null);}
+  else{bdlStandsLayer.addTo(map);showOv=true;_updateForestLayer();loadDetailTerrain();showMsg('Szczegółowe lasy: kliknij na las aby zobaczyć skład drzewostanu');}
 };
 map.on('click',function(e){
   if(!bdlActive)return;
@@ -54189,7 +54194,7 @@ map.on('click',function(e){
 document.getElementById('tgl-f').onclick=()=>{
   const t=document.getElementById('tgl-f'),on=!t.classList.contains('on');
   t.classList.toggle('on',on);
-  if(on){forestLayer.addTo(map);_updateForestLayer();treeGridLayer.addTo(map);}else{map.removeLayer(forestLayer);map.removeLayer(treeGridLayer);_fMain.fill(null);}
+  if(on){forestLayer.addTo(map);ovLayer.addTo(map);_updateForestLayer();treeGridLayer.addTo(map);loadDetailTerrain();}else{map.removeLayer(forestLayer);map.removeLayer(ovLayer);map.removeLayer(treeGridLayer);_fMain.fill(null);}
 };
 
 document.getElementById('tgl-wet').onclick=()=>{
@@ -54945,7 +54950,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.38</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.0</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
