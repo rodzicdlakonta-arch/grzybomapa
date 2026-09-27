@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.31</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.32</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -42848,7 +42848,7 @@ const MUSHROOMS={
     habitat:'Pod świerkami i sosnami, rzadziej bukami. Rośnie samotnie lub w małych grupach. Chroniony częściowo w Polsce — fotografować, nie zbierać masowo.',
     desc:'Kapelusz 5–20 cm, brązowy do szarobrązowego, pokryty DUŻYMI SZAROBRĄZOWYMI ŁUSKAMI nachodzącymi na siebie jak dachówki — wygląd "łuskowatego jeża". SPÓD POKRYTY KOLCAMI szarobrązowymi 3–8 mm — jak sarniak ma kolce pod spodem, ale CIEMNE I GRUBSZE niż u kolczaka. Trzon szarobrązowy, zwarty, krótki. MIĄŻSZ biały do lekko szarawego, twardawy. SMAK GORZKAWY i korzenny — szczególnie starsze okazy; blanszować przed gotowaniem. Rośnie samotnie lub parami pod ŚWIERKAMI, rzadziej sosnami i bukami, sierpień–październik. CHRONIONY CZĘŚCIOWO W POLSCE — fotografować w pierwszej kolejności.',
     edib:'Jadalny, ale gorzkawy — szczególnie starsze okazy. Przed gotowaniem blanszować i odlać wodę. Doskonały suszony. Chroniony w Polsce — nie zbierać bez potrzeby.',
-    lookalikes:'Kolczak obłączasty (Hydnum repandum) — kremowy, gładki kapelusz bez łusek, blady trzon, smak łagodny. Sarniak szroksim (S. scabrosus) — bardzo gorzki, niejadalny. Duże ciemne łuski na kapeluszu i szare kolce pod spodem to znaki rozpoznawcze sarniaka.',
+    lookalikes:'Kolczak obłączasty (Hydnum repandum) — kremowy, gładki kapelusz bez łusek, blady trzon, smak łagodny. Sarniak szorstki (S. scabrosus) — bardzo gorzki, niejadalny. Duże ciemne łuski na kapeluszu i szare kolce pod spodem to znaki rozpoznawcze sarniaka.',
     weights:{bw:55,au:50,sw:72,ro:68,lu:62,be:60,bi:55,go:58,sd:58,se:52,ta:48,ps:50,ma:45,tu:65,no:68,pi:70,dr:62,ll:45,wy:52,nak:48,sep:50}
   },
 
@@ -43326,6 +43326,12 @@ _MUSH_BY_NAME['Goryczak']=_MUSH_BY_NAME['Goryczak żółciowy'];
 _MUSH_BY_NAME['Gąska ziemistoblaszkowa']=_MUSH_BY_NAME['Gąska szara'];
 _MUSH_BY_NAME['Muchomor biały']=_MUSH_BY_NAME['Muchomor jadowity'];
 _MUSH_BY_NAME['Wieruszka jadowita']=_MUSH_BY_NAME['Hełmówka jadowita'];
+_MUSH_BY_NAME['Pieczarka']=_MUSH_BY_NAME['Pieczarka polna'];
+_MUSH_BY_NAME['Pieczarki']=_MUSH_BY_NAME['Pieczarka polna'];
+_MUSH_BY_NAME['Pieczarka krwawa']=_MUSH_BY_NAME['Pieczarka krwawiąca'];
+_MUSH_BY_NAME['Gwiazdosz']=_MUSH_BY_NAME['Gwiazdosz fryngosowy'];
+_MUSH_BY_NAME['Purchawica olbrzymia']=_MUSH_BY_NAME['Purchawka olbrzymia'];
+_MUSH_BY_NAME['Mleczaj zmienny']=_MUSH_BY_NAME['Smerekowiec / Rydz świerkowy'];
 // Names sorted longest→shortest so longer matches win
 const _MUSH_NAMES_SORTED=Object.keys(_MUSH_BY_NAME).sort((a,b)=>b.length-a.length);
 
@@ -54875,7 +54881,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.31</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.32</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
