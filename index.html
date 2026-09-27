@@ -412,7 +412,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
 #mob-top{display:none;position:fixed;top:0;left:0;right:0;height:52px;background:var(--sb);border-bottom:1px solid var(--border);z-index:1350;align-items:center;justify-content:space-between;padding:0 14px}
 #mob-logo{font-size:15px;font-weight:700;color:var(--gold)}
 #mob-logo span{font-size:13px;opacity:.85}
-#mob-srch{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);padding:4px;line-height:1}
+#mob-srch,#mob-theme-toggle{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);padding:4px;line-height:1}
 #mob-srch:hover{color:var(--text)}
 #mob-chips{display:none;position:fixed;top:52px;left:0;right:0;height:44px;background:var(--sb);border-bottom:1px solid var(--border);z-index:1350;align-items:center;padding:0 12px;gap:7px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
 #mob-chips::-webkit-scrollbar{display:none}
@@ -42484,7 +42484,7 @@ const MUSHROOMS={
     desc:'KAPELUSZ 2–5 cm, beżowy do słomkowożółtawego, stożkowato-dzwonkowaty, z wiekiem PROMIENIŚCIE PĘKAJĄCY i włókniście rozszczepiający się (typowe dla całego rodzaju Inocybe). KLUCZOWA CECHA IDENTYFIKACYJNA: TRZON i MIĄŻSZ przy nacięciu lub obtarciu wyraźnie ZIELENIEJE (turkusowy do trawiastozielonego) — żaden śmiertelnie trujący strzępiak tego nie robi; OCR przewodnika wprost stwierdza: "zielone zabarwienie trzonu wynika z obecności psylocybiny". BLASZKI szarobrązowe, gęste, przyrośnięte. TRZON cienki, włóknisty, BEZ PIERŚCIENIA, nierzadko z niebieskawoturkusowym odcieniem u nasady. ZAPACH słodkawy, delikatny — w odróżnieniu od cuchnących trujących krewniaków. Rośnie maj–sierpień w lasach mieszanych, parkach, ogrodach, przy ścieżkach na piaszczystych glebach. OSTRZEŻENIE: rodzaj Inocybe ma liczne śmiertelne gatunki z mukaryna — zielone barwienie to JEDYNA bezpieczna cecha odróżniająca; bez niego nie zbierać żadnego strzępiaka.',
     danger:'TRUJĄCY i HALUCYNOGENNY — psylocybina, efekty silne i nieprzewidywalne. UWAGA: łatwy do pomylenia ze śmiertelnie trującymi strzępiakami zawierającymi mukarynę. Zbiór niebezpieczny i nielegalny.',
     lookalikes:'Strzępiak ceglasty (Inosperma erubescens) — śmiertelny; miąższ czerwienieje (nie zielenieje). Włókniak plamisty (Inosperma maculatum) — śmiertelny; bez zielonego barwienia. Stożkówka wiotka (Conocybe tenera) — niejadalny; brak zieleni. Nigdy nie zbierać małych brązowych strzępiaków.',
-    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Inocybe_aeruginascens.jpg?width=500'],
+    photos:['https://commons.wikimedia.org/wiki/Special:FilePath/Inocybe_aeruginascens_(Netherlands)_2.jpg?width=500'],
     weights:{ka:50,lm:48,ku:45,br:52,gr:48,wk:42,sd:45,op:40,wy:52,nak:48,sep:50}
   },
   lejkowka:{
@@ -54753,7 +54753,10 @@ document.getElementById('toast').addEventListener('click',()=>{
 </div>
 <div id="mob-top">
   <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.25</span></div>
-  <button id="mob-srch" aria-label="Szukaj">🔍</button>
+  <div style="display:flex;align-items:center">
+    <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
+    <button id="mob-srch" aria-label="Szukaj">🔍</button>
+  </div>
 </div>
 <div id="mob-chips">
   <button class="mchip on" data-mcat="all">Wszystkie</button>
@@ -54929,6 +54932,13 @@ document.getElementById('toast').addEventListener('click',()=>{
   });
 
   syncMobChips();
+})();
+(function(){
+  const mBtn=document.getElementById('mob-theme-toggle');
+  const dBtn=document.getElementById('theme-toggle');
+  if(!mBtn||!dBtn)return;
+  mBtn.textContent=dBtn.textContent;
+  mBtn.addEventListener('click',()=>{dBtn.click();mBtn.textContent=dBtn.textContent;});
 })();
 </script>
 </body>
