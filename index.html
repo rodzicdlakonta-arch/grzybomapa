@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.34</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.31.35</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -52885,8 +52885,7 @@ function showInfoPanel(mid){
         img.addEventListener('load',()=>{_galSrcs[0]=img.src;},{once:true});
       }else{
         const url=extras[i-(m.wiki?1:0)];
-        img.src=url;img.style.display='block';img.parentElement.classList.remove('loading');
-        img.classList.add('loaded');
+        img.src=url;
       }
       if(total>1){ctr.textContent=`${i+1} / ${total}`;ctr.style.display='block';}
       img.onclick=()=>{if(img.src)_openLightbox(_galSrcs.slice(),idx,'Źródło: Wikimedia Commons');};
@@ -54946,7 +54945,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.34</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.31.35</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
