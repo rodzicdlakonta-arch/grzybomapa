@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.19</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.20</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32868,7 +32868,7 @@ function _loadWetlands(){
     const z=map.getZoom();
     features.forEach(f=>{
       const typePL=_WET_PL[f.wt]||'Mokradło';
-      const tip=f.n?`${f.n} (${typePL.toLowerCase()})`:typePL;
+      const tip=f.n||typePL;
       const l=L.polygon(f.p,LANDUSE_STYLE.wetland).bindTooltip(tip,{sticky:true,className:'ftip'});
       const vis=z>=(f.z||10);
       _WETLAND.push({l,z:f.z||10,vis});
