@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.37</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.38</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43864,6 +43864,8 @@ function _loadUrban(cb){
     _rebuildUrbanGrid();
     _urbanLoaded=true;_urbanLoading=false;
     _urbanCbs.forEach(fn=>fn());_urbanCbs.length=0;
+    _midHeatCache={};
+    if(selectedMid&&heatLayer){const pts=_buildBaseHeat(selectedMid).pts;_midHeatCache[selectedMid]=pts.slice();_heatPts=pts;heatLayer.setLatLngs(pts);}
   }).catch(()=>{_urbanLoading=false;});
 }
 _loadUrban(); // pre-warm in background on page load
@@ -44345,6 +44347,8 @@ function _loadFarmland(cb){
     });
     _farmlandLoaded=true;_farmlandLoading=false;
     _farmlandCbs.forEach(fn=>fn());_farmlandCbs.length=0;
+    _midHeatCache={};
+    if(selectedMid&&heatLayer){const pts=_buildBaseHeat(selectedMid).pts;_midHeatCache[selectedMid]=pts.slice();_heatPts=pts;heatLayer.setLatLngs(pts);}
   }).catch(()=>{_farmlandLoading=false;});
 }
 function _inFarmland(lat,lng){
@@ -55194,7 +55198,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.37</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.38</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
