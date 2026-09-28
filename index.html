@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.44</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.45</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43886,8 +43886,11 @@ function genHeat(weights,seed=42,total=500,opts={}){
 
   // Rejection-sample n points inside polygon objects (each has .p array)
   function _sp(polys,lat0,lng0,w,n,skipUrban){
+    // Shuffle polygon order once so each polygon is visited before any is repeated
+    const order=polys.map((_,i)=>i);
+    for(let i=order.length-1;i>0;i--){const j=Math.floor(rng.next()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
     for(let i=0;i<n;i++){
-      const lu=polys[Math.floor(rng.next()*polys.length)];
+      const lu=polys[order[i%order.length]];
       const pp=lu.p||lu;
       const lats=pp.map(p=>p[0]),lngs=pp.map(p=>p[1]);
       const la0=Math.min(...lats),la1=Math.max(...lats),ln0=Math.min(...lngs),ln1=Math.max(...lngs);
@@ -54400,6 +54403,8 @@ document.getElementById('tgl-inat').onclick=()=>{
 
 let bdlActive=false,bdlPopup=null;
 const bdlStore=[]; // [{lat,lng,cd,age}] — persists across sessions for mushroom scoring
+// Pre-seed with static WYR_TREES survey data (Wyrzysk/Krajna area) so BDL bonus covers known pine stands
+{const _wc={pine:'SO',birch:'BZ',mixed:'SO'};WYR_TREES.forEach(([lat,lng,type])=>bdlStore.push({lat,lng,cd:_wc[type]||'SO',age:60}));}
 const _bdlLive=new Set(); // keys already fetched live this session — prevents redundant API calls
 const _dynLanduse=[]; // dynamic Overpass terrain {t,p} — same structure as LANDUSE, fed to scanner/heatmap
 // Pre-load static BDL data into bdlStore so tooltip/scanner/heatmap work offline
@@ -55198,7 +55203,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.44</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.45</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
