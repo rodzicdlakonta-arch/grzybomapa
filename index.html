@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.41</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.42</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43986,15 +43986,15 @@ function genHeat(weights,seed=42,total=500,opts={}){
       const c=polyCentroid(f.poly);
       if(Math.abs(c[0]-reg.c[0])>=reg.r*1.5||Math.abs(c[1]-reg.c[1])>=reg.r*2)return false;
       const fc=_wfC(f.type);
-      if(coniferPref&&!broadleafPref&&fc!=='312')return false;
-      if(broadleafPref&&!coniferPref&&fc!=='311')return false;
+      if(coniferPref&&!broadleafPref&&fc==='311')return false;
+      if(broadleafPref&&!coniferPref&&fc==='312')return false;
       return true;
     }).map(f=>({p:f.poly,c:_wfC(f.type)}));
     const localForests=[...FORESTS.filter(f=>{
       const c=polyCentroid(f.p);
       if(Math.abs(c[0]-reg.c[0])>=reg.r*1.5||Math.abs(c[1]-reg.c[1])>=reg.r*2)return false;
-      if(coniferPref&&!broadleafPref&&f.c&&f.c!=='312')return false;
-      if(broadleafPref&&!coniferPref&&f.c&&f.c!=='311')return false;
+      if(coniferPref&&!broadleafPref&&f.c==='311')return false;
+      if(broadleafPref&&!coniferPref&&f.c==='312')return false;
       return true;
     }),..._wyrL];
     const forestN=Math.round(n*(waterEdge?.72:1.0));
@@ -53025,7 +53025,7 @@ function _showBestSpot(mid){
       else if(opts.urbanSpec)ok=h.ur||h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur);
       else if(opts.farmlandSpec)ok=h.fa||h.pa;
       else if(opts.openHab)ok=h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur);
-      else ok=h.f.some(f=>{if(opts.coniferPref&&!opts.broadleafPref)return f.c==='312';if(opts.broadleafPref&&!opts.coniferPref)return f.c==='311';return true;});
+      else ok=h.f.some(f=>{if(opts.coniferPref&&!opts.broadleafPref)return f.c!=='311';if(opts.broadleafPref&&!opts.coniferPref)return f.c!=='312';return true;});
       if(ok)pts.push([h.la,h.ln,2.5]);
     });
   }
@@ -53396,10 +53396,10 @@ async function _doAreaAnalysis(layer){
       else if(opts.urbanSpec){if(h.ur||h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur))hc++;}
       else if(opts.farmlandSpec){if(h.fa||h.pa)hc++;}
       else if(opts.openHab){if(h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur))hc++;}
-      else{if(h.f.some(f=>!f.c||(opts.coniferPref&&!opts.broadleafPref?f.c==='312':opts.broadleafPref&&!opts.coniferPref?f.c==='311':true)))hc++;}
+      else{if(h.f.some(f=>!f.c||(opts.coniferPref&&!opts.broadleafPref?f.c!=='311':opts.broadleafPref&&!opts.coniferPref?f.c!=='312':true)))hc++;}
     });
     if(opts.wetHab&&hc===0&&opts.isF&&nearL.some(l=>l.t==='water'||l.t==='river')){
-      habPts.forEach(h=>{if(h.f.some(f=>!f.c||(opts.coniferPref&&!opts.broadleafPref?f.c==='312':opts.broadleafPref&&!opts.coniferPref?f.c==='311':true)))hc++;});
+      habPts.forEach(h=>{if(h.f.some(f=>!f.c||(opts.coniferPref&&!opts.broadleafPref?f.c!=='311':opts.broadleafPref&&!opts.coniferPref?f.c!=='312':true)))hc++;});
       hc=Math.round(hc*.6);
     }
     const habFrac=habPts.length?hc/habPts.length:0;
@@ -53783,10 +53783,10 @@ function _doPointAnalysis(lat,lng,radiusM){
       else if(opts.urbanSpec){if(h.ur||h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur))hc++;}
       else if(opts.farmlandSpec){if(h.fa||h.pa)hc++;}
       else if(opts.openHab){if(h.me||h.pa||(h.f.length===0&&!h.we&&!h.fa&&!h.ur))hc++;}
-      else{if(h.f.some(f=>!f.c||(opts.coniferPref&&!opts.broadleafPref?f.c==='312':opts.broadleafPref&&!opts.coniferPref?f.c==='311':true)))hc++;}
+      else{if(h.f.some(f=>!f.c||(opts.coniferPref&&!opts.broadleafPref?f.c!=='311':opts.broadleafPref&&!opts.coniferPref?f.c!=='312':true)))hc++;}
     });
     if(opts.wetHab&&hc===0&&opts.isF&&hasWater){
-      habPts2.forEach(h=>{if(h.f.some(f=>!f.c||(opts.coniferPref&&!opts.broadleafPref?f.c==='312':opts.broadleafPref&&!opts.coniferPref?f.c==='311':true)))hc++;});
+      habPts2.forEach(h=>{if(h.f.some(f=>!f.c||(opts.coniferPref&&!opts.broadleafPref?f.c!=='311':opts.broadleafPref&&!opts.coniferPref?f.c!=='312':true)))hc++;});
       hc=Math.round(hc*.6);
     }
     const habFrac=habPts2.length?hc/habPts2.length:0;
@@ -55199,7 +55199,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.41</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.42</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
