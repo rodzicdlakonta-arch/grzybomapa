@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.17</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.18</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32838,9 +32838,11 @@ function _loadWater(){
   fetch('water_wlkp.json').then(r=>r.json()).then(features=>{
     const z=map.getZoom();
     features.forEach(f=>{
+      const typePL=f.t==='river'?'rzeka':f.t==='reservoir'?'zbiornik':f.t==='oxbow'?'starorzecze':'jezioro';
+      const tip=f.n?(f.t==='river'?`${f.n} (${typePL})`:`${f.n}`):typePL;
       const l=f.t==='river'
-        ?L.polyline(f.p,{color:'#5b9bd5',weight:2,opacity:0.75,interactive:false})
-        :L.polygon(f.p,{fillColor:'#5b9bd5',fillOpacity:0.28,color:'#3a7bc8',weight:1,interactive:false});
+        ?L.polyline(f.p,{color:'#5b9bd5',weight:2,opacity:0.75}).bindTooltip(tip,{sticky:true,className:'ftip'})
+        :L.polygon(f.p,{fillColor:'#5b9bd5',fillOpacity:0.28,color:'#3a7bc8',weight:1}).bindTooltip(tip,{sticky:true,className:'ftip'});
       const vis=z>=(f.z||8);
       _WATER.push({l,z:f.z||8,vis});
       if(vis)l.addTo(waterLayer);
@@ -32997,6 +32999,7 @@ let ovCropLayer=L.layerGroup();    // dynamic OSM farmland/crops
 let ovPastureLayer=L.layerGroup(); // dynamic OSM pastures
 let ovDynWaterLayer=L.layerGroup(); // dynamic OSM water bodies (lakes, rivers)
 let ovTimer=null,showOv=false,showDynTerrain=false;
+let _dynWaterFetchId=0; // stale-response guard for dynamic water fetches
 const _ovFetched=new Set(); // tracks 0.5° tile keys already fetched via Overpass
 
 // Add dynamic sub-layers so toggles control them too
@@ -33012,8 +33015,10 @@ function loadDetailTerrain(){
   const bb=`${b2.getSouth()},${b2.getWest()},${b2.getNorth()},${b2.getEast()}`;
   // Always fetch dynamic water bodies (lakes, ponds, reservoirs, rivers, canals) — fills gaps in static LANDUSE
   const qwater=`[out:json][timeout:15];(way["natural"="water"](${bb});way["landuse"="reservoir"](${bb});way["waterway"="river"](${bb});way["waterway"="canal"](${bb}););out geom;`;
+  const _wfid=++_dynWaterFetchId;
   fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qwater)}`)
     .then(r=>r.json()).then(data=>{
+      if(_wfid!==_dynWaterFetchId)return; // discard stale response
       ovDynWaterLayer.clearLayers();
       for(let i=_dynLanduse.length-1;i>=0;i--)if(_dynLanduse[i].t==='water'||_dynLanduse[i].t==='river')_dynLanduse.splice(i,1);
       (data.elements||[]).forEach(el=>{
@@ -42940,7 +42945,7 @@ document.getElementById('tgl-f').onclick=()=>{
 document.getElementById('tgl-wet').onclick=()=>{
   const t=document.getElementById('tgl-wet'),on=!t.classList.contains('on');
   t.classList.toggle('on',on);
-  if(on){waterBodyLayer.addTo(map);_loadWater();waterLayer.addTo(map);}else{map.removeLayer(waterBodyLayer);map.removeLayer(waterLayer);}
+  if(on){waterBodyLayer.addTo(map);_loadWater();waterLayer.addTo(map);_applyWaterZoom();}else{map.removeLayer(waterBodyLayer);map.removeLayer(waterLayer);}
 };
 let swampBuilt=false,meadowBuilt=false,cropBuilt=false,urbanBuilt=false;
 document.getElementById('tgl-swamp').onclick=()=>{
