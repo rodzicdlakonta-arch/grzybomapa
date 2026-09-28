@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.18</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.19</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32856,6 +32856,33 @@ function _applyWaterZoom(){
   for(const w of _WATER){const s=z>=w.z;if(s!==w.vis){if(s)w.l.addTo(waterLayer);else waterLayer.removeLayer(w.l);w.vis=s;}}
 }
 map.on('zoomend',_applyWaterZoom);
+// Wetland layer — toggled by tgl-swamp, lazy-loaded on first toggle-on
+const wetlandLayer=L.layerGroup();
+const _WETLAND=[];
+let _wetlandLoaded=false;
+const _WET_PL={bog:'Torfowisko',marsh:'Bagno',fen:'Torfowisko przejściowe',reedbed:'Szuwary',swamp:'Bagno',tidalflat:'Namulisko',wet_meadow:'Łąka bagienna',saltmarsh:'Słone mokradło',wetland:'Mokradło'};
+function _loadWetlands(){
+  if(_wetlandLoaded)return;
+  _wetlandLoaded=true;
+  fetch('wetlands_wlkp.json').then(r=>r.json()).then(features=>{
+    const z=map.getZoom();
+    features.forEach(f=>{
+      const typePL=_WET_PL[f.wt]||'Mokradło';
+      const tip=f.n?`${f.n} (${typePL.toLowerCase()})`:typePL;
+      const l=L.polygon(f.p,LANDUSE_STYLE.wetland).bindTooltip(tip,{sticky:true,className:'ftip'});
+      const vis=z>=(f.z||10);
+      _WETLAND.push({l,z:f.z||10,vis});
+      if(vis)l.addTo(wetlandLayer);
+    });
+    if(wetlandLayer._map){map.removeLayer(wetlandLayer);wetlandLayer.addTo(map);}
+  }).catch(()=>{_wetlandLoaded=false;});
+}
+function _applyWetlandZoom(){
+  if(!wetlandLayer._map)return;
+  const z=map.getZoom();
+  for(const w of _WETLAND){const s=z>=w.z;if(s!==w.vis){if(s)w.l.addTo(wetlandLayer);else wetlandLayer.removeLayer(w.l);w.vis=s;}}
+}
+map.on('zoomend',_applyWetlandZoom);
 function _inProtected(lat,lng){let best=null;const rank={park:0,rez:1,pk:2};for(const p of NAT_PARKS){if(_pip(lat,lng,p.p)){if(!best||rank[p.t]<rank[best.t])best=p;}}return best;}
 // Hover tooltip — wyrForests (precise) > BDL data (precise) > CLC type (szacunkowo/nieznany)
 const _fHoverTip=L.tooltip({sticky:true,className:'ftip',opacity:.9});
@@ -42953,8 +42980,8 @@ document.getElementById('tgl-swamp').onclick=()=>{
   t.classList.toggle('on',on);
   if(on){
     if(!swampBuilt){swampBuilt=true;LANDUSE.forEach(lu=>{if(lu.t==='wetland'){L.polygon(lu.p,LANDUSE_STYLE.wetland).bindTooltip(lu.n,{sticky:true,className:'ftip'}).addTo(swampLayer);}});}
-    swampLayer.addTo(map);showDynTerrain=true;loadDetailTerrain();
-  } else {map.removeLayer(swampLayer);showDynTerrain=document.getElementById('tgl-meadow').classList.contains('on')||document.getElementById('tgl-crop').classList.contains('on');}
+    swampLayer.addTo(map);_loadWetlands();wetlandLayer.addTo(map);_applyWetlandZoom();showDynTerrain=true;loadDetailTerrain();
+  } else {map.removeLayer(swampLayer);map.removeLayer(wetlandLayer);showDynTerrain=document.getElementById('tgl-meadow').classList.contains('on')||document.getElementById('tgl-crop').classList.contains('on');}
 };
 document.getElementById('tgl-meadow').onclick=()=>{
   const t=document.getElementById('tgl-meadow'),on=!t.classList.contains('on');
