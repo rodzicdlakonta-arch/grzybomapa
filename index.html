@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.27</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.28</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32938,6 +32938,35 @@ function _applyCropZoom(){
   for(const w of _CROP){const s=z>=w.z;if(s!==w.vis){if(s)w.l.addTo(cropLayer);else cropLayer.removeLayer(w.l);w.vis=s;}}
 }
 map.on('zoomend',_applyCropZoom);
+// Farmland data — all WLP, data-only (no rendering). Loaded lazily on first heatmap/scanner use.
+let _farmlandLoaded=false,_farmlandLoading=false;
+const _FARMLAND=[];   // {p:[[lat,lon],...], b:[minLat,minLon,maxLat,maxLon]}
+const _farmlandCbs=[];
+function _loadFarmland(cb){
+  if(_farmlandLoaded){if(cb)cb();return;}
+  if(cb)_farmlandCbs.push(cb);
+  if(_farmlandLoading)return;
+  _farmlandLoading=true;
+  fetch('farmland_wlkp.json').then(r=>r.json()).then(features=>{
+    features.forEach(f=>{
+      const lats=f.p.map(c=>c[0]),lons=f.p.map(c=>c[1]);
+      f.b=[Math.min(...lats),Math.min(...lons),Math.max(...lats),Math.max(...lons)];
+      f.t='farmland'; // compatible with LANDUSE format for scanner nearL filter
+      _FARMLAND.push(f);
+    });
+    _farmlandLoaded=true;_farmlandLoading=false;
+    _farmlandCbs.forEach(fn=>fn());_farmlandCbs.length=0;
+  }).catch(()=>{_farmlandLoading=false;});
+}
+function _inFarmland(lat,lng){
+  for(const f of _FARMLAND){
+    const[s,w,n,e]=f.b;
+    if(lat<s||lat>n||lng<w||lng>e)continue;
+    if(_pip(lat,lng,f.p))return true;
+  }
+  return false;
+}
+_loadFarmland(); // pre-warm in background on page load
 function _inProtected(lat,lng){let best=null;const rank={park:0,rez:1,pk:2};for(const p of NAT_PARKS){if(_pip(lat,lng,p.p)){if(!best||rank[p.t]<rank[best.t])best=p;}}return best;}
 // Hover tooltip — wyrForests (precise) > BDL data (precise) > CLC type (szacunkowo/nieznany)
 const _fHoverTip=L.tooltip({sticky:true,className:'ftip',opacity:.9});
@@ -41947,7 +41976,8 @@ async function _doAreaAnalysis(layer){
   // Grid-scan whole area: deterministic coverage, same habitat logic as genHeat
   const s0=b.getSouth(),n0=b.getNorth(),w0=b.getWest(),e0=b.getEast();
   const nearF=FORESTS.filter(f=>{const c=polyCentroid(f.p);return c[0]>s0-.05&&c[0]<n0+.05&&c[1]>w0-.05&&c[1]<e0+.05;});
-  const nearL=[...LANDUSE,..._dynLanduse].filter(l=>l.t!=='river'&&l.p.some(p=>p[0]>s0-.01&&p[0]<n0+.01&&p[1]>w0-.01&&p[1]<e0+.01));
+  const _nearFarm=_FARMLAND.filter(f=>{const[s,w,n,e]=f.b;return s<=n0+.01&&n>=s0-.01&&w<=e0+.01&&e>=w0-.01;});
+  const nearL=[...LANDUSE,..._dynLanduse,..._nearFarm].filter(l=>l.t!=='river'&&l.p.some(p=>p[0]>s0-.01&&p[0]<n0+.01&&p[1]>w0-.01&&p[1]<e0+.01));
   const nearU=URBAN_DATA.filter(u=>u.some(p=>p[0]>s0-.01&&p[0]<n0+.01&&p[1]>w0-.01&&p[1]<e0+.01));
   const GN=Math.max(10,Math.min(55,Math.round(Math.max(n0-s0,e0-w0)*1300)));
   const dlat=(n0-s0)/GN,dln=(e0-w0)/GN;
@@ -43766,7 +43796,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.27</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.28</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
