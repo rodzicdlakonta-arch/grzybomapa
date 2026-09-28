@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.30</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.32.31</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -32546,8 +32546,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
   // Add points near farmland polygon edges (mushrooms grow at field margins, not inside tilled fields)
   function _farmlandEdgePts(reg,w,n){
     const near=lu=>{const c=polyCentroid(lu.p);return Math.abs(c[0]-reg.c[0])<reg.r*1.5&&Math.abs(c[1]-reg.c[1])<reg.r*2;};
-    const nearBB=f=>{const la=(f.b[0]+f.b[2])/2,ln=(f.b[1]+f.b[3])/2;return Math.abs(la-reg.c[0])<reg.r*1.5&&Math.abs(ln-reg.c[1])<reg.r*2;};
-    const fls=[...[...LANDUSE,..._dynLanduse].filter(lu=>lu.t==='farmland'&&near(lu)),..._FARMLAND.filter(nearBB)];
+    const fls=[...LANDUSE,..._dynLanduse].filter(lu=>lu.t==='farmland'&&near(lu));
     for(let i=0;i<n;i++){
       if(!fls.length){pts.push([rng.gauss(reg.c[0],reg.r*.4),rng.gauss(reg.c[1],reg.r*.5),(w/100)*(.4+rng.next()*.6)]);continue;}
       const fl=fls[Math.floor(rng.next()*fls.length)];
@@ -32590,7 +32589,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
 
     // 1. Wetland/bog species → LANDUSE wetland polygons
     if(wetHab){
-      const wls=[...LANDUSE.filter(lu=>lu.t==='wetland'&&lu.p.length>=3&&near(lu)),..._WETLAND_DATA.filter(f=>{const la=(f.b[0]+f.b[2])/2,ln=(f.b[1]+f.b[3])/2;return Math.abs(la-reg.c[0])<reg.r*1.5&&Math.abs(ln-reg.c[1])<reg.r*2;})];
+      const wls=LANDUSE.filter(lu=>lu.t==='wetland'&&lu.p.length>=3&&near(lu));
       if(wls.length){_sp(wls,reg.c[0],reg.c[1],w,n);}
       else for(let i=0;i<n;i++){const la=rng.gauss(reg.c[0],reg.r*.4),ln=rng.gauss(reg.c[1],reg.r*.5);if(_inFarmland(la,ln)&&rng.next()>.02)continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
       // Water-edge bonus even for bog species
@@ -32600,7 +32599,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
 
     // 2. Urban/garden species → scatter in urban areas + meadow polygons (parks/lawns)
     if(urbanSpec){
-      const mds=[...LANDUSE.filter(lu=>lu.t==='meadow'&&lu.p.length>=3&&near(lu)),..._MEADOW_DATA.filter(f=>{const la=(f.b[0]+f.b[2])/2,ln=(f.b[1]+f.b[3])/2;return Math.abs(la-reg.c[0])<reg.r*1.5&&Math.abs(ln-reg.c[1])<reg.r*2;})];
+      const mds=LANDUSE.filter(lu=>lu.t==='meadow'&&lu.p.length>=3&&near(lu));
       const mn=mds.length?Math.round(n*.4):0;
       if(mn)_sp(mds,reg.c[0],reg.c[1],w,mn);
       for(let i=0;i<n-mn;i++){const la=rng.gauss(reg.c[0],reg.r*.5),ln=rng.gauss(reg.c[1],reg.r*.55);if(_inUrban(la,ln)&&rng.next()>.55)continue;if(_inFarmland(la,ln)&&rng.next()>.15)continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
@@ -32617,7 +32616,7 @@ function genHeat(weights,seed=42,total=500,opts={}){
 
     // 3. Open/meadow species → LANDUSE meadow polygons + scattered
     if(openHab){
-      const mds=[...LANDUSE.filter(lu=>lu.t==='meadow'&&lu.p.length>=3&&near(lu)),..._MEADOW_DATA.filter(f=>{const la=(f.b[0]+f.b[2])/2,ln=(f.b[1]+f.b[3])/2;return Math.abs(la-reg.c[0])<reg.r*1.5&&Math.abs(ln-reg.c[1])<reg.r*2;})];
+      const mds=LANDUSE.filter(lu=>lu.t==='meadow'&&lu.p.length>=3&&near(lu));
       const mn=mds.length?Math.round(n*.6):0;
       if(mn)_sp(mds,reg.c[0],reg.c[1],w,mn);
       for(let i=0;i<n-mn;i++){const la=rng.gauss(reg.c[0],reg.r*.55),ln=rng.gauss(reg.c[1],reg.r*.65);if(avoidUrban&&_inUrban(la,ln)&&rng.next()>(urbanTolerant?.3:.05))continue;if(_inFarmland(la,ln)&&rng.next()>.1)continue;pts.push([la,ln,(w/100)*(.4+rng.next()*.6)]);}
@@ -43825,7 +43824,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.30</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.32.31</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
