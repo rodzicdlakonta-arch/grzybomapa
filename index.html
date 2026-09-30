@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.34.0</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.34.1</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -43370,6 +43370,41 @@ const MUSHROOMS={
     photos:['https://commons.wikimedia.org/wiki/Special:FilePath/2010-05-27_Calocybe_gambosa.jpg?width=500'],
     weights:{sw:52,ro:50,lu:48,be:52,bi:45,ka:55,lm:48,ku:50,br:48,gr:50,wk:45,sd:48,op:42,wy:55,nak:52,sep:52,bw:48,au:45,ps:42,ma:45,dl:42,ch:45,tu:42,no:45}
   },
+  kurka_bl:{q:3,
+    name:'Pieprznik blady',latin:'Cantharellus pallens',cat:'edible',rare:false,wiki:'Cantharellus_pallens',
+    season:[6,7,8,9,10],terrain:['Lasy liściaste','Buczyny','Dąbrowy'],
+    soil:'Gleba próchnicza, żyzna',ph:'5.5–7.0',elev:'0–800 m',
+    habitat:'Pod bukami i dębami w lasach liściastych. Rośnie w rozproszeniu, mniej pospolity niż kurka złota. Sezon czerwiec–październik.',
+    desc:'Kapelusz 3–10 cm, BLADOŻÓŁTY do KREMOWOBIAŁEGO — znacznie jaśniejszy od kurki złotej (C. cibarius). Kształt identyczny: nieregularny, lekko falisty. FAŁSZYWE BLASZKI (listwowate rozwidlające się grzbiety) jak u wszystkich pieprzników — cecha odróżniająca od trujących grzybów z prawdziwymi blaszkami. Miąższ biały do bladożółtego, kruchy. ZAPACH owocowy, łagodny. Smak pieprzny, łagodniejszy niż kurka. Rośnie pod bukami i dębami, głównie w lasach liściastych.',
+    edib:'Jadalna, smaczna — taka sama wartość jak kurka złota. Smażyć z masłem, do sosów, jajecznicy i makaronów. Można suszyć i zamrażać.',
+    lookalikes:'Kurka złota (Cantharellus cibarius) — intensywnie żółta, silniejszy zapach; ta sama wartość jadalna. Lisówka pomarańczowa (Hygrophoropsis aurantiaca) — TRUJĄCA; PRAWDZIWE BLASZKI (cienkie, gęste, regularnie rozwidlone), barwa pomarańczowa, nie kremowa; kapelusz bardziej podwinięty. Kluczowy test: pieprznik = grube listwowate grzbiety; lisówka = cienkie gęste blaszki.',
+    photos:[],
+    weights:{sw:45,ro:42,lu:48,be:50,bi:45,ka:48,lm:50,ku:42,br:45,gr:52,wk:42,sd:40,op:38,wy:35,nak:32,sep:38,bw:45,au:40,ps:38,ma:48,dl:42,ch:40,tu:38,no:40}
+  },
+  gaska_grud:{q:3,
+    name:'Gąska grudniowa',latin:'Tricholoma portentosum',cat:'edible',rare:false,wiki:'Tricholoma_portentosum',
+    season:[9,10,11,12],terrain:['Bory sosnowe','Lasy iglaste','Lasy mieszane'],
+    soil:'Gleba piaszczysta, kwaśna',ph:'4.0–6.0',elev:'0–800 m',
+    habitat:'W lasach iglastych z dużą ilością porostów i mchów, pod sosnami i świerkami, na glebach piaszczystych. Jeden z niewielu grzybów owocnikujących jeszcze w GRUDNIU — stąd nazwa.',
+    desc:'Kapelusz 4–10 cm, SZARY (od jasnoszarego do ciemnoszarego), często z CZARNIAWYMI PROMIENIOWYMI SMUŻKAMI — cecha charakterystyczna. Mazisty przy deszczu. Blaszki białawe, wkrótce z ŻÓŁTOZIELONAWYM POŁYSKIEM — kluczowa cecha ID. Trzon biały, u starszych żółtozielonawy. SMAK MĄCZNY, łagodny. Pojawia się późną jesienią i jako jeden z nielicznych grzybów trwa nawet w grudniu.',
+    edib:'Smaczna jak gąska zielonka. Gotować lub smażyć — mączny smak uszlachetnia się po obróbce. Zbierać tylko przy pewnej identyfikacji.',
+    danger:'NIEBEZPIECZNE MYLNIKI. Gąska pieprzna i gąska ostra — TRUJĄCE; obie z ostrym/mydlanym smakiem. TEST: spróbuj ułamek blaszki (wypluj) — łagodny smak mąki = grudniowa; ostry/gryzący/mydlany = trująca. Sprawdź też: żółtozielony połysk blaszek + promieniowe smużki na kapeluszu.',
+    lookalikes:'Gąska plamista (Tricholoma pardinum) — SILNIE TRUJĄCA; kapelusz z koncentrycznymi ciemnymi łuskami, pod bukami i jodłami. Gąska ostra (Tricholoma virgatum) — TRUJĄCA; ciemny garbek na kapeluszu, palący smak. Gąska szerokoblaszkowa (Tricholoma luridum) — niejadalna; blaszki szarawe.',
+    photos:[],
+    weights:{sw:48,ro:45,lu:42,be:50,bi:48,ka:52,lm:48,ku:55,br:48,gr:45,wk:50,sd:52,op:45,wy:62,nak:60,sep:60,bw:52,au:48,ps:55,ma:42,dl:45,ch:48,tu:52,no:48}
+  },
+  muszomor_czer:{q:2,
+    name:'Muchomor czerwieniejący',latin:'Amanita rubescens',cat:'edible',rare:false,wiki:'Amanita_rubescens',
+    season:[6,7,8,9,10],terrain:['Lasy liściaste','Lasy mieszane','Lasy iglaste','Bory sosnowe'],
+    soil:'Gleba żyzna do kwaśnej, próchnicza',ph:'4.5–7.0',elev:'0–1000 m',
+    habitat:'W lasach liściastych i iglastych, bez większych wymagań glebowych. Jeden z najpospolitszych muchomorów w Polsce, spotykany w całym sezonie.',
+    desc:'Kapelusz 5–15 cm, CIELISTOBRĄZOWY do różowawobrązowego, z NIEREGULARNYMI BRUDNOBIAŁYMI PŁATAMI szczątków osłony. Trzon biały z delikatnym zygzakowatym wzorkiem, pierścień prążkowany od góry. Bulwa u podstawy GŁADKA lub z małymi brodawkami — BEZ pochwy (inaczej niż śmiertelne muchomory z pochwą!). KLUCZOWA CECHA: miąższ pod skórką kapelusza i przy podstawie trzonu RÓŻOWIEJE po kilku minutach od przekrojenia. Zazwyczaj silnie robaczywy — zbierać wyłącznie młode okazy.',
+    edib:'Jadalny WYŁĄCZNIE po dokładnym ugotowaniu lub długim smażeniu — surowy zawiera toksyny. Zbiór ODRADZA SIĘ ze względu na łatwość pomyłki z trującymi muchomorami. Zbierać tylko przy 100% pewności: miąższ musi wyraźnie różowieć.',
+    danger:'RYZYKOWNY: łatwy do pomylenia z MUCHOMOREM PLAMISTYM (Amanita pantherina) — ŚMIERTELNIE TRUJĄCYM. TEST TERENOWY (obowiązkowy!): przekroić trzon u podstawy — RÓŻOWIEJE po 2–3 min = rubescens (jadalny po ugotowaniu); pozostaje BIAŁY = pantherina (śmiertelny). Nie zbierać jeśli nie widać różowienia.',
+    lookalikes:'Muchomor plamisty (Amanita pantherina) — ŚMIERTELNIE TRUJĄCY; miąższ zawsze biały, nie różowieje; pochwa u nasady wyraźna; regularne białe brodawki na kapeluszu. Muchomor twardawy (Amanita spissa) — niejadalny; pierścień prążkowany, bulwa masywna z kołnierzem; brak różowienia.',
+    photos:[],
+    weights:{sw:62,ro:60,lu:58,be:65,bi:60,ka:65,lm:62,ku:58,br:60,gr:62,wk:58,sd:60,op:55,wy:65,nak:62,sep:62,bw:62,au:58,ps:55,ma:55,dl:52,ch:55,tu:52,no:55}
+  },
 };
 
 // ─── Cross-reference helpers ───────────────────────────────────────────────
@@ -43556,6 +43591,9 @@ const MUSH_ICON_CFG={
   gaska_zolk:   {s:'flat',c:'#A0A090',t:'#D0D0C0'},
   kolpaczek_bl: {s:'flat',c:'#D8D0C0',t:'#F0ECE0'},
   gaska_maj:    {s:'flat',c:'#F5F0E0',t:'#6B4C1A'},
+  kurka_bl:     {s:'chan',c:'#E8D060',t:'#E8D060'},
+  gaska_grud:   {s:'flat',c:'#707068',t:'#C8C8B8'},
+  muszomor_czer:{s:'aman',c:'#C87040',t:'#E0B090'},
 };
 
 function getMushSVG(mid){
@@ -43745,6 +43783,9 @@ const MUSHROOM_LOCAL={
   gaska_zolk:   {s:'p',n:'Pospolita w lasach i parkach regionu od maja do listopada. Najbardziej zmienny z gąskowców — blaszki żółkną przy potarciu.'},
   kolpaczek_bl: {s:'f',n:'Na oborniku i pastwiskach regionu gdzie jest bydło lub konie. Tereny wiejskie Krainy — łatwo przeoczany.'},
   gaska_maj:    {s:'r',n:'Rzadka w regionie borów sosnowych — częstsza w okolicach z lasami liściastymi i łąkami. Wiosna (kwiecień–czerwiec), trawniki i skraje lasów.'},
+  gaska_grud:   {s:'r',n:'Rzadka w Krajnie — głównie bory sosnowe, ale gąska grudniowa preferuje lasy z domieszką lub czyste sosnowe z mchem i chrobotkiem. Sezon październik–grudzień.'},
+  muszomor_czer:{s:'f',n:'Częsty w borach i lasach mieszanych Krajny. Bardzo pospolity — jeden z najczęstszych muchomorów regionu. Latem i jesienią pod sosnami, świerkami i bukami.'},
+  kurka_bl:     {s:'r',n:'Rzadki w regionie borów sosnowych Krajny — pieprznik blady preferuje lasy liściaste, zwłaszcza buczyny i dąbrowy. Szukaj w okolicach starszych dębów.'},
 };
 
 const LOCAL_LABEL={p:'Pospolity w regionie',f:'Częsty w regionie',r:'Rzadki w regionie',v:'Bardzo rzadki',n:'Nie występuje w regionie'};
@@ -43777,6 +43818,7 @@ const SPECIES_DIFF={
   gaska_plam:3,czubajka_sut:2,mleczaj_om:3,
   czarka_aust:1,gaska_zolk:3,kolpaczek_bl:3,
   gaska_maj:2,
+  gaska_grud:3,muszomor_czer:2,kurka_bl:2,
   lakówka:2,
 };
 // General rarity in Poland: 1=very common, 2=common, 3=moderately common, 4=rare, 5=very rare/endangered
@@ -43814,6 +43856,7 @@ const SPECIES_RARITY={
   gaska_plam:4,czubajka_sut:2,mleczaj_om:3,
   czarka_aust:4,gaska_zolk:1,kolpaczek_bl:3,
   gaska_maj:2,
+  gaska_grud:3,muszomor_czer:2,kurka_bl:3,
   lakówka:3,
 };
 const LOCAL_COLOR={p:'#4a7a3a',f:'#8a7a20',r:'#aa5a20',v:'#aa2020',n:'#666'};
@@ -55227,7 +55270,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.34.0</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.34.1</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
