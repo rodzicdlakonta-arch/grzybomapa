@@ -453,7 +453,7 @@ body{font-family:var(--f-body);background:var(--bg);color:var(--text);display:fl
   <div id="logo">
     <div id="logo-text">
       <h1>GrzyboMapa</h1>
-      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.34.20</span></p>
+      <p>Mapa grzybów Polski &nbsp;·&nbsp; <span style="letter-spacing:.04em">v1.34.21</span></p>
     </div>
     <button id="theme-toggle" title="Tryb jasny">☀️</button>
   </div>
@@ -44597,44 +44597,45 @@ function loadDetailTerrain(){
   }
   const b2=map.getBounds();
   const bb=`${b2.getSouth()},${b2.getWest()},${b2.getNorth()},${b2.getEast()}`;
-  // Rivers/canals only at z>=11: at lower zoom the static water_*.json files handle them with correct z thresholds
-  const riverQ=zoom>=11?`way["waterway"="river"](${bb});way["waterway"="canal"](${bb});`:'';
-  const qwater=`[out:json][timeout:15];(way["natural"="water"](${bb});way["landuse"="reservoir"](${bb});${riverQ});out geom;`;
-  const _wfid=++_dynWaterFetchId;
-  fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qwater)}`)
-    .then(r=>r.json()).then(data=>{
-      if(_wfid!==_dynWaterFetchId)return; // discard stale response
-      ovDynWaterLayer.clearLayers();
-      for(let i=_dynLanduse.length-1;i>=0;i--)if(_dynLanduse[i].t==='water'||_dynLanduse[i].t==='river')_dynLanduse.splice(i,1);
-      (data.elements||[]).forEach(el=>{
-        if(!el.geometry)return;
-        const coords=el.geometry.map(p=>[p.lat,p.lon]);
-        if(!coords.length)return;
-        const nm=el.tags?.name||el.tags?.['name:pl']||'';
-        const wway=el.tags?.waterway;
-        if(wway==='river'||wway==='canal'){
-          const typePL=_waterTypePL[wway]||'rzeka';
-          const tip=nm?`${nm} (${typePL})`:typePL;
-          _dynLanduse.push({t:'river',p:coords,nm:tip});
-          L.polyline(coords,LANDUSE_STYLE.river).bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovDynWaterLayer);
-        } else {
-          // Apply same size-based z-threshold as static water files so dynamic layer doesn't
-          // override static _applyWaterZoom visibility (the "square stays" bug in Krajna)
-          const lats=coords.map(p=>p[0]),lons=coords.map(p=>p[1]);
-          const mlat=(Math.max(...lats)+Math.min(...lats))/2;
-          const dlat=(Math.max(...lats)-Math.min(...lats))*111;
-          const dlon=(Math.max(...lons)-Math.min(...lons))*111*Math.cos(mlat*Math.PI/180);
-          const diagKm=Math.sqrt(dlat*dlat+dlon*dlon);
-          const wz=diagKm>8?8:diagKm>3?9:diagKm>1?10:diagKm>0.4?11:12;
-          if(wz>zoom)return;
-          const wt=el.tags?.water||el.tags?.landuse||'water';
-          const typePL=_waterTypePL[wt]||'akwen';
-          const tip=nm?`${nm} (${typePL})`:typePL;
-          _dynLanduse.push({t:'water',p:coords,nm:tip});
-          L.polygon(coords,LANDUSE_STYLE.water).bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovDynWaterLayer);
-        }
-      });
-    }).catch(()=>{});
+  // Dynamic water only at z>=9: _applyWaterZoom() clears ovDynWaterLayer at z<9, so re-fetching
+  // at z8 just re-adds large rectangular polygons ("square stays" bug in Krajna).
+  if(zoom>=9){
+    const riverQ=zoom>=11?`way["waterway"="river"](${bb});way["waterway"="canal"](${bb});`:'';
+    const qwater=`[out:json][timeout:15];(way["natural"="water"](${bb});way["landuse"="reservoir"](${bb});${riverQ});out geom;`;
+    const _wfid=++_dynWaterFetchId;
+    fetch(`https://overpass.openstreetmap.fr/api/interpreter?data=${encodeURIComponent(qwater)}`)
+      .then(r=>r.json()).then(data=>{
+        if(_wfid!==_dynWaterFetchId)return; // discard stale response
+        ovDynWaterLayer.clearLayers();
+        for(let i=_dynLanduse.length-1;i>=0;i--)if(_dynLanduse[i].t==='water'||_dynLanduse[i].t==='river')_dynLanduse.splice(i,1);
+        (data.elements||[]).forEach(el=>{
+          if(!el.geometry)return;
+          const coords=el.geometry.map(p=>[p.lat,p.lon]);
+          if(!coords.length)return;
+          const nm=el.tags?.name||el.tags?.['name:pl']||'';
+          const wway=el.tags?.waterway;
+          if(wway==='river'||wway==='canal'){
+            const typePL=_waterTypePL[wway]||'rzeka';
+            const tip=nm?`${nm} (${typePL})`:typePL;
+            _dynLanduse.push({t:'river',p:coords,nm:tip});
+            L.polyline(coords,LANDUSE_STYLE.river).bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovDynWaterLayer);
+          } else {
+            const lats=coords.map(p=>p[0]),lons=coords.map(p=>p[1]);
+            const mlat=(Math.max(...lats)+Math.min(...lats))/2;
+            const dlat=(Math.max(...lats)-Math.min(...lats))*111;
+            const dlon=(Math.max(...lons)-Math.min(...lons))*111*Math.cos(mlat*Math.PI/180);
+            const diagKm=Math.sqrt(dlat*dlat+dlon*dlon);
+            const wz=diagKm>3?9:diagKm>1?10:diagKm>0.4?11:12;
+            if(wz>zoom)return;
+            const wt=el.tags?.water||el.tags?.landuse||'water';
+            const typePL=_waterTypePL[wt]||'akwen';
+            const tip=nm?`${nm} (${typePL})`:typePL;
+            _dynLanduse.push({t:'water',p:coords,nm:tip});
+            L.polygon(coords,LANDUSE_STYLE.water).bindTooltip(tip,{sticky:true,className:'ftip'}).addTo(ovDynWaterLayer);
+          }
+        });
+      }).catch(()=>{});
+  }
   // Dynamic Overpass forests — tile-cached, accumulating (no clearLayers)
   if(ovLayer._map&&b2.getNorth()-b2.getSouth()<=2.5&&b2.getEast()-b2.getWest()<=3.5){
     const CELL=0.5,cs=[];
@@ -55274,7 +55275,7 @@ document.getElementById('toast').addEventListener('click',()=>{
   </button>
 </div>
 <div id="mob-top">
-  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.34.20</span></div>
+  <div id="mob-logo">🍄 <span>GrzyboMapa</span> <span style="font-size:10px;font-weight:400;opacity:.5;letter-spacing:.04em">v1.34.21</span></div>
   <div style="display:flex;align-items:center">
     <button id="mob-theme-toggle" aria-label="Motyw">☀️</button>
     <button id="mob-srch" aria-label="Szukaj">🔍</button>
